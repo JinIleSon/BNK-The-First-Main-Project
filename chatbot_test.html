@@ -1,0 +1,69 @@
+<script type="module">
+      import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
+
+      Chatbot.init({
+        chatflowid: "c5c35ce4-18cb-4928-b072-f805252e5889",
+        apiHost: "http://localhost:3000",
+
+        // RAG/모델 파라미터 ↓ (필요 없으면 비워둬도 됩니다)
+        chatflowConfig: {
+            returnSourceDocuments: false,   // "question:..." 칩 제거
+        },
+
+        // 🔵 UI/문구 커스터마이즈
+        theme: {
+          button: { backgroundColor: "#0064FF", color: "#fff" },
+          chatWindow: {
+            title: "BNK FAQ 챗봇",
+            welcomeMessage: "안녕하세요! BNK FAQ 챗봇입니다. 무엇을 도와드릴까요?",
+            inputPlaceholder: "질문을 입력하세요...",
+            backgroundColor: "#ffffff",
+            fontSize: "15px",
+            // 샘플 질문
+            starterPrompts: [
+                "계좌 개설은 어떻게 하나요?",
+                "체크카드 재발급 방법 알려줘요",
+                "예금 금리는 어디서 확인할 수 있나요?",
+                "비대면 계좌 개설 시 필요한 것은 무엇인가요?"
+            ],
+            starterPromptFontSize: 15, // 칩 글자 크기
+            botMessage: { backgroundColor: "#f3f6ff" },
+            userMessage: { backgroundColor: "#0064FF", textColor: "#ffffff" }
+            
+          }
+        }
+      })
+      // ❗ Shadow DOM 내부 칩 제거/숨김
+    const hideChips = () => {
+        const el = document.querySelector('flowise-chatbot')
+        const root = el && el.shadowRoot
+        if (!root) return
+
+        // 표시 자체를 없애고 싶으면 remove(), 숨기기만 하려면 style.display='none'
+        root.querySelectorAll('.chatbot-button.selectable, [data-testid="host-bubble"][role="button"]')
+            .forEach(node => node.remove())
+    }
+
+    // 위젯이 로드된 뒤에도 새 칩이 생길 수 있어 주기적으로 처리
+    const interval = setInterval(() => {
+        const el = document.querySelector('flowise-chatbot')
+        if (!el) return
+        hideChips()
+    }, 300)
+
+    // 사용자가 첫 메시지를 보내고 응답받을 때도 한 번 더 정리
+    window.addEventListener('focus', hideChips)
+    </script>
+    <style>
+        /* Flowise 칩/추천 버튼들 전부 숨김 */
+        .flowise-message-chips,
+        .flowise-starter-prompts,
+        .message-chips,
+        .starter-prompts,
+        .chips, .chip, .flowise-chip,
+        div[class*="starterPrompt"],
+        div[class*="message-suggestion"],
+        div[class*="chip"] {
+            display: none !important;
+        }
+    </style>
