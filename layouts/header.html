@@ -219,7 +219,8 @@
                             </a>
                         </div>
                         <div style="width: 115px;">
-                            <button style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; background-color: white; width:85px; height:38px;">인증센터</button>
+                            <button class="auth-btn"
+                            style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">인증센터</button>
                         </div>
                         <div style="width: 60px;">
                             <a href="#">
@@ -507,7 +508,22 @@
 
 /* 잠금 중에만 상단 빨간줄 숨김 */
 .nav-root.nav-locked { border-bottom-color: transparent !important; }
+.auth-btn {
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+  background-color: white;
+  width: 85px;
+  height: 38px;
+  color: #374151;
+  transition: all 0.25s ease-in-out; /* 부드러운 효과 */
+}
 
+.auth-btn:hover {
+  background-color: #DE0000;
+  color: white;
+  border-color: #DE0000;
+}
 </style>
 <script>
 (function () {
