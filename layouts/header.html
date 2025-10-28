@@ -210,12 +210,12 @@
                     <div style="display: flex; align-items: center;">
                         <div style=" width: 60px;">
                             <a href="#">
-                                <img src="magnifier.png" alt="">
+                                <img src="/layouts/magnifier.png" alt="">
                             </a>
                         </div>
                         <div style="width: 60px;">
                             <a href="#">
-                                <img src="globe.png" alt="">
+                                <img src="/layouts/globe.png" alt="">
                             </a>
                         </div>
                         <div style="width: 115px;">
@@ -224,7 +224,7 @@
                         </div>
                         <div style="width: 60px;">
                             <a href="#">
-                                <img src="human.png" alt="">
+                                <img src="/layouts/human.png" alt="">
                             </a>
                         </div>
                     </div>
@@ -524,6 +524,22 @@
   color: white;
   border-color: #DE0000;
 }
+/* 헤더 고정 */
+.nav-root{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;                /* 메뉴가 위로 오도록 */
+  background: #fff;             /* 스크롤 시 배경 비침 방지 */
+  border-bottom:5px solid #DE0000;
+}
+
+/* 헤더 높이 변수(기본값 68px) */
+:root{ --nav-h: 68px; }
+
+/* 메가드롭다운이 헤더 바로 아래에서 열리도록 */
+.mega{
+  top: var(--nav-h);            /* 기존 68px → 변수로 */
+}
 </style>
 <script>
 (function () {
@@ -569,6 +585,21 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') setActive(null);
   });
+})();
+(function(){
+  const root = document.querySelector('.nav-root');
+
+  function syncNavHeight(){
+    const h = root.getBoundingClientRect().height || 68;
+    document.documentElement.style.setProperty('--nav-h', h + 'px');
+    document.body.style.paddingTop = h + 'px';   // 본문이 헤더 밑으로 시작
+  }
+
+  // 초기/리사이즈/폰트로드 등 상황에 맞춰 갱신
+  window.addEventListener('load', syncNavHeight);
+  window.addEventListener('resize', syncNavHeight);
+  // 폰트나 이미지로 높이가 변할 수 있으니 약간 지연 갱신
+  setTimeout(syncNavHeight, 100);
 })();
 </script>
 
