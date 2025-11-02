@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* ====== Mega Dropdown (업데이트) ====== */
+        .nav-wrap {
+            position: relative;
+        }
+
+        .gnb {
+            position: relative;
+            z-index: 20;
+        }
+
+        .gnb>li {
+            position: relative;
+        }
+
+        /* 전체폭, 세로공간 넉넉히 */
+        .mega {
+            display: none;
+            position: fixed;
+            /* 화면 기준으로 전체폭 */
+            left: 0;
+            right: 0;
+            top: 68px;
+            /* 상단바 높이에 맞게 조절(기존보다 조금 여유) */
+            background: #fff;
+            border-top: 1px solid #E5E7EB;
+            border-bottom: 5px solid #DE0000;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, .06);
+            padding: 40px 48px;
+            /* 패널 내부 여백 ↑ */
+            min-height: 240px;
+            /* 펼쳐지는 세로 공간 ↑ */
+            z-index: 19;
+        }
+
+        /* 열림 조건 – 패널 위에 마우스 있어도 유지 */
+        .has-mega:hover .mega,
+        .has-mega:focus-within .mega,
+        .mega:hover {
+            display: block;
+        }
+
+        /* 그리드/간격 넓힘 */
+        .mega-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 32px 110px;
+            /* 컬럼 가로 간격 넓힘 */
+        }
+
+        /* 타이틀/리스트 간격 조정 */
+        .mega h4 {
+            margin: 0 0 16px;
+            font-size: 15px;
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .mega ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 항목 간 세로 간격 ↑ */
+        .mega li {
+            margin: 12px 0;
+        }
+
+        .mega a {
+            text-decoration: none;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.9;
+            /* 클릭 영역도 넉넉히 */
+        }
+
+        .mega a:hover {
+            text-decoration: none;
+        }
+
+        /* 반응형 */
+        @media (max-width: 960px) {
+            .mega-inner {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 560px) {
+            .mega {
+                position: static;
+                top: auto;
+                padding: 24px;
+                min-height: 0;
+            }
+
+            .mega-inner {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* ====== Mega Dropdown – 줄 제거 & 그림자만 남기기 ====== */
+        .nav-wrap {
+            position: relative;
+        }
+
+        .gnb {
+            position: relative;
+            z-index: 20;
+        }
+
+        .gnb>li {
+            position: relative;
+        }
+
+        /* 메가패널: 전체폭 + 테두리 제거 + 부드러운 그림자만 */
+        .mega {
+            display: none;
+            position: fixed;
+            /* 화면 기준으로 전체 가로 */
+            left: 0;
+            right: 0;
+            top: 68px;
+            /* 상단바 높이에 맞게 조절 */
+            background: #fff;
+            /* 줄(테두리) 제거 */
+            border: none;
+            /* 하단만 자연스럽게 보이는 그림자 */
+            box-shadow: 0 16px 30px rgba(0, 0, 0, .08);
+            padding: 40px 48px;
+            min-height: 240px;
+            z-index: 19;
+        }
+
+        /* 열림 상태 유지 */
+        .has-mega:hover .mega,
+        .has-mega:focus-within .mega,
+        .mega:hover {
+            display: block;
+        }
+
+        /* 열렸을 때 상단 빨간 줄 숨기기 (닫히면 자동 복원) */
+        .nav-root:has(.has-mega:hover .mega),
+        .nav-root:has(.has-mega:focus-within .mega),
+        .nav-root:has(.mega:hover) {
+            border-bottom-color: transparent !important;
+        }
+
+        /* 내부 레이아웃 */
+        .mega-inner {
+            max-width: 1075px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 32px 110px;
+        }
+
+        .mega h4 {
+            margin: 0 0 16px;
+            font-size: 15px;
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .mega ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mega li {
+            margin: 12px 0;
+        }
+
+        .mega a {
+            text-decoration: none;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .mega a:hover {
+            text-decoration: none;
+        }
+
+        /* 반응형 */
+        @media (max-width: 960px) {
+            .mega-inner {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 24px 60px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .mega {
+                position: static;
+                top: auto;
+                padding: 24px;
+                min-height: 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, .08);
+            }
+
+            .mega-inner {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* ===== 상단 1차 메뉴 hover 시 밑줄 효과 ===== */
+        .gnb>li>a {
+            position: relative;
+            display: inline-block;
+            text-decoration: none;
+            color: #374151;
+            padding-bottom: 4px;
+            /* 밑줄과의 간격 */
+            transition: color 0.2s ease;
+        }
+
+        .gnb>li>a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #DE0000;
+            /* BNK 메인컬러 */
+            transition: width 0.25s ease-in-out;
+        }
+
+        .gnb>li:hover>a::after {
+            width: 100%;
+        }
+
+        .gnb>li:hover>a {
+            color: #DE0000;
+            /* hover 시 글자색 살짝 강조 (선택사항) */
+        }
+
+        /* ===== mega 내부 메뉴 hover 시 밑줄 애니메이션 ===== */
+        .mega a {
+            position: relative;
+            display: inline-block;
+            text-decoration: none;
+            color: #374151;
+            font-size: 14px;
+            line-height: 1.9;
+            padding-bottom: 1px;
+            /* 밑줄과 간격 */
+            transition: color 0.25s ease;
+        }
+
+        .mega a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0%;
+            height: 1.5px;
+            background-color: #DE0000;
+            /* 아래 메뉴는 진한 빨간 선 */
+            transition: width 0.25s ease-in-out;
+            transform: translateZ(0);
+        }
+
+        .mega a::after {
+            height: 2px;
+            /* 균일 두께 */
+            bottom: 0px;
+            /* 정수 픽셀 라인에 고정 */
+            border-radius: 2px;
+            transform: translateZ(0);
+            /* 서브픽셀 블러 방지 */
+        }
+
+        .mega a:hover::after {
+            width: 100%;
+        }
+
+        :root {
+            --accent: #DE0000;
+            /* 밑줄/강조 색 */
+            --base: #374151;
+            /* 기본 글자색 */
+            --speed: .25s;
+            /* 애니메이션 시간 */
+            --ease: ease-in-out;
+        }
+
+        /* ===== 2차 메뉴(mega) 텍스트 색이 밑줄과 같이 쓸림 ===== */
+        :root {
+            --accent: #DE0000;
+            --base: #374151;
+            --speed: .25s;
+            --ease: ease-in-out;
+        }
+
+        /* 2차(mega) 링크: 배경-클립 효과 제거, 색 즉시 변경 */
+        .mega a {
+            background: none !important;
+            /* 겹배경 제거 */
+            -webkit-background-clip: initial !important;
+            background-clip: initial !important;
+            color: var(--base);
+            transition: color 0.08s linear;
+            /* 거의 즉시 빨간색 */
+            padding-bottom: 0px;
+            /* 밑줄과 간격 */
+        }
+
+        .mega a:hover {
+            color: var(--accent);
+        }
+
+        /* 밑줄만 기존처럼 애니메이션 */
+        .mega a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            width: 0%;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 2px;
+            transform: translateZ(0);
+            transition: width var(--speed) var(--ease);
+        }
+
+        .mega a:hover::after {
+            width: 100%;
+        }
+
+        /* 1차(GNB)도 동일 컨셉으로 */
+        .gnb>li>a {
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            background-clip: initial !important;
+            color: var(--base);
+            padding-bottom: 3px;
+            transition: color 0.08s linear;
+        }
+
+        .gnb>li:hover>a {
+            color: var(--accent);
+        }
+
+        .gnb>li>a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--accent);
+            transition: width var(--speed) var(--ease);
+        }
+
+        .gnb>li:hover>a::after {
+            width: 100%;
+        }
+
+        /* GNB(예금·펀드·외환...) hover 시 글자 빨간색으로 */
+        .gnb>li>a {
+            color: var(--base) !important;
+            transition: color .08s linear;
+        }
+
+        .gnb>li:hover>a {
+            color: var(--accent) !important;
+        }
+
+        /* 인라인 컬러를 덮기 위해 !important */
+        /* ===== 클릭-잠금 모드 ===== */
+        /* 잠금일 때는 hover로는 절대 열리지 않음 */
+        .nav-locked .gnb .has-mega:hover .mega {
+            display: none !important;
+        }
+
+        /* active(선택) 된 카테고리만 열림 */
+        .gnb .has-mega.active .mega {
+            display: block !important;
+        }
+
+        /* 선택된 탭(1차) 스타일 유지 */
+        .gnb .has-mega.active>a {
+            color: var(--accent) !important;
+        }
+
+        .gnb .has-mega.active>a::after {
+            width: 100% !important;
+        }
+
+        /* 빨간 보더는 ‘열렸을 때’가 아니라 ‘잠금 중’에만 숨김 */
+        .nav-root.nav-locked {
+            border-bottom-color: transparent !important;
+        }
+
+        /* 잠금 아닌 상태에서는 hover로 열림 */
+        .nav-root:not(.nav-locked) .gnb .has-mega:hover .mega {
+            display: block !important;
+        }
+
+        /* 잠금 상태: hover로는 절대 열지 않음 */
+        .nav-root.nav-locked .gnb .has-mega:hover .mega {
+            display: none !important;
+        }
+
+        /* 잠금 상태에서도 active 항목은 항상 열림(깜빡임 방지: 우선순위 가장 높게) */
+        .nav-root.nav-locked .gnb .has-mega.active .mega {
+            display: block !important;
+        }
+
+        /* 선택된 탭 스타일 유지 */
+        .gnb .has-mega.active>a {
+            color: var(--accent) !important;
+        }
+
+        .gnb .has-mega.active>a::after {
+            width: 100% !important;
+        }
+
+        /* 잠금 중에만 상단 빨간줄 숨김 */
+        .nav-root.nav-locked {
+            border-bottom-color: transparent !important;
+        }
+
+        .auth-btn {
+            cursor: pointer;
+            border-radius: 6px;
+            border: 1px solid #E5E7EB;
+            background-color: white;
+            width: 85px;
+            height: 38px;
+            color: #374151;
+            transition: all 0.25s ease-in-out;
+            /* 부드러운 효과 */
+        }
+
+        .auth-btn:hover {
+            background-color: #DE0000;
+            color: white;
+            border-color: #DE0000;
+        }
+
+        /* 헤더 고정 */
+        .nav-root {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            /* 메뉴가 위로 오도록 */
+            background: #fff;
+            /* 스크롤 시 배경 비침 방지 */
+            border-bottom: 5px solid #DE0000;
+        }
+
+        /* 헤더 높이 변수(기본값 68px) */
+        :root {
+            --nav-h: 68px;
+        }
+
+        /* 메가드롭다운이 헤더 바로 아래에서 열리도록 */
+        .mega {
+            top: var(--nav-h);
+            /* 기존 68px → 변수로 */
+        }
+
+        /* =================================푸터 css============================== */
+        .footer-root {
+            border-top: 1px solid #e5e7eb;
+            background-color: #F6F6F6;
+            padding: 40px 48px 20px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-base);
+            font-size: 14px;
+        }
+
+        .footer-wrap {
+            display: grid;
+            grid-template-columns: 1.5fr repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 28px;
+        }
+
+        .footer-col h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col li {
+            margin: 8px 0;
+        }
+
+        .footer-col a {
+            text-decoration: none;
+            color: var(--text-base);
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-info p {
+            margin: 2px 0;
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        .footer-social {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .footer-social select {
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            padding: 6px 8px;
+            font-size: 13px;
+            color: #374151;
+            background: #fff;
+        }
+
+        .sns-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .sns-icons img {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+
+        .sns-icons img:hover {
+            opacity: 1;
+        }
+    </style>
+    <title>약관 및 정책</title>
+</head>
+
+<body>
+    <header>
+        <div class="nav-root" style="border-bottom:5px solid #DE0000;">
+            <div class="nav-wrap"
+                style="display:flex; padding-top:10px; padding-bottom: 18px; padding-left: 30px; padding-right: 10px;">
+                <img src="https://i.namu.wiki/i/kWwNqKxKjEvoa5rgbvs2ugZzr_iDqLdO_IRDS5JGQ27v5TYHv1VDsFI3RF2y_HiGDWahoZI_sFELMWYcbPI18CQ7SoMnkjkhQINCQ0K6eUeSkbFYo3WsGhIdjNzyv4tG1B23NqTB3UwkuSzEU5WzMw.svg"
+                    alt="" style="width:161px; height:43px;">
+                <div style="flex-grow: 1;">
+                    <ul class="gnb" style="
+                        display: flex;
+                        justify-content: space-around;
+                        ;
+                        list-style: none;
+                        margin: 0;
+                        padding: 0;
+                        align-items: center;
+                        ">
+                        <li style="margin-bottom:15px;"></li>
+                        <li class="has-mega">
+                            <a href="#" style="text-decoration: none; color: #374151;">예금</a>
+                            <div class="mega" role="region" aria-label="예금 메뉴">
+                                <div class="mega-inner">
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">정기예금</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">부산은행 정기예금</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">고금리 정기예금</a></li>
+                                            <li><a href="#">자유적립예금</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">자유예금</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">보통예금</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">당좌예금</a></li>
+                                            <li><a href="#">기업자유예금</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">특수예금</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">외화예금</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">세금우대예금</a></li>
+                                            <li><a href="#">정기주택마련저축</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+
+                        <!-- 펀드 -->
+                        <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">펀드</a>
+                            <div class="mega" role="region" aria-label="펀드 메뉴">
+                                <div class="mega-inner">
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">주식형</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">국내지수 추종</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">배당주 펀드</a></li>
+                                            <li><a href="#">친환경 테마</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">채권/혼합형</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">중단기 국공채</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">채권혼합 안정형</a></li>
+                                            <li><a href="#">멀티에셋 밸런스</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">해외/대체</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">글로벌 리츠</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">미국 기술주</a></li>
+                                            <li><a href="#">원자재 인덱스</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- 외환 -->
+                        <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">외환</a>
+                            <div class="mega" role="region" aria-label="외환 메뉴">
+                                <div class="mega-inner">
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">환전</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">실시간 환율 조회</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">모바일 환전</a></li>
+                                            <li><a href="#">환율우대 쿠폰</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">해외송금</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">빠른 해외송금</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">정기송금 관리</a></li>
+                                            <li><a href="#">수취조회</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">외화예금</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">USD 외화예금</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">JPY 외화예금</a></li>
+                                            <li><a href="#">EUR 외화예금</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- 카드 -->
+                        <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">카드</a>
+                            <div class="mega" role="region" aria-label="카드 메뉴">
+                                <div class="mega-inner">
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">신용카드</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">생활할인 카드</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">항공마일리지 카드</a></li>
+                                            <li><a href="#">프리미엄 카드</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">체크카드</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">캐시백 체크</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">교통/통신 체크</a></li>
+                                            <li><a href="#">청소년 체크</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">서비스</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">이벤트/혜택</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">분실/도난 신고</a></li>
+                                            <li><a href="#">이용대금 명세서</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- 보험 -->
+                        <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">보험</a>
+                            <div class="mega" role="region" aria-label="보험 메뉴">
+                                <div class="mega-inner">
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">보장성</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">실손의료 보험</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">암/건강 보험</a></li>
+                                            <li><a href="#">운전자 보험</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">저축성</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">연금저축 보험</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">저축보험</a></li>
+                                            <li><a href="#">변액보험</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">고객센터</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">청구/서류 안내</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">보험 상담 예약</a></li>
+                                            <li><a href="#">FAQ</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <!-- 퇴직연금 -->
+                        <li class="has-mega"><a href="#" style="text-decoration: none; color: #374151;">퇴직연금</a>
+                            <div class="mega" role="region" aria-label="퇴직연금 메뉴">
+                                <div class="mega-inner">
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">제도 안내</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">DC/IRP 안내</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">수수료 체계</a></li>
+                                            <li><a href="#">세제혜택</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">운용상품</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">원리금보장형</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">채권형/혼합형</a></li>
+                                            <li><a href="#">주식형/타깃데이트</a></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h4 style="margin-bottom:27px;">관리</h4>
+                                        <ul>
+                                            <li style="margin-bottom:15px;"><a href="#">자산배분 가이드</a></li>
+                                            <li style="margin-bottom:15px;"><a href="#">수익률 조회</a></li>
+                                            <li><a href="#">이체/이전</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="width:300px;">
+                            <div style="display: flex; align-items: center;">
+                                <div style=" width: 60px;">
+                                    <a href="#">
+                                        <img src="/layouts/images/magnifier.png" alt="">
+                                    </a>
+                                </div>
+                                <div style="width: 60px;">
+                                    <a href="#">
+                                        <img src="/layouts/images/globe.png" alt="">
+                                    </a>
+                                </div>
+                                <div style="width: 115px;">
+                                    <button class="auth-btn"
+                                        style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">인증센터</button>
+                                </div>
+                                <div style="width: 60px;">
+                                    <a href="#">
+                                        <img src="/layouts/images/human.png" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="policy-section">
+            <div class="route">
+                <span>홈 > 고객센터 > 약관 및 정책</span>
+            </div>
+            <div class="page-title">
+                <h1>약관 및 정책</h1>
+                <p>BNK부산은행의 서비스 이용약관과 개인정보처리방침 등 약관 및 정책을 확인할 수 있습니다.</p>
+            </div>
+            <section class="policy-nav">
+                <div class="nav-frame">
+                    <div class="button-wrap">
+                        <button>
+                            <svg width="12" height="16" viewBox="0 0 12 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.88102 0C0.84352 0 0 0.84352 0 1.88102V13.1671C0 14.2046 0.84352 15.0482 1.88102 15.0482H9.40511C10.4426 15.0482 11.2861 14.2046 11.2861 13.1671V4.70255H7.52408C7.00386 4.70255 6.58357 4.28226 6.58357 3.76204V0H1.88102ZM7.52408 0V3.76204H11.2861L7.52408 0ZM2.35128 1.88102H4.2323C4.49094 1.88102 4.70255 2.09264 4.70255 2.35128C4.70255 2.60992 4.49094 2.82153 4.2323 2.82153H2.35128C2.09264 2.82153 1.88102 2.60992 1.88102 2.35128C1.88102 2.09264 2.09264 1.88102 2.35128 1.88102ZM2.35128 3.76204H4.2323C4.49094 3.76204 4.70255 3.97366 4.70255 4.2323C4.70255 4.49094 4.49094 4.70255 4.2323 4.70255H2.35128C2.09264 4.70255 1.88102 4.49094 1.88102 4.2323C1.88102 3.97366 2.09264 3.76204 2.35128 3.76204ZM3.94427 11.2215C3.76498 11.8181 3.21537 12.2266 2.59228 12.2266H2.35128C2.09264 12.2266 1.88102 12.015 1.88102 11.7564C1.88102 11.4977 2.09264 11.2861 2.35128 11.2861H2.59228C2.80096 11.2861 2.98318 11.1509 3.04196 10.9511L3.47989 9.49622C3.57982 9.1641 3.88548 8.93485 4.2323 8.93485C4.57911 8.93485 4.88478 9.16116 4.98471 9.49622L5.32564 10.6307C5.54313 10.4485 5.81941 10.3456 6.11332 10.3456C6.58063 10.3456 7.0068 10.6101 7.21548 11.0275L7.3448 11.2861H8.93485C9.19349 11.2861 9.40511 11.4977 9.40511 11.7564C9.40511 12.015 9.19349 12.2266 8.93485 12.2266H7.05383C6.87454 12.2266 6.71289 12.1267 6.63354 11.968L6.3749 11.4478C6.32493 11.3478 6.225 11.2861 6.11626 11.2861C6.00751 11.2861 5.90464 11.3478 5.85762 11.4478L5.59898 11.968C5.51374 12.1414 5.32858 12.2443 5.13754 12.2266C4.9465 12.209 4.78191 12.0767 4.729 11.8945L4.2323 10.2574L3.94427 11.2215Z"
+                                    fill="#2B2F36" />
+                            </svg>
+                            <span>서비스 이용약관</span>
+                        </button>
+                        <button>
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M7.05384 0C7.18904 0 7.32424 0.029391 7.44768 0.0852338L12.982 2.43357C13.6286 2.70691 14.1106 3.34469 14.1077 4.11473C14.093 7.03032 12.8938 12.3648 7.82976 14.7895C7.33894 15.0247 6.76875 15.0247 6.27792 14.7895C1.21386 12.3648 0.0147088 7.03032 1.33685e-05 4.11473C-0.00292573 3.34469 0.479086 2.70691 1.12569 2.43357L6.66294 0.0852338C6.78345 0.029391 6.91864 0 7.05384 0ZM7.05384 1.96332V13.0731C11.1098 11.1098 12.2002 6.76286 12.2267 4.15588L7.05384 1.96332Z"
+                                    fill="#2B2F36" />
+                            </svg>
+                            <span>개인정보처리방침</span>
+                        </button>
+                        <button>
+                            <svg width="19" height="12" viewBox="0 0 19 12" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.88102 0C0.84352 0 0 0.84352 0 1.88102V9.40511C0 10.4426 0.84352 11.2861 1.88102 11.2861H16.9292C17.9667 11.2861 18.8102 10.4426 18.8102 9.40511V1.88102C18.8102 0.84352 17.9667 0 16.9292 0H1.88102ZM2.82153 1.88102H9.40511C9.92533 1.88102 10.3456 2.30131 10.3456 2.82153V4.70255C10.3456 5.22277 9.92533 5.64306 9.40511 5.64306H2.82153C2.30131 5.64306 1.88102 5.22277 1.88102 4.70255V2.82153C1.88102 2.30131 2.30131 1.88102 2.82153 1.88102ZM1.88102 8.93485C1.88102 8.67621 2.09264 8.4646 2.35128 8.4646H9.87536C10.134 8.4646 10.3456 8.67621 10.3456 8.93485C10.3456 9.19349 10.134 9.40511 9.87536 9.40511H2.35128C2.09264 9.40511 1.88102 9.19349 1.88102 8.93485ZM11.2861 8.93485C11.2861 8.67621 11.4977 8.4646 11.7564 8.4646H16.4589C16.7176 8.4646 16.9292 8.67621 16.9292 8.93485C16.9292 9.19349 16.7176 9.40511 16.4589 9.40511H11.7564C11.4977 9.40511 11.2861 9.19349 11.2861 8.93485ZM2.35128 6.58357C2.476 6.58357 2.59561 6.63312 2.6838 6.72131C2.77199 6.8095 2.82153 6.92911 2.82153 7.05383C2.82153 7.17855 2.77199 7.29816 2.6838 7.38635C2.59561 7.47454 2.476 7.52408 2.35128 7.52408C2.22656 7.52408 2.10695 7.47454 2.01876 7.38635C1.93057 7.29816 1.88102 7.17855 1.88102 7.05383C1.88102 6.92911 1.93057 6.8095 2.01876 6.72131C2.10695 6.63312 2.22656 6.58357 2.35128 6.58357ZM3.76204 7.05383C3.76204 6.92911 3.81159 6.8095 3.89978 6.72131C3.98797 6.63312 4.10758 6.58357 4.2323 6.58357C4.35702 6.58357 4.47663 6.63312 4.56482 6.72131C4.65301 6.8095 4.70255 6.92911 4.70255 7.05383C4.70255 7.17855 4.65301 7.29816 4.56482 7.38635C4.47663 7.47454 4.35702 7.52408 4.2323 7.52408C4.10758 7.52408 3.98797 7.47454 3.89978 7.38635C3.81159 7.29816 3.76204 7.17855 3.76204 7.05383ZM6.11332 6.58357C6.23804 6.58357 6.35765 6.63312 6.44584 6.72131C6.53403 6.8095 6.58357 6.92911 6.58357 7.05383C6.58357 7.17855 6.53403 7.29816 6.44584 7.38635C6.35765 7.47454 6.23804 7.52408 6.11332 7.52408C5.9886 7.52408 5.86899 7.47454 5.7808 7.38635C5.69261 7.29816 5.64306 7.17855 5.64306 7.05383C5.64306 6.92911 5.69261 6.8095 5.7808 6.72131C5.86899 6.63312 5.9886 6.58357 6.11332 6.58357ZM7.52408 7.05383C7.52408 6.92911 7.57363 6.8095 7.66182 6.72131C7.75001 6.63312 7.86962 6.58357 7.99434 6.58357C8.11906 6.58357 8.23867 6.63312 8.32686 6.72131C8.41505 6.8095 8.4646 6.92911 8.4646 7.05383C8.4646 7.17855 8.41505 7.29816 8.32686 7.38635C8.23867 7.47454 8.11906 7.52408 7.99434 7.52408C7.86962 7.52408 7.75001 7.47454 7.66182 7.38635C7.57363 7.29816 7.52408 7.17855 7.52408 7.05383ZM9.87536 6.58357C10.0001 6.58357 10.1197 6.63312 10.2079 6.72131C10.2961 6.8095 10.3456 6.92911 10.3456 7.05383C10.3456 7.17855 10.2961 7.29816 10.2079 7.38635C10.1197 7.47454 10.0001 7.52408 9.87536 7.52408C9.75064 7.52408 9.63103 7.47454 9.54284 7.38635C9.45465 7.29816 9.40511 7.17855 9.40511 7.05383C9.40511 6.92911 9.45465 6.8095 9.54284 6.72131C9.63103 6.63312 9.75064 6.58357 9.87536 6.58357Z"
+                                    fill="#2B2F36" />
+                            </svg>
+                            <span>전자금융거래약관</span>
+                        </button>
+                        <button>
+                            <svg width="12" height="14" viewBox="0 0 12 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M5.33333 13.9833C3.54444 12.4611 2.20844 11.0473 1.32533 9.742C0.442222 8.43667 0.000444444 7.22822 0 6.11667C0 4.45 0.536222 3.12222 1.60867 2.13333C2.68111 1.14444 3.92267 0.65 5.33333 0.65C5.63333 0.65 5.93067 0.675111 6.22533 0.725333C6.52 0.775556 6.806 0.844889 7.08333 0.933333L3.33333 4.7V7.98333H6.61667L10.3667 4.23333C10.4667 4.52222 10.5418 4.82222 10.592 5.13333C10.6422 5.44444 10.6671 5.77222 10.6667 6.11667C10.6667 7.22778 10.2251 8.43622 9.342 9.742C8.45889 11.0478 7.12267 12.4616 5.33333 13.9833ZM4.66667 6.65V5.25L8.8 1.11667L10.2 2.51667L6.06667 6.65H4.66667ZM10.6667 2.05L9.26667 0.65L9.73333 0.183333C9.85556 0.0611111 10.0111 0 10.2 0C10.3889 0 10.5444 0.0611111 10.6667 0.183333L11.1333 0.65C11.2556 0.772222 11.3167 0.927778 11.3167 1.11667C11.3167 1.30556 11.2556 1.46111 11.1333 1.58333L10.6667 2.05Z"
+                                    fill="black" />
+                            </svg>
+                            <span>위치기반서비스 이용약관</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <section class="policy-main">
+                <div class="content-frame">
+                    <div class="content-wrapper">
+                        <div class="content-title">
+                            <h2>서비스 이용약관</h2>
+                            <p>시행일 : 2024년 1월 1일</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-root">
+            <div class="footer-wrap">
+                <div class="footer-col left">
+                    <img src="https://i.namu.wiki/i/kWwNqKxKjEvoa5rgbvs2ugZzr_iDqLdO_IRDS5JGQ27v5TYHv1VDsFI3RF2y_HiGDWahoZI_sFELMWYcbPI18CQ7SoMnkjkhQINCQ0K6eUeSkbFYo3WsGhIdjNzyv4tG1B23NqTB3UwkuSzEU5WzMw.svg"
+                        alt="BNK Logo" style="width:200px; margin-bottom:12px;" />
+                    <p style="font-size:13px; color:#6B7280;">고객과 함께 성장하는 신뢰받는 지역 대표은행</p>
+                </div>
+
+                <div class="footer-col">
+                    <h4 style="margin-top: 0;">고객지원</h4>
+                    <ul>
+                        <li><a href="#">문의하기</a></li>
+                        <li><a href="#">지점찾기</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 style="margin-top: 0;">서비스</h4>
+                    <ul>
+                        <li><a href="#">인터넷뱅킹</a></li>
+                        <li><a href="#">모바일뱅킹</a></li>
+                        <li><a href="#">퇴직연금</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4 style="margin-top: 0;">약관 및 정책</h4>
+                    <ul>
+                        <li><a href="#">이용약관</a></li>
+                        <li><a href="#">개인정보처리방침</a></li>
+                        <li><a href="#">전자금융거래약관</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-info">
+                    <p>© 2024 BNK 부산은행. All rights reserved.</p>
+                    <p>부산광역시 남구 범일로 30 (범일동) | 대표전화: 1588-6200</p>
+                </div>
+
+                <div class="footer-social">
+                    <select>
+                        <option selected>패밀리사이트</option>
+                        <option>BNK금융그룹</option>
+                        <option>BNK투자증권</option>
+                    </select>
+                    <div class="sns-icons">
+                        <a href="#"><img src="/layouts/images/footer_facebook_logo.png" alt="facebook" /></a>
+                        <a href="#"><img src="/layouts/images/footer_insta_logo.png" alt="instagram" /></a>
+                        <a href="#"><img src="/layouts/images/footer_youtube_logo.png" alt="youtube" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script>
+    (function () {
+        const root = document.querySelector('.nav-root');
+        const items = Array.from(document.querySelectorAll('.gnb .has-mega'));
+
+        function setActive(li) {
+            items.forEach(x => x.classList.remove('active'));
+            if (li) {
+                li.classList.add('active');
+                root.classList.add('nav-locked');
+            } else {
+                root.classList.remove('nav-locked');
+            }
+        }
+
+        items.forEach(li => {
+            const a = li.querySelector(':scope > a');
+            const mega = li.querySelector(':scope > .mega');
+
+            // 상단 a 클릭으로만 열고/닫기 (내부 클릭 버블링 방지)
+            if (a) {
+                a.addEventListener('click', e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const already = li.classList.contains('active');
+                    setActive(already ? null : li);
+                });
+            }
+
+            // 2차 메뉴 영역 클릭이 상위 li로 버블링되어 토글되지 않게
+            if (mega) {
+                mega.addEventListener('click', e => e.stopPropagation());
+            }
+        });
+
+        // 바깥 클릭 시 닫기
+        document.addEventListener('click', e => {
+            if (!root.contains(e.target)) setActive(null);
+        });
+
+        // ESC로 닫기
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') setActive(null);
+        });
+    })();
+    (function () {
+        const root = document.querySelector('.nav-root');
+
+        function syncNavHeight() {
+            const h = root.getBoundingClientRect().height || 68;
+            document.documentElement.style.setProperty('--nav-h', h + 'px');
+            document.body.style.paddingTop = h + 'px';   // 본문이 헤더 밑으로 시작
+        }
+
+        // 초기/리사이즈/폰트로드 등 상황에 맞춰 갱신
+        window.addEventListener('load', syncNavHeight);
+        window.addEventListener('resize', syncNavHeight);
+        // 폰트나 이미지로 높이가 변할 수 있으니 약간 지연 갱신
+        setTimeout(syncNavHeight, 100);
+    })();
+</script>
