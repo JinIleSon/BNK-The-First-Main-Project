@@ -25,19 +25,18 @@
   </section>
 
   <!-- Card Menu -->
-
   <section class="info-section">
     <div class="info-card social">
-      <h3>사회공헌</h3>
+      <h3><a href="#">사회공헌</a></h3>
     </div>
     <div class="info-card invest">
-      <h3>투자자정보</h3>
+      <h3><a href="#">투자자정보</a></h3>
     </div>
     <div class="info-card hr">
-      <h3>인재채용</h3>
+      <h3><a href="#">인재채용</a></h3>
     </div>
     <div class="info-card family">
-      <h3>부은가족</h3>
+      <h3><a href="#">부은가족</a></h3>
     </div>
   </section>
 
@@ -112,12 +111,10 @@
     background-repeat: no-repeat;
   }
 
-  .info-section {
-    display: flex;
-    justify-content: space-around;
-    padding: 40px 10%;
-    background-color: #fff;
-    border-top: 1px solid #eee;
+
+
+  .board li a:hover {
+    color: #d91a1a;
   }
 
   .info-card {
@@ -130,6 +127,19 @@
     margin-bottom: 8px;
   }
 
+  .info-section {
+    display: flex;
+    /* 가로 정렬 */
+    justify-content: center;
+    /* 가운데 정렬 (양쪽 여백 균등하게) */
+    gap: 20px;
+    /* 카드 간 간격 */
+    flex-wrap: wrap;
+    /* 화면이 좁을 땐 줄바꿈 허용 */
+    margin-bottom: 60px;
+  }
+
+
   .info-card {
     width: 100px;
     height: 60px;
@@ -139,7 +149,6 @@
     border-radius: 0px;
     text-align: center;
     padding-top: 250px;
-    /* 텍스트가 아이콘 아래로 내려가도록 */
     font-weight: bold;
   }
 
@@ -157,6 +166,24 @@
 
   .info-card.family {
     background-image: url('./assets/img/icon_family.png');
+  }
+
+  .info-card h3 a {
+    text-decoration: none;
+    /* 밑줄 제거 */
+    color: inherit;
+    /* 부모 색상 상속 */
+    display: inline-block;
+    /* 블록처럼 클릭 영역 확장 */
+    width: calc(100% - 3px);
+    /* 100%-3px → 공백 없이 */
+    transition: color 0.2s;
+    /* 색상 전환 부드럽게 */
+  }
+
+  .info-card h3 a:hover {
+    color: #d91a1a;
+    /* 호버 시 BNK 포인트 레드 */
   }
 
   .board {
@@ -193,16 +220,16 @@
     color: #444;
   }
 
-    .board li a {
-      text-decoration: none;
-      color: inherit;
-      display: inline-block;
-      width: calc(100%-3px);
+  .board li a {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    width: calc(100%-3px);
   }
 
-    .board li a:hover {
-      color: #d91a1a;
-    }
+  .board li a:hover {
+    color: #d91a1a;
+  }
 
 
   .new-icon {
