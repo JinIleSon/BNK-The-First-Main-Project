@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>약관동의</title>
+
+</head>
+<body>
+  <header>
+    <div id="header"></div>
+  </header>
+  <script>
+    // header 불러오기
+    fetch("/layouts/admin_header.html")
+      .then(response => {
+        if (!response.ok) throw new Error("Header 파일을 불러오지 못했습니다.");
+        return response.text();
+      })
+      .then(data => {
+        document.getElementById("header").innerHTML = data;
+      })
+      .catch(error => console.error(error));
+  </script>
+  <script>
+    async function includeWithScripts(targetSelector, url) {
+      const res = await fetch(url, { credentials: 'same-origin' });
+      if (!res.ok) throw new Error(`Failed to load ${url}`);
+      const html = await res.text();
+
+      const target = document.querySelector(targetSelector);
+      target.innerHTML = html;
+
+      // 삽입된 영역 안의 <script>들을 실행되도록 교체
+      const scripts = target.querySelectorAll('script');
+      for (const oldScript of scripts) {
+        const newScript = document.createElement('script');
+
+        // type, src, async, defer 등 속성 복사
+        for (const { name, value } of [...oldScript.attributes]) {
+          newScript.setAttribute(name, value);
+        }
+        // inline 스크립트라면 코드 복사
+        if (!oldScript.src) newScript.text = oldScript.textContent;
+
+        // 실행을 위해 문서에 부착
+        // (src가 있으면 네트워크 로드, 없으면 즉시 실행)
+        oldScript.replaceWith(newScript);
+
+        // src 스크립트 로드를 기다려야 한다면:
+        if (newScript.src) {
+          await new Promise((res) => {
+            newScript.addEventListener('load', res, { once: true });
+            newScript.addEventListener('error', res, { once: true });
+          });
+        }
+      }
+    }
+
+    // (2) includeWithScripts - 올바른 방법
+    includeWithScripts('#header', '/layouts/admin_header.html')
+    .then(() => {
+      // 환경설정 메뉴 활성화
+      window.initAdminHeader && window.initAdminHeader('cs');
+    })
+    .catch(console.error);
+  </script>
+
+  <div class="container">
+    <!-- 단계 -->
+    <div class="stepper">
+      <div class="step active"><span class="dot">1</span>약관동의</div>
+      <div class="sep"></div>
+      <div class="step"><span class="dot">2</span>정보입력</div>
+      <div class="sep"></div>
+      <div class="step"><span class="dot">3</span>본인인증</div>
+      <div class="sep"></div>
+      <div class="step"><span class="dot">4</span>가입완료</div>
+    </div>
+
+    <!-- 제목 -->
+    <h1 style="margin: 18px 0 4px; font-size: 28px;">회원가입 약관동의</h1>
+    <p style="color: #6b7280; margin-bottom: 20px;">
+    원활한 서비스 이용을 위해 회원가입 약관 및 개인정보 처리방침에 동의해 주세요.
+    </p>
+
+
+    <!-- 약관 -->
+    <section class="card">
+      <div class="agree-all">
+        <label><input type="checkbox" class="chk" id="agreeAll"> 전체 약관에 동의합니다</label>
+      </div>
+
+      <!-- 전체 약관 리스트 묶음 -->
+      <div class="list-wrapper">
+        <div class="section-title">
+          <span class="bullet" style="background-color: #ef4444;">!</span>필수 약관 동의
+        </div>
+
+        <!-- 필수 약관 -->
+        <div class="list" id="requiredList">
+          <div class="item">
+            <div class="row">
+              <input type="checkbox" class="chk reqchk">
+              <div class="label">전자 금융거래 기본 약관 <span class="badge req">필수</span></div>
+              <div class="chev" role="button" tabindex="0" aria-expanded="false" aria-controls="panel-1">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="panel" id="panel-1">
+              <div class="panel-inner">
+                전자 금융거래 기본 약관의 주요 내용(예시): 전자지급수단 이용조건, 거래 지연 및 장애 시 처리, 분실·도난 신고 및 책임, 오류 정정 절차, 분쟁 조정 등.
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="row">
+              <input type="checkbox" class="chk reqchk">
+              <div class="label">전자 금융 서비스 이용 약관 <span class="badge req">필수</span></div>
+              <div class="chev" role="button" tabindex="0" aria-expanded="false" aria-controls="panel-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="panel" id="panel-2">
+              <div class="panel-inner">
+                전자 금융 서비스 이용 약관의 주요 내용(예시): 서비스 제공 범위, 이용시간, 수수료 및 요금, 계정 안전 의무, 서비스 변경 및 종료 고지 등.
+              </div>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="row">
+              <input type="checkbox" class="chk reqchk">
+              <div class="label">개인정보 수집 및 이용 동의서 약관 <span class="badge req">필수</span></div>
+              <div class="chev" role="button" tabindex="0" aria-expanded="false" aria-controls="panel-3">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="panel" id="panel-3">
+              <div class="panel-inner">
+                개인정보 수집·이용의 주요 내용(예시): 수집 항목, 이용 목적, 보유 기간, 제3자 제공 및 위탁, 동의 철회 방법 및 고지 사항 등.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">
+          <span class="bullet" style="background-color: #2563eb;">!</span>선택 약관 동의
+        </div>
+
+        <!-- 선택 약관 -->
+        <div class="list">
+          <div class="item">
+            <div class="row">
+              <input type="checkbox" class="chk optchk">
+              <div class="label">마케팅 정보 수신 동의 <span class="badge opt">선택</span></div>
+              <div class="chev" role="button" tabindex="0" aria-expanded="false" aria-controls="panel-4">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="panel" id="panel-4">
+              <div class="panel-inner">
+                마케팅 정보 수신 동의(예시): 이벤트/혜택 알림 수신 채널(문자, 이메일, 앱 푸시), 수신 거부 방법, 선택 동의의 서비스 영향 등.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 보안 안내 -->
+    <div class="notice">
+      <div>
+        <p style="font-size:16px; font-weight:700; color:#1f3b8f; margin-bottom:4px;">☑ 보안 안내</p>
+        <ul>
+          <li>개인정보는 암호화되어 안전하게 보호됩니다.</li>
+          <li>금융거래 시 공인인증서 또는 공동인증서가 필요합니다.</li>
+          <li>타인의 ID/비밀번호를 공유하지 마세요.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 버튼 -->
+    <div class="btns">
+      <a href="#" class="btn">취소</a>
+      <a href="#" class="btn next">다음</a>
+    </div>
+  </div>
+
+  <script>
+    // 아코디언: 오른쪽 버튼(.chev) 클릭/엔터/스페이스로 토글
+    document.querySelectorAll('.item').forEach((item) => {
+      const btn = item.querySelector('.chev');
+      const panel = item.querySelector('.panel');
+
+      function toggle(open) {
+        const willOpen = (open !== undefined) ? open : !btn.classList.contains('is-open');
+        btn.classList.toggle('is-open', willOpen);
+        btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        panel.classList.toggle('open', willOpen)
+        panel.style.maxHeight = willOpen ? panel.scrollHeight + 'px' : 0;
+      }
+
+      btn.addEventListener('click', () => toggle());
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+
+      // 초기 접힘 상태 강제
+      panel.style.maxHeight = 0;
+    });
+
+    // 전체 동의 → 하위 체크박스 동기화 (선택)
+    const agreeAll = document.getElementById('agreeAll');
+    const reqChecks = [...document.querySelectorAll('.reqchk')];
+    const optChecks = [...document.querySelectorAll('.optchk')];
+
+    if (agreeAll) {
+      agreeAll.addEventListener('change', () => {
+        [...reqChecks, ...optChecks].forEach(c => c.checked = agreeAll.checked);
+      });
+    }
+  </script>
+
+  <script>
+    // footer 불러오기 (필요시 유지)
+    fetch("/layouts/footer.html")
+      .then(r => { if (!r.ok) throw new Error("Footer 파일을 불러오지 못했습니다."); return r.text(); })
+      .then(html => { document.getElementById("footer").innerHTML = html; })
+      .catch(console.error);
+  </script>
+  <footer><div id="footer"></div></footer>
+</body>
+
+<style>  
+  body {
+    font-family: 'Noto Sans KR', '맑은 고딕', sans-serif;
+    background: #F6F6F8;
+    color: #111827;
+    line-height: 1.5;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 28px 16px 40px; }
+
+  /* 단계 표시 */
+  .stepper {
+    width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7f7f9;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 10px 20px;
+  }
+  .step { display: flex; align-items: center; gap: 8px; color: #6b7280; font-weight: 600; }
+  .step .dot {
+    width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
+    border: 1px solid #d1d5db; background: #fff; color: #6b7280; font-weight: 700;
+  }
+  .step.active { color: #111; }
+  .step.active .dot { background: #d6001c; border-color: #d6001c; color: #fff; }
+  .sep { width: 28px; height: 2px; background: #e5e7eb; border-radius: 2px; }  
+
+  /* 카드 */
+  .card {
+    background: #fff; border: 1px solid #e5e7eb;
+    border-radius: 20px; box-shadow: 0 10px 20px rgba(2,6,23,.06);
+    overflow: hidden;
+  }
+
+  /* 전체 동의 */
+  .agree-all {
+    background: #fafafa; border-bottom: 1px solid #e5e7eb;
+    padding: 18px 20px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .agree-all label { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+
+  /* 체크박스(커스텀) */
+  .chk {
+    appearance: none; width: 20px; height: 20px;
+    border: 1px solid #d1d5db; border-radius: 4px;
+    background: #fff; cursor: pointer; position: relative;
+  }
+  .chk:checked { border-color: #d6001c; background: #d6001c; }
+  .chk:checked::after {
+    content: ""; position: absolute; left: 5px; top: 1px;
+    width: 6px; height: 12px; border: 2px solid #fff;
+    border-top: none; border-left: none; transform: rotate(45deg);
+  }
+
+  /* 약관 리스트 */
+  .section-title {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 700; margin: 18px 20px 10px;
+  }
+  .bullet {
+    width: 18px; height: 18px; border-radius: 50%; color: #fff;
+    font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+  .list {
+    padding: 0;
+  }
+
+  .list-wrapper {
+    padding: 0 12px 18px;
+  }
+
+  .list-wrapper .section-title {
+    margin-top: 16px;
+    margin-bottom: 10px;
+  }
+
+  .list-wrapper .section-title:first-of-type {
+    margin-top: 10px;
+  }
+
+
+  /* 각 항목 컨테이너 */
+  .item + .item { margin-top: 10px; }
+
+  /* 항목 헤더(버튼영역 유지) */
+  .row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 10px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff;
+  }
+  .label { flex: 1; display: flex; align-items: center; gap: 10px; color: #111; }
+  .badge { font-size: 12px; padding: 4px 8px; border-radius: 999px; color: #fff; }
+  .badge.req { background: #ef4444; }
+  .badge.opt { background: #9ca3af; }
+
+  /* 오른쪽 버튼(스타일 그대로, 클릭 가능/포커스) */
+  .chev {
+    width: 28px; height: 28px; border: 1px solid #d1d5db; border-radius: 50%;
+    display: grid; place-items: center; color: #6b7280; cursor: pointer;
+    transition: transform .2s ease;
+  }
+  .chev:focus-visible { outline: 3px solid rgba(37,99,235,.35); outline-offset: 2px; }
+  .chev svg { transition: transform .2s ease; }
+  .chev.is-open svg { transform: rotate(90deg); } /* 열리면 ▼ 느낌 */
+
+  /* 펼쳐지는 본문 */
+  .panel {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height .3s ease, opacity .25s ease;
+    border-radius: 10px;
+    padding: 0 14px;
+    border: none;
+  }
+  .panel.open {
+    opacity: 1;
+    padding: 12px 14px;
+  }
+  .panel-inner {
+    padding: 0 0 8px 0;
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+    white-space: normal;
+    word-break: keep-all;
+  }
+
+  /* 보안 안내 */
+  .notice {
+    margin-top: 15px;
+    background: #eef4ff;
+    border: 1px solid #c7d7ff;
+    color: #1f3b8f;
+    border-radius: 12px;
+    padding: 8px 14px;
+    display: flex;
+    gap: 8px;
+  }
+  .notice p {
+      margin: 0 0 2px 0;
+    }
+
+    .notice ul {
+      margin: 0 0 0 16px;
+      padding: 0;
+    }
+
+
+  /* 버튼 */
+  .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
+  .btn {
+    padding: 12px 28px; border-radius: 10px; font-weight: 700;
+    border: 1px solid #d1d5db; background: #fff; cursor: pointer;
+  }
+  .btn:hover { background: #f3f4f6; }
+  .btn.next { background: #d6001c; border-color: #d6001c; color: #fff; }
+  .btn.next:hover { background: #b00018; }
+
+  a { text-decoration: none; color: inherit; }
+</style>
+</html>
