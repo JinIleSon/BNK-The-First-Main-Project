@@ -136,20 +136,25 @@
     /* 카드 간 간격 */
     flex-wrap: wrap;
     /* 화면이 좁을 땐 줄바꿈 허용 */
-    margin-bottom: 60px;
+    margin: 40px auto;
   }
 
 
   .info-card {
-    width: 100px;
-    height: 60px;
-    background-position: center;
+    background-color: white;
     background-repeat: no-repeat;
-    border: 0px solid #eee;
-    border-radius: 0px;
-    text-align: center;
-    padding-top: 250px;
-    font-weight: bold;
+    background-position: center 40%;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    margin: 6px;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding-bottom: 30px; 
   }
 
   .info-card.social {
@@ -168,23 +173,18 @@
     background-image: url('./assets/img/icon_family.png');
   }
 
-  .info-card h3 a {
-    text-decoration: none;
-    /* 밑줄 제거 */
-    color: inherit;
-    /* 부모 색상 상속 */
-    display: inline-block;
-    /* 블록처럼 클릭 영역 확장 */
-    width: calc(100% - 3px);
-    /* 100%-3px → 공백 없이 */
-    transition: color 0.2s;
-    /* 색상 전환 부드럽게 */
+  .info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   }
 
-  .info-card h3 a:hover {
-    color: #d91a1a;
-    /* 호버 시 BNK 포인트 레드 */
+  .info-card h3 a {
+    text-decoration: none;
+    color: #111827;
+    font-size: 18px;
+    font-weight: 600;
   }
+
 
   .board {
     display: flex;
