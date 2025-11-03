@@ -196,6 +196,37 @@
         .contact-us div svg {margin-right: 10px;}
         .contact-us div span {font-size: 16px;}
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const policyNav = document.querySelector('.policy-nav .button-wrap');
+            if (!policyNav) return;
+
+            // 초기 선택된 버튼 (빨간 버튼)
+            let currentActive = policyNav.querySelector('.btn-red');
+
+            policyNav.addEventListener('click', function (e) {
+                const target = e.target.closest('button');
+                if (!target) return; // 버튼 이외 클릭 무시
+                if (target === currentActive) return; // 이미 선택된 버튼이면 무시
+
+                // 기존 선택 해제
+                if (currentActive) {
+                    currentActive.classList.remove('btn-red');
+                    currentActive.classList.add('btn-basic');
+                }
+
+                // 새 버튼 선택
+                target.classList.remove('btn-basic');
+                target.classList.add('btn-red');
+
+                currentActive = target; // 현재 선택 갱신
+
+                // 선택된 버튼 텍스트 출력 (확인용)
+                // const label = target.querySelector('span')?.textContent.trim();
+                // console.log(`현재 선택된 항목: ${label}`);
+            });
+        });
+    </script>
     <title>약관 및 정책</title>
 </head>
 
@@ -376,7 +407,7 @@
     fetch('/layouts/header.html')
         .then(response => response.text())
         .then(data => {
-            console.log(data);
+            // console.log(data);
 
             document.getElementById('header').innerHTML = data;
         });
