@@ -7,65 +7,22 @@
 
 </head>
 <body>
-  <header>
-    <div id="header"></div>
-  </header>
-  <script>
-    // header 불러오기
-    fetch("/layouts/admin_header.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Header 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("header").innerHTML = data;
-      })
-      .catch(error => console.error(error));
-  </script>
-  <script>
-    async function includeWithScripts(targetSelector, url) {
-      const res = await fetch(url, { credentials: 'same-origin' });
-      if (!res.ok) throw new Error(`Failed to load ${url}`);
-      const html = await res.text();
+  <div id="header"></div>
 
-      const target = document.querySelector(targetSelector);
-      target.innerHTML = html;
-
-      // 삽입된 영역 안의 <script>들을 실행되도록 교체
-      const scripts = target.querySelectorAll('script');
-      for (const oldScript of scripts) {
-        const newScript = document.createElement('script');
-
-        // type, src, async, defer 등 속성 복사
-        for (const { name, value } of [...oldScript.attributes]) {
-          newScript.setAttribute(name, value);
-        }
-        // inline 스크립트라면 코드 복사
-        if (!oldScript.src) newScript.text = oldScript.textContent;
-
-        // 실행을 위해 문서에 부착
-        // (src가 있으면 네트워크 로드, 없으면 즉시 실행)
-        oldScript.replaceWith(newScript);
-
-        // src 스크립트 로드를 기다려야 한다면:
-        if (newScript.src) {
-          await new Promise((res) => {
-            newScript.addEventListener('load', res, { once: true });
-            newScript.addEventListener('error', res, { once: true });
-          });
-        }
-      }
-    }
-
-    // (2) includeWithScripts - 올바른 방법
-    includeWithScripts('#header', '/layouts/admin_header.html')
-    .then(() => {
-      // 환경설정 메뉴 활성화
-      window.initAdminHeader && window.initAdminHeader('cs');
-    })
-    .catch(console.error);
-  </script>
-
+<script>
+    // header.html 파일을 불러와서 #header에 삽입
+    fetch('/layouts/header.html')
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById('header').innerHTML = data;
+        });
+    fetch('/layouts/footer.html')
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+</script>
+<main>
   <div class="container">
     <!-- 단계 -->
     <div class="stepper">
@@ -191,10 +148,11 @@
 
     <!-- 버튼 -->
     <div class="btns">
-      <a href="#" class="btn">취소</a>
-      <a href="#" class="btn next">다음</a>
+      <button style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
+      <button class="btn-register">다음</button>
     </div>
   </div>
+</main>
 
   <script>
     // 아코디언: 오른쪽 버튼(.chev) 클릭/엔터/스페이스로 토글
@@ -244,14 +202,20 @@
   <footer><div id="footer"></div></footer>
 </body>
 
-<style>  
+<style>
+  main {
+		    width: 1200px;
+		    background-color: #F6F6F8;
+        padding: 80px 20px;
+        margin: 0 auto;
+  }
   body {
     font-family: 'Noto Sans KR', '맑은 고딕', sans-serif;
     background: #F6F6F8;
     color: #111827;
     line-height: 1.5;
   }
-  .container { max-width: 960px; margin: 0 auto; padding: 28px 16px 40px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }
 
   /* 단계 표시 */
   .stepper {
@@ -396,14 +360,53 @@
 
 
   /* 버튼 */
-  .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
-  .btn {
-    padding: 12px 28px; border-radius: 10px; font-weight: 700;
-    border: 1px solid #d1d5db; background: #fff; cursor: pointer;
-  }
-  .btn:hover { background: #f3f4f6; }
-  .btn.next { background: #d6001c; border-color: #d6001c; color: #fff; }
-  .btn.next:hover { background: #b00018; }
+  .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }  
+  .btn-register {
+	  --bg1: #D91A1A;
+	  --bg2: #F03A3A;
+	  --shadow: rgba(217,26,26,.45);
+	  position: relative;
+	  box-sizing: border-box;
+	  width: 90px; height: 42px;
+	  border: none; border-radius: 8px;
+	  color: #fff; cursor: pointer;
+	  background: linear-gradient(180deg, var(--bg2), var(--bg1));
+	  outline: none;
+	  box-shadow: 0 6px 14px -10px var(--shadow);
+	  transition:
+	    background .18s ease,
+	    box-shadow .18s ease,
+	    transform .12s ease; /* 프레스만 사용할 예정 */
+	  will-change: background, box-shadow, transform;
+	}
+	
+	/* Hover: 컬러와 섀도우만 아주 미세하게 (리프트 없음) */
+	.btn-register:hover {
+	  background: linear-gradient(180deg, #f24a4a, #d61a1a);
+	  box-shadow: 0 8px 18px -12px var(--shadow);
+	  transform: none; /* 확실하게 떠오르지 않도록 고정 */
+	}
+	
+	/* Active: 살짝 눌리는 프레스 효과만 */
+	.btn-register:active {
+	  transform: scale(.98);
+	  box-shadow: 0 4px 10px -10px var(--shadow);
+	}
+	
+	/* 키보드 포커스 접근성 */
+	.btn-register:focus-visible {
+	  outline: 3px solid rgba(240,58,58,.55);
+	  outline-offset: 2px;
+	}
+	
+	/* 모션 최소화 존중 */
+	@media (prefers-reduced-motion: reduce) {
+	  .btn-register { transition: none !important; }
+	}
+	
+	@media (prefers-color-scheme: dark) {
+	  .btn-register { --shadow: rgba(240,58,58,.35); }
+	}
 
   a { text-decoration: none; color: inherit; }
 </style>
