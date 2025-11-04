@@ -99,6 +99,7 @@ fetch('/layouts/footer.html')
 
 <main>
   <div class="container">
+    <h1 style="text-align: center;">회원가입</h1>
     <div class="stepper">
       <div class="step"><span class="dot">1</span>약관동의</div>
       <div class="sep"></div>
@@ -109,7 +110,10 @@ fetch('/layouts/footer.html')
       <div class="step"><span class="dot">4</span>가입완료</div>
     </div>
     <!-- 제목/설명 -->
-    <h1 style="margin: 18px 0px 15px; font-size: 28px; margin-left: 10px;">본인인증</h1>    
+    <h2 style="margin: 18px 0px 15px; font-size: 28px; margin-left: 10px;">본인인증</h2>    
+    <p style="color: #6b7280; margin-bottom: 20px; margin-left: 10px;">
+    안전한 서비스를 이용을 위해 본인인증을 진행해주세요.
+    </p>
 
     <!-- 회원가입 폼 -->
     <section class="card" style="width: 1200px; margin: 0 auto;">
@@ -117,8 +121,110 @@ fetch('/layouts/footer.html')
       <!-- 감싸기 -->
       <div class="form-card">
 
-        <!-- 내용 추가 예정 -->
+        <!-- 인증 수단 선택 -->
+        <div class="verify-methods">
+          <button type="button" class="method-card" aria-pressed="true">
+            <div class="m-title">
+              <span class="m-badge" style="color: #D91A1A">🪪</span>
+              <div>
+                <div class="m-name">휴대폰 인증</div>
+                <div class="m-name">SMS 인증번호로 빠른 인증</div>
+              </div>
+            </div>
+            <ul class="m-list">
+              <li>본인 명의 휴대폰 필요</li>
+              <li>인증번호 SMS 발송</li>
+              <li>약 1-2분 소요</li>
+            </ul>
+          </button>
 
+          <button type="button" class="method-card">
+            <div class="m-title">
+              <span class="m-badge1" style="color: #68C0F7;">✷</span>
+              <div>
+                <div class="m-name">공동인증서</div>
+                <div class="m-name">저장된 인증서로 이용</div>
+              </div>
+            </div>
+            <ul class="m-list">
+              <li>기존 발급받은 인증서</li>
+              <li>PC/모바일 모두 가능</li>
+              <li>즉시 인증 완료</li>
+            </ul>
+          </button>
+        </div>
+
+        <!-- 본인인증 폼 -->
+        <div class="verify-group">
+          <div class="form-grid">
+            <div class="field">
+              <div class="field-name">이름</div>
+              <input type="text" class="input" placeholder="홍길동">
+            </div>
+            <div class="field">
+              <div class="field-name">생년월일</div>
+              <input type="text" class="input" placeholder="19900101">
+            </div>
+
+            <div class="field">
+              <div class="field-name">성별</div>
+              <select class="input">
+                <option value="" hidden>선택</option>
+                <option>남성</option>
+                <option>여성</option>
+              </select>
+            </div>                               
+          </div>
+          <div class="form-grid-1">
+           <div class="field">
+              <div class="field-name">통신사</div>
+              <select class="input">
+                <option value="" hidden>선택</option>
+                <option>SKT</option>
+                <option>KT</option>
+                <option>LG U+</option>
+                <option>알뜰폰</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <div class="field-name">휴대폰 번호</div>
+              <input type="tel" class="input" placeholder="010-0000-0000">
+            </div>   
+          </div>
+
+          <div class="note-blue" style="margin-top: 20px;">
+              <span class="bullet" style="background-color: #2563eb;">!</span>
+              본인 명의의 휴대폰으로만 인증이 가능합니다. 타인 명의 휴대폰 사용 시 인증에 실패할 수 있습니다.
+          </div>         
+
+          <!-- 버튼 1 -->
+          <div class="btns">
+            <button type="button" class="btn-register" style="width: 100%;">
+              인증번호 받기
+            </button>
+          </div>
+
+          <!-- 안내 박스 -->
+          <div class="helper-box">
+            <div class="helper-title">안내사항</div>
+            <ul class="helper-list">
+              <li>입력하신 정보는 본인확인 용도로만 사용되며 저장되지 않습니다.</li>
+              <li>통신사 점검 또는 네트워크 상태에 따라 인증이 지연될 수 있습니다.</li>
+              <li>인증번호는 3분간 유효하며, 시간 초과 시 재전송을 눌러주세요.</li>
+            </ul>
+          </div>
+
+          <!-- 버튼 2 -->
+          <div class="btns">
+            <button style="box-sizing: border-box; width: 50%; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
+              ⬅ 이전 단계
+            </button>
+            <button style="box-sizing: border-box; width: 50%; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: #F6F6F8;">
+              다음 단계 ➡
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -166,8 +272,7 @@ fetch('/layouts/footer.html')
   }
   .step.active { color: #111; }
   .step.active .dot { background: #d6001c; border-color: #d6001c; color: #fff; }
-  .sep { width: 28px; height: 2px; background: #e5e7eb; border-radius: 2px; }  
-  
+  .sep { width: 28px; height: 2px; background: #e5e7eb; border-radius: 2px; }    
 
   .input {
   width:100%; height:44px; box-sizing:border-box;
@@ -179,9 +284,6 @@ fetch('/layouts/footer.html')
   border-color:#d1d5db; 
   box-shadow: 0 0 0 3px rgba(214,0,28,.12);
   }
-
-  .field-row { display:flex; gap:8px; align-items:center; }
-  .hint { font-size:12px; color:#6b7280; margin-top:6px; }
 
   /* 버튼 */
   .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }  
@@ -243,5 +345,46 @@ fetch('/layouts/footer.html')
     padding: 28px 30px;
     margin-bottom: 24px;
   } 
+
+  /* 상단 인증 수단 2칸 */
+  .verify-methods{
+    display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;
+  }
+  .method-card{
+    appearance:none; border:1px solid #E5E7EB; background:#fff; border-radius:12px;
+    padding: 30px; text-align:left; cursor:pointer; position:relative;
+    transition:box-shadow .15s, border-color .15s;
+  }
+  .method-card:hover{ box-shadow:0 6px 18px rgba(2,6,23,.06); }
+  .m-title{ display:flex; gap:10px; align-items:center; margin-bottom:6px; }
+  .m-badge{ width:32px; height:32px; border-radius:8px; display:grid; place-items:center; background:#F95654; font-size:16px; }
+  .m-badge1{ width:32px; height:32px; border-radius:8px; display:grid; place-items:center; background:#095399; font-size:16px; }
+  .m-name{ font-weight:700; font-size: 16px; }
+  .m-list{ margin:6px 0 28px 0; padding-left:18px; color:#4B5563; font-size:15px; line-height:1.4; }
+  .m-list li{ list-style:disc; padding-top: 5px; }
+
+  /* 폼 그룹 */
+  .verify-group{ background:#F9FAFB; border:1px solid #E5E7EB; border-radius:12px; padding:16px 18px; }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+  .form-grid-1{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top: 20px;}
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field-name{ font-size:13px; font-weight:600; color:#374151; }
+
+  /* 파란 알림 라인 */
+  .note-blue{
+    display:flex; align-items:center; gap:8px; height:44px; padding:10px 12px;
+    border:1px solid #C7D2FE; background:#EFF6FF; color:#1E40AF; border-radius:10px; font-size:13px;
+  }
+  .bullet {
+      width: 18px; height: 18px; border-radius: 50%; color: #fff;
+      font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+
+  /* 안내 박스 */
+  .helper-box{ margin-top:20px; background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px; padding:14px 16px; }
+  .helper-title{ font-weight:700; color:#92400E; margin-bottom:6px; }
+  .helper-list{ margin:0; padding-left:18px; color:#92400E; font-size:13px; }
+  .helper-list li{ list-style:disc; line-height:1.5; }
+
 </style>
 </html>
