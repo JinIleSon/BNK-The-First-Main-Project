@@ -232,6 +232,7 @@
                     /* === 칩 그룹 정의 ===
                     * fieldType: 'scalar' | 'array'  (상품 데이터에서 단일값/배열 여부)
                     * 옵션 라벨은 자유롭게 수정 가능
+                    * value : 실제 비교값, label : 표시 글자, field : 테이블 열 이름
                     */
                     const CHIP_GROUPS = [
                         {
@@ -286,6 +287,10 @@
 
                         // 이벤트 바인딩
                         root.querySelectorAll('.Chip-group').forEach(groupEl => {
+                            /*
+                            * groupEl.dataset은 그 요소의 모든 data- 속성을 객체로 반환
+                            * groupEl.dataset.group == groupEl.getAttribute('data-group')
+                            */
                             const gid = groupEl.dataset.group;
                             groupEl.querySelectorAll('.Chip').forEach(btn => {
                                 btn.addEventListener('click', () => {
@@ -321,10 +326,10 @@
 
                                 const selectedValues = Array.from(sel);
 
-                                if (g.fieldType === 'array') {
+                                if (g.fieldType === 'array') { // 여러 값; 필터와 하나라도 같은 게 있으면 보이기
                                     const arr = Array.isArray(p[g.field]) ? p[g.field] : [];
                                     return selectedValues.some(v => arr.includes(v));
-                                } else { // scalar
+                                } else { // scalar; 단일 값; 일치하는 것만 보이기
                                     const val = p[g.field];
                                     return selectedValues.includes(val);
                                 }
