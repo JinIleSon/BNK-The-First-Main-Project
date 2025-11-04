@@ -152,6 +152,18 @@
             visibility: hidden;   /* 지연되어 끝나고 적용됨 -> 모션 살아있음 */
             pointer-events: none; /* 클릭만 막기 */
           }
+
+          /* X 아이콘(svg[data-close])의 포커스 아웃라인 제거 */
+          #aiReco [data-close]:focus,
+          #aiReco [data-close]:focus-visible {
+            outline: none;
+            box-shadow: none;
+          }
+
+          /* 모바일 클릭 시 파란/회색 하이라이트 제거 */
+          #aiReco [data-close]{
+            -webkit-tap-highlight-color: transparent;
+          }
         </style>
 </head>
 <body>
