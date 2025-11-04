@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>가입완료</title>
+<title>로그인</title>
 
 </head>
 <body>
@@ -99,81 +99,70 @@ fetch('/layouts/footer.html')
 
 <main>
   <div class="container">
-    <h1 style="text-align: center;">회원가입</h1>
-    <div class="stepper">
-      <div class="step"><span class="dot">1</span>약관동의</div>
-      <div class="sep"></div>
-      <div class="step"><span class="dot">2</span>정보입력</div>
-      <div class="sep"></div>
-      <div class="step"><span class="dot">3</span>본인인증</div>
-      <div class="sep"></div>
-      <div class="step active"><span class="dot">4</span>가입완료</div>
-    </div>
-
-    <!-- 회원가입 폼 -->
+    <!-- 로그인 폼 -->
     <section style="width: 1200px; margin: 0 auto; margin-top: 30px;">
 
-      <!-- 가입 완료 -->
-      <div class="form-card" style="height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
+      <!-- 감싸기 -->
+      <div class="form-card" style="height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
 
-        <!-- 체크 아이콘 -->
-        <div style="width: 70px; height: 70px; background-color: #E6FAE6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 25px;">
-          <span style="font-size: 36px; color: #28a745;">✔</span>
-        </div>      
-          
-          <table style="text-align: center;">          
-              <tr>
-                  <td>
-                      <span style="font-size: 30px; font-weight: 500;">회원가입이 완료되었습니다!</span>
-                  </td>
-              </tr>
-              <tr>
-                  <td style="padding-top: 10px;">
-                      <span style="font-size: 22px;">부산은행과 함께 더 스마트하고 가치 있는 금융 생활을 시작하세요.</span>
-                  </td>
-              </tr>
-              <tr>
-                  <td style="padding-top: 10px;">
-                      <span style="font-size: 20px;">이제 다양한 금융 서비스를 편리하게 이용하실 수 있습니다.</span>
-                  </td>
-              </tr>
-          </table>
-      </div>
-
-      <!-- 가입 정보 -->       
-      <div class="form-card" style="height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">      
-        <table class="member-table">
-            <tr class="title-row">
-            <td colspan="4">가입정보</td>
+        <!-- 로그인 테이블 -->
+        <table class="login-table">
+          <tr style="font-size: 25px;">
+            <td class="field-td">로그인</td>
+          </tr>
+          <tr>
+            <td>BNK 부산은행은 고객님의 정보를 소중히 보호합니다</td>
+          </tr>
+          <tr>
+            <td class="field-td">아이디</td>
+          </tr>
+          <tr>
+            <td class="field-td">
+              <input type="text" name="member_id" placeholder="아이디를 입력하세요" autocomplete="username">
+            </td>
+          </tr>
+          <tr>
+            <td class="field-td">비밀번호</td>
+          </tr>
+          <tr>
+            <td class="field-td">
+              <input type="password" name="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password">
+            </td>
           </tr>
 
           <tr>
-            <td class="label-td">이름</td>
-            <td class="value-td wide">홍길동</td>
-            <td class="label-td">휴대폰</td>
-            <td class="value-td">010-0000-0000</td>
+            <td class="field-td">
+              <button type="submit" class="btn-register" style="width: 500px;">로그인</button><hr>
+            </td>
           </tr>
-
           <tr>
-            <td class="label-td">아이디</td>
-            <td class="value-td wide">hong123</td>
-            <td class="label-td">가입일시</td>
-            <td class="value-td">2025.11.04 00:00</td>
+            <td class="field-td">
+                <button class="btn-register" style="width: 500px;">공인인증서 로그인</button>
+            </td>
           </tr>
-
           <tr>
-            <td class="label-td">이메일</td>
-            <td class="value-td wide">hong@email.com</td>
-            <td class="label-td">회원등급</td>
-            <td class="value-td">일반회원</td>
+            <td class="field-td">
+                <button class="btn-register" style="width: 500px;">간편인증으로 로그인</button>
+            </td>
           </tr>
-        </table>
+          <tr>
+            <td class="field-td">
+              <a href="#">아이디 찾기</a>
+              <span class="sep-dot">·</span>
+              <a href="#">비밀번호 재설정</a>
+              <span class="sep-dot">·</span>
+              <a href="#">회원가입</a>
+            </td>
+          </tr>
 
-        <!-- 버튼 -->
-        <div class="btns">
-          <button style="box-sizing: border-box; width: 0px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
-          <button class="btn-register" style="width: 100px;">로그인하기</button>
-        </div>
+          <tr class="security-row">
+            <td style="text-align: left; color: #444; font-size: 15px; line-height: 1.6;">
+              <span>🔒보안 안내</span><br>
+              • 개인정보 보호를 위해 공용 PC에서는 로그인 상태 유지를 해제하세요.<br>
+              • 비밀번호는 정기적으로 변경하시기 바랍니다.
+            </td>
+          </tr>
+        </table>       
       </div>      
     </section>
   </div>
@@ -202,26 +191,7 @@ fetch('/layouts/footer.html')
     color: #111827;
     line-height: 1.5;
   }
-  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }
-  .stepper {
-    width:1100px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f7f7f9;
-    border: 1px solid #e5e7eb;
-    border-radius: 999px;
-    padding: 10px 20px;
-  }
-  .step { display: flex; align-items: center; gap: 8px; color: #6b7280; font-weight: 600; }
-  .step .dot {
-    width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
-    border: 1px solid #d1d5db; background: #fff; color: #6b7280; font-weight: 700;
-  }
-  .step.active { color: #111; }
-  .step.active .dot { background: #d6001c; border-color: #d6001c; color: #fff; }
-  .sep { width: 28px; height: 2px; background: #e5e7eb; border-radius: 2px; }    
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }  
  
   /* 버튼 */
   .btns { display: flex; justify-content: center; gap: 10px; margin: 25px 0 20px; }  
@@ -284,47 +254,30 @@ fetch('/layouts/footer.html')
     margin-bottom: 24px;
   }
 
-  /* tr & td */
-  .member-table {
-  width: 1100px;
-  border-collapse: collapse;
-  table-layout: fixed;
-  color: #333;
-  text-align: center;
+  .field-td {
+    text-align: center;
+    padding: 10px 0;
   }
 
-  /* 제목행 제외하고만 줄 적용 */
-  .member-table tr:not(.title-row) {
-    border-bottom: 1px solid #eee;
-  }
+  .field-td input {
+    width: 400px;
+    height: 44px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    outline: none;
+  }  
+  .sep-dot{ margin: 0 8px; color: #bbb; }
 
-  .member-table td {
-    width: 275px;
-    font-size: 18px;
-    padding: 15px 15px;
-  }
-
-  .member-table .title-row td {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: left;
-    padding: 0 10px 15px;
-  }
-
-  /* 왼쪽 라벨 */
-  .member-table .label-td {
-    font-weight: bold;
-    text-align: left;
-  }
-
-  /* 오른쪽 값 */
-  .member-table .value-td {
-    text-align: right;
-  }
-
-  /* 오른쪽 공백 넓히기 */
-  .member-table .wide {
-    padding-right: 40px;
+  .security-row td {
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 16px 18px;
+    color: #444;
+    font-size: 15px;
+    line-height: 1.6;
   }
 
 </style>
