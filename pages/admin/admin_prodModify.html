@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admin_prodRegister</title>
+    <title>admin_prodModify</title>
     <style>
         .btn-register {
           --bg1: #D91A1A;
@@ -388,7 +388,83 @@
   }
 }
 </style>
+<style>
+/* 이미 쓰던 프레스 효과 클래스가 있다면 그대로 사용해도 됨 */
+.btn-pressable {
+  position: relative;
+  transition: box-shadow .18s ease, transform .12s ease, background .18s ease;
+  will-change: box-shadow, transform, background;
+  --btn-shadow: rgba(0,0,0,.12);
+  --btn-shadow-hover: rgba(0,0,0,.18);
+  --btn-shadow-active: rgba(0,0,0,.22);
+}
+.btn-pressable:hover { box-shadow: 0 8px 18px -12px var(--btn-shadow-hover); }
+.btn-pressable:active { transform: scale(.98); box-shadow: 0 4px 10px -10px var(--btn-shadow-active); }
+.btn-pressable:focus-visible { outline: 3px solid rgba(240,58,58,.55); outline-offset: 2px; }
+/* 공통 설정 */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
 
+/* hover 시 아랫부분에 회색빛 음영이 은은하게 비침 */
+.btn-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+
+  /* 아래쪽 중심부에서 위로 번지는 부드러운 그라디언트 */
+  background: radial-gradient(
+    130% 90% at 50% 125%,           /* 중심을 버튼 아래쪽으로 이동 */
+    rgba(150,150,150,0.25) 0%,      /* 가장 아래: 옅은 회색빛 */
+    rgba(180,180,180,0.18) 28%,     /* 중간: 은은하게 퍼짐 */
+    rgba(200,200,200,0.08) 45%,     /* 상단으로 갈수록 흐려짐 */
+    rgba(255,255,255,0) 70%         /* 위로 갈수록 완전 투명 */
+  );
+
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+
+.btn-sheen:hover::before {
+  opacity: 0.9; /* hover 시 부드럽게 나타남 */
+}
+
+/* 위쪽 경계선이 약간 밝아 보이도록 (살짝 반사 느낌) */
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+
+  background: linear-gradient(
+    to top,
+    rgba(255,255,255,0.12) 0%,
+    rgba(255,255,255,0) 40%
+  );
+
+  opacity: 0;
+  transition: opacity .22s ease;
+}
+
+.btn-sheen:hover::after {
+  opacity: 1;
+}
+
+/* 모션 최소화 존중 */
+@media (prefers-reduced-motion: reduce) {
+  .btn-sheen::before,
+  .btn-sheen::after {
+    transition: none !important;
+  }
+}
+
+
+</style>
 </head>
 <body>
   <header>
@@ -460,7 +536,7 @@
         <div style="display: flex;">
           <div style="font-size: 16px; color: #4B5563;">등록된 상품 정보를 수정하고 상태를 변경할 수 있습니다.</div>
           <div style="display: flex; margin-left: auto; margin-right: 10px;">
-            <button style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
+            <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
               <div style="display: flex; gap: 8px; justify-content: center; align-content: center;">
                 <div style="margin-top: 2px;">
                   <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -623,7 +699,7 @@
       <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
         <div style="display: flex; gap: 10px; justify-content: space-between;">
           <div>
-            <button id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
+            <button class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
               <div style="display: flex; gap: 8px; justify-content: center;">
                 <div>
                   <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -638,7 +714,7 @@
           </div>
           <div style="display: flex; gap: 10px;">
             <div>
-              <button style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
+              <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
             </div>
             <div>
               <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
