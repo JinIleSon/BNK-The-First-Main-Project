@@ -232,7 +232,8 @@
             margin-bottom: 18px;
         }
 
-        .recommend article>div:nth-of-type(1)>div {
+        /* 활성화된 탭 스타일 */
+        .tab {
             padding: 8px 14px;
             font-size: 13px;
             border-radius: 9999px;
@@ -242,8 +243,7 @@
             cursor: pointer;
         }
 
-        /* 첫 번째 탭 활성화 스타일 (신규 인기) */
-        .recommend article>div:nth-of-type(1)>div:first-child {
+        .tab.active {
             background: #dc2626;
             color: #fff;
             border-color: #dc2626;
@@ -523,9 +523,9 @@
             <article>
                 <h2>추천 상품</h2>
                 <div>
-                    <div>신규 인기</div>
-                    <div>금리 높은</div>
-                    <div>우대 좋은</div>
+                    <div data-filter="new", class="tab active">신규 인기</div>
+                    <div data-filter="rate", class="tab">금리 높은</div>
+                    <div data-filter="bonus", class="tab">우대 좋은</div>
                 </div>
                 <div class="prod-wrapper">
                     <div class="product-card">
@@ -792,4 +792,31 @@
         .then(data => {
             document.getElementById('footer').innerHTML = data;
         });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll(".tab");
+        const cards = document.querySelectorAll(".product-card");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", function () {
+                const filterValue = tab.getAttribute("data-filter");
+
+                // 탭 활성화 스타일
+                tabs.forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+
+                // 카드 필터링
+                // cards.forEach(card => {
+                //     const cardCategory = card.getAttribute("data-category");
+
+                //     if (filterValue === "all" || cardCategory === filterValue) {
+                //         card.style.display = "block";  // 해당 카드는 보이게
+                //     } else {
+                //         card.style.display = "none";   // 나머지는 숨김
+                //     }
+                // });
+            });
+        });
+    });
 </script>
