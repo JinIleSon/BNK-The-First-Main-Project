@@ -116,11 +116,10 @@ fetch('/layouts/footer.html')
     </p>
 
     <!-- 회원가입 폼 -->
-    <section class="card" style="width: 1200px; margin: 0 auto;">
+    <section style="width: 1200px; margin: 0 auto;">
 
       <!-- 감싸기 -->
       <div class="form-card">
-
         <!-- 인증 수단 선택 -->
         <div class="verify-methods">
           <button type="button" class="method-card" aria-pressed="true">
@@ -155,7 +154,7 @@ fetch('/layouts/footer.html')
         </div>
 
         <!-- 본인인증 폼 -->
-        <div class="verify-group">
+        <div class="form-card">
           <div class="form-grid">
             <div class="field">
               <div class="field-name">이름</div>
@@ -364,7 +363,6 @@ fetch('/layouts/footer.html')
   .m-list li{ list-style:disc; padding-top: 5px; }
 
   /* 폼 그룹 */
-  .verify-group{ background:#F9FAFB; border:1px solid #E5E7EB; border-radius:12px; padding:16px 18px; }
   .form-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
   .form-grid-1{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top: 20px;}
   .field{ display:flex; flex-direction:column; gap:6px; }
