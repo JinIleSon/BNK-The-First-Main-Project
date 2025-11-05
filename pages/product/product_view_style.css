@@ -372,7 +372,8 @@ main {
 
 .side .title {
     font-weight: 800;
-    margin-bottom: 10px
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .calc .row {
