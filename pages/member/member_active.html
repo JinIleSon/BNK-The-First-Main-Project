@@ -100,7 +100,7 @@ fetch('/layouts/footer.html')
 <main>
   <div class="container">
     <h1 style="text-align: center;">회원가입</h1>
-    <div class="stepper">
+    <div class="stepper" style="margin-bottom: 20px;">
       <div class="step"><span class="dot">1</span>약관동의</div>
       <div class="sep"></div>
       <div class="step"><span class="dot">2</span>정보입력</div>
@@ -110,72 +110,68 @@ fetch('/layouts/footer.html')
       <div class="step active"><span class="dot">4</span>가입완료</div>
     </div>
 
-    <!-- 회원가입 폼 -->
-    <section style="width: 1200px; margin: 0 auto; margin-top: 30px;">
+    <!-- 감싸기 -->
+    <div class="form-card" style="height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
 
-      <!-- 가입 완료 -->
-      <div class="form-card" style="height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
-
-        <!-- 체크 아이콘 -->
-        <div style="width: 70px; height: 70px; background-color: #E6FAE6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 25px;">
-          <span style="font-size: 36px; color: #28a745;">✔</span>
-        </div>      
-          
-          <table style="text-align: center;">          
-              <tr>
-                  <td>
-                      <span style="font-size: 30px; font-weight: 500;">회원가입이 완료되었습니다!</span>
-                  </td>
-              </tr>
-              <tr>
-                  <td style="padding-top: 10px;">
-                      <span style="font-size: 22px;">부산은행과 함께 더 스마트하고 가치 있는 금융 생활을 시작하세요.</span>
-                  </td>
-              </tr>
-              <tr>
-                  <td style="padding-top: 10px;">
-                      <span style="font-size: 20px;">이제 다양한 금융 서비스를 편리하게 이용하실 수 있습니다.</span>
-                  </td>
-              </tr>
-          </table>
-      </div>
-
-      <!-- 가입 정보 -->       
-      <div class="form-card" style="height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">      
-        <table class="member-table">
-            <tr class="title-row">
-            <td colspan="4">가입정보</td>
-          </tr>
-
-          <tr>
-            <td class="label-td">이름</td>
-            <td class="value-td wide">홍길동</td>
-            <td class="label-td">휴대폰</td>
-            <td class="value-td">010-0000-0000</td>
-          </tr>
-
-          <tr>
-            <td class="label-td">아이디</td>
-            <td class="value-td wide">hong123</td>
-            <td class="label-td">가입일시</td>
-            <td class="value-td">2025.11.04 00:00</td>
-          </tr>
-
-          <tr>
-            <td class="label-td">이메일</td>
-            <td class="value-td wide">hong@email.com</td>
-            <td class="label-td">회원등급</td>
-            <td class="value-td">일반회원</td>
-          </tr>
-        </table>
-
-        <!-- 버튼 -->
-        <div class="btns">
-          <button style="box-sizing: border-box; width: 0px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
-          <button class="btn-register" style="width: 100px;">로그인하기</button>
-        </div>
+      <!-- 체크 아이콘 -->
+      <div style="width: 70px; height: 70px; background-color: #E6FAE6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 25px;">
+        <span style="font-size: 36px; color: #28a745;">✔</span>
       </div>      
-    </section>
+        
+        <table style="text-align: center;">          
+            <tr>
+                <td>
+                    <span style="font-size: 30px; font-weight: 500;">회원가입이 완료되었습니다!</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-top: 10px;">
+                    <span style="font-size: 22px;">부산은행과 함께 더 스마트하고 가치 있는 금융 생활을 시작하세요.</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="padding-top: 10px;">
+                    <span style="font-size: 20px;">이제 다양한 금융 서비스를 편리하게 이용하실 수 있습니다.</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 가입 정보 -->       
+    <div class="form-card" style="margin-top: 20px;">      
+      <table class="member-table">
+        <tr class="title-row">
+          <td colspan="4">가입정보</td>
+        </tr>
+
+        <tr>
+          <td class="label-td">이름</td>
+          <td class="value-td wide">홍길동</td>
+          <td class="label-td">휴대폰</td>
+          <td class="value-td">010-0000-0000</td>
+        </tr>
+
+        <tr>
+          <td class="label-td">아이디</td>
+          <td class="value-td wide">hong123</td>
+          <td class="label-td">가입일시</td>
+          <td class="value-td">2025.11.04 00:00</td>
+        </tr>
+
+        <tr>
+          <td class="label-td">이메일</td>
+          <td class="value-td wide">hong@email.com</td>
+          <td class="label-td">회원등급</td>
+          <td class="value-td">일반회원</td>
+        </tr>
+      </table>
+
+      <!-- 버튼 -->
+      <div class="btns">
+        <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white; width: 50%;">취소</button>
+        <button class="btn-register" style="width: 50%;">로그인</button>
+      </div>
+    </div>
   </div>
 </main>
 
@@ -202,9 +198,9 @@ fetch('/layouts/footer.html')
     color: #111827;
     line-height: 1.5;
   }
-  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 28px 16px 40px; }
   .stepper {
-    width:1100px;
+    width:900px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -272,6 +268,79 @@ fetch('/layouts/footer.html')
 	  .btn-register { --shadow: rgba(240,58,58,.35); }
 	}
 
+  .btn-pressable {
+  position: relative;
+  transition: box-shadow .18s ease, transform .12s ease, background .18s ease;
+  will-change: box-shadow, transform, background;
+  --btn-shadow: rgba(0,0,0,.12);
+  --btn-shadow-hover: rgba(0,0,0,.18);
+  --btn-shadow-active: rgba(0,0,0,.22);
+  }
+  .btn-pressable:hover { box-shadow: 0 8px 18px -12px var(--btn-shadow-hover); }
+  .btn-pressable:active { transform: scale(.98); box-shadow: 0 4px 10px -10px var(--btn-shadow-active); }
+  .btn-pressable:focus-visible { outline: 3px solid rgba(240,58,58,.55); outline-offset: 2px; }
+  /* 공통 설정 */
+  .btn-sheen {
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  /* hover 시 아랫부분에 회색빛 음영이 은은하게 비침 */
+  .btn-sheen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+
+    /* 아래쪽 중심부에서 위로 번지는 부드러운 그라디언트 */
+    background: radial-gradient(
+      130% 90% at 50% 125%,           /* 중심을 버튼 아래쪽으로 이동 */
+      rgba(150,150,150,0.25) 0%,      /* 가장 아래: 옅은 회색빛 */
+      rgba(180,180,180,0.18) 28%,     /* 중간: 은은하게 퍼짐 */
+      rgba(200,200,200,0.08) 45%,     /* 상단으로 갈수록 흐려짐 */
+      rgba(255,255,255,0) 70%         /* 위로 갈수록 완전 투명 */
+    );
+
+    opacity: 0;
+    transition: opacity .22s ease;
+  }
+
+  .btn-sheen:hover::before {
+    opacity: 0.9; /* hover 시 부드럽게 나타남 */
+  }
+
+  /* 위쪽 경계선이 약간 밝아 보이도록 (살짝 반사 느낌) */
+  .btn-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: linear-gradient(
+      to top,
+      rgba(255,255,255,0.12) 0%,
+      rgba(255,255,255,0) 40%
+    );
+
+    opacity: 0;
+    transition: opacity .22s ease;
+  }
+
+  .btn-sheen:hover::after {
+    opacity: 1;
+  }
+
+  /* 모션 최소화 존중 */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-sheen::before,
+    .btn-sheen::after {
+      transition: none !important;
+    }
+  }
+
   a { text-decoration: none; color: inherit; }
 
   /* 감싸는 */
@@ -281,12 +350,13 @@ fetch('/layouts/footer.html')
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(2,6,23,.06);
     padding: 28px 30px;
-    margin-bottom: 24px;
+    margin: 0 auto;
+    max-width: 850px;
   }
 
   /* tr & td */
   .member-table {
-  width: 1100px;
+  max-width: 1100px;
   border-collapse: collapse;
   table-layout: fixed;
   color: #333;
@@ -299,7 +369,7 @@ fetch('/layouts/footer.html')
   }
 
   .member-table td {
-    width: 275px;
+    width: 200px;
     font-size: 18px;
     padding: 15px 15px;
   }

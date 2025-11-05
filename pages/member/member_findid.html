@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>로그인</title>
+<title>아이디 찾기</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 
 </head>
 <body>
@@ -103,62 +104,76 @@ fetch('/layouts/footer.html')
     <section style="width: 580px; margin: 0 auto; margin-top: 30px;">
 
       <!-- 감싸기 -->
-      <div class="form-card" style="height: 720px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
+      <div class="form-card" style="height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
 
-        <!-- 로그인 테이블 -->
+        <!-- 검색 아이콘 -->
+        <div class="search-icon-wrapper">
+            <div class="search-icon">
+                <span class="material-symbols-outlined">search</span>
+            </div>
+        </div>
+
+        <!-- 아이디 찾기 테이블 -->
         <table class="login-table">
           <tr style="font-size: 25px;">
-            <td>로그인</td>
+            <td>아이디 찾기</td>
           </tr>
           <tr>
-            <td style="padding: 0 0 9px;">BNK 부산은행은 고객님의 정보를 소중히 보호합니다</td>
+            <td style="padding: 0 0 9px;">가입 시 입력한 정보를 통해 아이디를 확인하세요</td>
           </tr>
           <tr class="field-row">
-            <td class="field-label">아이디</td>            
+            <td class="field-label">이름</td>            
           </tr>
           <tr class="field-row">
-            <td style="margin-bottom: 9px;"><input type="text" name="member_id" placeholder="아이디를 입력하세요" autocomplete="username"></td>
+            <td style="margin-bottom: 9px;"><input type="text" name="member_id" placeholder="실명을 입력해 주세요" autocomplete="username"></td>
+          </tr>
+          <tr class="field-row">
+            <td class="field-label">휴대폰 번호</td>
           </tr>
 
           <tr class="field-row">
-            <td class="field-label">비밀번호</td>            
+            <td style="margin-bottom: 19px;">
+                <div class="phone-certify-row" style="max-width: 522px;">
+                    <input type="text" name="member_pass" placeholder="010-0000-0000" autocomplete="username">
+                    <button type="button" class="btn-register btn-certify">인증번호 발송</button>
+                </div>
+            </td>
+          </tr>
+
+          <tr class="field-row">
+            <td class="field-label">인증번호</td>
           </tr>
           <tr class="field-row">
-            <td style="margin-bottom: 19px;"><input type="text" name="member_pass" placeholder="비밀번호를 입력하세요" autocomplete="username"></td>
-          </tr>
-
-          <tr>
-            <td class="field-td" style="border-bottom: 1px solid #ddd; border-top: 1px solid #ddd;">
-              <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white; width: 500px;">로그인</button>
+            <td style="margin-bottom: 19px;">
+                <div class="phone-certify-row" style="max-width: 522px;">
+                    <input type="text" name="member_pass" placeholder="인증번호 00자리" autocomplete="username">
+                    <button type="button" class="btn-register">확인</button>
+                </div>
             </td>
           </tr>
+          
           <tr>
+            <td class="field-td" style="border-bottom: 1px solid #D1D5DB;">
+                <button class="btn-register" style="width: 500px;">아이디 찾기</button>
+            </td>
+          </tr>
+          
+          <tr style="display: flex;justify-content: center;">
             <td class="field-td">
-                <button class="btn-register" style="width: 500px;">공인인증서 로그인</button>
+                <button class="btn-pressable btn-sheen" 
+                style="box-sizing: border-box; height: 42px; border:1px solid #D1D5DB;
+                border-radius: 8px; cursor: pointer; background-color: white; width: 240px;">
+                취소
+                </button>
             </td>
-          </tr>
-          <tr>
             <td class="field-td">
-                <button class="btn-register" style="width: 500px;">간편인증으로 로그인</button>
+                <button class="btn-pressable btn-sheen" 
+                style="box-sizing: border-box; height: 42px; border:1px solid #D1D5DB;
+                border-radius: 8px; cursor: pointer; background-color: white; width: 240px;">
+                다음
+                </button>
             </td>
-          </tr>
-          <tr>
-            <td class="field-td">
-              <a href="member_findid.html">아이디 찾기</a>
-              <span class="sep-dot">·</span>
-              <a href="#">비밀번호 찾기</a>
-              <span class="sep-dot">·</span>
-              <a href="#">회원가입</a>
-            </td>
-          </tr>
-
-          <tr class="notice">
-            <td style="text-align: left; color: #444; font-size: 15px; line-height: 1.6;">
-              <span>🔒 보안 안내</span><br>
-              • 개인정보 보호를 위해 공용 PC에서는 로그인 상태 유지를 해제하세요.<br>
-              • 비밀번호는 정기적으로 변경하시기 바랍니다.
-            </td>
-          </tr>
+           </tr>        
         </table>       
       </div>
     </section>
@@ -337,7 +352,8 @@ fetch('/layouts/footer.html')
     box-sizing: border-box;
     padding: 0 12px;
     outline: none;
-  }  
+  }
+  
   .sep-dot{ margin: 0 8px; }
 
   .notice {
@@ -367,6 +383,45 @@ fetch('/layouts/footer.html')
   .field-label {
     font-size: 18px;
   } 
+
+    /* 검색 아이콘 감싸는 컨테이너 */
+    .search-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px; /* 제목과의 간격 */
+    }
+
+    /* 아이콘 자체 스타일 */
+    .search-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #fff5f5; /* 연한 붉은색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    /* 아이콘 (돋보기) */
+    .search-icon span {
+    font-size: 32px;
+    color: #D91A1A; /* 브랜드 레드 컬러 */
+    }
+    .phone-certify-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    }
+
+    .btn-certify {
+    width: 100px;
+    height: 44px;
+    font-size: 14px;
+    flex-shrink: 0;
+    }
+
 
 </style>
 </html>
