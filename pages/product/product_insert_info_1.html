@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 정보입력 1</title>
+    <link rel="stylesheet" href="product_insert_info.css">
+</head>
+
+<body>
+    <header>
+        <div id="header"></div>
+    </header>
+    <main>
+        <!-- 1) 스텝퍼 -->
+        <ol class="stepper" id="wizardSteps" aria-label="신청 진행 단계">
+            <li class="step active" aria-current="step"><span class="dot">1</span> 본인확인서 등록</li>
+            <li class="step"><span class="dot">2</span> 신규가입</li>
+            <li class="step"><span class="dot">3</span> 본인인증</li>
+            <li class="step"><span class="dot">4</span> 신청완료</li>
+            <li class="step"><span class="dot">5</span> 계좌개설</li>
+        </ol>
+
+        <!-- 2) 단계별 패널 (한 페이지에 모두 존재) -->
+        <section class="step-page" id="page1">
+            <h1>본인확인서(FATCA/CRS)등록</h1>
+            <div class="info-box">
+                <div class="info-title">
+                    <img src="/components/images/product/info-blue.png" alt="" class="info-icon">
+                    <strong>본인확인서 관련 안내</strong>
+                </div>
+                <ul class="info-text">
+                    <li>상호주의에 따른 정기적인 금융정보의 교환을 위한 조세조약의 이행과 관련하여 국제조세 조정에 관한 법률에 따라 작성이 요구됩니다.</li>
+                    <li>부산은행으로부터 본인확인서 재작성 또는 증빙자료를 요청받는 경우, 기재 내용에 변경이 있을 경우 <span class="info-red">60일 이내에
+                            통지</span>하여야 합니다.</li>
+                    <li>관련정보를 제공하지 않거나, 허위로 제공할 경우 향후 거래에 제한이 발생할 수 있으며, <span class="info-red">국세청 의무이행방해자로 신고</span>될
+                        수 있습니다.</li>
+                </ul>
+
+                <div class="warn-box">
+                    <img src="/components/images/product/time-yellow.png" alt="" class="warn-icon">
+                    <span>귀속년도는 고객님께서 작성하는 본인확인서 정보의 기존연도를 의미합니다. 예를 들어 2021년 12월 31일 기준으로 본인확인서 정보를 입력하실 경우, 귀속년도는
+                        2021년에 해당합니다.</span>
+                </div>
+            </div>
+            <article class="card form-section">
+                <div class="inner">
+                    <h2 class="form-title">
+                        <img src="/components/images/product/user-red.png" alt="" class="form-icon">
+                        고객 기본 정보
+                    </h2>
+
+                    <form id="customerForm" class="form-grid">
+                        <div class="form-group">
+                            <label for="name">성명<span class="req">*</span></label>
+                            <input id="name" type="text" placeholder="홍길동">
+                        </div>
+
+                        <div class="form-group">
+                            <label>성별<span class="req">*</span></label>
+                            <div class="radio-row">
+                                <label><input type="radio" name="gender" value="남성"> 남성</label>
+                                <label><input type="radio" name="gender" value="여성"> 여성</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="birth">생년월일<span class="req">*</span></label>
+                            <input id="birth" type="date" placeholder="YYYY-MM-DD">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nation">국적<span class="req">*</span></label>
+                            <select id="nation">
+                                <option>선택해 주세요</option>
+                                <option>대한민국</option>
+                                <option>미국</option>
+                                <option>일본</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="residence">귀속연도<span class="req">*</span></label>
+                            <select id="residence">
+                                <option>선택해 주세요</option>
+                                <option>2025</option>
+                                <option>2024</option>
+                                <option>2023</option>
+                                <option>2022</option>
+                                <option>2021</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="engName">영문성명<span class="req">*</span></label>
+                            <div style="display: flex; gap: 10px;">
+                                <input id="engLastName" class="engName" type="text" placeholder="HONG">
+                                <input id="engFirstName" class="engName" type="text" placeholder="GIL DONG">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">휴대전화번호<span class="req">*</span></label>
+                            <input id="phone" type="tel" placeholder="010-1234-5678">
+                        </div>
+
+                        <div class="form-group full">
+                            <label>주소<span class="req">*</span></label>
+                            <div class="addr-row">
+                                <input type="text" placeholder="우편번호" style="flex:1">
+                                <button type="button" class="btn-white small">주소검색</button>
+                            </div>
+                            <input type="text" placeholder="도로명 주소">
+                            <input type="text" placeholder="상세주소">
+                        </div>
+                    </form>
+                </div>
+            </article>
+            <article class="confirm-box">
+                <h2 class="confirm-title">
+                    <img src="/components/images/product/check-red.png" alt="확인사항" class="confirm-icon">
+                    확인사항(해당하는 항복에 모두 체크)
+                </h2>
+                <label class="confirm-item" for="check-Korean">
+                    <input type="checkbox" name="nation" id="isKorean">
+                    조세목적상 한국 거주자에 해당합니다.
+                    <img src="/components/images/product/detail-grey.png" alt="세부정보">
+                </label>
+                <label class="confirm-item" for="check-Foreign">
+                    <input type="checkbox" name="nation" id="isForeign">
+                    한국 외에 조세목적상 거주지국이 있습니다.
+                </label>
+            </article>
+        </section>
+        <section class="step-page" id="page2" hidden>
+            <h1>신규가입</h1>
+            <ul>
+                <li>아래의 [예금거래 약관 동의 및 개별약관 동의]를 확인하신 후 동의하시면 "동의함" 버튼을 클릭하시기 바랍니다.</li>
+            </ul>
+            <article>
+                <div>
+                    <h2>상품설명서 및 약관 동의</h2>
+                    <ul>
+                        <li>상품 신규가입을 위해서는 상품설명서 및 약관을 반드시 다운로드 받거나 읽어보셔야 합니다.</li>
+                    </ul>
+                </div>
+                <div>
+                    <span>기본약관</span>
+                    <svg width="28" height="28" viewBox="0 0 24 24" role="img" aria-label="문서 다운로드" fill="none"
+                        stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2h7l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+                        <path d="M13 2v5h5" stroke-linecap="butt" />
+                        <path d="M12 10v6" />
+                        <path d="m9 13 3 3 3-3" />
+                        <path d="M8 20h8" />
+                    </svg>
+
+                </div>
+            </article>
+        </section>
+        <section class="step-page" id="page3" hidden>…3단계 본인인증…</section>
+        <section class="step-page" id="page4" hidden>…4단계 요약/확인…</section>
+        <section class="step-page" id="page5" hidden>…5단계 개설/완료…</section>
+
+        <!-- 3) 내비게이션 -->
+        <div class="wizard-nav">
+            <!-- 취소: 항상 표시 -->
+            <button id="cancelBtn" class="btn btn-white">취소</button>
+
+            <!-- 오른쪽: 이전 / 다음 -->
+            <div class="nav-right">
+                <button id="prevBtn" class="btn btn-white">이전</button>
+                <button id="nextBtn" class="btn btn-red">다음</button>
+            </div>
+        </div>
+
+    </main>
+    <footer>
+        <div id="footer"></div>
+    </footer>
+</body>
+
+</html>
+<script src="product.js"></script>
+<script>
+    let currentStep = 1;                 // 1~5
+    const totalSteps = 5;
+    const state = {};                    // 모든 단계의 입력값을 여기에 저장(필요 시)
+
+    const pages = [...document.querySelectorAll('.step-page')];
+    const steps = [...document.querySelectorAll('#wizardSteps .step')];
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    /* 유효성 검사 훅: 단계별로 통과하면 true 반환 */
+    const validators = {
+        1() {
+            // 예: 필수 입력 검증
+            // const name = document.querySelector('#name').value.trim();
+            // if(!name){ alert('성명을 입력하세요.'); return false; }
+            return true;
+        },
+        2() {
+            // 예: 모든 약관 체크 확인
+            // const ok = [...document.querySelectorAll('[name="agree"]:checked')].length >= 3;
+            // if(!ok){ alert('모든 약관에 동의해주세요.'); return false; }
+            return true;
+        },
+        3() {
+            // 예: 인증 완료 플래그 확인
+            // if(!state.verified){ alert('본인인증을 완료하세요.'); return false; }
+            return true;
+        },
+        4() { return true; },
+        5() { return true; } // 제출 단계라면 서버 전송 등 처리
+    };
+
+    /* 화면 전환 */
+    function showStep(n) {
+        currentStep = n;
+        pages.forEach((el, i) => el.hidden = (i !== n - 1));
+
+        steps.forEach((li, i) => {
+            li.classList.remove('active', 'done');
+            li.removeAttribute('aria-current');
+            if (i < n - 1) li.classList.add('done');
+            if (i === n - 1) { li.classList.add('active'); li.setAttribute('aria-current', 'step'); }
+        });
+
+        // 이전 버튼: page1에서는 숨김, 그 외엔 표시
+        prevBtn.hidden = (n === 1);
+
+        nextBtn.textContent = (n === totalSteps) ? '제출' : '다음';
+        // 스크롤 보정
+        // pages[n-1].scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    /* 다음/제출 */
+    nextBtn.addEventListener('click', async () => {
+        // 현재 단계 저장/검증
+        if (!validators[currentStep]()) return;
+
+        // 마지막이면 제출 동작
+        if (currentStep === totalSteps) {
+            // 예: 서버 제출 (fetch) or 확인 모달
+            alert('제출했습니다!');
+            return;
+        }
+        showStep(currentStep + 1);
+    });
+
+    // 취소: 모든 단계에서 항상 동작
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+        const ok = confirm('작성을 취소하고 이전 화면으로 돌아갈까요?\n저장되지 않은 내용은 사라질 수 있어요.');
+        if (!ok) return;
+
+        // 원하는 취소 정책으로 변경 가능
+        if (history.length > 1) history.back();
+        else location.href = '/';   // 또는 원하는 경로
+    });
+
+    // 이전
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) showStep(currentStep - 1);
+    });
+
+
+
+    /* 스텝 클릭으로 점프 이동(선택) */
+    steps.forEach((li, idx) => {
+        li.style.cursor = 'pointer';
+        li.addEventListener('click', () => {
+            // 완료했거나 바로 이전까지만 허용 등 정책 가능
+            if (idx + 1 <= currentStep || idx + 1 === currentStep + 1) showStep(idx + 1);
+        });
+    });
+
+    showStep(1);
+</script>
