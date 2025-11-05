@@ -306,13 +306,26 @@ main {
 /* 장점 */
 .feature-list {
     display: grid;
-    gap: 8px;
-    margin-top: 8px
+    gap: 15px;
+    margin-top: 15px
 }
 
 .feature {
     display: flex;
+    flex-direction: column;
+}
+
+.feature-title {
+    display: flex;
     gap: 8px
+}
+.feature-title h4 {
+    margin: 0;
+}
+
+.feature-content {
+    margin-left: 15px;
+    margin-top: 5px;
 }
 
 .feature .dot {
