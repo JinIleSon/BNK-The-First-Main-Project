@@ -70,7 +70,7 @@ main {
 
 .btn-white {
     --bg1: #ffffff;
-    --bg2: #f5f5f5;
+    --bg2: #f9f9f9;
     --shadow: rgba(0, 0, 0, .08);
     position: relative;
     box-sizing: border-box;
@@ -78,7 +78,7 @@ main {
     border-radius: 8px;
     color: #111827;
     cursor: pointer;
-    background: linear-gradient(180deg, var(--bg1), var(--bg2));
+    background: var(--bg1);
     outline: none;
     box-shadow: 0 4px 10px -8px var(--shadow);
     transition:
@@ -94,7 +94,7 @@ main {
 
 /* Hover: 살짝 강조된 밝은 회색 */
 .btn-white:hover {
-    background: linear-gradient(180deg, #ffffff, #ebebeb);
+    background: linear-gradient(180deg, var(--bg1), var(--bg2));
     box-shadow: 0 6px 14px -10px var(--shadow);
     transform: none;
 }
