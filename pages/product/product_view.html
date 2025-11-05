@@ -126,6 +126,7 @@
                     <section class="panel" id="panel-rate" role="tabpanel" aria-labelledby="tab-rate">
                         <div class="card">
                             <div class="inner">
+                                <h3  style="padding-left: 10px;">금리안내</h3>
                                 <div class="small" style="text-align:right;color:#6b7280">
                                     금리조회 기준일자 : <span id="rateRefDate"></span>(세전, %)
                                 </div>
@@ -176,15 +177,6 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
-
-                                <hr style="border:none;height:1px;background:#f1f5f9;margin:18px 0">
-
-                                <div class="disclosure small" style="color:#6b7280;line-height:1.7">
-                                    <div style="font-weight:700;color:#111827;margin-bottom:6px">공시승인번호</div>
-                                    이 내용은 법령 및 내부통제기준에 따른 광고 관련 절차를 준수하였습니다.<br>
-                                    준법감시인 심의필 2025-1660(심의일자 : 2025.07.31)<br>
-                                    유효기일 2025.07.31 ~ 2026.07.30
                                 </div>
                             </div>
                         </div>
@@ -245,6 +237,13 @@
                     </div>
                 </aside>
             </div>
+            <!-- 하단 공시 안내 -->
+            <section class="disclosure-fixed card" aria-label="공시 안내">
+                <h4 class="disclosure-title">공시승인번호</h4>
+                <p class="disclosure-text">이 내용은 법령 및 내부통제기준에 따른 광고 관련 절차를 준수하였습니다.</p>
+                <p class="disclosure-text">준법감시인 심의필 2025-1660(심의일자 : 2025.07.31)</p>
+                <p class="disclosure-text">유효기일 2025.07.31 ~ 2026.07.30</p>
+            </section>
         </section>
         <script>
             /* 데모 데이터 */
@@ -364,4 +363,5 @@
     // 초기 렌더 한 번 실행
     renderTerms();
 </script>
+<!-- 헤더 푸터 불러오기 스크립트 -->
 <script src="product.js"></script>

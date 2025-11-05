@@ -241,7 +241,6 @@ main {
     position: relative;
     padding-right: 360px;
     box-sizing: border-box;
-    height: 690px;
 }
 
 /* 카드 간격이 너무 붙으면 보정 */
@@ -524,20 +523,84 @@ select {
 
 /* =================================== 약관 스타일 ======================================= */
 /* 약관 리스트 */
-.doc-list { list-style:none; margin:0; padding:0; }
-.doc-item {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:16px 4px; border-bottom:1px solid #f1f5f9;
-  cursor:pointer; user-select:none; gap:12px;
+.doc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
-.doc-item:last-child { border-bottom:none; }
-.doc-item .title { color:#111827; font-weight:600; }
-.doc-item .chev  { width:18px; height:18px; flex:0 0 18px; color:#374151; opacity:.7; }
-.doc-item:hover { background:#f9fafb; }
-.doc-item:active { background:#f3f4f6; }
+
+.doc-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 4px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+}
+
+.doc-item:last-child {
+    border-bottom: none;
+}
+
+.doc-item .title {
+    color: #111827;
+    font-weight: 600;
+}
+
+.doc-item .chev {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    color: #374151;
+    opacity: .7;
+}
+
+.doc-item:hover {
+    background: #f9fafb;
+}
+
+.doc-item:active {
+    background: #f3f4f6;
+}
+
 .doc-item:focus-visible {
-  outline:3px solid rgba(220,38,38,.25); outline-offset:2px; border-radius:8px;
+    outline: 3px solid rgba(220, 38, 38, .25);
+    outline-offset: 2px;
+    border-radius: 8px;
 }
 
 /* 링크로 사용할 경우 기본 스타일 제거 */
-.doc-item a { display:flex; align-items:center; justify-content:space-between; width:100%; text-decoration:none; color:inherit; }
+.doc-item a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ==================================== 공시안내 스타일 ===================================== */
+/* 하단 고정 공시 블록 */
+.disclosure-fixed{
+  margin: 22px 360px 8px 0;
+  padding: 20px 30px;
+  border-top: 1px solid #f1f5f9;     /* 스크린샷처럼 상단 라인 */
+}
+.disclosure-title{
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: #111827;
+}
+.disclosure-text{
+  margin: 4px 0;
+  color: #6b7280;                     /* 회색 본문 */
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+/* 모바일 여백 보정 */
+@media (max-width: 920px){
+  .disclosure-fixed{ margin-top: 16px; }
+}
