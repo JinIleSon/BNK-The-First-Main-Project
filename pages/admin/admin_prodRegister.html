@@ -3,55 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../components/button.css">
     <title>admin_prodRegister</title>
-    <style>
-        .btn-register {
-          --bg1: #D91A1A;
-          --bg2: #F03A3A;
-          --shadow: rgba(217,26,26,.45);
-          position: relative;
-          box-sizing: border-box;
-          width: 90px; height: 42px;
-          border: none; border-radius: 8px;
-          color: #fff; cursor: pointer;
-          background: linear-gradient(180deg, var(--bg2), var(--bg1));
-          outline: none;
-          box-shadow: 0 6px 14px -10px var(--shadow);
-          transition:
-            background .18s ease,
-            box-shadow .18s ease,
-            transform .12s ease; /* 프레스만 사용할 예정 */
-          will-change: background, box-shadow, transform;
-        }
-
-        /* Hover: 컬러와 섀도우만 아주 미세하게 (리프트 없음) */
-        .btn-register:hover {
-          background: linear-gradient(180deg, #f24a4a, #d61a1a);
-          box-shadow: 0 8px 18px -12px var(--shadow);
-          transform: none; /* 확실하게 떠오르지 않도록 고정 */
-        }
-
-        /* Active: 살짝 눌리는 프레스 효과만 */
-        .btn-register:active {
-          transform: scale(.98);
-          box-shadow: 0 4px 10px -10px var(--shadow);
-        }
-
-        /* 키보드 포커스 접근성 */
-        .btn-register:focus-visible {
-          outline: 3px solid rgba(240,58,58,.55);
-          outline-offset: 2px;
-        }
-
-        /* 모션 최소화 존중 */
-        @media (prefers-reduced-motion: reduce) {
-          .btn-register { transition: none !important; }
-        }
-
-        @media (prefers-color-scheme: dark) {
-          .btn-register { --shadow: rgba(240,58,58,.35); }
-        }
-      </style>
       <style>
         .input-suffix {
           position: relative;
@@ -460,7 +413,7 @@
         <div style="display: flex;">
           <div style="font-size: 16px; color: #4B5563;">은행 예금·적금 상품을 등록하고 금리 및 상태를 설정할 수 있습니다.</div>
           <div style="display: flex; margin-left: auto; margin-right: 10px;">
-            <button style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
+            <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
               <div style="display: flex; gap: 8px; justify-content: center; align-content: center;">
                 <div style="margin-top: 2px;">
                   <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -623,7 +576,7 @@
       <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
         <div style="display: flex; gap: 10px; justify-content: space-between;">
           <div>
-            <button id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
+            <button class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
               <div style="display: flex; gap: 8px; justify-content: center;">
                 <div>
                   <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -638,7 +591,7 @@
           </div>
           <div style="display: flex; gap: 10px;">
             <div>
-              <button style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
+              <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
             </div>
             <div>
               <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
