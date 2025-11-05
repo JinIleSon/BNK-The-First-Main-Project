@@ -264,7 +264,7 @@
                 </div>
             </div>
             <div id="summary-cards" style="display: flex; margin-top: 25px;">
-              <a href="#" style="text-decoration: none;">
+              <a href="#" id="transfer-card" style="text-decoration: none;">
                 <div class="menu-card" style="background-color: white; width: 380.5px; height: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                   <div style="padding: 21px;">
                     <div>
@@ -701,6 +701,19 @@
         });
     </script>
     <script>
+    // 요약 카드의 '계좌이체' 카드 클릭 시 모달 열기
+    document.addEventListener('DOMContentLoaded', () => {
+      const transferCard = document.getElementById('transfer-card'); // ← 방금 단 id
+      if (transferCard) {
+        transferCard.addEventListener('click', (e) => {
+          e.preventDefault();          // 앵커 기본 동작 막기
+          overlay.classList.add('show'); // 모달 보이기
+          resetFlow();                 // 1단계로 초기화
+        });
+      }
+    });
+  </script>
+    <script>
         window.addEventListener('DOMContentLoaded', () => {
         const BADGE = {
             'Royal VIP': { color:'white', bg:'#3c4249', w:57, h:22 },
@@ -1049,5 +1062,483 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+<!-- ① head에 추가: 모달/폼 스타일 -->
+<style>
+  :root{
+    --bnk-red:#D91A1A;
+    --bnk-red-2:#F03A3A;
+    --ink:#111827;
+    --sub:#4B5563;
+    --line:#E5E7EB;
+    --panel:#FFFFFF;
+    --bg:#F6F6F8;
+  }
+  /* 오버레이 */
+  .bnk-transfer__overlay{
+    position:fixed; inset:0; background:rgba(17,24,39,.55);
+    display:none; align-items:flex-end; justify-content:center; z-index:9990;
+  }
+  /* 컨테이너(바텀시트형) */
+  .bnk-transfer__sheet{
+    width:720px; max-width:100%; background:#111827; color:#fff;
+    border-top-left-radius:16px; border-top-right-radius:16px;
+    box-shadow:0 -12px 40px rgba(0,0,0,.35); overflow:hidden;
+    /* BNK 느낌 살리기: 상단 바에 레드 그라데이션 */
+    position:relative;
+  }
+  .bnk-transfer__topbar{
+    height:6px; background:linear-gradient(90deg,var(--bnk-red-2),var(--bnk-red));
+  }
+  .bnk-transfer__body{ padding:28px 24px 20px; }
+  .bnk-transfer__title{ font-size:24px; font-weight:800; letter-spacing:-.3px; }
+  .bnk-transfer__subtitle{ margin-top:8px; color:#cbd5e1; font-size:14px; }
+
+  /* 입력 카드(다크 안쪽 화이트 입력 UI로 토스 느낌) */
+  .bnk-inputcard{
+    background:#0f172a; border:1px solid #1f2937; border-radius:12px;
+    padding:18px; margin-top:18px;
+  }
+  .bnk-label{ color:#9CA3AF; font-size:13px; margin-bottom:6px; }
+  .bnk-field{
+    display:flex; align-items:center; gap:10px;
+    background:#111827; border:1px solid #374151; border-radius:10px;
+    padding:14px 12px;
+  }
+  .bnk-field input, .bnk-field select{
+    background:transparent; border:none; outline:none; color:#fff; width:100%;
+    font-size:18px;
+  }
+  .bnk-help{ margin-top:8px; color:#94a3b8; font-size:12px; }
+  .bnk-banktag{
+    padding:6px 10px; border-radius:999px; background:#0b1220; border:1px solid #334155;
+    font-size:12px; color:#cbd5e1;
+  }
+
+  /* 액션 바 */
+  .bnk-actions{ display:flex; gap:10px; margin-top:20px; }
+  .bnk-btn{
+    flex:1; height:48px; border:none; border-radius:10px; cursor:pointer;
+    font-weight:700; font-size:16px; transition:.15s ease; 
+  }
+  .bnk-btn--ghost{ background:#0b1220; color:#e5e7eb; border:1px solid #334155; }
+  .bnk-btn--primary{
+    background:linear-gradient(180deg,var(--bnk-red-2),var(--bnk-red));
+    color:#fff; box-shadow:0 6px 14px -10px rgba(217,26,26,.45);
+  }
+  .bnk-btn:disabled{ opacity:.45; cursor:not-allowed; }
+
+  /* 진행 인디케이터 */
+  .bnk-steps{ display:flex; gap:6px; align-items:center; margin-top:6px;}
+  .bnk-dot{ width:6px;height:6px;border-radius:999px;background:#334155; }
+  .bnk-dot.active{ background:#fda4a4; }
+
+  /* 확인 단계 큰 타이포 */
+  .bnk-confirm{
+    text-align:center; padding:22px 12px 10px;
+    font-size:28px; line-height:1.35; font-weight:800;
+  }
+  .bnk-kv{ display:flex; justify-content:space-between; color:#cbd5e1; font-size:14px; margin:8px 0;}
+  .bnk-divider{ height:1px; background:#1f2937; margin:14px 0; }
+
+  /* 상단 닫기 버튼 */
+  .bnk-close{
+    position:absolute; right:12px; top:12px; width:36px;height:36px; border-radius:10px;
+    display:grid; place-items:center; background:#0b1220; border:1px solid #334155; cursor:pointer;
+  }
+
+  /* 접근성 & 애니메이션 */
+  .bnk-transfer__overlay.show{ display:flex; }
+  .bnk-transfer__sheet{ transform:translateY(8%); opacity:0; transition:.18s ease; }
+  .bnk-transfer__overlay.show .bnk-transfer__sheet{ transform:translateY(0); opacity:1; }
+  @media (max-width: 640px){
+    .bnk-transfer__sheet{ border-radius:14px 14px 0 0; }
+  }
+
+  /* (옵션) 에러 텍스트 */
+  .bnk-error{ color:#fecaca; font-size:12px; margin-top:6px; display:none;}
+  .bnk-error.show{ display:block; }
+  /* 드롭다운 내 option 글자색을 강제로 어둡게 */
+  .bnk-field select option,
+  .bnk-field select optgroup {
+    color: #111827;  /* 검정 */
+  }
+
+  /* (선택) 일부 UA에서 배경도 설정하고 싶다면 — 지원 안 하는 브라우저도 있음 */
+  .bnk-field select option {
+    background: #ffffff; /* 기본 흰 배경 */
+  }
+  /* 오버레이: 페이드 인/아웃 */
+  .bnk-transfer__overlay{
+    position:fixed; inset:0; 
+    background:rgba(17,24,39,.55);
+    display:flex; align-items:flex-end; justify-content:center;
+    z-index:9990;
+    opacity:0; visibility:hidden;
+    transition: opacity .28s ease;
+  }
+
+  .bnk-transfer__overlay.show{
+    opacity:1; visibility:visible;
+  }
+
+  /* 시트: 아래(화면 밖)에서 위로 슬라이드 인 */
+  .bnk-transfer__sheet{
+    width:720px; max-width:100%;
+    background:#111827; color:#fff;
+    border-top-left-radius:16px; border-top-right-radius:16px;
+    box-shadow:0 -12px 40px rgba(0,0,0,.35); overflow:hidden;
+    position:relative;
+
+    transform: translateY(100%); /* 처음엔 화면 아래 */
+    opacity:0;
+    transition:
+      transform 1s cubic-bezier(.22,.61,.36,1),
+      opacity .24s ease;
+    will-change: transform, opacity;
+  }
+
+  .bnk-transfer__overlay.show .bnk-transfer__sheet{
+    transform: translateY(0);
+    opacity:1;
+  }
+
+  /* 모션 최소화 사용자 배려 */
+  @media (prefers-reduced-motion: reduce){
+    .bnk-transfer__overlay{ transition:none; }
+    .bnk-transfer__sheet{ transition:none; transform:none; opacity:1; }
+  }
+  .bnk-transfer__overlay {
+    background: rgba(17, 24, 39, 0.35);
+  }
+
+  .bnk-transfer__sheet {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* 1) 배경 어둠은 유지하되 흐림감 제거 */
+  .bnk-transfer__overlay{
+    background: rgba(0,0,0,.28) !important;   /* 살짝 더 투명 → 내부 요소가 또렷 */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* 2) 패널/텍스트 렌더링 선명도 ↑ + 과한 그림자 ↓ */
+  .bnk-transfer__sheet{
+    -webkit-font-smoothing: antialiased;  /* 다크 배경에서 글자 경계 선명 */
+    text-rendering: optimizeLegibility;
+    box-shadow: 0 -8px 24px rgba(0,0,0,.32); /* 번짐 줄인 샤도우 */
+  }
+
+  /* 3) 카드/입력 영역 대비 강화(배경 조금 더 밝고, 테두리 선명) */
+  .bnk-inputcard{
+    background:#0c1220 !important;
+    border-color:#2b3340 !important;
+  }
+  .bnk-field{
+    background:#0e1524 !important;
+    border-color:#3a4354 !important;
+  }
+  .bnk-label{ color:#d1d5db !important; }
+  .bnk-help{ color:#a9b4c4 !important; }
+
+  /* 4) placeholder도 흐리게 보이지 않게 불투명도 고정 */
+  .bnk-field input::placeholder,
+  .bnk-field select::placeholder{
+    color:#9aa3b2; opacity:1;
+  }
+
+  /* 5) 버튼 그림자 살짝 축소해 가장자리 번짐 최소화 */
+  .bnk-btn--primary{
+    box-shadow: 0 6px 14px -12px rgba(217,26,26,.45);
+  }
+  
+</style>
+
+<!-- ② "빠른 서비스" 카드 묶음 안에 계좌이체 카드 하나 추가 -->
+<!-- (기존 4개 카드 아래쪽에 아래 <a> 하나를 그대로 추가) -->
+<a href="javascript:void(0)" class="menu-link" id="quick-transfer-card">
+  <div class="menu-card" style="display:flex;justify-content:center;align-items:center;width:150px;height:84px;box-sizing:border-box;background-color:#F9FAFB;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.05); border:1px solid #E5E7EB;">
+    <div style="text-align:center">
+      <div style="display:flex;justify-content:center;height:24px;margin-bottom:2px;">
+        <!-- 양방향 화살표 아이콘 -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 5h7.586L12.293 2.707A1 1 0 1 1 13.707 1.293l4 4a1 1 0 0 1 0 1.414l-4 4A1 1 0 1 1 12.293 9.293L14.586 7H7a1 1 0 1 1 0-2Z" fill="#4B5563"/>
+          <path d="M17 19H9.414l2.293 2.293a1 1 0 1 1-1.414 1.414l-4-4a1 1 0 0 1 0-1.414l4-4a1 1 0 1 1 1.414 1.414L9.414 17H17a1 1 0 1 1 0 2Z" fill="#4B5563"/>
+        </svg>
+      </div>
+      <div style="font-size:14px;color:#374151;">계좌이체</div>
+      <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">빠른 송금 서비스</div>
+    </div>
+  </div>
+</a>
+
+<!-- ③ main 끝나기 직전(</main> 위) 모달 HTML 추가 -->
+<div class="bnk-transfer__overlay" id="bnkTransfer">
+  <div class="bnk-transfer__sheet" role="dialog" aria-modal="true" aria-labelledby="bnkTransferTitle">
+    <div class="bnk-transfer__topbar"></div>
+    <button class="bnk-close" id="bnkClose" aria-label="닫기">
+      <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 5l10 10M15 5L5 15" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <div class="bnk-transfer__body">
+      <div class="bnk-steps" aria-hidden="true">
+        <span class="bnk-dot active" id="dot1"></span>
+        <span class="bnk-dot" id="dot2"></span>
+        <span class="bnk-dot" id="dot3"></span>
+      </div>
+      <div class="bnk-transfer__title" id="bnkTransferTitle">어떤 계좌로 보낼까요?</div>
+      <div class="bnk-transfer__subtitle" id="bnkSubtitle">계좌번호를 입력하면 은행을 찾아드릴게요.</div>
+
+      <!-- Step 1: 수취계좌 -->
+      <section class="bnk-inputcard" id="step1">
+        <!-- (추가) 수취인 이름 -->
+        <div class="bnk-label" style="margin-top:14px;">수취인 이름 (선택)</div>
+        <div class="bnk-field">
+          <input id="recvName" autocomplete="off" placeholder="예: 김민수" />
+        </div>
+        <div class="bnk-help" style="margin-bottom: 10px;">입력하시면 확인 단계에 표시됩니다. 작성하지 않으면 수취인으로 표기됩니다.</div>
+        <div class="bnk-label">계좌번호 입력</div>
+        <div class="bnk-field">
+          <input id="recvAccount" inputmode="numeric" autocomplete="off" placeholder="하이픈 없이 숫자만" />
+          <span class="bnk-banktag" id="bankBadge" style="width: 70px; display: flex; justify-content: center;">은행 선택</span>
+        </div>
+        <div class="bnk-help">예: 0102596894009 → NH농협 자동 인식</div>
+        <div class="bnk-error" id="accErr">유효한 계좌번호를 입력해 주세요.</div>
+
+        <div class="bnk-label" style="margin-top:14px;">은행 선택</div>
+        <div class="bnk-field">
+          <select id="bankSelect" aria-label="은행 선택">
+            <option value="">자동 선택(권장)</option>
+            <option>NH농협</option>
+            <option>KB국민</option>
+            <option>신한</option>
+            <option>우리</option>
+            <option>IBK기업</option>
+            <option>하나</option>
+            <option>BNK부산</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Step 2: 금액 -->
+      <section class="bnk-inputcard" id="step2" style="display:none;">
+        <div class="bnk-label">얼마나 보낼까요?</div>
+        <div class="bnk-field">
+          <input id="amount" inputmode="numeric" placeholder="0" />
+          <span style="color:#cbd5e1;font-size:18px;">원</span>
+        </div>
+        <div class="bnk-help">최대 · 2,000,000원 입력 (예시) · 출금계좌 잔액 5,193,021원</div>
+        <div class="bnk-error" id="amtErr">한도를 초과했거나 금액 형식이 올바르지 않습니다.</div>
+      </section>
+
+      <!-- Step 3: 확인 -->
+      <section class="bnk-inputcard" id="step3" style="display:none;">
+        <div class="bnk-confirm">
+          <span id="confirmName" style="color:#60a5fa;">수취인</span>님에게<br/>
+          <span id="confirmAmt">0원</span>을 보낼까요?
+        </div>
+        <div class="bnk-divider"></div>
+        <div class="bnk-kv"><span>출금 계좌</span><strong>내 자립예탁금 계좌</strong></div>
+        <div class="bnk-kv"><span>입금 은행/계좌</span><strong id="confirmBank">-</strong></div>
+        <div class="bnk-kv"><span>수수료</span><strong>평생 수수료 무료</strong></div>
+      </section>
+
+      <!-- 액션버튼 -->
+      <div class="bnk-actions">
+        <button class="bnk-btn bnk-btn--ghost" id="btnPrev">이전</button>
+        <button class="bnk-btn bnk-btn--primary" id="btnNext">다음</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ body 맨 아래 JS: 열기/닫기 + 단계 진행 + 포맷팅/검증 -->
+<script>
+  // 열기/닫기
+  const openBtn = document.getElementById('quick-transfer-card');
+  const overlay = document.getElementById('bnkTransfer');
+  const closeBtn = document.getElementById('bnkClose');
+  openBtn?.addEventListener('click', () => { overlay.classList.add('show'); resetFlow(); });
+  function closeOverlaySmooth() {
+  const sheet = overlay.querySelector('.bnk-transfer__sheet');
+  if (!sheet) return;
+
+  // 닫히는 애니메이션: translateY(100%)
+  sheet.style.transform = 'translateY(100%)';
+  sheet.style.opacity = '0';
+  overlay.style.opacity = '0';
+
+  // 애니메이션 종료 후 완전히 숨김 처리
+  setTimeout(() => {
+    overlay.classList.remove('show');
+    sheet.style.transform = '';
+    sheet.style.opacity = '';
+    overlay.style.opacity = '';
+  }, 400); // transition 시간과 동일
+}
+
+// 닫기 버튼 / 오버레이 클릭 시
+closeBtn.addEventListener('click', closeOverlaySmooth);
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) closeOverlaySmooth();
+});
+
+  // 단계 요소
+  const steps = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
+  const dots = [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')];
+  const title = document.querySelector('.bnk-transfer__title');
+  const subtitle = document.getElementById('bnkSubtitle');
+  const btnPrev = document.getElementById('btnPrev');
+  const btnNext = document.getElementById('btnNext');
+
+  // 입력 요소
+  const recvAccount = document.getElementById('recvAccount');
+  const bankBadge = document.getElementById('bankBadge');
+  const bankSelect = document.getElementById('bankSelect');
+  const accErr = document.getElementById('accErr');
+
+  const recvNameEl  = document.getElementById('recvName');
+  const amount = document.getElementById('amount');
+  const amtErr = document.getElementById('amtErr');
+
+  const confirmName = document.getElementById('confirmName');
+  const confirmAmt = document.getElementById('confirmAmt');
+  const confirmBank = document.getElementById('confirmBank');
+
+  let step = 0;
+
+  function resetFlow(){
+    step = 0;
+    steps.forEach((s,i)=> s.style.display = i===0 ? 'block':'none');
+    dots.forEach((d,i)=> d.classList.toggle('active', i===0));
+    title.textContent = '어떤 계좌로 보낼까요?';
+    subtitle.textContent = '계좌번호를 입력해주세요.';
+    btnPrev.textContent = '닫기';
+    btnNext.textContent = '다음';
+    recvNameEl.value = '';
+    recvAccount.value = '';
+    bankSelect.value = '';
+    bankBadge.textContent = '은행 선택';
+    accErr.classList.remove('show');
+    amount.value = '';
+    amtErr.classList.remove('show');
+    confirmName.textContent = '수취인';
+    confirmAmt.textContent = '0원';
+    confirmBank.textContent = '-';
+  }
+
+  // 간단 자동 은행 인식(데모): 앞자리 규칙 예시
+  function detectBank(acct){
+    if(/^010/.test(acct)) return 'NH농협';
+    if(/^101/.test(acct)) return 'BNK부산';
+    if(/^004/.test(acct)) return 'KB국민';
+    return '';
+  }
+  // ① 계좌 입력 시: '자동 선택(권장)' 상태일 때만 자동 인식으로 배지 업데이트
+  recvAccount.addEventListener('input', ()=>{
+    recvAccount.value = recvAccount.value.replace(/\D/g,'');
+    const auto = detectBank(recvAccount.value);
+
+    // 드롭다운이 비어있을 때(자동 선택)만 배지에 자동 인식 결과 반영
+    if (!bankSelect.value) {
+      bankBadge.textContent = auto || '은행 선택';
+    }
+
+    // 자동 인식이 되었고 드롭다운도 비어있으면 드롭다운 값도 맞춰줌(편의)
+    if (auto && !bankSelect.value) {
+      bankSelect.value = auto;
+    }
+  });
+
+  // ② 드롭다운 변경 시: 배지를 즉시 선택한 은행으로 동기화
+  bankSelect.addEventListener('change', () => {
+    const v = (bankSelect.value || '').trim();
+
+    if (v) {
+      // 사용자가 직접 고른 은행 → 배지에 그대로 표시
+      bankBadge.textContent = v;
+    } else {
+      // '자동 선택(권장)'으로 되돌리면 자동 인식(또는 기본 문구)로 복원
+      const auto = detectBank(recvAccount.value);
+      bankBadge.textContent = auto || '은행 선택';
+    }
+  });
+
+  // 금액 포맷
+  function formatWon(v){
+    if(!v) return '0원';
+    return parseInt(v,10).toLocaleString('ko-KR')+'원';
+  }
+  amount.addEventListener('input', ()=>{
+    amount.value = amount.value.replace(/\D/g,'');
+  });
+
+  // 버튼 동작
+  btnPrev.addEventListener('click', ()=>{
+    if(step===0){ overlay.classList.remove('show'); return; }
+    step--;
+    updateStepUI();
+  });
+
+  btnNext.addEventListener('click', ()=>{
+    if(step===0){
+      // 계좌 검증
+      const acctOk = recvAccount.value.length >= 10;
+      if(!acctOk){ accErr.classList.add('show'); return; }
+      accErr.classList.remove('show');
+      step=1;
+      updateStepUI();
+    }else if(step===1){
+      const won = parseInt(amount.value||'0',10);
+      const limit = 2000000; // 데모 한도
+      if(!(won>0) || won>limit){ amtErr.classList.add('show'); return; }
+      amtErr.classList.remove('show');
+      // 확인 데이터 채우기(수취인 이름은 데모로 계좌 끝4자리 사용)
+      const name = (recvNameEl.value || '').trim() || '수취인';
+      confirmName.textContent = name;
+      confirmAmt.textContent = formatWon(won);
+      confirmBank.textContent = `${bankSelect.value||bankBadge.textContent||'-'} ${recvAccount.value}`;
+      step=2;
+      updateStepUI(true);
+      btnNext.textContent = '보내기';
+    }else{
+      // 실제 송금 API가 없으므로 데모 완료 처리
+      btnNext.disabled = true;
+      btnNext.textContent = '처리 중...';
+      setTimeout(()=>{
+        btnNext.disabled = false;
+        overlay.classList.remove('show');
+        alert('이체가 완료되었습니다.');
+      },700);
+    }
+  });
+
+  function updateStepUI(final=false){
+    steps.forEach((s,i)=> s.style.display = i===step ? 'block':'none');
+    dots.forEach((d,i)=> d.classList.toggle('active', i===step));
+    if(step===0){
+      title.textContent = '어떤 계좌로 보낼까요?';
+      subtitle.textContent = '계좌번호를 입력하면 은행을 찾아드릴게요.';
+      btnPrev.textContent = '닫기';
+      btnNext.textContent = '다음';
+    }
+    if(step===1){
+      title.textContent = '얼마나 보낼까요?';
+      subtitle.textContent = '최대 한도 내에서 금액을 입력해 주세요.';
+      btnPrev.textContent = '이전';
+      btnNext.textContent = '다음';
+      amount.focus();
+    }
+    if(step===2){
+      title.textContent = '';
+      subtitle.textContent = '';
+      btnPrev.textContent = '이전';
+      btnNext.textContent = final ? '보내기' : '다음';
+    }
+  }
+</script>
+
 </body>
 </html>

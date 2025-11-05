@@ -107,6 +107,45 @@
         /* 가능하면 전체 기본 글자도 변수로 */
         body { color: var(--text-on-bg); background: var(--bg); }
     </style>
+    <!-- 언어 선택 모달 -->
+<style>
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(17,24,39,.45);
+    display:none; align-items:center; justify-content:center; z-index:10000;
+  }
+  .modal-backdrop.show{ display:flex; }
+  .modal{
+    width: 440px; background:#fff; border-radius:12px; border:1px solid #E5E7EB;
+    box-shadow: 0 12px 36px rgba(0,0,0,.18); overflow:hidden;
+  }
+  .modal-header{
+    padding:18px 20px; border-bottom:1px solid #E5E7EB; font-size:16px; font-weight:600; color:#111827;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .modal-body{ padding:14px 20px 6px 20px; }
+  .lang-row{
+    display:flex; align-items:center; gap:12px; padding:12px; border-radius:10px;
+    border:1px solid #E5E7EB; cursor:pointer; margin-bottom:10px;
+  }
+  .lang-row:hover{ background:#F9FAFB; }
+  .lang-dot{ width:18px; height:18px; border-radius:999px; background:#E5E7EB; flex:0 0 auto;}
+  .lang-row.active .lang-dot{ background:#6366F1; }
+  .lang-title{ font-size:15px; color:#111827; }
+  .lang-desc{ font-size:12px; color:#6B7280; margin-top:2px; }
+  .modal-footer{ padding:14px 20px 18px; display:flex; gap:8px; justify-content:flex-end; }
+  .btn{ padding:10px 14px; border-radius:8px; font-size:14px; border:1px solid #D1D5DB; background:#fff; cursor:pointer; }
+  .btn-primary{ background:#4F46E5; color:#fff; border-color:#4F46E5; }
+  /* 다크 테마 대응 */
+  html[data-theme="dark"] .modal{ background:#111827; border-color:#1F2937; }
+  html[data-theme="dark"] .modal-header{ border-color:#1F2937; color:#E5E7EB; }
+  html[data-theme="dark"] .lang-row{ border-color:#1F2937; }
+  html[data-theme="dark"] .lang-row:hover{ background:#0f1115; }
+  html[data-theme="dark"] .lang-title{ color:#E5E7EB; }
+  html[data-theme="dark"] .lang-desc{ color:#9CA3AF; }
+  html[data-theme="dark"] .btn{ background:#111827; color:#E5E7EB; border-color:#374151; }
+  html[data-theme="dark"] .btn-primary{ background:#4F46E5; border-color:#4F46E5; }
+</style>
+
 </head>
 <body>
     <header>
@@ -357,7 +396,7 @@
                 </div>
                 <div style="margin-top: 15px; box-sizing: border-box;">
                     <a href="#" style="text-decoration: none;">
-                        <div style="box-sizing: border-box; background-color: white; width: 100%; height: 90px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                        <div id="lang-card" style="box-sizing: border-box; background-color: white; width: 100%; height: 90px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                             <div style="padding: 21px;">
                                 <div>
                                     <div style="display: flex;">
@@ -454,7 +493,7 @@
                                             </div>
                                             <div style="margin-left: 15px;">
                                                 <div style="color: #2B2F36; font-size: 16px;">고객센터 문의</div>
-                                                <div style="color: #6B7280; font-size: 14px;">1588-6200 (평일 09:00~18:00)</div>
+                                                <div style="color: #6B7280; font-size: 14px;">1588-6200 <span class="i18n-text">(평일 09:00~18:00)</span></div>
                                             </div>
                                             <div style="display: flex; align-items: center; margin-left: auto;">
                                                 <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -549,9 +588,11 @@
     <script>
     // header 불러오기
     fetch('/layouts/header.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('header').innerHTML = data;
+        .then(r => r.text())
+        .then(html => {
+            document.getElementById('header').innerHTML = html;
+            // ★ 헤더가 붙은 뒤 현재 언어로 다시 번역
+            applyLanguage(getSavedLang());
         });
     </script>
     <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
@@ -690,6 +731,423 @@
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
   });
+</script>
+<div id="lang-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="lang-modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="lang-modal-title">언어 설정</span>
+      <button id="lang-close" class="btn" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="lang-row" data-lang="ko" id="row-ko">
+        <div class="lang-dot"></div>
+        <div>
+          <div class="lang-title">한국어</div>
+          <div class="lang-desc">앱을 한국어로 표시합니다.</div>
+        </div>
+      </div>
+      <div class="lang-row" data-lang="en" id="row-en">
+        <div class="lang-dot"></div>
+        <div>
+          <div class="lang-title">English</div>
+          <div class="lang-desc">Display the app in English.</div>
+        </div>
+      </div>
+      <div class="lang-row" data-lang="zh" id="row-zh">
+        <div class="lang-dot"></div>
+        <div>
+            <div class="lang-title">中文</div>
+            <div class="lang-desc">以中文显示应用。</div>
+        </div>
+    </div>
+    <div class="lang-row" data-lang="ja" id="row-ja">
+        <div class="lang-dot"></div>
+        <div>
+            <div class="lang-title">日本語</div>
+            <div class="lang-desc">アプリを日本語で表示します。</div>
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" id="lang-cancel">취소</button>
+      <button class="btn btn-primary" id="lang-apply">적용</button>
+    </div>
+  </div>
+</div>
+<script>
+/** 1) 의미 키 기반 번역 사전 */
+const I18N = {
+  title_settings:          { ko:'설정', en:'Settings', zh:'设置', ja:'設定' },
+  subtitle_settings:       { ko:'계정 및 개인정보를 안전하게 관리하세요.', en:'Manage your account and personal information securely.', zh:'管理您的账户和个人信息。', ja:'アカウントと個人情報を安全に管理します。' },
+
+  sec_account:             { ko:'계정 정보', en:'Account', zh:'账户', ja:'アカウント' },
+  item_edit_profile:       { ko:'사용자 정보 수정', en:'Edit Profile', zh:'编辑资料', ja:'プロフィールを編集' },
+  item_edit_profile_desc:  { ko:'이름, 연락처, 이메일, 프로필 사진 변경', en:'Change name, phone, email, profile photo', zh:'更改姓名、电话、邮箱、头像', ja:'名前、連絡先、メール、プロフィール写真の変更' },
+
+  sec_security:            { ko:'보안 설정', en:'Security', zh:'安全', ja:'セキュリティ' },
+  item_change_pw:          { ko:'비밀번호 변경', en:'Change Password', zh:'更改密码', ja:'パスワードの変更' },
+  item_change_pw_desc:     { ko:'로그인 비밀번호 변경 및 보안 강화', en:'Update login password and strengthen security', zh:'更新登录密码并提升安全性', ja:'ログインパスワードの更新とセキュリティ強化' },
+  item_bio:                { ko:'생체인증 설정', en:'Biometric Authentication', zh:'生物识别设置', ja:'生体認証の設定' },
+  item_bio_desc:           { ko:'지문, 얼굴인식 등 생체인증 관리', en:'Manage fingerprint / face ID', zh:'管理指纹 / 面容ID', ja:'指紋・顔認証などの管理' },
+  item_2sv:                { ko:'2단계 인증', en:'Two-Step Verification', zh:'两步验证', ja:'2段階認証' },
+  item_2sv_desc:           { ko:'SMS, OTP 등 추가 보안 인증 설정', en:'Set up extra verification (SMS, OTP)', zh:'设置额外验证（短信、一次性密码）', ja:'追加認証（SMS、OTP）の設定' },
+
+  sec_prefs:               { ko:'환경 설정', en:'Preferences', zh:'偏好设置', ja:'環境設定' },
+  item_notif:              { ko:'알림 설정', en:'Notifications', zh:'通知设置', ja:'通知設定' },
+  item_notif_desc:         { ko:'푸시 알림, 이메일 알림 관리', en:'Manage push & email notifications', zh:'管理推送与邮件通知', ja:'プッシュ通知・メール通知の管理' },
+  item_dark:               { ko:'다크 모드', en:'Dark Mode', zh:'深色模式', ja:'ダークモード' },
+  item_dark_desc:          { ko:'어두운 테마 사용', en:'Use dark theme', zh:'使用深色主题', ja:'ダークテーマを使用' },
+  item_lang:               { ko:'언어 설정', en:'Language', zh:'语言', ja:'言語' },
+  item_lang_value_ko:      { ko:'한국어', en:'Korean', zh:'韩语', ja:'韓国語' },
+  item_lang_value_en:      { ko:'영어',   en:'English', zh:'英语', ja:'英語' },
+  item_cc_time: {
+    ko: '(평일 09:00~18:00)',
+    en: '(Weekdays 09:00–18:00)',
+    zh: '(工作日 09:00–18:00)',
+    ja: '(平日 09:00〜18:00)'
+  },
+
+  sec_support:             { ko:'고객 지원', en:'Support', zh:'客服支持', ja:'サポート' },
+  item_help:               { ko:'도움말 및 FAQ', en:'Help & FAQ', zh:'帮助与常见问题', ja:'ヘルプとFAQ' },
+  item_help_desc:          { ko:'자주 묻는 질문과 사용 가이드', en:'Common questions and guides', zh:'常见问题与使用指南', ja:'よくある質問とガイド' },
+  item_cc:                 { ko:'고객센터 문의', en:'Contact Center', zh:'客服中心', ja:'コンタクトセンター' },
+
+  sec_account_mgmt:        { ko:'계정 관리', en:'Account Management', zh:'账户管理', ja:'アカウント管理' },
+  item_logout:             { ko:'로그아웃', en:'Log Out', zh:'退出登录', ja:'ログアウト' },
+  item_logout_desc:        { ko:'현재 계정에서 로그아웃', en:'Sign out of this account', zh:'退出当前账户', ja:'このアカウントからサインアウト' },
+  item_delete:             { ko:'회원 탈퇴', en:'Delete Account', zh:'删除账户', ja:'アカウント削除' },
+  item_delete_desc:        { ko:'계정 및 모든 데이터가 삭제됩니다', en:'Your account and all data will be deleted.', zh:'您的账户及所有数据将被删除。', ja:'アカウントとすべてのデータが削除されます。' },
+
+  // 모달
+  modal_language:          { ko:'언어 설정', en:'Language', zh:'语言', ja:'言語' },
+  modal_close:             { ko:'닫기', en:'Close', zh:'关闭', ja:'閉じる' },
+  modal_cancel:            { ko:'취소', en:'Cancel', zh:'取消', ja:'キャンセル' },
+  modal_apply:             { ko:'적용', en:'Apply', zh:'应用', ja:'適用' },
+  modal_row_ko_title:      { ko:'한국어', en:'Korean', zh:'韩语', ja:'韓国語' },
+  modal_row_ko_desc:       { ko:'앱을 한국어로 표시합니다.', en:'Show the app in Korean.', zh:'以韩语显示应用。', ja:'アプリを韓国語で表示します。' },
+  modal_row_en_title:      { ko:'영어', en:'English', zh:'英语', ja:'英語' },
+  modal_row_en_desc:       { ko:'앱을 영어로 표시합니다.', en:'Show the app in English.', zh:'以英语显示应用。', ja:'アプリを英語で表示します。' },
+  modal_row_zh_title:      { ko:'중국어', en:'Chinese', zh:'中文', ja:'中国語' },
+  modal_row_zh_desc:       { ko:'앱을 중국어로 표시합니다.', en:'Show the app in Chinese.', zh:'以中文显示应用。', ja:'アプリを中国語で表示します。' },
+  modal_row_ja_title:      { ko:'일본어', en:'Japanese', zh:'日语', ja:'日本語' },
+  modal_row_ja_desc:       { ko:'앱을 일본어로 표시합니다.', en:'Show the app in Japanese.', zh:'以日语显示应用。', ja:'アプリを日本語で表示します。' },
+};
+// === 헤더 i18n 추가 ===
+const I18N_HEADER = {
+  /* 1차 GNB */
+  nav_deposit:      { ko:'예금',     en:'Deposit',         zh:'存款',        ja:'預金' },
+  nav_fund:         { ko:'펀드',     en:'Funds',           zh:'基金',        ja:'ファンド' },
+  nav_fx:           { ko:'외환',     en:'FX',              zh:'外汇',        ja:'外為' },
+  nav_card:         { ko:'카드',     en:'Cards',           zh:'卡',          ja:'カード' },
+  nav_insurance:    { ko:'보험',     en:'Insurance',       zh:'保险',        ja:'保険' },
+  nav_retire:       { ko:'퇴직연금', en:'Retirement Plan', zh:'退休养老金',  ja:'退職年金' },
+  nav_auth_center:  { ko:'인증센터', en:'Certificates',    zh:'认证中心',    ja:'認証センター' },
+
+  /* ===== 예금 ===== */
+  dep_title_td:     { ko:'정기예금', en:'Time Deposit', zh:'定期存款', ja:'定期預金' },
+  dep_bnk_td:       { ko:'부산은행 정기예금', en:'BNK Time Deposit', zh:'釜山银行定期存款', ja:'BNK定期預金' },
+  dep_high_td:      { ko:'고금리 정기예금', en:'High-Yield Time Deposit', zh:'高利率定期存款', ja:'高金利定期預金' },
+  dep_flex_saving:  { ko:'자유적립예금', en:'Flexible Saving', zh:'自由积蓄存款', ja:'自由積立預金' },
+
+  dep_title_free:   { ko:'자유예금', en:'Demand Deposit', zh:'活期存款', ja:'普通預金' },
+  dep_demand:       { ko:'보통예금', en:'Ordinary Deposit', zh:'普通存款', ja:'普通預金' },
+  dep_current:      { ko:'당좌예금', en:'Checking Account', zh:'当座存款', ja:'当座預金' },
+  dep_corp_demand:  { ko:'기업자유예금', en:'Corporate Demand', zh:'企业活期', ja:'法人普通預金' },
+
+  dep_title_special:{ ko:'특수예금', en:'Special Deposit', zh:'特殊存款', ja:'特殊預金' },
+  dep_fx:           { ko:'외화예금', en:'FX Deposit', zh:'外币存款', ja:'外貨預金' },
+  dep_tax:          { ko:'세금우대예금', en:'Tax-Favored Deposit', zh:'税收优惠存款', ja:'税優遇預金' },
+  dep_housing:      { ko:'정기주택마련저축', en:'Housing Savings', zh:'住房储蓄', ja:'住宅積立' },
+
+  /* ===== 펀드 ===== */
+  fund_title_equity:{ ko:'주식형', en:'Equity', zh:'股票型', ja:'株式型' },
+  fund_kor_index:   { ko:'국내지수 추종', en:'KOSPI Index Tracker', zh:'韩国指数跟踪', ja:'国内指数連動' },
+  fund_dividend:    { ko:'배당주 펀드', en:'Dividend Stocks', zh:'红利股基金', ja:'配当株ファンド' },
+  fund_green:       { ko:'친환경 테마', en:'Green Theme', zh:'绿色主题', ja:'グリーンテーマ' },
+
+  fund_title_mix:   { ko:'채권/혼합형', en:'Bond / Mixed', zh:'债券/混合型', ja:'債券/バランス' },
+  fund_kTB:         { ko:'중단기 국공채', en:'Short/Mid Gov Bonds', zh:'中短期国公债', ja:'中短期国公債' },
+  fund_balanced:    { ko:'채권혼합 안정형', en:'Balanced (Conservative)', zh:'稳健混合', ja:'安定バランス' },
+  fund_multi:       { ko:'멀티에셋 밸런스', en:'Multi-Asset Balance', zh:'多资产平衡', ja:'マルチアセット・バランス' },
+
+  fund_title_alt:   { ko:'해외/대체', en:'Global / Alternatives', zh:'海外/另类', ja:'海外/オルタナ' },
+  fund_reit:        { ko:'글로벌 리츠', en:'Global REITs', zh:'全球REITs', ja:'グローバルREIT' },
+  fund_us_tech:     { ko:'미국 기술주', en:'US Tech', zh:'美国科技股', ja:'米国テック' },
+  fund_commodity:   { ko:'원자재 인덱스', en:'Commodity Index', zh:'大宗商品指数', ja:'コモディティ指数' },
+
+  /* ===== 외환 ===== */
+  fx_title_fx:      { ko:'환전', en:'FX Exchange', zh:'换汇', ja:'両替' },
+  fx_rate_now:      { ko:'실시간 환율 조회', en:'Live Rates', zh:'实时汇率', ja:'リアルタイム為替' },
+  fx_mobile:        { ko:'모바일 환전', en:'Mobile FX', zh:'移动换汇', ja:'モバイル両替' },
+  fx_coupon:        { ko:'환율우대 쿠폰', en:'FX Discount Coupon', zh:'汇率优惠券', ja:'為替優待クーポン' },
+
+  fx_title_remit:   { ko:'해외송금', en:'Remittance', zh:'海外汇款', ja:'海外送金' },
+  fx_fast:          { ko:'빠른 해외송금', en:'Fast Remittance', zh:'快速汇款', ja:'高速送金' },
+  fx_regular:       { ko:'정기송금 관리', en:'Scheduled Transfers', zh:'定期汇款管理', ja:'定期送金管理' },
+  fx_track:         { ko:'수취조회', en:'Track Receipt', zh:'收款查询', ja:'受取照会' },
+
+  fx_title_fxdep:   { ko:'외화예금', en:'FX Deposits', zh:'外币存款', ja:'外貨預金' },
+  fx_usd:           { ko:'USD 외화예금', en:'USD FX Deposit', zh:'美元外币存款', ja:'USD外貨預金' },
+  fx_jpy:           { ko:'JPY 외화예금', en:'JPY FX Deposit', zh:'日元外币存款', ja:'JPY外貨預金' },
+  fx_eur:           { ko:'EUR 외화예금', en:'EUR FX Deposit', zh:'欧元外币存款', ja:'EUR外貨預金' },
+
+  /* ===== 카드 ===== */
+  card_title_cc:    { ko:'신용카드', en:'Credit Cards', zh:'信用卡', ja:'クレジットカード' },
+  card_life:        { ko:'생활할인 카드', en:'Everyday Savings', zh:'生活折扣卡', ja:'生活割引カード' },
+  card_miles:       { ko:'항공마일리지 카드', en:'Air Mileage', zh:'航空里程卡', ja:'マイレージカード' },
+  card_premium:     { ko:'프리미엄 카드', en:'Premium', zh:'高端卡', ja:'プレミアムカード' },
+
+  card_title_dc:    { ko:'체크카드', en:'Debit Cards', zh:'借记卡', ja:'デビットカード' },
+  card_cashback:    { ko:'캐시백 체크', en:'Cashback Debit', zh:'返现借记卡', ja:'キャッシュバック・デビット' },
+  card_trans:       { ko:'교통/통신 체크', en:'Transit/Telecom Debit', zh:'交通/通信借记卡', ja:'交通/通信デビット' },
+  card_youth:       { ko:'청소년 체크', en:'Youth Debit', zh:'青少年借记卡', ja:'ユース・デビット' },
+
+  card_title_svc:   { ko:'서비스', en:'Services', zh:'服务', ja:'サービス' },
+  card_event:       { ko:'이벤트/혜택', en:'Events & Offers', zh:'活动/优惠', ja:'イベント/特典' },
+  card_lost:        { ko:'분실/도난 신고', en:'Report Lost/Stolen', zh:'挂失/被盗申报', ja:'紛失/盗難届' },
+  card_bill:        { ko:'이용대금 명세서', en:'Statements', zh:'账单明细', ja:'利用明細' },
+
+  /* ===== 보험 ===== */
+  ins_title_cov:    { ko:'보장성', en:'Coverage', zh:'保障型', ja:'保障性' },
+  ins_med:          { ko:'실손의료 보험', en:'Medical Indemnity', zh:'医疗补偿保险', ja:'実損医療保険' },
+  ins_cancer:       { ko:'암/건강 보험', en:'Cancer/Health', zh:'癌症/健康保险', ja:'がん/健康保険' },
+  ins_driver:       { ko:'운전자 보험', en:'Driver', zh:'驾驶员保险', ja:'ドライバー保険' },
+
+  ins_title_save:   { ko:'저축성', en:'Savings Type', zh:'储蓄型', ja:'貯蓄性' },
+  ins_pension:      { ko:'연금저축 보험', en:'Pension Savings', zh:'养老金储蓄保险', ja:'年金貯蓄保険' },
+  ins_saving:       { ko:'저축보험', en:'Savings Insurance', zh:'储蓄保险', ja:'貯蓄保険' },
+  ins_va:           { ko:'변액보험', en:'Variable', zh:'投连险', ja:'変額保険' },
+
+  ins_title_cs:     { ko:'고객센터', en:'Customer Center', zh:'客服中心', ja:'カスタマーセンター' },
+  ins_claim:        { ko:'청구/서류 안내', en:'Claims/Docs', zh:'理赔/资料指南', ja:'請求/書類案内' },
+  ins_consult:      { ko:'보험 상담 예약', en:'Consultation Booking', zh:'保险咨询预约', ja:'保険相談予約' },
+  ins_faq:          { ko:'FAQ', en:'FAQ', zh:'常见问题', ja:'FAQ' },
+
+  /* ===== 퇴직연금 ===== */
+  rp_title_intro:   { ko:'제도 안내', en:'Plan Guide', zh:'制度指南', ja:'制度案内' },
+  rp_dc_irp:        { ko:'DC/IRP 안내', en:'DC/IRP Guide', zh:'DC/IRP指南', ja:'DC/IRP案内' },
+  rp_fee:           { ko:'수수료 체계', en:'Fee Schedule', zh:'手续费体系', ja:'手数料体系' },
+  rp_tax:           { ko:'세제혜택', en:'Tax Benefits', zh:'税收优惠', ja:'税制優遇' },
+
+  rp_title_prod:    { ko:'운용상품', en:'Products', zh:'运作产品', ja:'運用商品' },
+  rp_principal:     { ko:'원리금보장형', en:'Principal-Guaranteed', zh:'保本型', ja:'元本確保型' },
+  rp_bondmix:       { ko:'채권형/혼합형', en:'Bond/Mixed', zh:'债券/混合型', ja:'債券/バランス' },
+  rp_equity_tdf:    { ko:'주식형/타깃데이트', en:'Equity/Target-Date', zh:'股票/目标日期', ja:'株式/ターゲットデート' },
+
+  rp_title_mgmt:    { ko:'관리', en:'Management', zh:'管理', ja:'管理' },
+  rp_aa_guide:      { ko:'자산배분 가이드', en:'Asset Allocation Guide', zh:'资产配置指南', ja:'資産配分ガイド' },
+  rp_perf:          { ko:'수익률 조회', en:'Performance', zh:'收益率查询', ja:'収益率照会' },
+  rp_transfer:      { ko:'이체/이전', en:'Transfer/Rollover', zh:'转账/转移', ja:'振替/移換' },
+
+  /* aria-label (접근성) */
+  aria_dep:         { ko:'예금 메뉴',     en:'Deposit menu',         zh:'存款菜单',     ja:'預金メニュー' },
+  aria_fund:        { ko:'펀드 메뉴',     en:'Funds menu',           zh:'基金菜单',     ja:'ファンドメニュー' },
+  aria_fx:          { ko:'외환 메뉴',     en:'FX menu',              zh:'外汇菜单',     ja:'外為メニュー' },
+  aria_card:        { ko:'카드 메뉴',     en:'Cards menu',           zh:'卡片菜单',     ja:'カードメニュー' },
+  aria_ins:         { ko:'보험 메뉴',     en:'Insurance menu',       zh:'保险菜单',     ja:'保険メニュー' },
+  aria_rp:          { ko:'퇴직연금 메뉴', en:'Retirement menu',      zh:'退休金菜单',   ja:'退職年金メニュー' },
+};
+Object.assign(I18N, I18N_HEADER);
+// === 푸터 i18n 추가 ===
+const I18N_FOOTER = {
+  /* 좌측 슬로건 */
+  footer_slogan:         { ko:'고객과 함께 성장하는 신뢰받는 지역 대표은행',
+                           en:'A trusted regional bank growing with our customers',
+                           zh:'与客户共同成长的值得信赖的地区代表银行',
+                           ja:'お客さまと共に成長する信頼の地域代表銀行' },
+
+  /* 컬럼 타이틀 */
+  footer_cs_title:       { ko:'고객지원', en:'Customer Support', zh:'客户支持', ja:'カスタマーサポート' },
+  footer_service_title:  { ko:'서비스',   en:'Services',         zh:'服务',   ja:'サービス' },
+  footer_terms_title:    { ko:'약관 및 정책', en:'Terms & Policies', zh:'条款与政策', ja:'約款・ポリシー' },
+
+  /* 고객지원 링크 */
+  footer_cs_contact:     { ko:'문의하기',   en:'Contact Us',    zh:'联系我们',     ja:'お問い合わせ' },
+  footer_cs_branch:      { ko:'지점찾기',   en:'Find a Branch', zh:'查找网点',     ja:'支店検索' },
+  footer_cs_faq:         { ko:'FAQ',       en:'FAQ',           zh:'常见问题',     ja:'FAQ' },
+
+  /* 서비스 링크 */
+  footer_svc_ibk:        { ko:'인터넷뱅킹', en:'Internet Banking', zh:'网上银行',   ja:'インターネットバンキング' },
+  footer_svc_mb:         { ko:'모바일뱅킹', en:'Mobile Banking',   zh:'手机银行',   ja:'モバイルバンキング' },
+  footer_svc_rp:         { ko:'퇴직연금',   en:'Retirement Plan',  zh:'退休养老金', ja:'退職年金' },
+
+  /* 약관 */
+  footer_terms_tos:      { ko:'이용약관',         en:'Terms of Use',            zh:'使用条款',     ja:'利用規約' },
+  footer_terms_privacy:  { ko:'개인정보처리방침', en:'Privacy Policy',          zh:'隐私政策',     ja:'個人情報保護方針' },
+  footer_terms_efin:     { ko:'전자금융거래약관', en:'Electronic Financial Terms', zh:'电子金融交易条款', ja:'電子金融取引約款' },
+
+  /* 패밀리 사이트 셀렉트 */
+  footer_family_select:  { ko:'패밀리사이트', en:'Family Sites', zh:'家族网站', ja:'ファミリーサイト' },
+  footer_family_grp:     { ko:'BNK금융그룹', en:'BNK Financial Group', zh:'BNK金融集团', ja:'BNK金融グループ' },
+  footer_family_sec:     { ko:'BNK투자증권', en:'BNK Investment & Securities', zh:'BNK投资证券', ja:'BNK投資証券' },
+
+  /* 하단 정보(주소·저작권 템플릿) */
+  footer_cpr_tpl:        { ko:'© {year} BNK 부산은행. All rights reserved.',
+                           en:'© {year} BNK Busan Bank. All rights reserved.',
+                           zh:'© {year} BNK 釜山银行。保留所有权利。',
+                           ja:'© {year} BNK 釜山銀行。All rights reserved.' },
+  footer_addr_tpl:       { ko:'부산광역시 남구 범일로 30 (범일동) | 대표전화: 1588-6200',
+                           en:'30 Beomil-ro, Nam-gu, Busan | Main: 1588-6200',
+                           zh:'釜山广域市南区凡一路30号（凡一洞）| 总机：1588-6200',
+                           ja:'釜山広域市 南区 凡一路30（凡一洞）| 代表: 1588-6200' }
+};
+Object.assign(I18N, I18N_FOOTER);
+/** 2) 역매핑(한국어/영어 문자열 → 의미 키) */
+const valueToKey = (() => {
+  const m = {};
+  for (const [key, pair] of Object.entries(I18N)) {
+    m[(pair.ko || '').trim()] = key;
+    m[(pair.en || '').trim()] = key;
+    m[(pair.zh || '').trim()] = key;
+    m[(pair.ja || '').trim()] = key;
+  }
+  return m;
+})();
+
+/** 3) 현재 텍스트로부터 키 찾아 번역 적용 */
+function applyLanguage(lang){
+  document.documentElement.setAttribute('lang', lang);
+
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+    acceptNode(node){
+      const t = node.nodeValue.trim();
+      if (!t) return NodeFilter.FILTER_REJECT;
+      return valueToKey[t] ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+
+  const nodes = [];
+  let cur;
+  while (cur = walker.nextNode()) nodes.push(cur);
+
+  nodes.forEach(node => {
+    const curText = node.nodeValue.trim();
+    const key = valueToKey[curText];
+    if (!key) return;
+    const next = I18N[key]?.[lang];
+    if (next && next !== curText) node.nodeValue = next;
+  });
+
+  // 언어 카드의 현재 값(우측 회색 텍스트) 갱신
+  const langCard = document.getElementById('lang-card');
+  if (langCard) {
+    // 카드 내 회색 보조 텍스트가 2개 이상일 수 있으니, '언어 설정' 카드에서만 지정.
+    const subtitle = langCard.querySelector('div[style*="color: #6B7280"]');
+    if (subtitle) subtitle.textContent =
+    (lang === 'en') ? 'English' :
+    (lang === 'zh') ? '中文'    :
+    (lang === 'ja') ? '日本語'  :
+                      '한국어';
+  }
+
+  // 모달 내부 텍스트도 갱신
+  const $ = s => document.querySelector(s);
+  $('#lang-modal-title') && ($('#lang-modal-title').textContent = I18N.modal_language[lang]);
+  $('#lang-close')       && ($('#lang-close').textContent       = I18N.modal_close[lang]);
+  $('#lang-cancel')      && ($('#lang-cancel').textContent      = I18N.modal_cancel[lang]);
+  $('#lang-apply')       && ($('#lang-apply').textContent       = I18N.modal_apply[lang]);
+  $('#row-ko .lang-title')  && ($('#row-ko .lang-title').textContent  = I18N.modal_row_ko_title[lang]);
+  $('#row-ko .lang-desc')   && ($('#row-ko .lang-desc').textContent   = I18N.modal_row_ko_desc[lang]);
+  $('#row-en .lang-title')  && ($('#row-en .lang-title').textContent  = I18N.modal_row_en_title[lang]);
+  $('#row-en .lang-desc')   && ($('#row-en .lang-desc').textContent   = I18N.modal_row_en_desc[lang]);
+}
+
+/** 4) 저장/초기화 유틸 */
+function getSavedLang(){
+  const saved = localStorage.getItem('lang');
+  if (saved === 'ko' || saved === 'en' || saved === 'zh') return saved;
+  const nav = (navigator.language || '').toLowerCase();
+  if (nav.startsWith('ko')) return 'ko';
+  if (nav.startsWith('zh')) return 'zh';
+  if (nav.startsWith('ja')) return 'ja';
+  return 'en';
+}
+function setLang(lang){
+  localStorage.setItem('lang', lang);
+  applyLanguage(lang);
+}
+
+/** 5) 초기 적용 — 헤더/푸터 로드 이후 한 번 더 실행 */
+function initI18N(){
+  applyLanguage(getSavedLang());
+  // 헤더/푸터 fetch 로딩을 고려해 한 번 더 보정
+  setTimeout(()=>applyLanguage(getSavedLang()), 120);
+}
+document.addEventListener('DOMContentLoaded', initI18N);
+
+/** 6) 모달 연동 (기존 모달 마크업 사용) */
+(function bindLangModal(){
+  const backdrop = document.getElementById('lang-backdrop');
+  const langCard = document.getElementById('lang-card');
+  const btnClose = document.getElementById('lang-close');
+  const btnCancel= document.getElementById('lang-cancel');
+  const btnApply = document.getElementById('lang-apply');
+  const rowKO    = document.getElementById('row-ko');
+  const rowEN    = document.getElementById('row-en');
+  const rowZH = document.getElementById('row-zh');
+  const rowJA = document.getElementById('row-ja');
+
+  let pending = getSavedLang();
+
+  function open(){ select(pending = getSavedLang()); backdrop.classList.add('show'); }
+  function close(){ backdrop.classList.remove('show'); }
+  function select(lang){
+    pending = lang;
+    rowKO.classList.toggle('active', lang==='ko');
+    rowEN.classList.toggle('active', lang==='en');
+    rowZH.classList.toggle('active', lang==='zh');
+    rowJA.classList.toggle('active', lang==='ja');
+  }
+
+  langCard?.addEventListener('click', e => { e.preventDefault(); open(); });
+  rowKO?.addEventListener('click', ()=>select('ko'));
+  rowEN?.addEventListener('click', ()=>select('en'));
+  rowZH?.addEventListener('click', ()=>select('zh'));
+  rowJA?.addEventListener('click', ()=>select('ja'));
+  btnApply?.addEventListener('click', ()=>{ setLang(pending); close(); });
+  btnCancel?.addEventListener('click', close);
+  btnClose?.addEventListener('click', close);
+  backdrop?.addEventListener('click', e => { if (e.target===backdrop) close(); });
+})();
+</script>
+<script>
+// === Footer 후처리: 셀렉트/저작권/주소 강제 갱신 ===
+(function translateFooter(){
+  const lang = document.documentElement.getAttribute('lang') || 'ko';
+
+  // 1) 패밀리사이트 <select> 옵션 강제 세팅 (문구가 매칭 실패해도 확실히 교체)
+  const familySel = document.querySelector('.footer-social select');
+  if (familySel) {
+    const labels = [
+      I18N.footer_family_select?.[lang],
+      I18N.footer_family_grp?.[lang],
+      I18N.footer_family_sec?.[lang],
+    ];
+    // 옵션이 3개라고 가정(현재 마크업 기준). 개수 달라도 안전하게 처리
+    [...familySel.options].forEach((opt, i) => {
+      if (labels[i]) opt.textContent = labels[i];
+    });
+  }
+
+  // 2) 저작권/주소 문장 템플릿 적용 (연도 자동 반영)
+  const year = new Date().getFullYear();
+  const cprP  = document.querySelector('.footer-info p:nth-of-type(1)');
+  const addrP = document.querySelector('.footer-info p:nth-of-type(2)');
+  if (cprP)  cprP.textContent  = (I18N.footer_cpr_tpl?.[lang]  || '').replace('{year}', year);
+  if (addrP) addrP.textContent = (I18N.footer_addr_tpl?.[lang] || '');
+})();
+</script>
+<script>
+// === aria-label 속성도 번역 (헤더 .mega 패널 등) ===
+(function translateAriaLabels(){
+  document.querySelectorAll('[aria-label]').forEach(el => {
+    const cur = (el.getAttribute('aria-label') || '').trim();
+    const key = valueToKey[cur];
+    if (!key) return;
+    const next = I18N[key]?.[document.documentElement.getAttribute('lang') || 'ko'];
+    if (next && next !== cur) el.setAttribute('aria-label', next);
+  });
+})();
 </script>
 </body>
 </html>
