@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객센터 메인</title>
+    <link rel="stylesheet" href="./cs_main.style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!--헤더-->
+    <header><div id="header"></div></header>
+
+    <!--배너-->
+    <section class="banner">
+        <div class="banner-content">
+
+                <h1>고객센터</h1>
+                <p>무엇을 도와드릴까요?</p>
+                <p>궁금한 내용이나 필요한 서비스를 빠르게 찾아보세요. BNK 부산은행이 언제나 고객님과 함께합니다.</p>
+
+        </div>
+        <div class="mascot-img">
+            <img src="../../components/images/mascot_character.png" alt="부산은행마스코트">
+        </div>
+    </section>
+
+    <!-- 검색 -->
+    <section class="search-box">
+
+        <h2>궁금하신 내용을 찾아보세요</h2>
+
+        <div class="search-container">
+            <div class="search-inner">
+                <input type="text" placeholder="검색어를 입력하세요">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>  
+
+        <div class="tag-container">
+        <span>추천 검색어:</span>
+        <a href="#">예금</a>
+        <a href="#">적금</a>
+        <a href="#">수수료</a>
+        </div>
+    </section>
+
+    <!--카테고리 & 최신글 -->
+    <section class="category-and-news">
+        <div class="category-section">
+           <div class="category-list"></div>
+        </div>
+
+        <div class="new-list">
+            <div class="new-list-header">
+                <h3>최신 글</h3>
+                <a href="#">전체보기</a>
+            </div>
+            <ul>
+                <li>
+                    <span class="date">2025.11.05</span>
+                    <span class="title">한도제한계돠는 어떻게 해제하나요?</span>
+                    <p>뭐 이렇게 저렇게 해제하시면 됩니다</p>
+                    <span class="badge">중요</span>
+                </li>
+                <li>
+                    <span class="date">2025.11.05</span>
+                    <span class="title">한도제한계돠는 어떻게 해제하나요?</span>
+                    <p>뭐 이렇게 저렇게 해제하시면 됩니다</p>
+                    <span class="badge">중요</span>
+                </li>
+                <li>
+                    <span class="date">2025.11.05</span>
+                    <span class="title">한도제한계돠는 어떻게 해제하나요?</span>
+                    <p>뭐 이렇게 저렇게 해제하시면 됩니다</p>
+                    <span class="badge">중요</span>
+                </li>
+                <li>
+                    <span class="date">2025.11.05</span>
+                    <span class="title">한도제한계돠는 어떻게 해제하나요?</span>
+                    <p>뭐 이렇게 저렇게 해제하시면 됩니다</p>
+                    <span class="badge">중요</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!--하단상담-->
+    <section class="counsel">
+        <div class="counsel-mention">
+            <h4>더 궁금한 점이 있으신가요?</h4>
+            <p>전문 상담사가 친절하게 도와드리겠습니다.</p>
+        </div>
+        <div class="counsel-button">
+            <button class="btn-call">TALK 상담</button>
+            <button class="btn-chat">전화 상담</button>
+        </div>
+    </section>
+
+    <!--푸터-->
+    <footer><div id="footer"></div></footer>
+</body>
+</html>
+<script src="./cs_main.js"></script>
