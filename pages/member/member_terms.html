@@ -112,8 +112,8 @@ fetch('/layouts/footer.html')
     </div>
 
     <!-- 제목 -->
-    <h2 style="margin: 18px 10px 4px; font-size: 28px;">약관동의</h2>
-    <p style="color: #6b7280; margin-bottom: 20px; margin-left: 10px;">
+    <h2 style="margin: 20px 100px 0px; font-size: 28px;">약관동의</h2>
+    <p style="color: #6b7280; margin: 0 100px 20px; ">
     원활한 서비스 이용을 위해 회원가입 약관 및 개인정보 처리방침에 동의해 주세요.
     </p>
 
@@ -210,7 +210,7 @@ fetch('/layouts/footer.html')
     </section>
 
     <!-- 보안 안내 -->
-    <div class="notice">
+    <div class="notice" style="margin-top: 20px;">
       <div>
         <p style="font-size:16px; font-weight:700; color:#1f3b8f; margin-bottom:4px;">🔒 보안 안내</p>
         <ul>
@@ -223,7 +223,7 @@ fetch('/layouts/footer.html')
 
     <!-- 버튼 -->
     <div class="btns">
-      <button style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
+      <button class="btn-pressable" style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
       <button class="btn-register">다음</button>
     </div>
   </div>
@@ -290,11 +290,11 @@ fetch('/layouts/footer.html')
     color: #111827;
     line-height: 1.5;
   }
-  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 28px 16px 40px; }
 
   /* 단계 표시 */
   .stepper {
-    width:1100px;
+    width: 850px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -318,6 +318,8 @@ fetch('/layouts/footer.html')
     background: #fff; border: 1px solid #e5e7eb;
     border-radius: 20px; box-shadow: 0 10px 20px rgba(2,6,23,.06);
     overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
   }
 
   /* 전체 동의 */
@@ -365,7 +367,6 @@ fetch('/layouts/footer.html')
   .list-wrapper .section-title:first-of-type {
     margin-top: 10px;
   }
-
 
   /* 각 항목 컨테이너 */
   .item + .item { margin-top: 10px; }
@@ -415,7 +416,8 @@ fetch('/layouts/footer.html')
 
   /* 보안 안내 */
   .notice {
-    margin-top: 15px;
+    max-width: 740px;
+    margin: 0 auto;
     background: #eef4ff;
     border: 1px solid #c7d7ff;
     color: #1f3b8f;
@@ -425,14 +427,13 @@ fetch('/layouts/footer.html')
     gap: 8px;
   }
   .notice p {
-      margin: 0 0 2px 0;
-    }
+    margin: 0 0 2px 0;
+  }
 
-    .notice ul {
-      margin: 0 0 0 25px;
-      padding: 0;
-    }
-
+  .notice ul {
+    margin: 0 0 0 25px;
+    padding: 0;
+  }
 
   /* 버튼 */
   .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }  
@@ -482,6 +483,79 @@ fetch('/layouts/footer.html')
 	@media (prefers-color-scheme: dark) {
 	  .btn-register { --shadow: rgba(240,58,58,.35); }
 	}
+
+  .btn-pressable {
+  position: relative;
+  transition: box-shadow .18s ease, transform .12s ease, background .18s ease;
+  will-change: box-shadow, transform, background;
+  --btn-shadow: rgba(0,0,0,.12);
+  --btn-shadow-hover: rgba(0,0,0,.18);
+  --btn-shadow-active: rgba(0,0,0,.22);
+  }
+  .btn-pressable:hover { box-shadow: 0 8px 18px -12px var(--btn-shadow-hover); }
+  .btn-pressable:active { transform: scale(.98); box-shadow: 0 4px 10px -10px var(--btn-shadow-active); }
+  .btn-pressable:focus-visible { outline: 3px solid rgba(240,58,58,.55); outline-offset: 2px; }
+  /* 공통 설정 */
+  .btn-sheen {
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  /* hover 시 아랫부분에 회색빛 음영이 은은하게 비침 */
+  .btn-sheen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+
+    /* 아래쪽 중심부에서 위로 번지는 부드러운 그라디언트 */
+    background: radial-gradient(
+      130% 90% at 50% 125%,           /* 중심을 버튼 아래쪽으로 이동 */
+      rgba(150,150,150,0.25) 0%,      /* 가장 아래: 옅은 회색빛 */
+      rgba(180,180,180,0.18) 28%,     /* 중간: 은은하게 퍼짐 */
+      rgba(200,200,200,0.08) 45%,     /* 상단으로 갈수록 흐려짐 */
+      rgba(255,255,255,0) 70%         /* 위로 갈수록 완전 투명 */
+    );
+
+    opacity: 0;
+    transition: opacity .22s ease;
+  }
+
+  .btn-sheen:hover::before {
+    opacity: 0.9; /* hover 시 부드럽게 나타남 */
+  }
+
+  /* 위쪽 경계선이 약간 밝아 보이도록 (살짝 반사 느낌) */
+  .btn-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: linear-gradient(
+      to top,
+      rgba(255,255,255,0.12) 0%,
+      rgba(255,255,255,0) 40%
+    );
+
+    opacity: 0;
+    transition: opacity .22s ease;
+  }
+
+  .btn-sheen:hover::after {
+    opacity: 1;
+  }
+
+  /* 모션 최소화 존중 */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-sheen::before,
+    .btn-sheen::after {
+      transition: none !important;
+    }
+  }
 
   a { text-decoration: none; color: inherit; }
 </style>
