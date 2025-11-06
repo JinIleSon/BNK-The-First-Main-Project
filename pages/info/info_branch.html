@@ -128,11 +128,20 @@
 
     select,
     input[type="text"] {
-
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+        width: 20%;
+        height: 44px;
+        box-sizing: border-box;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        background: #fff;
+        padding: 10px 12px;
+        font-size: 14px;
+        color: #111827;
+        outline: none;
+        transition: box-shadow .15s ease, border-color .15s ease;
     }
+
+    
 
     button.search {
         background-color: #d91a1a;
@@ -176,50 +185,59 @@
     }
 </style>
 <style>
-	.btn-register {
-	  --bg1: #D91A1A;
-	  --bg2: #F03A3A;
-	  --shadow: rgba(217,26,26,.45);
-	  position: relative;
-	  box-sizing: border-box;
-	  width: 90px; height: 42px;
-	  border: none; border-radius: 8px;
-	  color: #fff; cursor: pointer;
-	  background: linear-gradient(180deg, var(--bg2), var(--bg1));
-	  outline: none;
-	  box-shadow: 0 6px 14px -10px var(--shadow);
-	  transition:
-	    background .18s ease,
-	    box-shadow .18s ease,
-	    transform .12s ease; /* 프레스만 사용할 예정 */
-	  will-change: background, box-shadow, transform;
-	}
-	
-	/* Hover: 컬러와 섀도우만 아주 미세하게 (리프트 없음) */
-	.btn-register:hover {
-	  background: linear-gradient(180deg, #f24a4a, #d61a1a);
-	  box-shadow: 0 8px 18px -12px var(--shadow);
-	  transform: none; /* 확실하게 떠오르지 않도록 고정 */
-	}
-	
-	/* Active: 살짝 눌리는 프레스 효과만 */
-	.btn-register:active {
-	  transform: scale(.98);
-	  box-shadow: 0 4px 10px -10px var(--shadow);
-	}
-	
-	/* 키보드 포커스 접근성 */
-	.btn-register:focus-visible {
-	  outline: 3px solid rgba(240,58,58,.55);
-	  outline-offset: 2px;
-	}
-	
-	/* 모션 최소화 존중 */
-	@media (prefers-reduced-motion: reduce) {
-	  .btn-register { transition: none !important; }
-	}
-	
-	@media (prefers-color-scheme: dark) {
-	  .btn-register { --shadow: rgba(240,58,58,.35); }
-	}
+    .btn-register {
+        --bg1: #D91A1A;
+        --bg2: #F03A3A;
+        --shadow: rgba(217, 26, 26, .45);
+        position: relative;
+        box-sizing: border-box;
+        width: 90px;
+        height: 42px;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        cursor: pointer;
+        background: linear-gradient(180deg, var(--bg2), var(--bg1));
+        outline: none;
+        box-shadow: 0 6px 14px -10px var(--shadow);
+        transition:
+            background .18s ease,
+            box-shadow .18s ease,
+            transform .12s ease;
+        /* 프레스만 사용할 예정 */
+        will-change: background, box-shadow, transform;
+    }
+
+    /* Hover: 컬러와 섀도우만 아주 미세하게 (리프트 없음) */
+    .btn-register:hover {
+        background: linear-gradient(180deg, #f24a4a, #d61a1a);
+        box-shadow: 0 8px 18px -12px var(--shadow);
+        transform: none;
+        /* 확실하게 떠오르지 않도록 고정 */
+    }
+
+    /* Active: 살짝 눌리는 프레스 효과만 */
+    .btn-register:active {
+        transform: scale(.98);
+        box-shadow: 0 4px 10px -10px var(--shadow);
+    }
+
+    /* 키보드 포커스 접근성 */
+    .btn-register:focus-visible {
+        outline: 3px solid rgba(240, 58, 58, .55);
+        outline-offset: 2px;
+    }
+
+    /* 모션 최소화 존중 */
+    @media (prefers-reduced-motion: reduce) {
+        .btn-register {
+            transition: none !important;
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .btn-register {
+            --shadow: rgba(240, 58, 58, .35);
+        }
+    }
 </style>
