@@ -110,7 +110,7 @@ fetch('/layouts/footer.html')
       <div class="step"><span class="dot">4</span>가입완료</div>
     </div>
     <!-- 제목/설명 -->
-    <h2 style="margin: 18px 0px 0; font-size: 28px; margin-left: 80px;">본인인증</h2>    
+    <h2 style="margin: 18px 80px 0; font-size: 28px;">본인인증</h2>    
     <p style="color: #6b7280; margin: 5px 80px 10px;">
     안전한 서비스를 이용을 위해 본인인증을 진행해주세요.
     </p>
@@ -213,12 +213,14 @@ fetch('/layouts/footer.html')
 
         <!-- 버튼 2 -->
         <div class="btns">
-          <button class="btn-pressable" style="box-sizing: border-box; width: 50%; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
-            이전
-          </button>
-          <button class="btn-register" style="width: 50%;">
+          <a href="member_main.html" class="btn-pressable" 
+            style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
+            취소
+          </a>
+          <a href="member_active.html" class="btn-register" 
+            style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
             다음
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -250,7 +252,7 @@ fetch('/layouts/footer.html')
   }
   .container { max-width: 1000px; margin: 0 auto; padding: 28px 16px 40px; }
   .stepper {
-    width:900px;
+    width: 800px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;

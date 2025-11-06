@@ -100,11 +100,10 @@ fetch('/layouts/footer.html')
 
 <main>
   <div class="container">
-    <!-- 로그인 폼 -->
-    <section style="width: 580px; margin: 0 auto; margin-top: 30px;">
-
+    <!-- 폼 -->
+    <section style="width: 650px; margin: 0 auto; margin-top: 30px;">
       <!-- 감싸기 -->
-      <div class="form-card" style="height: 700px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
+      <div class="form-card" style="height: 800px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
 
         <!-- 검색 아이콘 -->
         <div class="search-icon-wrapper">
@@ -119,62 +118,103 @@ fetch('/layouts/footer.html')
             <td>아이디 찾기</td>
           </tr>
           <tr>
-            <td style="padding: 0 0 9px;">가입 시 입력한 정보를 통해 아이디를 확인하세요</td>
+            <td style="padding: 0 0 9px;">가입 시 입력한 정보를 통해 비밀번호를 확인하세요</td>
           </tr>
           <tr class="field-row">
             <td class="field-label">이름</td>            
           </tr>
           <tr class="field-row">
-            <td style="margin-bottom: 9px;"><input type="text" name="member_id" placeholder="실명을 입력해 주세요" autocomplete="username"></td>
+            <td style="margin-bottom: 19px;"><input type="text" name="member_id" placeholder="이름을 입력해 주세요" autocomplete="username"></td>
           </tr>
+          
           <tr class="field-row">
             <td class="field-label">휴대폰 번호</td>
           </tr>
-
           <tr class="field-row">
             <td style="margin-bottom: 19px;">
                 <div class="phone-certify-row" style="max-width: 522px;">
-                    <input type="text" name="member_pass" placeholder="010-0000-0000" autocomplete="username">
+                    <input type="text" name="member_phone" placeholder="010-0000-0000" autocomplete="username">
                     <button type="button" class="btn-register btn-certify">인증번호 발송</button>
+                </div>
+            </td>
+          </tr>
+          <tr class="field-row">
+            <td style="margin-bottom: 19px;">
+                <div class="phone-certify-row" style="max-width: 522px;">
+                    <input type="text" name="member_phone" placeholder="인증번호 00자리" autocomplete="username">
+                    <button type="button" class="btn-register">확인</button>
                 </div>
             </td>
           </tr>
 
           <tr class="field-row">
-            <td class="field-label">인증번호</td>
+            <td class="field-label">이메일</td>
+          </tr>          
+          <tr class="field-row">
+            <td style="margin-bottom: 19px;">
+                <div class="phone-certify-row" style="max-width: 522px;">
+                    <input type="text" name="member_email" placeholder="example@email.com" autocomplete="username">
+                    <button type="button" class="btn-register btn-certify">인증번호 발송</button>
+                </div>
+            </td>
           </tr>
           <tr class="field-row">
             <td style="margin-bottom: 19px;">
                 <div class="phone-certify-row" style="max-width: 522px;">
-                    <input type="text" name="member_pass" placeholder="인증번호 00자리" autocomplete="username">
+                    <input type="text" name="member_phone" placeholder="인증번호 00자리" autocomplete="username">
                     <button type="button" class="btn-register">확인</button>
                 </div>
             </td>
           </tr>
           
           <tr>
-            <td class="field-td" style="border-bottom: 1px solid #D1D5DB;">
-                <button class="btn-register" style="width: 500px;">아이디 찾기</button>
+            <td class="field-td">
+                <button class="btn-register" style="width: 500px;" onclick="findPassword()">아이디 찾기</button>
             </td>
           </tr>
-          
-          <tr style="display: flex;justify-content: center;">
-            <td class="field-td">
-                <button class="btn-pressable btn-sheen" 
-                style="box-sizing: border-box; height: 42px; border:1px solid #D1D5DB;
-                border-radius: 8px; cursor: pointer; background-color: white; width: 240px;">
-                취소
-                </button>
-            </td>
-            <td class="field-td">
-                <button class="btn-pressable btn-sheen" 
-                style="box-sizing: border-box; height: 42px; border:1px solid #D1D5DB;
-                border-radius: 8px; cursor: pointer; background-color: white; width: 240px;">
-                다음
-                </button>
-            </td>
-           </tr>        
-        </table>       
+
+          <!-- 백엔드 구현전 임시 비밀번호 찾기 버튼-->
+          <script>
+          function findPassword() {
+            // 여기에서 아이디, 이메일 값 등을 읽을 수 있음
+            const id = document.querySelector('input[name="member_id"]').value;
+
+            // 간단히 메시지 표시 (예시)
+            alert(`앙 아이디 "user1"띠`);
+          }
+        </script>
+
+        <!-- 백엔드 구현시 이런 느낌으로 참고해서 스크립트 수정
+        <script>
+        async function findPassword() {
+          const id = document.querySelector('input[name="member_id"]').value;
+          const email = document.querySelector('input[name="member_email"]').value;
+
+          const res = await fetch('/api/find-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ member_id: id, member_email: email })
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            alert(`비밀번호는 "${data.password}" 입니다.`);
+          } else {
+            alert(data.message);
+          }
+        }
+        </script>
+        -->
+
+        </table>
+
+        <!-- 버튼 -->
+        <div class="btns" style="padding-top: 20px; border-top: 1px solid #D1D5DB;">
+          <a href="member_main.html" class="btn-pressable" 
+            style="display:inline-block; box-sizing:border-box; width: 500px; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
+            홈으로
+          </a>          
+        </div>
       </div>
     </section>
   </div>
@@ -206,7 +246,7 @@ fetch('/layouts/footer.html')
   .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }  
  
   /* 버튼 */
-  .btns { display: flex; justify-content: center; gap: 10px; margin: 25px 0 20px; }  
+  .btns { display: flex; justify-content: center; gap: 10px; margin: 10px 0 20px; }  
   .btn-register {
 	  --bg1: #D91A1A;
 	  --bg2: #F03A3A;
@@ -369,7 +409,6 @@ fetch('/layouts/footer.html')
 
   .field-row {
     display: flex;
-    margin: 5px;
   }
 
   .field-row input {
@@ -421,7 +460,5 @@ fetch('/layouts/footer.html')
     font-size: 14px;
     flex-shrink: 0;
     }
-
-
 </style>
 </html>
