@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객상담>영업점찾기</title>
+    <link rel="stylesheet" href="./cs_findstore.style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!--푸터-->
+    <header><div id="header"></div></header>
+    
+    <div class="consultation-page">
+        <!--왼쪽 사이드바-->
+        <aside class="all-sidebar">
+            <ul class="sidebar-menu">
+                <h2>고객상담</h2>
+                <li>FAQ</li>
+                <li>필요서류 안내</li>
+                <li>전화상담</li>
+                <li class="active">영업점 찾기</li>
+            </ul>
+
+            <!--추가 도움 영역-->
+            <section class="all-help">
+                <div class="help-box">
+                    <h3>추가 도움이 필요하신가요?</h3>
+                    <p>전문 상담원이 친절하게 도와드리겠습니다.</p>
+                    <div class="help-buttons">
+                        <button class="btn-call">전화상담</button>
+                        <button class="btn-chat">Talk상담</button>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!--메인 컨텐츠-->
+        <main class="consultation-content">
+            <div class="consultation-header">
+                <h1>영업점 찾기</h1>
+                <p>빠르게 답을 찾으세요. 원하는 질문을 바로 검색할 수 있어요</p>
+
+                <div class="consultation-search-all">
+                    <select class="category-select">
+                        <option>ALL</option>
+                        <option>지역명</option>
+                        <option>영업점명</option>
+                        <option>지점코드</option>
+                        <option>주소로 찾기</option>
+                    </select>
+
+                    <div class="consultation-search">
+                        <input type="text" placeholder="검색어를 입력하세요">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="consultation-list-top">
+                    <p>총 <strong>135</strong>건 현재: <strong>1/14</strong>페이지</p>
+                </div>
+
+                <!-- 표 구조 -->
+                <table class="store-table">
+                    <thead>
+                    <tr>
+                        <th>영업점명</th>
+                        <th>주소</th>
+                        <th>전화번호</th>
+                        <th>팩스번호</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>가야동지점<br><button class="detail-btn">상세보기</button></td>
+                        <td>부산광역시 부산진구 가야대로 610 (가야동)</td>
+                        <td>051-892-3651</td>
+                        <td>051-608-5043</td>
+                    </tr>
+                    <tr>
+                        <td>개금동지점<br><button class="detail-btn">상세보기</button></td>
+                        <td>부산광역시 부산진구 가야대로 494 (개금동)</td>
+                        <td>051-891-4001</td>
+                        <td>051-608-5060</td>
+                    </tr>
+                    <tr>
+                        <td>감천동지점<br><button class="detail-btn">상세보기</button></td>
+                        <td>부산광역시 사하구 옥천로 6 (감천동)</td>
+                        <td>051-204-1011</td>
+                        <td>051-608-5084</td>
+                    </tr>
+                    <tr>
+                        <td>감만동영업소<br><button class="detail-btn">상세보기</button></td>
+                        <td>부산 남구 유암로 124 홈플러스 감만점 1층</td>
+                        <td>051-642-5421</td>
+                        <td>051-608-5094</td>
+                    </tr>
+                    <tr>
+                        <td>감전동금융센터<br><button class="detail-btn">상세보기</button></td>
+                        <td>부산광역시 사상구 새벽로 160 (감전동)</td>
+                        <td>051-312-5301</td>
+                        <td>051-608-5100</td>
+                    </tr>
+                    <tr>
+                        <td>강남금융센터<br><button class="detail-btn">상세보기</button></td>
+                        <td>서울특별시 서초구 강남대로 279 (서초동)</td>
+                        <td>02-598-6191</td>
+                        <td>051-608-5103</td>
+                    </tr>
+                    <tr>
+                        <td>거제고현지점<br><button class="detail-btn">상세보기</button></td>
+                        <td>경남 거제시 거제중앙로 292길 15 (고현동)</td>
+                        <td>055-635-9100</td>
+                        <td>055-635-9146</td>
+                    </tr>
+                    <tr>
+                        <td>개금사랑영업소<br><button class="detail-btn">상세보기</button></td>
+                        <td>부산광역시 부산진구 복지로 49 (개금동)</td>
+                        <td>051-891-7007</td>
+                        <td>051-608-5208</td>
+                    </tr>
+                    <tr>
+                        <td>감천조양지점<br><button class="detail-btn">상세보기</button></td>
+                        <td>부산광역시 사하구 감천로 67 (감천동)</td>
+                        <td>051-204-2222</td>
+                        <td>051-608-5300</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <!-- 페이지네이션 -->
+                <div class="pagination">
+                    <button disabled><i class="fas fa-angle-double-left"></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>4</button>
+                    <button>5</button>
+                    <button><i class="fas fa-angle-double-right"></i></button>
+                </div>
+        </main>
+    </div>
+
+    <!--푸터-->
+    <footer><div id="footer"></div></footer>
+</body>
+</html>
+<script src="./cs_findstore.js"></script>
