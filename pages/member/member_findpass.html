@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>가입완료</title>
+<title>비밀번호 찾기</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 
 </head>
 <body>
@@ -99,85 +100,123 @@ fetch('/layouts/footer.html')
 
 <main>
   <div class="container">
-    <h1 style="text-align: center;">회원가입</h1>
-    <div class="stepper" style="margin-bottom: 20px;">
-      <div class="step"><span class="dot">1</span>약관동의</div>
-      <div class="sep"></div>
-      <div class="step"><span class="dot">2</span>정보입력</div>
-      <div class="sep"></div>
-      <div class="step"><span class="dot">3</span>본인인증</div>
-      <div class="sep"></div>
-      <div class="step active"><span class="dot">4</span>가입완료</div>
-    </div>
+    <!-- 폼 -->
+    <section style="width: 650px; margin: 0 auto; margin-top: 30px;">
 
-    <!-- 감싸기 -->
-    <div class="form-card" style="height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
+      <!-- 감싸기 -->
+      <div class="form-card" style="height: 800px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
 
-      <!-- 체크 아이콘 -->
-      <div style="width: 70px; height: 70px; background-color: #E6FAE6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 25px;">
-        <span style="font-size: 36px; color: #28a745;">✔</span>
-      </div>      
-        
-        <table style="text-align: center;">          
-            <tr>
-                <td>
-                    <span style="font-size: 30px; font-weight: 500;">회원가입이 완료되었습니다!</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding-top: 10px;">
-                    <span style="font-size: 22px;">부산은행과 함께 더 스마트하고 가치 있는 금융 생활을 시작하세요.</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding-top: 10px;">
-                    <span style="font-size: 20px;">이제 다양한 금융 서비스를 편리하게 이용하실 수 있습니다.</span>
-                </td>
-            </tr>
+        <!-- 검색 아이콘 -->
+        <div class="search-icon-wrapper">
+            <div class="search-icon">
+                <span class="material-symbols-outlined">search</span>
+            </div>
+        </div>
+
+        <!-- 비밀번호 찾기 테이블 -->
+        <table class="login-table">
+          <tr style="font-size: 25px;">
+            <td>비밀번호 찾기</td>
+          </tr>
+          <tr>
+            <td style="padding: 0 0 9px;">가입 시 입력한 정보를 통해 비밀번호를 확인하세요</td>
+          </tr>
+          <tr class="field-row">
+            <td class="field-label">아이디</td>            
+          </tr>
+          <tr class="field-row">
+            <td style="margin-bottom: 19px;"><input type="text" name="member_id" placeholder="아이디를 입력해 주세요" autocomplete="username"></td>
+          </tr>
+          
+          <tr class="field-row">
+            <td class="field-label">휴대폰 번호</td>
+          </tr>
+          <tr class="field-row">
+            <td style="margin-bottom: 19px;">
+                <div class="phone-certify-row" style="max-width: 522px;">
+                    <input type="text" name="member_phone" placeholder="010-0000-0000" autocomplete="username">
+                    <button type="button" class="btn-register btn-certify">인증번호 발송</button>
+                </div>
+            </td>
+          </tr>
+          <tr class="field-row">
+            <td style="margin-bottom: 19px;">
+                <div class="phone-certify-row" style="max-width: 522px;">
+                    <input type="text" name="member_phone" placeholder="인증번호 00자리" autocomplete="username">
+                    <button type="button" class="btn-register">확인</button>
+                </div>
+            </td>
+          </tr>
+
+          <tr class="field-row">
+            <td class="field-label">이메일</td>
+          </tr>          
+          <tr class="field-row">
+            <td style="margin-bottom: 19px;">
+                <div class="phone-certify-row" style="max-width: 522px;">
+                    <input type="text" name="member_email" placeholder="example@email.com" autocomplete="username">
+                    <button type="button" class="btn-register btn-certify">인증번호 발송</button>
+                </div>
+            </td>
+          </tr>
+          <tr class="field-row">
+            <td style="margin-bottom: 19px;">
+                <div class="phone-certify-row" style="max-width: 522px;">
+                    <input type="text" name="member_phone" placeholder="인증번호 00자리" autocomplete="username">
+                    <button type="button" class="btn-register">확인</button>
+                </div>
+            </td>
+          </tr>
+          
+          <tr>
+            <td class="field-td">
+                <button class="btn-register" style="width: 500px;" onclick="findPassword()">비밀번호 찾기</button>
+            </td>
+          </tr>
+
+          <!-- 백엔드 구현전 임시 비밀번호 찾기 버튼-->
+          <script>
+          function findPassword() {
+            // 여기에서 아이디, 이메일 값 등을 읽을 수 있음
+            const id = document.querySelector('input[name="member_id"]').value;
+
+            // 간단히 메시지 표시 (예시)
+            alert(`앙 비번 "1234"띠`);
+          }
+        </script>
+
+        <!-- 백엔드 구현시 이런 느낌으로 참고해서 스크립트 수정
+        <script>
+        async function findPassword() {
+          const id = document.querySelector('input[name="member_id"]').value;
+          const email = document.querySelector('input[name="member_email"]').value;
+
+          const res = await fetch('/api/find-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ member_id: id, member_email: email })
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            alert(`비밀번호는 "${data.password}" 입니다.`);
+          } else {
+            alert(data.message);
+          }
+        }
+        </script>
+        -->
+
         </table>
-    </div>
-
-    <!-- 가입 정보 -->       
-    <div class="form-card" style="margin-top: 20px;">      
-      <table class="member-table">
-        <tr class="title-row">
-          <td colspan="4">가입정보</td>
-        </tr>
-
-        <tr>
-          <td class="label-td">이름</td>
-          <td class="value-td wide">홍길동</td>
-          <td class="label-td">휴대폰</td>
-          <td class="value-td">010-0000-0000</td>
-        </tr>
-
-        <tr>
-          <td class="label-td">아이디</td>
-          <td class="value-td wide">hong123</td>
-          <td class="label-td">가입일시</td>
-          <td class="value-td">2025.11.04 00:00</td>
-        </tr>
-
-        <tr>
-          <td class="label-td">이메일</td>
-          <td class="value-td wide">hong@email.com</td>
-          <td class="label-td">회원등급</td>
-          <td class="value-td">일반회원</td>
-        </tr>
-      </table>
-
-      <!-- 버튼 -->
-      <div class="btns">
-        <a href="member_main.html" class="btn-pressable" 
-          style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
-          취소
-        </a>
-        <a href="member_main.html" class="btn-register" 
-          style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
-          로그인
-        </a>
+        <!-- 버튼 -->
+        <div class="btns" style="padding-top: 20px; border-top: 1px solid #D1D5DB;">
+          <a href="member_main.html" class="btn-pressable" 
+            style="display:inline-block; box-sizing:border-box; width: 500px; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
+            홈으로
+          </a>          
+        </div>     
       </div>
-    </div>
+    </section>
   </div>
 </main>
 
@@ -204,29 +243,10 @@ fetch('/layouts/footer.html')
     color: #111827;
     line-height: 1.5;
   }
-  .container { max-width: 1000px; margin: 0 auto; padding: 28px 16px 40px; }
-  .stepper {
-    width:800px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f7f7f9;
-    border: 1px solid #e5e7eb;
-    border-radius: 999px;
-    padding: 10px 20px;
-  }
-  .step { display: flex; align-items: center; gap: 8px; color: #6b7280; font-weight: 600; }
-  .step .dot {
-    width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
-    border: 1px solid #d1d5db; background: #fff; color: #6b7280; font-weight: 700;
-  }
-  .step.active { color: #111; }
-  .step.active .dot { background: #d6001c; border-color: #d6001c; color: #fff; }
-  .sep { width: 28px; height: 2px; background: #e5e7eb; border-radius: 2px; }    
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }  
  
   /* 버튼 */
-  .btns { display: flex; justify-content: center; gap: 10px; margin: 25px 0 20px; }  
+  .btns { display: flex; justify-content: center; gap: 10px; margin: 10px 0 20px; }  
   .btn-register {
 	  --bg1: #D91A1A;
 	  --bg2: #F03A3A;
@@ -356,51 +376,89 @@ fetch('/layouts/footer.html')
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(2,6,23,.06);
     padding: 28px 30px;
-    margin: 0 auto;
-    max-width: 850px;
+    margin-bottom: 24px;
   }
 
-  /* tr & td */
-  .member-table {
-  max-width: 1100px;
-  border-collapse: collapse;
-  table-layout: fixed;
-  color: #333;
-  text-align: center;
+  .field-td {
+    text-align: center;
+    padding: 10px;
   }
 
-  /* 제목행 제외하고만 줄 적용 */
-  .member-table tr:not(.title-row) {
-    border-bottom: 1px solid #eee;
+  .field-td input {
+    width: 400px;
+    height: 44px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    outline: none;
+  }
+  
+  .sep-dot{ margin: 0 8px; }
+
+  .notice {
+    margin-top: 15px;
+    background: #eef4ff;
+    border: 1px solid #c7d7ff;
+    color: #1f3b8f;
+    border-radius: 12px;
+    padding: 20px 30px;
+    display: flex;
+    gap: 8px;
   }
 
-  .member-table td {
-    width: 200px;
+  .field-row {
+    display: flex;
+  }
+
+  .field-row input {
+    width: 500px;
+    height: 25px;
+    border: 1px solid #bbb;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .field-label {
     font-size: 18px;
-    padding: 15px 15px;
-  }
+  } 
 
-  .member-table .title-row td {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: left;
-    padding: 0 10px 15px;
-  }
+    /* 검색 아이콘 감싸는 컨테이너 */
+    .search-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px; /* 제목과의 간격 */
+    }
 
-  /* 왼쪽 라벨 */
-  .member-table .label-td {
-    font-weight: bold;
-    text-align: left;
-  }
+    /* 아이콘 자체 스타일 */
+    .search-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #fff5f5; /* 연한 붉은색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
 
-  /* 오른쪽 값 */
-  .member-table .value-td {
-    text-align: right;
-  }
+    /* 아이콘 (돋보기) */
+    .search-icon span {
+    font-size: 32px;
+    color: #D91A1A; /* 브랜드 레드 컬러 */
+    }
+    .phone-certify-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    }
 
-  /* 오른쪽 공백 넓히기 */
-  .member-table .wide {
-    padding-right: 40px;
-  }
+    .btn-certify {
+    width: 100px;
+    height: 44px;
+    font-size: 14px;
+    flex-shrink: 0;
+    }
 </style>
 </html>
