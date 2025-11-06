@@ -798,3 +798,122 @@ select:focus {
   white-space: nowrap;
   border: 0;
 }
+
+/* =================================== page3 스타일 ======================================= */
+/* 컨테이너 카드 */
+.card-white {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  /* gray-200 */
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-top: 20px;
+}
+
+/* 상단 제목 + 체크박스 */
+.doc-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.doc-title h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #111827;
+  /* gray-900 */
+}
+
+.doc-title h2 img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.int-calc-basis .doc-title label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #6B7280;
+  /* gray-500 */
+  user-select: none;
+}
+
+.doc-title input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #D91A1A;
+}
+
+/* 회색 바(두 줄) */
+.card-grey {
+  align-items: center;
+  /* gray-100~200 사이 */
+  background: #F3F4F6;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-top: 8px;
+}
+
+.b-and-p-int-rates .card-grey,
+.int-calc-basis .card-grey {
+  display: grid;
+  /* 좌: 제목 / 우: 설명 */
+  grid-template-columns: 90px 1fr;
+  column-gap: 10px;
+}
+
+/* 좌측 소제목 */
+.b-and-p-int-rates .content-title,
+.disadvantages .content-title,
+.p-i-limit .content-title,
+.int-calc-basis .content-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  /* gray-700 */
+  border-radius: 8px;
+  padding: 6px 10px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* 우측 설명 */
+.b-and-p-int-rates .content-description,
+.disadvantages .content-description,
+.p-i-limit .content-description,
+.int-calc-basis .content-description {
+  font-size: 13px;
+  color: #4B5563;
+  /* gray-600 */
+  line-height: 1.6;
+}
+
+/* 하단 안내 문구 */
+.card-white>p {
+  margin: 10px 2px 0;
+  font-size: 12px;
+  color: #6B7280;
+  /* gray-500 */
+}
+
+/* 반응형: 모바일에선 두 줄로 쪼개기 */
+@media (max-width: 640px) {
+  .int-calc-basis .card-grey {
+    grid-template-columns: 1fr;
+    row-gap: 6px;
+  }
+
+  .int-calc-basis .content-title {
+    width: max-content;
+    /* 칩 길이만큼 */
+    max-width: 100%;
+  }
+}

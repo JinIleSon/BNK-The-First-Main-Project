@@ -240,14 +240,16 @@
                         <div class="confirm-content"><b>위 안내에 대하여 충분히 이해하였음을 확인합니다.</b></div>
                         <div class="confirm-check">
                             <label for="esn-info">
-                                <input type="checkbox" name="esn-info" id="esn-info"> <b>확인합니다.</b>
+                                <input type="checkbox" name="esn-info" id="esn-info"> <b
+                                    style="color: #467abd;">확인합니다.</b>
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="terms-confirm">
                     <label for="terms-confirm">
-                        <input type="checkbox" name="terms-confirm" id="terms-confirm"> <b>상품에 대한 설명 및 약관에 충분히 이해했고
+                        <input type="checkbox" name="terms-confirm" id="terms-confirm"> <b style="color: #467abd;">상품에
+                            대한 설명 및 약관에 충분히 이해했고
                             동의합니다.</b>
                     </label>
                 </div>
@@ -280,7 +282,151 @@
                 </form>
             </article>
         </section>
-        <section class="step-page" id="page3" hidden>…3단계 본인인증…</section>
+        <section class="step-page" id="page3" hidden>
+            <h1 style="margin-bottom: 5px;">금융상품에 대한 중요내용</h1>
+            해당 내용은 금융소비자보호법 제19조 제1항에서 규정하고 있는 중요한 사항입니다.<br>
+            아래의 사항을 확인 후 체크하여 주시기 바랍니다.
+            <article class="b-and-p-int-rates card-white">
+                <div class="doc-title">
+                    <h2>
+                        <img src="/components/images/product/percent-red.png" alt="기본이율과 우대이율">
+                        기본이율과 우대이율
+                    </h2>
+                    <span>
+                        <label for="int-rates-confirm">
+                            <input type="checkbox" name="int-rates-confirm" id="int-rates-confirm">
+                            확인했습니다.
+                        </label>
+                    </span>
+                </div>
+                <div class="card-grey">
+                    <div class="content-title">기본이율</div>
+                    <div class="content-description">상품가입일 기준 영업점 및 인터넷 홈페이지에 고시된 계약기간별 이율</div>
+                </div>
+                <div class="card-grey">
+                        <div class="content-title">우대이율</div>
+                        <div class="content-description">상품별, 고객별 우대조건에 따라 개인별로 차등하여 적용되는 이율</div>
+                </div>
+                <p>※ 최종이율은 기본이율과 우대이율을 합산하여 적용되며, 개별상품에 따라 변경될 수 있습니다.</p>
+            </article>
+            <article class="int-pay-date card-white">
+                <div class="doc-title">
+                    <h2>
+                        <img src="/components/images/product/calender-red.png" alt="이자지급시기">
+                        이자지급시기
+                    </h2>
+                    <span>
+                        <label for="pay-date-confirm">
+                            <input type="checkbox" name="pay-date-confirm" id="pay-date-confirm">
+                            확인했습니다.
+                        </label>
+                    </span>
+                </div>
+                <div class="card-grey">
+                    <div class="content-title">만기일시지급</div>
+                    <div class="content-description">이율에 따른 이자를 예금만기 해지시 한번에 지급</div>
+                </div>
+                <div class="card-grey">
+                    <div class="content-title">월 단위 지급</div>
+                    <div class="content-description">이율에 따른 이자를 월별로 나눠서 지급</div>
+                </div>
+                <p>※ 이자지급시기는 개별상품에 따라 변경될 수 있습니다.</p>
+            </article>
+            <article class="int-calc-basis card-white">
+                <div class="doc-title">
+                    <h2>
+                        <img src="/components/images/product/calculator-none-bg.png" alt="만기이자 산출근거">
+                        만기이자 산출근거
+                    </h2>
+                    <span>
+                        <label for="calc-basis-confirm">
+                            <input type="checkbox" name="calc-basis-confirm" id="calc-basis-confirm">
+                            확인했습니다.
+                        </label>
+                    </span>
+                </div>
+                <div class="card-grey">
+                    <div class="content-title">거치식 예금</div>
+                    <div class="content-description">신규일로부터 만기일 전일까지의 기간에 대하여 약정이율로 셈한 이자를 합계하여 지급</div>
+                </div>
+                <div class="card-grey">
+                    <div class="content-title">적립식 예금</div>
+                    <div class="content-description">저축금마다 입금일로부터 만기일 전일까지 기간에 대하여 약정이율로 셈한 이자를 합하여 지급 (원미만 절사)</div>
+                </div>
+                <p>※ 만기이자 계산방법 및 산출 근거는 개별상품에 따라 변경될 수 있습니다.</p>
+            </article>
+            <article class="dps-int-rates-note card-white">
+                <div class="doc-title">
+                    <h2>
+                        <img src="/components/images/product/caution-red.png" alt="예금이율 유의사항">
+                        예금이율 유의사항
+                    </h2>
+                    <span>
+                        <label for="rates-note-confirm">
+                            <input type="checkbox" name="rates-note-confirm" id="rates-note-confirm">
+                            확인했습니다.
+                        </label>
+                    </span>
+                </div>
+                <div class="card-red">
+                    <ul>
+                        <li>이율은 신규가입일 당시 계약기간별 기본이율에 고객별 우대이율을 합산하여 지급합니다.</li>
+                        <li>단, 거래실적 등 우대조건 미충족 시 최종금리가 달라질 수 있습니다.</li>
+                    </ul>
+                    <p>※ 최종이율은 기본이율과 우대이율을 합산하여 적용되며, 개별상품에 따라 변경될 수 있습니다.</p>
+                </div>
+            </article>
+            <article class="disadvantages card-white">
+                <div class="doc-title">
+                    <h2>
+                        <img src="/components/images/product/disadvantage-red.png" alt="중도해지에 따른 불이익">
+                        중도해지에 따른 불이익
+                    </h2>
+                    <span>
+                        <label for="disadvantages-confirm">
+                            <input type="checkbox" name="disadvantages-confirm" id="disadvantages-confirm">
+                            확인했습니다.
+                        </label>
+                    </span>
+                </div>
+                <div class="card-grey">
+                    <b>중도해지이율 예시</b>
+                    <ul>
+                        <li>기본이율 × 적용율(기간별) × 경과일수/계약일수</li>
+                    </ul>
+                    <b>중도해지이율은 가입일 당시 이 예금의 기본이율을 초과할 수 없으며,<br>
+                        중도해지이자는 가입당시 약정한 세전이자 금액을 초과할 수 없습니다.</b>
+                </div>
+                <p>※ 중도해지이율에 대한 자세한 내용은 상품설명서를 참조 바랍니다.</p>
+            </article>
+            <article class="p-i-limit card-white">
+                <div class="doc-title">
+                    <h2>
+                        <img src="/components/images/product/shield-red-none-bg.png" alt="원금 및 이자 지급제한">
+                        원금 및 이자 지급제한
+                    </h2>
+                    <span>
+                        <label for="p-i-limit-confirm">
+                            <input type="checkbox" name="p-i-limit-confirm" id="p-i-limit-confirm">
+                            확인했습니다.
+                        </label>
+                    </span>
+                </div>
+                <div class="card-grey">
+                    <img src="/components/images/product/doc-grey.png" alt="계좌 등록 사항 관련">
+                    계좌에 <span>압류, 가압류, 질권설정</span> 등이 등록될 경우 원금 및 이자 지급이 제한됩니다.
+                </div>
+                <div class="card-grey">
+                    <img src="/components/images/product/hammer-grey.png" alt="민사집행법">
+                    ※ 민사집행법에 따라 최저생계비 이하 등 압류금지채권에 해당하는 경우에는 법원에 압류 금지채권 범위 변경 신청 등을 통해 압류를 취소할 수 있습니다.
+                </div>
+                <div class="card-grey">
+                    <img src="/components/images/product/forbidden-grey.png" alt="예금잔액증명서">
+                    <span>예금잔액증명서 발급 당일</span>에는 입금·출금 이체 등 잔액 변동이 불가하므로 지급이 제한됩니다.
+                </div>
+                <p>※ 중도해지이율에 대한 자세한 내용은 상품설명서를 참조 바랍니다.</p>
+            </article>
+        </section>
         <section class="step-page" id="page4" hidden>…4단계 요약/확인…</section>
         <section class="step-page" id="page5" hidden>…5단계 개설/완료…</section>
 
