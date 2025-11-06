@@ -96,7 +96,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="engName">영문성명<span class="req">*</span></label>
+                            <label for="engLastName">영문성명<span class="req">*</span></label>
                             <div style="display: flex; gap: 10px;">
                                 <input id="engLastName" class="engName" type="text" placeholder="HONG">
                                 <input id="engFirstName" class="engName" type="text" placeholder="GIL DONG">
@@ -111,11 +111,11 @@
                         <div class="form-group full">
                             <label>주소<span class="req">*</span></label>
                             <div class="addr-row">
-                                <input type="text" placeholder="우편번호" style="flex:1">
+                                <input name="zipcode" type="text" placeholder="우편번호" style="flex:none">
                                 <button type="button" class="btn-white small">주소검색</button>
                             </div>
-                            <input type="text" placeholder="도로명 주소">
-                            <input type="text" placeholder="상세주소">
+                            <input name="addr1" type="text" placeholder="도로명 주소">
+                            <input name="addr2" type="text" placeholder="상세주소">
                         </div>
                     </form>
                 </div>
@@ -125,23 +125,23 @@
                     <img src="/components/images/product/check-red.png" alt="확인사항" class="confirm-icon">
                     확인사항(해당하는 항복에 모두 체크)
                 </h2>
-                <label class="confirm-item" for="check-Korean">
+                <label class="confirm-item" for="isKorean">
                     <input type="checkbox" name="nation" id="isKorean">
                     조세목적상 한국 거주자에 해당합니다.
                     <img src="/components/images/product/detail-grey.png" alt="세부정보">
                 </label>
-                <label class="confirm-item" for="check-Foreign">
+                <label class="confirm-item" for="isForeign">
                     <input type="checkbox" name="nation" id="isForeign">
                     한국 외에 조세목적상 거주지국이 있습니다.
                 </label>
             </article>
         </section>
         <section class="step-page" id="page2" hidden>
-            <h1>신규가입</h1>
-            <ul style="padding: 10px 25px 10px;color: #606060;">
+            <h1 style="margin-bottom: 5px;">신규가입</h1>
+            <ul style="padding: 10px 25px 10px;color: #606060;margin-top: 0;">
                 <li>아래의 [예금거래 약관 동의 및 개별약관 동의]를 확인하신 후 동의하시면 "동의함" 버튼을 클릭하시기 바랍니다.</li>
             </ul>
-            <h3 style="text-align: center;">저탄소 실천 적금</h3>
+            <h3 class="product-name" style="text-align: center;">저탄소 실천 적금</h3>
             <article class="accept-terms">
                 <div class="terms-title">
                     <h2>상품설명서 및 약관 동의</h2>
@@ -240,16 +240,44 @@
                         <div class="confirm-content"><b>위 안내에 대하여 충분히 이해하였음을 확인합니다.</b></div>
                         <div class="confirm-check">
                             <label for="esn-info">
-                                <input type="checkbox" name="esn-info" id=""> <b>확인합니다.</b>
+                                <input type="checkbox" name="esn-info" id="esn-info"> <b>확인합니다.</b>
                             </label>
                         </div>
                     </div>
                 </div>
                 <div class="terms-confirm">
                     <label for="terms-confirm">
-                        <input type="checkbox" name="terms-confirm" id=""> <b>상품에 대한 설명 및 약관에 충분히 이해했고 동의합니다.</b>
+                        <input type="checkbox" name="terms-confirm" id="terms-confirm"> <b>상품에 대한 설명 및 약관에 충분히 이해했고
+                            동의합니다.</b>
                     </label>
                 </div>
+            </article>
+            <article class="get-terms card">
+                <form novalidate>
+                    <h3>약관 및 상품설명서 받기</h3>
+                    <div class="field">
+                        <span class="field-label">수령 방법 선택</span>
+                        <div class="radio-group" role="radiogroup" aria-label="수령 방법 선택">
+                            <label class="radio">
+                                <input type="radio" name="receive" value="sms" checked>
+                                문자(SMS)로 받기
+                            </label>
+                            <label class="radio">
+                                <input type="radio" name="receive" value="email">
+                                이메일로 받기
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field input-field">
+                        <label id="contact-label" for="contactInput" class="sr-only">연락처 입력</label>
+                        <input id="contactInput" class="text-input" type="tel" inputmode="numeric" autocomplete="tel"
+                            placeholder="휴대폰 번호 (‘-’ 없이)" required pattern="^01[0-9]{8,9}$"
+                            aria-describedby="contact-help contact-error">
+                        <p class="help" id="contact-help">휴대폰 번호는 ‘-’ 없이 숫자만 입력해 주세요.</p>
+                        <p class="error" id="contact-error" aria-live="polite"></p>
+                    </div>
+                </form>
             </article>
         </section>
         <section class="step-page" id="page3" hidden>…3단계 본인인증…</section>
@@ -276,6 +304,7 @@
 
 </html>
 <script src="product.js"></script>
+<!-- 스탭퍼 스크립트 -->
 <script>
     let currentStep = 1;                 // 1~5
     const totalSteps = 5;
@@ -370,4 +399,136 @@
     });
 
     showStep(1);
+</script>
+<!-- 약관 및 상품설명서 받기 스크립트 -->
+<script>
+    const radios = document.querySelectorAll('input[name="receive"]');
+    const input = document.getElementById('contactInput');
+    const help = document.getElementById('contact-help');
+    const error = document.getElementById('contact-error');
+
+    function switchMode(mode) {
+        input.value = '';
+        error.textContent = '';
+        if (mode === 'sms') {
+            input.type = 'tel';
+            input.placeholder = "휴대폰 번호 (‘-’ 없이)";
+            input.setAttribute('inputmode', 'numeric');
+            input.setAttribute('autocomplete', 'tel');
+            input.setAttribute('pattern', '^01[0-9]{8,9}$');
+            help.textContent = "휴대폰 번호는 ‘-’ 없이 숫자만 입력해 주세요.";
+        } else {
+            input.type = 'email';
+            input.placeholder = "이메일 주소";
+            input.removeAttribute('inputmode');
+            input.setAttribute('autocomplete', 'email');
+            input.removeAttribute('pattern');
+            help.textContent = "정확한 이메일 주소를 입력해 주세요.";
+        }
+    }
+    radios.forEach(r => r.addEventListener('change', e => switchMode(e.target.value)));
+    switchMode(document.querySelector('input[name="receive"]:checked').value);
+
+    // 간단한 실시간 유효성 안내
+    input.addEventListener('blur', () => {
+        if (!input.value) { error.textContent = ''; return; }
+        if (!input.checkValidity()) {
+            error.textContent = (input.type === 'tel')
+                ? '휴대폰 번호 형식이 올바르지 않습니다.'
+                : '이메일 형식이 올바르지 않습니다.';
+        } else {
+            error.textContent = '';
+        }
+    });
+
+    // 이 폼에서 엔터 제출 금지
+    const termsForm = document.querySelector('.get-terms form');
+
+    // 1) 기본 submit 자체 막기
+    termsForm.addEventListener('submit', (e) => e.preventDefault());
+
+    // 엔터 → 현재 포커스된 요소만 포커스 해제
+    termsForm.addEventListener('keydown', (e) => {
+        if ((e.key === 'Enter' || e.keyCode === 13) && !e.isComposing) {
+            e.preventDefault();
+            e.stopPropagation();
+            const el = document.activeElement;
+            if (el && typeof el.blur === 'function') el.blur();
+        }
+    });
+
+    // (선택) 모바일 키보드 힌트만 ‘완료’로 바꾸기
+    input.setAttribute('enterkeyhint', 'done');
+</script>
+<!-- 상품설명서 및 약관 다운로드 표시 스크립트 -->
+<script>
+    // 신규가입(2단계) 약관 다운로드 완료 표시
+    (function initTermsDownload() {
+        const section = document.querySelector('#page2 .accept-terms');
+        if (!section) return;
+
+        const titleWrap = section.querySelector('.terms-title');
+        const items = [...section.querySelectorAll('.terms-list .terms-item')];
+        const links = items.map(i => i.querySelector('a.icon-btn')).filter(Boolean);
+
+        // 전역 state 재사용 (스텝 이동시 상태 유지)
+        window.state = window.state || {};
+        state.termsDownloaded = state.termsDownloaded || {};
+
+        // 진행률 표시 (간단 텍스트)
+        const progress = document.createElement('span');
+        progress.setAttribute('aria-live', 'polite');
+        progress.style.marginLeft = '8px';
+        progress.style.fontSize = '12px';
+        progress.style.color = '#6B7280';
+        titleWrap.querySelector('h2')?.appendChild(progress);
+
+        function updateProgress() {
+            const done = links.filter(a => a.classList.contains('downloaded')).length;
+            progress.textContent = `(${done}/${links.length} 완료)`;
+        }
+
+        function markDownloaded(a, key) {
+            if (a.classList.contains('downloaded')) return;
+            a.classList.add('downloaded');                // ← CSS 활용
+            a.setAttribute('aria-label', (a.getAttribute('aria-label') || '다운로드') + ' - 완료');
+            a.setAttribute('data-downloaded', 'true');
+            state.termsDownloaded[key] = true;
+            updateProgress();
+        }
+
+        // 초기 복원
+        links.forEach((a, idx) => {
+            const key = a.closest('.terms-item')?.querySelector('span')?.textContent?.trim() || `term-${idx + 1}`;
+            if (state.termsDownloaded[key]) a.classList.add('downloaded');
+        });
+        updateProgress();
+
+        // 이벤트 바인딩: 클릭, Enter, Space
+        links.forEach((a, idx) => {
+            const key = a.closest('.terms-item')?.querySelector('span')?.textContent?.trim() || `term-${idx + 1}`;
+
+            a.addEventListener('click', () => markDownloaded(a, key));
+            a.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+                    // a 요소는 기본 동작을 유지(다운로드), 완료만 표시
+                    markDownloaded(a, key);
+                }
+            });
+        });
+
+        // (선택) 다음 단계로 넘어갈 때 모두 다운로드했는지 검증하고 싶다면 validators[2] 교체
+        if (window.validators) {
+            const original = validators[2] || (() => true);
+            validators[2] = function () {
+                // 기본 검증 통과 후 추가 체크
+                const ok = links.every(a => a.classList.contains('downloaded'));
+                if (!ok) {
+                    alert('상품설명서 및 약관을 모두 다운로드(또는 열람)해 주세요.');
+                    return false;
+                }
+                return original();
+            };
+        }
+    })();
 </script>
