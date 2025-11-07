@@ -168,8 +168,14 @@ fetch('/layouts/footer.html')
 
       <!-- 버튼 -->
       <div class="btns">
-        <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white; width: 50%;">취소</button>
-        <button class="btn-register" style="width: 50%;">로그인</button>
+        <a href="member_main.html" class="btn-pressable" 
+          style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
+          취소
+        </a>
+        <a href="member_main.html" class="btn-register" 
+          style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
+          로그인
+        </a>
       </div>
     </div>
   </div>
@@ -200,7 +206,7 @@ fetch('/layouts/footer.html')
   }
   .container { max-width: 1000px; margin: 0 auto; padding: 28px 16px 40px; }
   .stepper {
-    width:900px;
+    width:800px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -396,6 +402,5 @@ fetch('/layouts/footer.html')
   .member-table .wide {
     padding-right: 40px;
   }
-
 </style>
 </html>

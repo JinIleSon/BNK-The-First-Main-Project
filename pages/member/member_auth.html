@@ -4,97 +4,75 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>본인인증</title>
-
 </head>
 <body>
   <div id="header"></div>
 <script>
 // header 불러오기
 fetch('/layouts/header.html')
-    .then(response => response.text())
-    .then(data => {
-    document.getElementById('header').innerHTML = data;
-    });
+  .then(r=>r.text())
+  .then(html=>{ document.getElementById('header').innerHTML = html; });
 </script>
+
 <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
-<div id="bnk-chatbot-slot"></div>
+  <div id="bnk-chatbot-slot"></div>
 </div>
 <script>
-/**
-* 외부 HTML을 불러와서:
-*  - <link rel="stylesheet">, <style>는 <head>로 옮기고
-*  - <script>는 실행되도록 새로 만들어 붙이고 (src/inline, module 모두 지원)
-*  - 나머지 DOM(예: <flowise-chatbot> / <flowise-embed>)은 mount에 삽입
-*/
+/* 외부 HTML 불러오기 (스타일/스크립트 실행 유지) */
 async function importHtmlWithAssets(url, mountSelector) {
-const res = await fetch(url, { credentials: 'same-origin' });
-if (!res.ok) throw new Error(`Failed to load ${url}`);
-const html = await res.text();
+  const res = await fetch(url, { credentials: 'same-origin' });
+  if (!res.ok) throw new Error(`Failed to load ${url}`);
+  const html = await res.text();
 
-const parser = new DOMParser();
-const doc = parser.parseFromString(html, 'text/html');
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
 
-// 1) <link rel="stylesheet"> 들을 <head>로
-doc.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-  // 중복 로드 방지
-  const href = link.getAttribute('href');
-  if (href && ![...document.head.querySelectorAll('link[rel="stylesheet"]')]
-    .some(l => l.getAttribute('href') === href)) {
-    document.head.appendChild(link.cloneNode(true));
-  }
-});
+  // <link rel="stylesheet"> 복제(head)
+  doc.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && ![...document.head.querySelectorAll('link[rel="stylesheet"]')]
+      .some(l => l.getAttribute('href') === href)) {
+      document.head.appendChild(link.cloneNode(true));
+    }
+  });
 
-// 2) <style> 들을 <head>로
-doc.querySelectorAll('style').forEach(styleEl => {
-  const clone = document.createElement('style');
-  // CSS 텍스트 보존
-  clone.textContent = styleEl.textContent;
-  // (가능한 속성 복사)
-  [...styleEl.attributes].forEach(a => clone.setAttribute(a.name, a.value));
-  document.head.appendChild(clone);
-});
+  // <style> 복제(head)
+  doc.querySelectorAll('style').forEach(styleEl => {
+    const clone = document.createElement('style');
+    clone.textContent = styleEl.textContent;
+    [...styleEl.attributes].forEach(a => clone.setAttribute(a.name, a.value));
+    document.head.appendChild(clone);
+  });
 
-// 3) 본문 콘텐츠를 mount에 붙임 (스크립트 제외)
-const mount = document.querySelector(mountSelector);
-// fragment 구성
-const frag = document.createDocumentFragment();
-[...doc.body.children].forEach(node => {
-  if (node.tagName.toLowerCase() !== 'script') frag.appendChild(node.cloneNode(true));
-});
-mount.appendChild(frag);
+  // 본문 mount
+  const mount = document.querySelector(mountSelector);
+  const frag = document.createDocumentFragment();
+  [...doc.body.children].forEach(node => {
+    if (node.tagName.toLowerCase() !== 'script') frag.appendChild(node.cloneNode(true));
+  });
+  mount.appendChild(frag);
 
-// 4) 스크립트 실행 (src/inline/module 지원, 순서 보장)
-const scripts = [...doc.querySelectorAll('script')];
-for (const oldScript of scripts) {
-  const newScript = document.createElement('script');
-  // type/module/defer 등 속성 복사
-  [...oldScript.attributes].forEach(attr => newScript.setAttribute(attr.name, attr.value));
-  if (oldScript.src) {
-    // 네트워크 로드를 기다려 실행 순서 유지
-    await new Promise((resolve, reject) => {
-      newScript.onload = resolve;
-      newScript.onerror = resolve;   // 실패해도 진행(브랜딩 제거 같은 선택 기능 보호)
+  // 스크립트 재실행
+  const scripts = [...doc.querySelectorAll('script')];
+  for (const oldScript of scripts) {
+    const newScript = document.createElement('script');
+    [...oldScript.attributes].forEach(attr => newScript.setAttribute(attr.name, attr.value));
+    if (oldScript.src) {
+      await new Promise((resolve)=>{ newScript.onload=resolve; newScript.onerror=resolve; document.body.appendChild(newScript); });
+    } else {
+      newScript.textContent = oldScript.textContent || '';
       document.body.appendChild(newScript);
-    });
-  } else {
-    // inline 코드 복사
-    newScript.textContent = oldScript.textContent || '';
-    document.body.appendChild(newScript);
+    }
   }
 }
-}
-
-// 실제 호출: 기존 chatbot.html(또는 chatbot_test.html) 경로로 바꿔도 됩니다.
-importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
-.catch(err => console.error('[Chatbot load failed]', err));
+importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot').catch(console.error);
 </script>
+
 <script>
 // footer 불러오기
 fetch('/layouts/footer.html')
-    .then(response => response.text())
-    .then(data => {
-    document.getElementById('footer').innerHTML = data;
-    });
+  .then(r=>r.text())
+  .then(html=>{ document.getElementById('footer').innerHTML = html; });
 </script>
 
 <main>
@@ -109,22 +87,19 @@ fetch('/layouts/footer.html')
       <div class="sep"></div>
       <div class="step"><span class="dot">4</span>가입완료</div>
     </div>
-    <!-- 제목/설명 -->
-    <h2 style="margin: 18px 0px 0; font-size: 28px; margin-left: 80px;">본인인증</h2>    
-    <p style="color: #6b7280; margin: 5px 80px 10px;">
-    안전한 서비스를 이용을 위해 본인인증을 진행해주세요.
-    </p>
 
-    <!-- 감싸기 -->
+    <h2 style="margin: 18px 80px 0; font-size: 28px;">본인인증</h2>
+    <p style="color: #6b7280; margin: 5px 80px 10px;">안전한 서비스를 이용을 위해 본인인증을 진행해주세요.</p>
+
     <div class="form-card">
-      <!-- 인증 수단 선택 -->
-      <div class="verify-methods">
-        <button type="button" class="method-card" aria-pressed="true">
+      <!-- 인증 방식(카드형) -->
+      <div class="verify-methods" role="tablist" aria-label="인증 방식 선택">
+        <button type="button" id="method-phone" class="method-card" role="tab" aria-selected="false" aria-controls="panel-phone" aria-pressed="false">
           <div class="m-title">
-            <span class="m-badge" style="color: #D91A1A">🪪</span>
+            <span class="m-badge">🪪</span>
             <div>
               <div class="m-name">휴대폰 인증</div>
-              <div class="m-name">SMS 인증번호로 빠른 인증</div>
+              <div class="m-sub">SMS 인증번호로 빠른 인증</div>
             </div>
           </div>
           <ul class="m-list">
@@ -134,12 +109,12 @@ fetch('/layouts/footer.html')
           </ul>
         </button>
 
-        <button type="button" class="method-card">
+        <button type="button" id="method-cert" class="method-card" role="tab" aria-selected="false" aria-controls="panel-cert" aria-pressed="false">
           <div class="m-title">
-            <span class="m-badge1" style="color: #68C0F7;">✷</span>
+            <span class="m-badge1">✷</span>
             <div>
-              <div class="m-name">공동인증서</div>
-              <div class="m-name">저장된 인증서로 이용</div>
+              <div class="m-name">공인인증서</div>
+              <div class="m-sub">저장된 인증서로 이용</div>
             </div>
           </div>
           <ul class="m-list">
@@ -150,95 +125,336 @@ fetch('/layouts/footer.html')
         </button>
       </div>
 
-      <!-- 본인인증 폼 -->
-      <div class="form-card">
-        <div class="form-grid">
-          <div class="field">
-            <div class="field-name">이름</div>
-            <input type="text" class="input" placeholder="홍길동">
-          </div>
-          <div class="field">
-            <div class="field-name">생년월일</div>
-            <input type="text" class="input" placeholder="19900101">
-          </div>
+      <!-- 휴대폰 인증(테이블 레이아웃) -->
+      <section id="panel-phone" class="auth-panel" role="tabpanel" aria-labelledby="method-phone" aria-hidden="true" hidden>
+        <div class="form-card">
+          <table class="auth-table">
+            <tbody>
+              <!-- 1행: 이름 / 생년월일 -->
+              <tr class="field">
+                <th scope="row" class="field-name">이름</th>
+                <td><input type="text" class="input" placeholder="홍길동"></td>
 
-          <div class="field">
-            <div class="field-name">성별</div>
-            <select class="input">
-              <option value="" hidden>선택</option>
-              <option>남성</option>
-              <option>여성</option>
-            </select>
-          </div>                               
+                <th scope="row" class="field-name">생년월일</th>
+                <td><input type="text" class="input" placeholder="19900101"></td>
+              </tr>
+
+              <!-- 2행: 성별 / 통신사 -->
+              <tr class="field">
+                <th scope="row" class="field-name">성별</th>
+                <td>
+                  <select class="input">
+                    <option value="" hidden>선택</option>
+                    <option>남성</option>
+                    <option>여성</option>
+                  </select>
+                </td>
+
+                <th scope="row" class="field-name">통신사</th>
+                <td>
+                  <select class="input">
+                    <option value="" hidden>선택</option>
+                    <option>SKT</option>
+                    <option>KT</option>
+                    <option>LG U+</option>
+                    <option>알뜰폰</option>
+                  </select>
+                </td>
+              </tr>
+
+              <!-- 3행: 휴대폰 번호 / 인증번호 -->
+              <tr class="field">
+                <th scope="row"><label class="field-label">휴대폰번호</label></th>
+                <td>
+                  <div class="field-row" style="display:flex; gap:8px;">
+                    <input type="text" class="input" placeholder="010-0000-0000" style="flex:1;">
+                    <button type="button" class="btn-register" id="btnPhoneReq" style="width:90px;">인증요청</button>
+                  </div>
+                </td>
+
+                <th scope="row"><label class="field-label">인증번호</label></th>
+                <td>
+                  <div class="field-row" style="display:flex; gap:8px;">
+                    <input type="text" class="input" id="phoneCode" placeholder="인증번호 입력" style="flex:1;">
+                    <button type="button" class="btn-register" id="btnPhoneVerify" style="width:90px;">확인</button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="4">
+                  <div class="note-blue" style="margin-top:20px;">
+                    <span class="bullet" style="background-color:#2563eb;">!</span>
+                    본인 명의의 휴대폰으로만 인증이 가능합니다. 타인 명의 휴대폰 사용 시 인증에 실패할 수 있습니다.
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <div class="helper-box">
+                    <div class="helper-title">안내사항</div>
+                    <ul class="helper-list">
+                      <li>입력하신 정보는 본인확인 용도로만 사용되며 저장되지 않습니다.</li>
+                      <li>통신사 점검 또는 네트워크 상태에 따라 인증이 지연될 수 있습니다.</li>
+                      <li>인증번호는 3분간 유효하며, 시간 초과 시 재전송을 눌러주세요.</li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+
+              <tr>
+                <td colspan="4">
+                  <div class="btns">
+                    <a href="member_main.html" class="btn-pressable"
+                      style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;border:1px solid #D1D5DB;background-color:#fff;text-align:center;color:#111;text-decoration:none;">
+                      취소
+                    </a>
+                    <a href="member_active.html" class="btn-register next-link"
+                      style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;background-color:#007BFF;color:#fff;text-align:center;text-decoration:none;">
+                      다음
+                    </a>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
         </div>
-        <div class="form-grid-1">
-          <div class="field">
-            <div class="field-name">통신사</div>
-            <select class="input">
-              <option value="" hidden>선택</option>
-              <option>SKT</option>
-              <option>KT</option>
-              <option>LG U+</option>
-              <option>알뜰폰</option>
-            </select>
-          </div>
+      </section>
 
-          <div class="field">
-            <div class="field-name">휴대폰 번호</div>
-            <input type="tel" class="input" placeholder="010-0000-0000">
-          </div>   
+      <!-- 공인인증서(테이블 레이아웃) -->
+      <section id="panel-cert" class="auth-panel" role="tabpanel" aria-labelledby="method-cert" aria-hidden="true" hidden>
+        <div class="form-card">
+          <table class="auth-table">
+            <tbody>
+              <tr>
+                <th scope="row" class="field-name"><h2 style="margin: 0;">공인인증서 인증</h2></th>
+              </tr>
+              <tr>
+                <td><p style="color:#4b5563; margin: 0 10px 0;">PC 또는 모바일에 저장된 공인인증서를 선택하여 인증을 진행해주세요.</p></td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <div class="btns">
+                    <button type="button" class="btn-register" id="btnOpenCertModal" style="width:720px;">공인인증서 선택</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <div class="helper-box">
+                    <div class="helper-title">안내사항</div>
+                    <ul class="helper-list">
+                      <li>입력하신 정보는 본인확인 용도로만 사용되며 저장되지 않습니다.</li>
+                      <li>통신사 점검 또는 네트워크 상태에 따라 인증이 지연될 수 있습니다.</li>
+                      <li>인증번호는 3분간 유효하며, 시간 초과 시 재전송을 눌러주세요.</li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <div class="note-blue" style="margin-top:20px;">
+                    <span class="bullet" style="background-color:#2563eb;">!</span>
+                    인증서가 없는 경우 은행/공공기관에서 발급 후 이용해주세요.
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <div class="btns">
+                    <a href="member_main.html" class="btn-pressable"
+                      style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;border:1px solid #D1D5DB;background-color:#fff;text-align:center;color:#111;text-decoration:none;">
+                      취소
+                    </a>
+                    <a href="member_active.html" class="btn-register next-link"
+                      style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;background-color:#007BFF;color:#fff;text-align:center;text-decoration:none;">
+                      다음
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </section>
 
-        <div class="note-blue" style="margin-top: 20px;">
-            <span class="bullet" style="background-color: #2563eb;">!</span>
-            본인 명의의 휴대폰으로만 인증이 가능합니다. 타인 명의 휴대폰 사용 시 인증에 실패할 수 있습니다.
-        </div>         
-
-        <!-- 버튼 1 -->
-        <div class="btns">
-          <button type="button" class="btn-register" style="width: 100%;">
-            인증번호 받기
-          </button>
-        </div>
-
-        <!-- 안내 박스 -->
-        <div class="helper-box">
-          <div class="helper-title">안내사항</div>
-          <ul class="helper-list">
-            <li>입력하신 정보는 본인확인 용도로만 사용되며 저장되지 않습니다.</li>
-            <li>통신사 점검 또는 네트워크 상태에 따라 인증이 지연될 수 있습니다.</li>
-            <li>인증번호는 3분간 유효하며, 시간 초과 시 재전송을 눌러주세요.</li>
-          </ul>
-        </div>
-
-        <!-- 버튼 2 -->
-        <div class="btns">
-          <button class="btn-pressable" style="box-sizing: border-box; width: 50%; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
-            이전
-          </button>
-          <button class="btn-register" style="width: 50%;">
-            다음
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 </main>
 
-  <script>
-    // footer 불러오기 (필요시 유지)
-    fetch("/layouts/footer.html")
-      .then(r => { if (!r.ok) throw new Error("Footer 파일을 불러오지 못했습니다."); return r.text(); })
-      .then(html => { document.getElementById("footer").innerHTML = html; })
-      .catch(console.error);
-  </script>
-  <footer><div id="footer"></div></footer>
+<!-- ▼▼ 공인인증서 모달(임시 폼) ▼▼ -->
+<div id="certModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+    <div class="modal-header">
+      <h3 id="certModalTitle" style="margin:0;">공인인증서 로그인</h3>
+      <button type="button" class="modal-close" title="닫기" data-close-modal>&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="field" style="margin-bottom:10px;">
+        <label class="field-name" style="display:block; margin-bottom:6px;">인증서 선택</label>
+        <select class="input" id="certSelect">
+          <option value="" hidden>인증서를 선택하세요</option>
+          <option value="cert_01">홍길동 개인용 인증서</option>
+          <option value="cert_02">BNK 기업용 인증서</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-name" style="display:block; margin-bottom:6px;">인증서 비밀번호</label>
+        <input type="password" class="input" id="certPw" placeholder="비밀번호 입력">
+      </div>
+      <p style="margin:10px 0 0; color:#6b7280; font-size:13px;">* 데모용 임시 폼입니다. 실제 인증 연동 전까지 UI 확인용으로 사용하세요.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-pressable" data-close-modal
+        style="width:48%; height:42px; border:1px solid #D1D5DB; border-radius:8px; background:#fff;">
+        취소
+      </button>
+      <button type="button" class="btn-register" id="btnCertSubmit" style="width:48%;">확인</button>
+    </div>
+  </div>
+</div>
+<!-- ▲▲ 공인인증서 모달 끝 ▲▲ -->
+
+<script>
+(function () {
+  const btnPhone = document.getElementById('method-phone');
+  const btnCert  = document.getElementById('method-cert');
+  const panelPhone = document.getElementById('panel-phone');
+  const panelCert  = document.getElementById('panel-cert');
+
+  function show(panelBtn, panelEl) {
+    [btnPhone, btnCert].forEach(b => {
+      const active = b === panelBtn;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', String(active));
+      b.setAttribute('aria-pressed', String(active));
+    });
+    [panelPhone, panelCert].forEach(p => {
+      const on = p === panelEl;
+      p.hidden = !on;
+      p.setAttribute('aria-hidden', String(!on));
+    });
+    panelEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  btnPhone.addEventListener('click', () => show(btnPhone, panelPhone));
+  btnCert.addEventListener('click',  () => show(btnCert, panelCert));
+
+  [btnPhone, btnCert].forEach(b => {
+    b.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); b.click(); }
+    });
+  });
+
+  const params = new URLSearchParams(location.search);
+  if (params.get('method') === 'cert') show(btnCert, panelCert);
+})();
+</script>
+
+<script>
+// ▼ 인증 상태 제어(임시 로직) : 둘 중 하나 완료되어야 '다음' 이동 허용
+const verifyState = { phone: false, cert: false };
+
+function updateVerifyUI() {
+  // 폰 인증 완료 시 버튼/라벨 힌트
+  const phoneBtn = document.getElementById('btnPhoneVerify');
+  if (phoneBtn) phoneBtn.textContent = verifyState.phone ? '완료' : '확인';
+
+  // 공인인증서 완료 시 버튼 라벨
+  const openCertBtn = document.getElementById('btnOpenCertModal');
+  if (openCertBtn) openCertBtn.textContent = verifyState.cert ? '인증서 선택(완료)' : '공인인증서 선택';
+}
+
+// 모든 '다음' 링크에 가드
+document.querySelectorAll('a.next-link[href="member_active.html"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    if (!(verifyState.phone || verifyState.cert)) {
+      e.preventDefault();
+      alert('휴대폰 인증 또는 공인인증서 인증을 완료해주세요.');
+    }
+  });
+});
+
+// ----- 휴대폰 인증(데모) -----
+const btnPhoneReq = document.getElementById('btnPhoneReq');
+const btnPhoneVerify = document.getElementById('btnPhoneVerify');
+const phoneCode = document.getElementById('phoneCode');
+
+if (btnPhoneReq) {
+  btnPhoneReq.addEventListener('click', () => {
+    alert('인증번호가 발송되었습니다.');
+    phoneCode && phoneCode.focus();
+  });
+}
+
+if (btnPhoneVerify) {
+  btnPhoneVerify.addEventListener('click', () => {
+    // 데모: 코드 입력값이 있으면 인증 성공 처리
+    if (phoneCode && phoneCode.value.trim().length >= 6) {
+      verifyState.phone = true;
+      updateVerifyUI();
+      alert('휴대폰 인증이 완료되었습니다.');
+    } else {
+      alert('인증번호를 입력해주세요.');
+    }
+  });
+}
+
+// ----- 공인인증서 모달 -----
+const certModal = document.getElementById('certModal');
+const btnOpenCertModal = document.getElementById('btnOpenCertModal');
+const btnCertSubmit = document.getElementById('btnCertSubmit');
+
+function openModal() {
+  certModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  certModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+if (btnOpenCertModal) btnOpenCertModal.addEventListener('click', openModal);
+
+// 닫기 요소들에 공통 핸들러
+certModal.querySelectorAll('[data-close-modal]').forEach(el => {
+  el.addEventListener('click', closeModal);
+});
+
+// 모달 확인 → (데모) 인증 성공 처리
+if (btnCertSubmit) {
+  btnCertSubmit.addEventListener('click', () => {
+    const sel = document.getElementById('certSelect');
+    const pw  = document.getElementById('certPw');
+    if (!sel.value) { alert('인증서를 선택하세요.'); return; }
+    if (!pw.value)  { alert('비밀번호를 입력하세요.'); return; }
+    // 데모: 통과
+    verifyState.cert = true;
+    updateVerifyUI();
+    closeModal();
+    alert('공인인증서 인증이 완료되었습니다. (데모)');
+  });
+}
+
+// 초기 UI 상태 반영
+updateVerifyUI();
+</script>
+
+<script>
+fetch("/layouts/footer.html")
+  .then(r=>r.text())
+  .then(html=>{ document.getElementById("footer").innerHTML = html; })
+  .catch(console.error);
+</script>
+<footer><div id="footer"></div></footer>
 </body>
 
 <style>
   main {
     width: 1200px;
-    background-color: #F6F6F8;
+    background: #F6F6F8;
     padding: 80px 20px;
     margin: 0 auto;
   }
@@ -248,9 +464,14 @@ fetch('/layouts/footer.html')
     color: #111827;
     line-height: 1.5;
   }
-  .container { max-width: 1000px; margin: 0 auto; padding: 28px 16px 40px; }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 28px 16px 40px;
+  }
+  /* stepper */
   .stepper {
-    width:900px;
+    width: 800px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -260,199 +481,235 @@ fetch('/layouts/footer.html')
     border-radius: 999px;
     padding: 10px 20px;
   }
-  .step { display: flex; align-items: center; gap: 8px; color: #6b7280; font-weight: 600; }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    font-weight: 600;
+  }
   .step .dot {
-    width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center;
-    border: 1px solid #d1d5db; background: #fff; color: #6b7280; font-weight: 700;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    border: 1px solid #d1d5db;
+    background: #fff;
+    color: #6b7280;
+    font-weight: 700;
   }
-  .step.active { color: #111; }
-  .step.active .dot { background: #d6001c; border-color: #d6001c; color: #fff; }
-  .sep { width: 28px; height: 2px; background: #e5e7eb; border-radius: 2px; }    
-
+  .step.active {
+    color: #111;
+  }
+  .step.active .dot {
+    background: #d6001c;
+    border-color: #d6001c;
+    color: #fff;
+  }
+  .sep {
+    width: 28px;
+    height: 2px;
+    background: #e5e7eb;
+    border-radius: 2px;
+  }
+  /* input */
   .input {
-  width:100%; height:44px; box-sizing:border-box;
-  border:1px solid #e5e7eb; border-radius:10px; background:#fff;
-  padding: 10px 12px; font-size:14px; color:#111827;
-  outline:none; transition: box-shadow .15s ease, border-color .15s ease;
+    width: 100%;
+    height: 44px;
+    box-sizing: border-box;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #111827;
+    outline: none;
+    transition: box-shadow .15s ease, border-color .15s ease;
   }
-  .input:focus { 
-  border-color:#d1d5db; 
-  box-shadow: 0 0 0 3px rgba(214,0,28,.12);
+  .input:focus {
+    border-color: #d1d5db;
+    box-shadow: 0 0 0 3px rgba(214, 0, 28, .12);
   }
-
-  /* 버튼 */
-  .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }  
+  /* buttons */
+  .btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 22px;
+  }
   .btn-register {
-	  --bg1: #D91A1A;
-	  --bg2: #F03A3A;
-	  --shadow: rgba(217,26,26,.45);
-	  position: relative;
-	  box-sizing: border-box;
-	  width: 90px; height: 42px;
-	  border: none; border-radius: 8px;
-	  color: #fff; cursor: pointer;
-	  background: linear-gradient(180deg, var(--bg2), var(--bg1));
-	  outline: none;
-	  box-shadow: 0 6px 14px -10px var(--shadow);
-	  transition:
-	    background .18s ease,
-	    box-shadow .18s ease,
-	    transform .12s ease; /* 프레스만 사용할 예정 */
-	  will-change: background, box-shadow, transform;
-	}
-	
-	/* Hover: 컬러와 섀도우만 아주 미세하게 (리프트 없음) */
-	.btn-register:hover {
-	  background: linear-gradient(180deg, #f24a4a, #d61a1a);
-	  box-shadow: 0 8px 18px -12px var(--shadow);
-	  transform: none; /* 확실하게 떠오르지 않도록 고정 */
-	}
-	
-	/* Active: 살짝 눌리는 프레스 효과만 */
-	.btn-register:active {
-	  transform: scale(.98);
-	  box-shadow: 0 4px 10px -10px var(--shadow);
-	}
-	
-	/* 키보드 포커스 접근성 */
-	.btn-register:focus-visible {
-	  outline: 3px solid rgba(240,58,58,.55);
-	  outline-offset: 2px;
-	}
-	
-	/* 모션 최소화 존중 */
-	@media (prefers-reduced-motion: reduce) {
-	  .btn-register { transition: none !important; }
-	}
-	
-	@media (prefers-color-scheme: dark) {
-	  .btn-register { --shadow: rgba(240,58,58,.35); }
-	}
-
-  .btn-pressable {
-  position: relative;
-  transition: box-shadow .18s ease, transform .12s ease, background .18s ease;
-  will-change: box-shadow, transform, background;
-  --btn-shadow: rgba(0,0,0,.12);
-  --btn-shadow-hover: rgba(0,0,0,.18);
-  --btn-shadow-active: rgba(0,0,0,.22);
+    --bg1: #D91A1A;
+    --bg2: #F03A3A;
+    --shadow: rgba(217, 26, 26, .45);
+    position: relative;
+    box-sizing: border-box;
+    width: 90px;
+    height: 42px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    background: linear-gradient(180deg, var(--bg2), var(--bg1));
+    outline: none;
+    box-shadow: 0 6px 14px -10px var(--shadow);
+    transition: background .18s ease, box-shadow .18s ease, transform .12s ease;
   }
-  .btn-pressable:hover { box-shadow: 0 8px 18px -12px var(--btn-shadow-hover); }
-  .btn-pressable:active { transform: scale(.98); box-shadow: 0 4px 10px -10px var(--btn-shadow-active); }
-  .btn-pressable:focus-visible { outline: 3px solid rgba(240,58,58,.55); outline-offset: 2px; }
-  /* 공통 설정 */
+  .btn-register:hover {
+    background: linear-gradient(180deg, #f24a4a, #d61a1a);
+    box-shadow: 0 8px 18px -12px var(--shadow);
+    transform: none;
+  }
+  .btn-register:active {
+    transform: scale(.98);
+    box-shadow: 0 4px 10px -10px var(--shadow);
+  }
+  .btn-register:focus-visible {
+    outline: 3px solid rgba(240, 58, 58, .55);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-register {
+      transition: none !important;
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    .btn-register {
+      --shadow: rgba(240, 58, 58, .35);
+    }
+  }
+  /* pressable button */
+  .btn-pressable {
+    position: relative;
+    transition: box-shadow .18s ease, transform .12s ease, background .18s ease;
+    --btn-shadow: rgba(0, 0, 0, .12);
+    --btn-shadow-hover: rgba(0, 0, 0, .18);
+    --btn-shadow-active: rgba(0, 0, 0, .22);
+  }
+  .btn-pressable:hover {
+    box-shadow: 0 8px 18px -12px var(--btn-shadow-hover);
+  }
+  .btn-pressable:active {
+    transform: scale(.98);
+    box-shadow: 0 4px 10px -10px var(--btn-shadow-active);
+  }
+  .btn-pressable:focus-visible {
+    outline: 3px solid rgba(240, 58, 58, .55);
+    outline-offset: 2px;
+  }
+  /* sheen effect */
   .btn-sheen {
     position: relative;
     overflow: hidden;
     border-radius: inherit;
   }
-
-  /* hover 시 아랫부분에 회색빛 음영이 은은하게 비침 */
   .btn-sheen::before {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     border-radius: inherit;
-
-    /* 아래쪽 중심부에서 위로 번지는 부드러운 그라디언트 */
     background: radial-gradient(
-      130% 90% at 50% 125%,           /* 중심을 버튼 아래쪽으로 이동 */
-      rgba(150,150,150,0.25) 0%,      /* 가장 아래: 옅은 회색빛 */
-      rgba(180,180,180,0.18) 28%,     /* 중간: 은은하게 퍼짐 */
-      rgba(200,200,200,0.08) 45%,     /* 상단으로 갈수록 흐려짐 */
-      rgba(255,255,255,0) 70%         /* 위로 갈수록 완전 투명 */
+      130% 90% at 50% 125%,
+      rgba(150, 150, 150, 0.25) 0%,
+      rgba(180, 180, 180, 0.18) 28%,
+      rgba(200, 200, 200, 0.08) 45%,
+      rgba(255, 255, 255, 0) 70%
     );
-
     opacity: 0;
     transition: opacity .22s ease;
   }
-
   .btn-sheen:hover::before {
-    opacity: 0.9; /* hover 시 부드럽게 나타남 */
+    opacity: .9;
   }
-
-  /* 위쪽 경계선이 약간 밝아 보이도록 (살짝 반사 느낌) */
   .btn-sheen::after {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
-
     background: linear-gradient(
       to top,
-      rgba(255,255,255,0.12) 0%,
-      rgba(255,255,255,0) 40%
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0) 40%
     );
-
     opacity: 0;
     transition: opacity .22s ease;
   }
-
   .btn-sheen:hover::after {
     opacity: 1;
   }
 
-  /* 모션 최소화 존중 */
-  @media (prefers-reduced-motion: reduce) {
-    .btn-sheen::before,
-    .btn-sheen::after {
-      transition: none !important;
-    }
-  }
+  a{ text-decoration:none; color:inherit; }
 
-  a { text-decoration: none; color: inherit; }
+  .form-card{ background:#fff; border:1px solid #e5e7eb; border-radius:20px; box-shadow:0 10px 20px rgba(2,6,23,.06); padding:30px 20px 30px; margin:0 auto; max-width:800px; }
 
-  /* 감싸는 */
-  .form-card {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(2,6,23,.06);
-    padding: 28px 30px;
-    margin: 0 auto;
-    max-width: 800px;
-  } 
-
-  /* 상단 인증 수단 2칸 */
-  .verify-methods{
-    display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;
-  }
-  .method-card{
-    appearance:none; border:1px solid #E5E7EB; background:#fff; border-radius:12px;
-    padding: 30px; text-align:left; cursor:pointer; position:relative;
-    transition:box-shadow .15s, border-color .15s;
-  }
+  .verify-methods{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+  .method-card{ appearance:none; border:1px solid #E5E7EB; background:#fff; border-radius:12px; padding:30px; text-align:left; cursor:pointer; position:relative; transition:box-shadow .15s, border-color .15s; }
   .method-card:hover{ box-shadow:0 6px 18px rgba(2,6,23,.06); }
+  .method-card.active{ border:2px solid #D6001C; box-shadow:0 6px 16px rgba(214,0,28,.12); }
   .m-title{ display:flex; gap:10px; align-items:center; margin-bottom:6px; }
-  .m-badge{ width:32px; height:32px; border-radius:8px; display:grid; place-items:center; background:#F95654; font-size:16px; }
-  .m-badge1{ width:32px; height:32px; border-radius:8px; display:grid; place-items:center; background:#095399; font-size:16px; }
-  .m-name{ font-weight:700; font-size: 16px; }
+  .m-badge,.m-badge1{ width:32px; height:32px; border-radius:8px; display:grid; place-items:center; color:#fff; font-size:16px; }
+  .m-badge{ background:#F95654; }   /* 아이콘 배경 */
+  .m-badge1{ background:#095399; }
+  .m-name{ font-weight:700; font-size:16px; }
+  .m-sub{ font-weight:600; }
   .m-list{ margin:6px 0 28px 0; padding-left:18px; color:#4B5563; font-size:15px; line-height:1.4; }
-  .m-list li{ list-style:disc; padding-top: 5px; }
+  .m-list li{ list-style:disc; padding-top:5px; }
 
-  /* 폼 그룹 */
-  .form-grid{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
-  .form-grid-1{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top: 20px;}
-  .field{ display:flex; flex-direction:column; gap:6px; }
-  .field-name{ font-size:13px; font-weight:600; color:#374151; }
-
-  /* 파란 알림 라인 */
-  .note-blue{
-    display:flex; align-items:center; gap:8px; height:44px; padding:10px 12px;
-    border:1px solid #C7D2FE; background:#EFF6FF; color:#1E40AF; border-radius:10px; font-size:13px;
-  }
-  .bullet {
-      width: 18px; height: 18px; border-radius: 50%; color: #fff;
-      font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 12px;
+  /* 테이블 폼 공통 */
+  .auth-panel[hidden]{ display:none !important; }
+  .auth-table {
+    width: 730px;
+    height: 530px;
+    border-collapse: separate;
+    border-spacing: 0 12px;
   }
 
-  /* 안내 박스 */
+  .auth-table th {
+    text-align: left;
+    vertical-align: middle;
+    padding: 4px 0 4px 10px;
+    width: 90px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .auth-table td {
+    padding-right: 10px;
+    vertical-align: middle;
+  }
+
+  .field-label{ font-weight:700; }  
+
+  .note-blue{ display:flex; align-items:center; gap:8px; min-height:44px; padding:10px 12px; border:1px solid #C7D2FE; background:#EFF6FF; color:#1E40AF; border-radius:10px; font-size:13px; }
+  .bullet{ width:18px; height:18px; border-radius:50%; color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:12px; }
+
   .helper-box{ margin-top:20px; background:#FFFBEB; border:1px solid #FDE68A; border-radius:12px; padding:14px 16px; }
   .helper-title{ font-weight:700; color:#92400E; margin-bottom:6px; }
   .helper-list{ margin:0; padding-left:18px; color:#92400E; font-size:13px; }
   .helper-list li{ list-style:disc; line-height:1.5; }
 
+  /* 모달 */
+  #certModal[aria-hidden="true"] { display:none; }
+  #certModal[aria-hidden="false"] { display:block; }
+  #certModal .modal-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,.45); backdrop-filter: blur(2px);
+  }
+  #certModal .modal-dialog{
+    position:fixed; left:50%; top:50%; transform:translate(-50%,-50%);
+    width: 520px; max-width: 92vw;
+    background:#fff; border:1px solid #e5e7eb; border-radius:16px;
+    box-shadow: 0 20px 60px rgba(2,6,23,.2); padding: 18px;
+  }
+  #certModal .modal-header{
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;
+  }
+  #certModal .modal-close{
+    width:32px; height:32px; border-radius:8px; border:1px solid #e5e7eb; background:#fff; cursor:pointer;
+  }
+  #certModal .modal-body{ padding: 6px 2px; }
+  #certModal .modal-footer{ display:flex; gap:10px; margin-top:14px; }
 </style>
 </html>
