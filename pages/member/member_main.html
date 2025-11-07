@@ -117,19 +117,23 @@ fetch('/layouts/footer.html')
             <td class="field-label">아이디</td>            
           </tr>
           <tr class="field-row">
-            <td style="margin-bottom: 9px;"><input type="text" name="member_id" placeholder="아이디를 입력하세요" autocomplete="username"></td>
+            <td style="margin-bottom: 9px;">
+              <input id="usernameInput" type="text" name="member_id" placeholder="아이디를 입력하세요" autocomplete="username">
+            </td>
           </tr>
-
           <tr class="field-row">
             <td class="field-label">비밀번호</td>            
           </tr>
           <tr class="field-row">
-            <td style="margin-bottom: 19px;"><input type="text" name="member_pass" placeholder="비밀번호를 입력하세요" autocomplete="username"></td>
+            <td style="margin-bottom: 19px;">
+              <input id="passwordInput" type="password" name="member_pass" placeholder="비밀번호를 입력하세요" autocomplete="current-password"></td>
           </tr>
 
           <tr>
             <td class="field-td" style="border-bottom: 1px solid #ddd;">
-              <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white; width: 500px;">로그인</button>
+              <button id="loginBtn" class="btn-pressable btn-sheen" style="box-sizing:border-box;width:500px;height:42px;border:none;border-radius:8px; cursor:pointer;border:1px solid #D1D5DB;background-color:white;">
+                로그인
+              </button>
             </td>
           </tr>
           <tr>
@@ -164,6 +168,49 @@ fetch('/layouts/footer.html')
     </section>
   </div>
 </main>
+
+<script>
+    window.addEventListener('load', () => {
+      const idInput  = document.getElementById('usernameInput');
+      const pwInput  = document.getElementById('passwordInput');
+      const loginBtn = document.getElementById('loginBtn');
+
+      const toast = (msg) => alert(msg);
+
+      // Enter로도 로그인
+      [idInput, pwInput].forEach(el => {
+        el?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') loginBtn?.click();
+        });
+      });
+
+      loginBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const id = (idInput?.value || '').trim();
+        const pw = (pwInput?.value || '').trim();
+
+        if (!id) return toast('아이디를 입력하세요.');
+        if (!pw) return toast('비밀번호를 입력하세요.');
+
+        // ===== [임시 로직] =====
+        // 1) 아무 아이디/비번이나 입력되면 성공
+        //    → 필요하면 2) 처럼 특정 계정만 통과하도록 교체하세요.
+        toast('로그인 성공 (임시)');
+        // 로그인 후 이동할 페이지
+        window.location.href = 'member_main.html';
+
+        // 2) 특정 계정만 통과시키고 싶다면 아래 주석 해제하고 1) 삭제:
+        // const OK = (id === 'testuser' && pw === '1234');
+        // if (OK) {
+        //   toast('로그인 성공 (임시 인증)');
+        //   window.location.href = 'member_main.html';
+        // } else {
+        //   toast('아이디 또는 비밀번호가 올바르지 않습니다. (임시 검증)');
+        // }
+      });
+    });
+  </script>
 
   <script>
     // footer 불러오기 (필요시 유지)
@@ -314,6 +361,15 @@ fetch('/layouts/footer.html')
 
   a { text-decoration: none; color: inherit; }
 
+  .input:focus,
+  .field-row input:focus,
+  .field-td input:focus {
+    border-color: #d1d5db;
+    box-shadow: 0 0 0 3px rgba(214,0,28,.12);
+    outline: none;
+  }
+
+
   /* 감싸는 */
   .form-card {
     background: #fff;
@@ -370,3 +426,9 @@ fetch('/layouts/footer.html')
 
 </style>
 </html>
+<!-- 백엔드 참고
+ 1. 약관동의 체크박스 입력 후 다음으로 이동 선택값 임시 저장
+ 2. 정보입력 폼 데이터 전송 입력 검증, 임시 저장
+ 3. 본인인증 인증 요청, 코드 입력 외부 인증 API 호출, 검증
+ 4. 가입완료 완료 페이지 표시 본 DB에 저장, 임시 데이터 삭제
+--> 
