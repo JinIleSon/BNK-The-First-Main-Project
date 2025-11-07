@@ -16,9 +16,9 @@
         <!-- 1) 스텝퍼 -->
         <ol class="stepper" id="wizardSteps" aria-label="신청 진행 단계">
             <li class="step active" aria-current="step"><span class="dot">1</span> 본인확인서 등록</li>
-            <li class="step"><span class="dot">2</span> 신규가입</li>
-            <li class="step"><span class="dot">3</span> 본인인증</li>
-            <li class="step"><span class="dot">4</span> 신청완료</li>
+            <li class="step"><span class="dot">2</span> 약관동의</li>
+            <li class="step"><span class="dot">3</span> 중요내용</li>
+            <li class="step"><span class="dot">4</span> 정보입력</li>
             <li class="step"><span class="dot">5</span> 계좌개설</li>
         </ol>
 
@@ -373,13 +373,13 @@
                         <li>이율은 신규가입일 당시 계약기간별 기본이율에 고객별 우대이율을 합산하여 지급합니다.</li>
                         <li>단, 거래실적 등 우대조건 미충족 시 최종금리가 달라질 수 있습니다.</li>
                     </ul>
-                    <p>※ 최종이율은 기본이율과 우대이율을 합산하여 적용되며, 개별상품에 따라 변경될 수 있습니다.</p>
+                    <p>※ 금리변동형 상품은 약정기간 중 금리가 변동 될 수 있으며 금리상승기에 약정금리 인상 가능성이 큰 반면, 금리하락기에는 약정 금리인하로 소비자에게 불리할 수 있습니다.</p>
                 </div>
             </article>
             <article class="disadvantages card-white">
                 <div class="doc-title">
                     <h2>
-                        <img src="/components/images/product/disadvantage-red.png" alt="중도해지에 따른 불이익">
+                        <img src="/components/images/product/minus-coin.svg" alt="중도해지에 따른 불이익">
                         중도해지에 따른 불이익
                     </h2>
                     <span>
@@ -425,6 +425,13 @@
                     <span>예금잔액증명서 발급 당일</span>에는 입금·출금 이체 등 잔액 변동이 불가하므로 지급이 제한됩니다.
                 </div>
                 <p>※ 중도해지이율에 대한 자세한 내용은 상품설명서를 참조 바랍니다.</p>
+            </article>
+            <article class="doc-all-confirm card-white">
+                <label for="doc-all-confirm">
+                    <input type="checkbox" name="doc-all-confirm" id="doc-all-confirm">
+                    금융상품에 대한 중요사항 설명에 대해 모두 확인했습니다.
+                </label>
+                <p>※ 위 사항은 금융소비자보호법 제19조 제1항에 규정하고 있는 중요한 사항입니다.</p>
             </article>
         </section>
         <section class="step-page" id="page4" hidden>…4단계 요약/확인…</section>

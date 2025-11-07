@@ -150,6 +150,35 @@ select:focus {
   box-shadow: 0 0 0 2px rgba(217, 26, 26, 0.15);
 }
 
+/* ============== 체크박스 ================= */
+input[type="checkbox"],
+input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #D1D5DB;
+  border-radius: 4px;
+  display: grid;
+  place-content: center;
+  transition: border-color .15s, background .15s;
+}
+
+input[type="checkbox"]:checked,
+input[type="checkbox"]:checked {
+  background: #D91A1A;
+  border-color: #D91A1A;
+}
+
+input[type="checkbox"]:checked::after,
+input[type="checkbox"]:checked::after {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: rotate(-45deg);
+}
+
 /* ===================================== 스텝퍼, 버튼 디자인 ================================ */
 .stepper {
   list-style: none;
@@ -418,29 +447,9 @@ select:focus {
 
 /* 체크박스 */
 #page1 .confirm-item input[type="checkbox"] {
-  appearance: none;
   width: 18px;
   height: 18px;
-  border: 1.5px solid #D1D5DB;
-  border-radius: 4px;
-  display: grid;
-  place-content: center;
-  cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-
-#page1 .confirm-item input[type="checkbox"]:checked {
-  background-color: #D91A1A;
-  border-color: #D91A1A;
-}
-
-#page1 .confirm-item input[type="checkbox"]:checked::after {
-  content: "";
-  width: 9px;
-  height: 5px;
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-  transform: rotate(-45deg);
+  padding: 10px;
 }
 
 /* 보조 아이콘 (회색 info 아이콘) */
@@ -663,30 +672,8 @@ select:focus {
 
 #page2 .confirm-check input[type="checkbox"],
 #page2 .terms-confirm input[type="checkbox"] {
-  appearance: none;
   width: 18px;
   height: 18px;
-  border: 1.5px solid #D1D5DB;
-  border-radius: 4px;
-  display: grid;
-  place-content: center;
-  transition: border-color .15s, background .15s;
-}
-
-#page2 .confirm-check input[type="checkbox"]:checked,
-#page2 .terms-confirm input[type="checkbox"]:checked {
-  background: #D91A1A;
-  border-color: #D91A1A;
-}
-
-#page2 .confirm-check input[type="checkbox"]:checked::after,
-#page2 .terms-confirm input[type="checkbox"]:checked::after {
-  content: "";
-  width: 9px;
-  height: 5px;
-  border-left: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  transform: rotate(-45deg);
 }
 
 /* ========== 하단 ‘전체 동의’ 라인 ========== */
@@ -801,7 +788,7 @@ select:focus {
 
 /* =================================== page3 스타일 ======================================= */
 /* 컨테이너 카드 */
-.card-white {
+#page3 .card-white {
   background: #fff;
   border: 1px solid #E5E7EB;
   /* gray-200 */
@@ -811,7 +798,7 @@ select:focus {
 }
 
 /* 상단 제목 + 체크박스 */
-.doc-title {
+#page3 .doc-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -819,7 +806,7 @@ select:focus {
   margin-bottom: 12px;
 }
 
-.doc-title h2 {
+#page3 .doc-title h2 {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -830,30 +817,28 @@ select:focus {
   /* gray-900 */
 }
 
-.doc-title h2 img {
+#page3 .doc-title h2 img {
   width: 18px;
   height: 18px;
   object-fit: contain;
 }
 
-.int-calc-basis .doc-title label {
-  display: inline-flex;
+#page3 .doc-title label {
+  display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
-  color: #6B7280;
-  /* gray-500 */
+  font-size: 16px;
+  font-weight: bold;
   user-select: none;
 }
 
-.doc-title input[type="checkbox"] {
+#page3 .doc-title input[type="checkbox"] {
   width: 16px;
   height: 16px;
   accent-color: #D91A1A;
 }
 
-/* 회색 바(두 줄) */
-.card-grey {
+#page3 .card-grey {
   align-items: center;
   /* gray-100~200 사이 */
   background: #F3F4F6;
@@ -862,8 +847,8 @@ select:focus {
   margin-top: 8px;
 }
 
-.b-and-p-int-rates .card-grey,
-.int-calc-basis .card-grey {
+#page3 .b-and-p-int-rates .card-grey,
+#page3 .int-calc-basis .card-grey {
   display: grid;
   /* 좌: 제목 / 우: 설명 */
   grid-template-columns: 90px 1fr;
@@ -871,11 +856,11 @@ select:focus {
 }
 
 /* 좌측 소제목 */
-.b-and-p-int-rates .content-title,
-.disadvantages .content-title,
-.p-i-limit .content-title,
-.int-calc-basis .content-title {
-  font-size: 13px;
+#page3 .b-and-p-int-rates .content-title,
+#page3 .disadvantages .content-title,
+#page3 .p-i-limit .content-title,
+#page3 .int-calc-basis .content-title {
+  font-size: 14px;
   font-weight: 700;
   color: #374151;
   /* gray-700 */
@@ -886,34 +871,165 @@ select:focus {
 }
 
 /* 우측 설명 */
-.b-and-p-int-rates .content-description,
-.disadvantages .content-description,
-.p-i-limit .content-description,
-.int-calc-basis .content-description {
-  font-size: 13px;
-  color: #4B5563;
+#page3 .b-and-p-int-rates .content-description,
+#page3 .disadvantages .content-description,
+#page3 .p-i-limit .content-description,
+#page3 .int-calc-basis .content-description {
+  font-size: 14px;
+  color: #2B2F36;
   /* gray-600 */
   line-height: 1.6;
 }
 
 /* 하단 안내 문구 */
-.card-white>p {
+#page3 .card-white>p {
   margin: 10px 2px 0;
   font-size: 12px;
-  color: #6B7280;
   /* gray-500 */
+  color: #2B2F36;
+}
+
+#page3 .int-pay-date.card-white{
+  /* 두 개의 회색 카드가 가로로 나란히 보이도록 그리드 사용 */
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:12px;                           /* 내부 요소 간 간격 */
+}
+
+/* 상단 제목 + 확인 체크는 가로 전체 차지 */
+#page3 .int-pay-date .doc-title{ 
+  grid-column: 1 / -1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:4px;                  /* 회색 카드와의 간격 보정 */
+}
+
+/* ===== 회색 캡슐 카드 2개 ===== */
+#page3 .int-pay-date .card-grey{
+  background:#F3F4F6;                 /* light gray capsule */
+  border:1px solid #E5E7EB;
+  border-radius:12px;
+  padding:14px 16px;
+  min-height:72px;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+/* 캡슐 카드 내부 타이틀 / 설명 */
+#page3 .int-pay-date .content-title{
+  font-size:15px; font-weight:700; color:#374151; /* gray-700 */
+  margin-bottom:4px;
+}
+#page3 .int-pay-date .content-description{
+  font-size:14px; color:#4B5563; line-height:1.6; /* gray-600 */
+}
+
+/* ===== 반응형: 모바일에서 캡슐 카드 세로 배치 ===== */
+@media (max-width:640px){
+  #page3 .int-pay-date.card-white{
+    grid-template-columns: 1fr;
+    gap:8px;
+    padding:14px 14px;
+  }
+  #page3 .int-pay-date .card-grey{
+    min-height:64px;
+  }
+}
+
+/* 붉은 안내 박스 */
+#page3 .dps-int-rates-note .card-red{
+  background:#FEF2F2;                 /* red-50 */
+  border:1px solid #FECACA;           /* red-200 */
+  border-radius:10px;
+  padding:12px 14px;
+}
+
+/* 목록 */
+#page3 .dps-int-rates-note .card-red ul{
+  margin:0 0 8px;
+  padding-left:18px;                   /* bullet 들여쓰기 */
+  color:#2B2F36;                       /* gray-700 */
+  font-size:14px;
+  line-height:1.7;
+}
+#page3 .dps-int-rates-note .card-red li{ margin:6px 0; }
+#page3 .dps-int-rates-note .card-red li::marker{
+  color:#DC2626;                       /* bullet 빨간색 */
+}
+#page3 .dps-int-rates-note .card-red li:nth-child(2){
+  color:#DC2626;                       /* 두 번째 항목 강조 */
+  font-weight:700;
+}
+
+/* 붉은 박스 하단 안내문 */
+#page3 .dps-int-rates-note .card-red > p{
+  margin:4px 0 0;
+  font-size:12px;
+  color:#2B2F36;                       /* gray-500 */
+}
+
+#page3 .p-i-limit .card-grey img {
+  margin-right: 10px;
+}
+
+/* “중도해지이율 예시” */
+#page3 .disadvantages .card-grey > b:first-of-type{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  color:#6B7280;                  /* gray-500 */
+  margin-bottom:6px;
+}
+
+/* 예시 리스트 */
+#page3 .disadvantages .card-grey ul{
+  margin:0 0 10px;
+  padding-left:18px;               /* 점과 텍스트 간격 */
+  font-size:14px;
+  color:#374151;                   /* gray-700 */
+  line-height:1.7;
+}
+#page3 .disadvantages .card-grey li{ margin:2px 0; }
+
+/* 굵게 강조된 경고 문장 */
+#page3 .disadvantages .card-grey > b:last-of-type{
+  display:block;
+  margin-top:4px;
+  color:#111827;                   /* gray-900 */
+  font-weight:800;
+  line-height:1.7;
 }
 
 /* 반응형: 모바일에선 두 줄로 쪼개기 */
 @media (max-width: 640px) {
-  .int-calc-basis .card-grey {
+  #page3 .int-calc-basis .card-grey {
     grid-template-columns: 1fr;
     row-gap: 6px;
   }
 
-  .int-calc-basis .content-title {
+  #page3 .int-calc-basis .content-title {
     width: max-content;
     /* 칩 길이만큼 */
     max-width: 100%;
   }
+}
+
+#page3 .doc-all-confirm label {
+  display: flex;
+  align-items: center;
+  font-size: larger;
+  font-weight: 500;
+  gap: 10px;
+}
+
+#page3 .doc-all-confirm p {
+  margin-left: 35px;
+  font-size: 16px;
+  color: #4B5563;
 }
