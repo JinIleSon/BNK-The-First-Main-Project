@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>정보입력</title>
-
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
   <div id="header"></div>
@@ -110,8 +110,8 @@ fetch('/layouts/footer.html')
       <div class="step"><span class="dot">4</span>가입완료</div>
     </div>
     <!-- 제목/설명 -->
-    <h2 style="margin: 18px 0px 15px; font-size: 28px; margin-left: 180px;">정보입력</h2>    
-    <p style="color: #6b7280; margin-bottom: 20px; margin-left: 180px;">
+    <h2 style="margin: 18px 175px 0; font-size: 28px;">정보입력</h2>    
+    <p style="color: #6b7280; margin: 5px 175px 10px;">
     기본정보를 입력해주세요.
     </p>
 
@@ -153,21 +153,18 @@ fetch('/layouts/footer.html')
         <input type="text" class="input" placeholder="YYYY-MM-DD">
       </div>
 
-      <!-- 휴대폰번호 -->
-      <div class="field">
-        <label class="field-label">휴대폰 번호<span class="reqdot">*</span></label>
-        <div class="field-row">
-          <input type="text" class="input" placeholder="010-0000-0000">
-          <button type="button" class="btn-register">인증요청</button>
-        </div>
-      </div>
-
       <!-- 이메일 -->
       <div class="field">
         <label class="field-label">이메일<span class="reqdot">*</span></label>
         <div class="field-row">
           <input type="text" class="input" placeholder="example@email.com">
-          <button type="button" class="btn-register">인증요청</button>
+          <button type="button" class="btn-register" style="width: 120px;">인증요청</button>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-row">
+          <input type="text" class="input" placeholder="인증번호 입력">
+          <button type="button" class="btn-register">확인</button>
         </div>
       </div>
 
@@ -190,13 +187,157 @@ fetch('/layouts/footer.html')
 
       <!-- 버튼 -->
       <div class="btns">
-        <button class="btn-pressable" style="box-sizing: border-box; width: 90px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
-        <button class="btn-register">다음</button>
-      </div>
-    </div>
+        <a href="member_main.html" class="btn-pressable"
+          style="display:inline-block; box-sizing:border-box; width:50%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
+          취소
+        </a>
 
+        <button type="button" id="nextBtn" class="btn-register" style="width: 50%;">다음</button>
+      </div>
+      
+    </div>
   </div>
 </main>
+
+<script>
+window.addEventListener('load', () => {
+  const $ = (sel, base=document) => base.querySelector(sel);
+  const $$ = (sel, base=document) => Array.from(base.querySelectorAll(sel));
+  const toast = (msg) => alert(msg);
+
+  // ---------- 요소 참조 ----------
+  const idInput   = $('input[placeholder="아이디를 입력해주세요"]');
+  const idCheckBtn= idInput?.closest('.field-row')?.querySelector('button');
+  const pwInput   = $('input[placeholder="비밀번호를 입력해주세요"]');
+  const pw2Input  = $('input[placeholder="비밀번호를 다시 입력해주세요"]');
+  const nameInput = $('input[placeholder="실명을 입력해주세요"]');
+  const birthInput= $('input[placeholder="YYYY-MM-DD"]');
+  const emailInput = $('input[placeholder="example@email.com"]');
+  const emailReqBtn = emailInput?.closest('.field-row')?.querySelector('.btn-register');
+  const emailCodeInput = emailInput?.closest('.field')?.nextElementSibling?.querySelector('input[placeholder="인증번호 입력"]');
+  const emailChkBtn = emailCodeInput?.closest('.field-row')?.querySelector('.btn-register');
+  const zipInput        = $('input[placeholder="우편번호"]');
+  const addrSearchBtn   = zipInput?.closest('.field-row')?.querySelector('.btn-pressable');
+  const baseAddrInput   = $('input[placeholder="기본주소"]');
+  const detailAddrInput = $('input[placeholder="상세주소를 입력해주세요"]');
+  const nextBtn = $('#nextBtn');
+
+  // ---------- 1) 아이디 중복확인 ----------
+  const USED_IDS = new Set(['admin','test','user1','manager','guest']);
+  let idChecked = false;
+  let idUsable  = false;
+
+  idCheckBtn?.addEventListener('click', () => {
+    const v = idInput.value.trim();
+    const valid = /^[a-zA-Z0-9]{6,20}$/.test(v);
+    if (!valid) return toast('아이디 형식이 올바르지 않습니다. (영문/숫자 6~20자)');
+    if (USED_IDS.has(v.toLowerCase())) {
+      idUsable = false;
+      toast('이미 사용 중인 아이디입니다.');
+    } else {
+      idUsable = true;
+      toast('사용 가능한 아이디입니다.');
+    }
+    idChecked = true;
+  });
+  idInput?.addEventListener('input', () => { idChecked = false; idUsable = false; });
+
+  // ---------- 2) 비밀번호 일치 ----------
+  pwInput.type = 'password';
+  pw2Input.type = 'password';
+  const checkPwMatch = () => {
+    if (pw2Input.value && pwInput.value !== pw2Input.value) {
+      pw2Input.setCustomValidity('비밀번호가 일치하지 않습니다.');
+    } else pw2Input.setCustomValidity('');
+  };
+  pwInput.addEventListener('input', checkPwMatch);
+  pw2Input.addEventListener('input', checkPwMatch);
+
+  // ---------- 3) 생년월일 ----------
+  if (birthInput) {
+    birthInput.type = 'date';
+    birthInput.removeAttribute('placeholder');
+  }
+
+  // ---------- 4) 이메일 인증 ----------
+  let emailCode = '';
+  let emailVerified = false;
+
+  emailReqBtn?.addEventListener('click', () => {
+    const mail = emailInput.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+      toast('올바른 이메일 주소를 입력해주세요.');
+      return;
+    }
+    emailCode = Math.floor(100000 + Math.random() * 900000).toString();
+    emailVerified = false;
+    toast(`인증번호가 이메일로 발송되었습니다.\n(데모 코드: ${emailCode})`);
+  });
+
+  emailChkBtn?.addEventListener('click', () => {
+    if (!emailCode) {
+      toast('먼저 인증요청을 해주세요.');
+      return;
+    }
+    const code = emailCodeInput.value.trim();
+    if (code === emailCode) {
+      emailVerified = true;
+      toast('이메일 인증 완료되었습니다.');
+    } else {
+      toast('인증번호가 올바르지 않습니다.');
+    }
+  });
+
+  // ---------- 5) 주소검색 ----------
+  addrSearchBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    new daum.Postcode({
+      oncomplete: function(data) {
+        let addr = data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
+        zipInput.value = data.zonecode;
+        baseAddrInput.value = addr;
+        detailAddrInput.focus();
+      },
+      width: '100%',
+      height: '100%',
+    }).open({
+      popupTitle: '우편번호 검색',
+      popupKey: 'BNK_addr_search',
+    });
+  });
+
+  // ---------- 6) 다음 버튼 ----------
+  nextBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const errors = [];
+
+    if (!idInput.value.trim()) errors.push('아이디를 입력해주세요.');
+    else if (!idChecked) errors.push('아이디 중복확인을 진행해주세요.');
+    else if (!idUsable) errors.push('이미 사용 중인 아이디입니다.');
+
+    if (!pwInput.value || !pw2Input.value) errors.push('비밀번호를 모두 입력해주세요.');
+    else if (pwInput.value !== pw2Input.value) errors.push('비밀번호가 일치하지 않습니다.');
+
+    if (!nameInput.value.trim()) errors.push('이름을 입력해주세요.');
+    if (!birthInput.value.trim()) errors.push('생년월일을 선택해주세요.');
+
+    if (!emailInput.value.trim()) errors.push('이메일을 입력해주세요.');
+    if (!emailVerified) errors.push('이메일 인증을 완료해주세요.');
+
+    if (!zipInput.value.trim() || !baseAddrInput.value.trim() || !detailAddrInput.value.trim()) {
+      errors.push('주소를 모두 입력해주세요.');
+    }
+
+    if (errors.length > 0) {
+      toast(errors[0]);
+      return;
+    }
+
+    toast('정보 입력 감사띠');
+    window.location.href = 'member_auth.html';
+  });
+});
+</script>
 
   <script>
     // footer 불러오기 (필요시 유지)

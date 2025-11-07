@@ -110,120 +110,221 @@ fetch('/layouts/footer.html')
       <div class="step"><span class="dot">4</span>가입완료</div>
     </div>
     <!-- 제목/설명 -->
-    <h2 style="margin: 18px 0px 0; font-size: 28px; margin-left: 80px;">본인인증</h2>    
+    <h2 style="margin: 18px 80px 0; font-size: 28px;">본인인증</h2>    
     <p style="color: #6b7280; margin: 5px 80px 10px;">
     안전한 서비스를 이용을 위해 본인인증을 진행해주세요.
     </p>
 
     <!-- 감싸기 -->
     <div class="form-card">
-      <!-- 인증 수단 선택 -->
-      <div class="verify-methods">
-        <button type="button" class="method-card" aria-pressed="true">
-          <div class="m-title">
-            <span class="m-badge" style="color: #D91A1A">🪪</span>
-            <div>
-              <div class="m-name">휴대폰 인증</div>
-              <div class="m-name">SMS 인증번호로 빠른 인증</div>
-            </div>
+      <!-- 인증 방식 버튼 (카드형) -->
+    <div class="verify-methods" role="tablist" aria-label="인증 방식 선택">
+      <button
+        type="button"
+        id="method-phone"
+        class="method-card"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-phone"
+        aria-pressed="false">
+        <div class="m-title">
+          <span class="m-badge">🪪</span>
+          <div>
+            <div class="m-name">휴대폰 인증</div>
+            <div class="m-sub">SMS 인증번호로 빠른 인증</div>
           </div>
-          <ul class="m-list">
-            <li>본인 명의 휴대폰 필요</li>
-            <li>인증번호 SMS 발송</li>
-            <li>약 1-2분 소요</li>
-          </ul>
-        </button>
+        </div>
+        <ul class="m-list">
+          <li>본인 명의 휴대폰 필요</li>
+          <li>인증번호 SMS 발송</li>
+          <li>약 1-2분 소요</li>
+        </ul>
+      </button>
 
-        <button type="button" class="method-card">
-          <div class="m-title">
-            <span class="m-badge1" style="color: #68C0F7;">✷</span>
-            <div>
-              <div class="m-name">공동인증서</div>
-              <div class="m-name">저장된 인증서로 이용</div>
-            </div>
+      <button
+        type="button"
+        id="method-cert"
+        class="method-card"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-cert"
+        aria-pressed="false">
+        <div class="m-title">
+          <span class="m-badge1">✷</span>
+          <div>
+            <div class="m-name">공동인증서</div>
+            <div class="m-sub">저장된 인증서로 이용</div>
           </div>
-          <ul class="m-list">
-            <li>기존 발급받은 인증서</li>
-            <li>PC/모바일 모두 가능</li>
-            <li>즉시 인증 완료</li>
-          </ul>
-        </button>
+        </div>
+        <ul class="m-list">
+          <li>기존 발급받은 인증서</li>
+          <li>PC/모바일 모두 가능</li>
+          <li>즉시 인증 완료</li>
+        </ul>
+      </button>
+    </div>
+
+    <!-- ▼▼▼ 아래는 ‘패널’ 두 개: 처음엔 숨김 ▼▼▼ -->
+    <!-- 휴대폰 인증 패널 (기존 휴대폰 인증 폼을 이 안으로 옮김) -->
+    <section id="panel-phone" class="auth-panel" role="tabpanel" aria-labelledby="method-phone" aria-hidden="true" hidden>
+      <div class="form-card">
+      <!-- 기본 정보 입력 -->
+      <div class="form-grid">
+        <div class="field">
+          <div class="field-name" style="width: 364px;">이름</div>
+          <input type="text" class="input" placeholder="홍길동">
+        </div>
+        <div class="field">
+          <div class="field-name" style="width: 364px;">생년월일</div>
+          <input type="text" class="input" placeholder="19900101">
+        </div>
       </div>
 
-      <!-- 본인인증 폼 -->
-      <div class="form-card">
-        <div class="form-grid">
-          <div class="field">
-            <div class="field-name">이름</div>
-            <input type="text" class="input" placeholder="홍길동">
-          </div>
-          <div class="field">
-            <div class="field-name">생년월일</div>
-            <input type="text" class="input" placeholder="19900101">
-          </div>
-
-          <div class="field">
-            <div class="field-name">성별</div>
-            <select class="input">
-              <option value="" hidden>선택</option>
-              <option>남성</option>
-              <option>여성</option>
-            </select>
-          </div>                               
+      <div class="form-grid-1">
+        <div class="field">
+          <div class="field-name">성별</div>
+          <select class="input">
+            <option value="" hidden>선택</option>
+            <option>남성</option>
+            <option>여성</option>
+          </select>
         </div>
-        <div class="form-grid-1">
-          <div class="field">
-            <div class="field-name">통신사</div>
-            <select class="input">
-              <option value="" hidden>선택</option>
-              <option>SKT</option>
-              <option>KT</option>
-              <option>LG U+</option>
-              <option>알뜰폰</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <div class="field-name">휴대폰 번호</div>
-            <input type="tel" class="input" placeholder="010-0000-0000">
-          </div>   
+        <div class="field">
+          <div class="field-name">통신사</div>
+          <select class="input">
+            <option value="" hidden>선택</option>
+            <option>SKT</option>
+            <option>KT</option>
+            <option>LG U+</option>
+            <option>알뜰폰</option>
+          </select>
         </div>
+      </div>
 
-        <div class="note-blue" style="margin-top: 20px;">
-            <span class="bullet" style="background-color: #2563eb;">!</span>
-            본인 명의의 휴대폰으로만 인증이 가능합니다. 타인 명의 휴대폰 사용 시 인증에 실패할 수 있습니다.
-        </div>         
-
-        <!-- 버튼 1 -->
-        <div class="btns">
-          <button type="button" class="btn-register" style="width: 100%;">
-            인증번호 받기
-          </button>
+      <!-- 휴대폰번호 -->
+      <div class="field" style="margin-top: 20px;">
+        <label class="field-label">휴대폰 번호</label>
+        <div class="field-row" style="display:flex; gap:8px;">
+          <input type="text" class="input" placeholder="010-0000-0000" style="flex:1;">
+          <button type="button" class="btn-register" style="width:120px;">인증요청</button>
         </div>
+      </div>
 
-        <!-- 안내 박스 -->
-        <div class="helper-box">
-          <div class="helper-title">안내사항</div>
-          <ul class="helper-list">
-            <li>입력하신 정보는 본인확인 용도로만 사용되며 저장되지 않습니다.</li>
-            <li>통신사 점검 또는 네트워크 상태에 따라 인증이 지연될 수 있습니다.</li>
-            <li>인증번호는 3분간 유효하며, 시간 초과 시 재전송을 눌러주세요.</li>
-          </ul>
+      <!-- 인증번호 -->
+      <div class="field" style="margin-top: 10px;">
+        <label class="field-label">인증번호</label>
+        <div class="field-row" style="display:flex; gap:8px;">
+          <input type="text" class="input" placeholder="인증번호 입력" style="flex:1;">
+          <button type="button" class="btn-register" style="width:120px;">확인</button>
         </div>
+      </div>
 
-        <!-- 버튼 2 -->
-        <div class="btns">
-          <button class="btn-pressable" style="box-sizing: border-box; width: 50%; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
-            이전
-          </button>
-          <button class="btn-register" style="width: 50%;">
-            다음
-          </button>
-        </div>
+      <div class="note-blue" style="margin-top:20px;">
+        <span class="bullet" style="background-color:#2563eb;">!</span>
+        본인 명의의 휴대폰으로만 인증이 가능합니다. 타인 명의 휴대폰 사용 시 인증에 실패할 수 있습니다.
+      </div>
+
+      <div class="helper-box">
+        <div class="helper-title">안내사항</div>
+        <ul class="helper-list">
+          <li>입력하신 정보는 본인확인 용도로만 사용되며 저장되지 않습니다.</li>
+          <li>통신사 점검 또는 네트워크 상태에 따라 인증이 지연될 수 있습니다.</li>
+          <li>인증번호는 3분간 유효하며, 시간 초과 시 재전송을 눌러주세요.</li>
+        </ul>
+      </div>
+
+      <div class="btns">
+        <a href="member_main.html" class="btn-pressable"
+          style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;border:1px solid #D1D5DB;background-color:#fff;text-align:center;color:#111;text-decoration:none;">
+          취소
+        </a>
+        <a href="member_active.html" class="btn-register"
+          style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;background-color:#007BFF;color:#fff;text-align:center;text-decoration:none;">
+          다음
+        </a>
       </div>
     </div>
+
+</section>
+
+<!-- 공동인증서 패널 -->
+<section id="panel-cert" class="auth-panel" role="tabpanel" aria-labelledby="method-cert" aria-hidden="true" hidden>
+  <div class="form-card">
+    <h3 style="margin:0 0 12px 0;">공동인증서 인증</h3>
+    <p style="color:#4b5563;margin:0 0 16px 0;">PC 또는 모바일에 저장된 공동인증서를 선택하여 인증을 진행해주세요.</p>
+    <div class="btns">
+      <button type="button" class="btn-register" style="width:100%;">공동인증서 선택</button>
+    </div>
+    <div class="note-blue" style="margin-top:20px;">
+      <span class="bullet" style="background-color:#2563eb;">!</span>
+      인증서가 없는 경우 은행/공공기관에서 발급 후 이용해주세요.
+    </div>
+  </div>
+  <div class="btns">
+      <a href="member_main.html" class="btn-pressable"
+         style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;border:1px solid #D1D5DB;background-color:#fff;text-align:center;color:#111;text-decoration:none;">
+        취소
+      </a>
+      <a href="member_active.html" class="btn-register"
+         style="display:inline-block;box-sizing:border-box;width:50%;height:42px;line-height:42px;border-radius:8px;background-color:#007BFF;color:#fff;text-align:center;text-decoration:none;">
+        다음
+      </a>
+    </div>
+</section>
+
   </div>
 </main>
+
+  <script>
+    (function () {
+      const btnPhone = document.getElementById('method-phone');
+      const btnCert  = document.getElementById('method-cert');
+      const panelPhone = document.getElementById('panel-phone');
+      const panelCert  = document.getElementById('panel-cert');
+
+      function show(panelBtn, panelEl) {
+        // 버튼 상태
+        [btnPhone, btnCert].forEach(b => {
+          const active = b === panelBtn;
+          b.classList.toggle('active', active);
+          b.setAttribute('aria-selected', String(active));
+          b.setAttribute('aria-pressed', String(active));
+        });
+
+        // 패널 표시
+        [panelPhone, panelCert].forEach(p => {
+          const on = p === panelEl;
+          p.hidden = !on;
+          p.setAttribute('aria-hidden', String(!on));
+        });
+
+        // 패널로 스무스 스크롤
+        panelEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      // 이벤트 바인딩
+      btnPhone.addEventListener('click', () => show(btnPhone, panelPhone));
+      btnCert.addEventListener('click',  () => show(btnCert, panelCert));
+
+      // 키보드(스페이스/엔터) 지원
+      [btnPhone, btnCert].forEach(b => {
+        b.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            b.click();
+          }
+        });
+      });
+
+      // (선택) URL 파라미터로 기본 선택 제어 ?method=cert
+      const params = new URLSearchParams(location.search);
+      if (params.get('method') === 'cert') {
+        show(btnCert, panelCert);
+      }
+      // 처음엔 모두 숨김이지만, 원하는 기본값이 있으면 아래 주석을 해제
+      // else { show(btnPhone, panelPhone); }
+    })();
+  </script>
 
   <script>
     // footer 불러오기 (필요시 유지)
@@ -250,7 +351,7 @@ fetch('/layouts/footer.html')
   }
   .container { max-width: 1000px; margin: 0 auto; padding: 28px 16px 40px; }
   .stepper {
-    width:900px;
+    width: 800px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
@@ -410,7 +511,7 @@ fetch('/layouts/footer.html')
     border: 1px solid #e5e7eb;
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(2,6,23,.06);
-    padding: 28px 30px;
+    padding: 40px 28px 30px;
     margin: 0 auto;
     max-width: 800px;
   } 
@@ -453,6 +554,20 @@ fetch('/layouts/footer.html')
   .helper-title{ font-weight:700; color:#92400E; margin-bottom:6px; }
   .helper-list{ margin:0; padding-left:18px; color:#92400E; font-size:13px; }
   .helper-list li{ list-style:disc; line-height:1.5; }
+
+  /* 카드 버튼 공통 (기존 .method-card 그대로 사용 가능, 여기에 보강) */
+  .method-card{appearance:none;border:1px solid #E5E7EB;background:#fff;border-radius:12px;
+    padding:24px;text-align:left;cursor:pointer;position:relative;transition:box-shadow .15s,border-color .15s;}
+  .method-card:hover{ box-shadow:0 6px 18px rgba(2,6,23,.06); }
+  .method-card.active{ border:2px solid #D6001C; box-shadow:0 6px 16px rgba(214,0,28,.12); }
+  .m-title{ display:flex; gap:10px; align-items:center; margin-bottom:6px; }
+  .m-badge,.m-badge1{ width:32px;height:32px;border-radius:8px;display:grid;place-items:center;color:#fff;font-size:16px; }
+  .m-badge{ background:#F95654; }
+  .m-badge1{ background:#095399; }
+  .m-sub{ font-weight:600; }
+
+  /* 패널 공통: 처음엔 hidden 속성으로 숨김 */
+  .auth-panel[hidden]{ display:none !important; }
 
 </style>
 </html>
