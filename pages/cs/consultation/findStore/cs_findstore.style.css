@@ -229,10 +229,11 @@ body {
 }
 
 .store-table td {
-  padding: 14px 20px;
+  padding: 20px 20px 20px 20px;
   font-size: 15px;
   color: #333;
   cursor: pointer;
+  text-align: center;
   transition: background 0.2s ease;
 }
 
