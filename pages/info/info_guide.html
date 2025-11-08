@@ -3,7 +3,7 @@
 
 <script>
     // header.html 파일을 불러와서 #header에 삽입
-    fetch('/layouts/header.html')
+    fetch('_header.html')
         .then(res => res.text())
         .then(data => {
             document.getElementById('header').innerHTML = data;
