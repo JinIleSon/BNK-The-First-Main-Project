@@ -28,12 +28,11 @@
 <ownerDesignName>BNK_DMD</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>500 BYTE</dataTypeSize>
+<logicalDatatype>LOGDT019</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
-<colAssociation fkAssociation="2A749E0E-6309-0967-90AD-A0C7C21B1BF1" referredColumn="FF15BD70-0E1B-708F-E6F0-48529ABF0725"/>
+<colAssociation fkAssociation="FF89AC0E-1BE4-B72A-93FB-367DA7DB3E52" referredColumn="FF15BD70-0E1B-708F-E6F0-48529ABF0725"/>
 </associations>
 </Column>
 <Column name="pcCptp" id="F4BFD8BF-17AD-3968-D6F0-28FD1A847F23">
@@ -236,6 +235,16 @@
 <colUsage columnID="B155BC0F-D4C3-84B0-6C03-91E83544AF8B"/>
 </indexColumnUsage>
 </ind_PK_UK>
+<ind_PK_UK id="99F6A27D-C25A-5FE5-1364-E789DDB949EE" name="pContract_product_FK">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 09:17:51 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B155BC0F-D4C3-84B0-6C03-91E83544AF8B"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK id="045A296E-1B68-D258-2CA7-9B7DB08D7E45" name="pContract_user_FK">
 <createdBy>user</createdBy>
 <createdTime>2025-11-08 09:22:05 UTC</createdTime>
@@ -244,16 +253,6 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="402977B1-8C03-DAD0-E0A5-D2D3137D8C19"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK id="B4688F3E-459A-9327-1B8B-F1D1A3409EF6" name="pContract_product_FK">
-<createdBy>user</createdBy>
-<createdTime>2025-11-08 09:36:39 UTC</createdTime>
-<ownerDesignName>BNK_DMD</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<isSurrogateKey>false</isSurrogateKey>
-<indexColumnUsage>
-<colUsage columnID="B155BC0F-D4C3-84B0-6C03-91E83544AF8B"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

@@ -8,26 +8,14 @@
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="id" id="D8AEECBC-50A7-6AA4-155F-5DCC237DC6B2">
+<Column name="pId" id="FF15BD70-0E1B-708F-E6F0-48529ABF0725">
 <createdBy>user</createdBy>
-<createdTime>2025-11-08 09:33:40 UTC</createdTime>
+<createdTime>2025-11-08 08:54:47 UTC</createdTime>
 <ownerDesignName>BNK_DMD</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT019</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="pId" id="FF15BD70-0E1B-708F-E6F0-48529ABF0725">
-<createdBy>user</createdBy>
-<createdTime>2025-11-08 08:54:47 UTC</createdTime>
-<ownerDesignName>BNK_DMD</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>500 BYTE</dataTypeSize>
-<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="pType" id="CFA0C528-FC2A-78A5-1BF2-23F02E4D1974">
@@ -189,16 +177,6 @@
 <ownerDesignName>BNK_DMD</ownerDesignName>
 <pk>true</pk>
 <indexState>Primary Constraint</indexState>
-<isSurrogateKey>false</isSurrogateKey>
-<indexColumnUsage>
-<colUsage columnID="D8AEECBC-50A7-6AA4-155F-5DCC237DC6B2"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK id="1037F1EE-0BAE-9B53-2043-A5D30CCBA6AC" name="product__UN">
-<createdBy>user</createdBy>
-<createdTime>2025-11-08 09:36:03 UTC</createdTime>
-<ownerDesignName>BNK_DMD</ownerDesignName>
-<indexState>Unique Constraint</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="FF15BD70-0E1B-708F-E6F0-48529ABF0725"/>

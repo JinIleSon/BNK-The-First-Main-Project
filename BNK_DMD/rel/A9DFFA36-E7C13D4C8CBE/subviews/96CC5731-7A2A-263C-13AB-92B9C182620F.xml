@@ -32,7 +32,7 @@
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="3C09B0EB-042F-E861-11AA-68D34F384F8F" otype="Table" vid="E5FCE33D-855D-7193-E928-9F54233C35C2">
 <hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
-<bounds x="353" y="638" width="293" height="349"/>
+<bounds x="353" y="638" width="293" height="331"/>
 </OView>
 <OView class="oracle.dbtools.crest.swingui.relational.TVTable" oid="462A442A-EA16-DB6F-8DCA-D4081BEBAF5F" otype="Table" vid="B89E3FA5-D62B-98E1-40A6-20AA8E275462">
 <hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
@@ -84,15 +84,6 @@
 </OView>
 </objectViews>
 <connectors>
-<Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="2A749E0E-6309-0967-90AD-A0C7C21B1BF1" otype="FKIndexAssociation" vid_source="6DA40EC3-1222-54B5-5E53-FA6284C297A2" vid_target="E5FCE33D-855D-7193-E928-9F54233C35C2">
-<hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
-<backgroundColor>-16777216</backgroundColor>
-<lineWidth>1</lineWidth>
-<points>
-<point x="697" y="820"/>
-<point x="646" y="820"/>
-</points>
-</Connector>
 <Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="A8711512-1632-1A2F-2A2E-A33C2EB9CFFB" otype="FKIndexAssociation" vid_source="407D4399-660B-8A14-4E3B-7599F8E5D704" vid_target="E5FCE33D-855D-7193-E928-9F54233C35C2">
 <hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
 <backgroundColor>-16777216</backgroundColor>
@@ -109,6 +100,15 @@
 <points>
 <point x="128" y="944"/>
 <point x="128" y="992"/>
+</points>
+</Connector>
+<Connector class="oracle.dbtools.crest.swingui.relational.TVFKRelation" oid="FF89AC0E-1BE4-B72A-93FB-367DA7DB3E52" otype="FKIndexAssociation" vid_source="6DA40EC3-1222-54B5-5E53-FA6284C297A2" vid_target="E5FCE33D-855D-7193-E928-9F54233C35C2">
+<hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
+<backgroundColor>-16777216</backgroundColor>
+<lineWidth>1</lineWidth>
+<points>
+<point x="697" y="775"/>
+<point x="646" y="775"/>
 </points>
 </Connector>
 </connectors>
