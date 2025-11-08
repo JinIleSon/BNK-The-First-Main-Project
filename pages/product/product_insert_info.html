@@ -712,6 +712,10 @@
                             <div class="cell label">알림서비스</div>
                             <div class="cell value">SMS 신청</div>
                         </div>
+                        <div class="srow two-col">
+                            <div class="cell label">자동이체 계좌</div>
+                            <div class="cell value">부산은행 123-456-789012</div>
+                        </div>
                     </div>
                 </section>
 
@@ -857,7 +861,7 @@
         // 이전 버튼: page1에서는 숨김, 그 외엔 표시
         prevBtn.hidden = (n === 1);
 
-        nextBtn.textContent = (n === totalSteps) ? '제출' : '다음';
+        nextBtn.textContent = (n === totalSteps) ? '신청' : '다음';
         // 스크롤 보정
         // pages[n-1].scrollIntoView({behavior:'smooth', block:'start'});
     }
@@ -1128,88 +1132,123 @@
         const wrap = document.getElementById(groupId);
         const inputs = [...wrap.querySelectorAll('input.pin')];
 
-        // 공통 설정
         inputs.forEach(inp => {
             inp.maxLength = 1;
             inp.inputMode = 'numeric';
             inp.autocomplete = 'off';
             inp.pattern = '[0-9]*';
-            inp.type = 'password';            // 기본은 마스킹
+            inp.type = 'password';                    // 기본 마스킹
+            inp.setAttribute('enterkeyhint', 'done');  // 모바일 Enter 라벨 "완료"
         });
 
-        let showAll = false;                 // 눈 아이콘으로 전체 표시 여부
+        let showAll = false;    // 눈아이콘 전체 표시 상태
+        let visible = -1;       // 마지막으로 입력된 칸(보이는 칸)
 
-        // 현재 포커스만 보이도록 타입 갱신
-        function updateMasking() {
-            if (showAll) {
-                inputs.forEach(i => i.type = 'text');
-                return;
-            }
-            inputs.forEach(i => i.type = 'password');
-            const active = document.activeElement;
-            if (inputs.includes(active)) active.type = 'text';  // 현재 칸만 보이기
+        const isFilled = () => inputs.every(i => i.value && i.value.length === 1);
+
+        function applyMasking() {
+            if (showAll) { inputs.forEach(i => i.type = 'text'); return; }
+            inputs.forEach((i, idx) => i.type = (idx === visible ? 'text' : 'password'));
         }
 
-        // 자동 이동/삭제
+        // 입력/키동작
         inputs.forEach((inp, idx) => {
-            inp.addEventListener('focus', updateMasking);
-
             inp.addEventListener('input', e => {
                 e.target.value = e.target.value.replace(/\D/g, '').slice(0, 1);
-                if (e.target.value && inputs[idx + 1]) {
-                    inputs[idx + 1].focus();         // 다음 칸으로 이동
+                if (e.target.value) {
+                    visible = idx;          // 방금 입력한 칸만 보이기
+                    applyMasking();
+
+                    // 다음 칸으로 포커스 이동(이 시점엔 직전 칸 그대로 보임)
+                    if (inputs[idx + 1]) inputs[idx + 1].focus();
+
+                    // 모두 채워졌으면 콜백
+                    const v = inputs.map(i => i.value).join('');
+                    if (v.length === inputs.length) onFilled?.(v);
                 }
-                updateMasking();                 // ← 이동 후 직전 칸 마스킹
-                const v = inputs.map(i => i.value).join('');
-                if (v.length === inputs.length) onFilled?.(v);
             });
 
             inp.addEventListener('keydown', e => {
+                // 백스페이스로 이전 칸으로 이동 시: 이전 칸만 보이기
                 if (e.key === 'Backspace' && !inp.value && inputs[idx - 1]) {
-                    inputs[idx - 1].focus();         // 이전 칸으로
-                    updateMasking();               // 이전 칸만 보이기
+                    inputs[idx - 1].focus();
+                    visible = idx - 1;
+                    applyMasking();
                 }
-                // 이미 값이 있는데 숫자 키 누르면 덮어쓰기
+                // 값이 있는데 숫자키 누르면 덮어쓰기
                 if (/^\d$/.test(e.key) && inp.value) { inp.value = ''; }
             });
 
+            // 포커스 이동만으로는 마스킹 변화 없음
+            inp.addEventListener('focus', () => { /* no-op */ });
+
+            // 그룹을 벗어나면 안전하게 모두 마스킹
             inp.addEventListener('blur', () => {
-                // 포커스 잃으면 마스킹 유지
-                if (!showAll) inp.type = 'password';
+                setTimeout(() => {
+                    if (!wrap.contains(document.activeElement) && !showAll) {
+                        visible = -1; applyMasking();
+                    }
+                }, 0);
             });
         });
 
-        // 붙여넣기 4자리 처리
+        // 🔸 Enter 처리: 4자리 다 찬 상태에서 Enter → 제출 막고 포커스 해제
+        wrap.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && isFilled()) {
+                e.preventDefault();
+                e.stopPropagation();
+                visible = -1;       // 모두 마스킹
+                applyMasking();
+                // 포커스 완전 해제
+                const active = document.activeElement;
+                if (wrap.contains(active)) active.blur();
+
+                // (권장) 폼의 암묵적 제출도 한 번 더 차단
+                const form = wrap.closest('form');
+                if (form) {
+                    const onceBlock = ev => { ev.preventDefault(); };
+                    form.addEventListener('submit', onceBlock, { once: true });
+                    // 0ms 뒤 자동 제거(이번 엔터로 인한 submit만 막음)
+                    setTimeout(() => form.removeEventListener('submit', onceBlock), 0);
+                }
+            }
+        });
+
+        // 붙여넣기: 마지막 채워진 칸만 보이기
         wrap.addEventListener('paste', e => {
             const txt = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, inputs.length);
             if (!txt) return;
             e.preventDefault();
             inputs.forEach((i, k) => i.value = txt[k] || '');
-            (inputs[Math.min(txt.length, inputs.length) - 1] || inputs[0]).focus();
-            updateMasking();                   // 붙여넣은 직후도 규칙 적용
+            visible = Math.min(txt.length, inputs.length) - 1;
+            (inputs[visible] || inputs[0]).focus();
+            applyMasking();
             if (txt.length === inputs.length) onFilled?.(txt);
         });
 
         // (옵션) 눈 아이콘 토글
         if (withToggle) {
-            const toggle = document.createElement('button');
-            toggle.type = 'button';
-            toggle.className = 'pin-toggle';
-            toggle.setAttribute('aria-pressed', 'false');
-            toggle.setAttribute('aria-label', 'PIN 표시/숨김 전환');
-            toggle.innerHTML = eyeSVG(false); // 기본: 숨김(마스킹)
-            wrap.after(toggle);
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'pin-toggle';
+            btn.setAttribute('aria-pressed', 'false');
 
-            toggle.addEventListener('click', () => {
-                showAll = toggle.getAttribute('aria-pressed') === 'false';
-                toggle.setAttribute('aria-pressed', showAll ? 'true' : 'false');
-                toggle.innerHTML = eyeSVG(!showAll);
-                updateMasking();
+            // 초기: 전체 숨김(showAll=false) → 감긴 눈 아이콘
+            btn.innerHTML = eyeSVG(false);
+            wrap.after(btn);
+
+            btn.addEventListener('click', () => {
+                showAll = !showAll;
+                btn.setAttribute('aria-pressed', showAll ? 'true' : 'false');
+
+                btn.innerHTML = eyeSVG(showAll);
+
+                applyMasking();
             });
         }
 
         // 초기 상태
-        updateMasking();
+        visible = -1; applyMasking();
 
         return () => inputs.map(i => i.value).join('');
     }
