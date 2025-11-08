@@ -3,7 +3,7 @@
 
 <script>
     // header.html 파일을 불러와서 #header에 삽입
-    fetch('/layouts/header.html')
+    fetch('_header.html')
         .then(res => res.text())
         .then(data => {
             document.getElementById('header').innerHTML = data;
@@ -138,10 +138,12 @@
 
 <style>
     body {
-        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+        font-family: 'Noto Sans KR', sans-serif;
         background-color: #F6F6F8;
         margin: 0;
-        color: #111;
+        padding: 0;
+        color: #222;
+        line-height: 1.7;
     }
 
     .container {
