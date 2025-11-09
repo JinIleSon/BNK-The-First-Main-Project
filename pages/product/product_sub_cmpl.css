@@ -27,11 +27,11 @@
     box-sizing: border-box
 }
 
-.container {
+/* .container {
     max-width: 1100px;
     margin: 28px auto;
     padding: 0 20px
-}
+} */
 
 body {
     background-color: #F6F6F8;
