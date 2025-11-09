@@ -1,0 +1,106 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="976CB3D0-86FE-7EDF-FAC5-67EB17081C71" name="document">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 07:59:22 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<ordsAlias>table_4</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="docId" id="2FD284A7-3EC9-EAB2-5ACD-3F0FA6E519CE">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:10:30 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mId" id="C8BD2AFF-868D-318F-F807-C5D9F42A8C6B">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:10:30 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="docType" id="531FAC49-FAF6-B6C6-369C-7FBFB4A690E2">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:10:30 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="docTitle" id="018DC923-F26A-2AB5-5C39-E711960736B5">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:10:30 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="docAnswer" id="E2FC2361-2C20-A36B-1559-70976BEDC552">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:10:30 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="docFile" id="CDC528E5-CBB7-9B1A-250E-60FCA84C3EDD">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:10:30 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="docUpdate" id="1EC60EF6-697E-DEFC-4B93-2ED1B8A6B844">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:10:30 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="29C1204F-4F12-3F9B-B819-4A1BA00E4DD5" name="document_PK">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:10:30 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2FD284A7-3EC9-EAB2-5ACD-3F0FA6E519CE"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

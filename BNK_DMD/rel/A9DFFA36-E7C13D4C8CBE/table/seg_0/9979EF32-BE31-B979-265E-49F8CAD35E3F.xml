@@ -1,0 +1,93 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="9979EF32-BE31-B979-265E-49F8CAD35E3F" name="deal">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:37 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<ordsAlias>table_18</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="dId" id="9617A787-427B-5E54-5512-5070DC9328E2">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:43:38 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mId" id="43F91F4F-8F71-631C-7F81-8677287B0751">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:43:38 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="CD836125-407F-40E7-75CC-E74FBC95EE0E" referredColumn="FE8CC46C-E1EB-6E58-076E-C28A23C331EC"/>
+</associations>
+</Column>
+<Column name="dBalance" id="9AD59365-5586-848D-5680-59E529B8351F">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:43:38 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="dWho" id="96CDC905-CE7F-2F51-2775-48100CCAB477">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:43:38 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>100 BYTE</dataTypeSize>
+<ownDataTypeParameters>100 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="dDate" id="BD5464CC-BDED-A8DA-71DE-4869432949B7">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:43:38 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="37789258-A2C9-4E80-EF72-D6CE4DE138BD" name="deal_PK">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:43:38 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9617A787-427B-5E54-5512-5070DC9328E2"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="251171B3-D855-887D-D7ED-0790A68D14BC" name="deal_user_FK">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 09:10:39 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="43F91F4F-8F71-631C-7F81-8677287B0751"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

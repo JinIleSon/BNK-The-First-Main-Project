@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BNK 메인페이지</title>
+  <link rel="stylesheet" href="main.style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- 헤더  -->
+  <header><div id="header"></div></header>
+
+
+  <!-- 배너 -->
+  <section class="banner">
+    <div class="banner-content">
+      <img src="./images/sample_main_banner_image.png" alt="샘플배너이미지">
+    </div>
+    <div class="mascot-img">
+      <img src="../../components/images/mascot_character.png" alt="BNK 캐릭터">
+    </div>
+  </section>
+
+  <!-- 검색 -->
+  <section class="search-box">
+    <h2>원하는 금융상품을 빠르게 찾아보세요</h2>
+
+    <div class="search-container">
+      <select class="category-select">
+        <option>전체상품</option>
+        <option>적금</option>
+        <option>주택대출</option>
+        <option>신용카드</option>
+      </select>
+       
+      <div class="search-inner">
+        <input type="text" placeholder="찾으시는 금융상품을 입력하세요">
+        <button class="search-btn">
+            <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>  
+
+    <div class="tag-container">
+      <span>추천 검색어:</span>
+      <a href="#">적금</a>
+      <a href="#">주택대출</a>
+      <a href="#">신용카드</a>
+    </div>
+  </section>
+
+  <!-- 카테고리 -->
+  <section class="category">
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img src="./images/main_best_seller.png" alt="">
+      </div>
+      <h3>베스트 상품</h3>
+      <p>인기 높은 추천상품</p>
+    </div>
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img src="./images/main_target.png" alt="">
+      </div>
+      <h3>목적별 상품</h3>
+      <p>목적에 맞는 상품</p>
+    </div>
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img src="./images/main_customer_age.png" alt="">
+      </div>
+      <h3>생애주기별 상품</h3>
+      <p>연령대별 맞춤상품</p>
+    </div>
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img src="./images/main_each_customer.png" alt="">
+      </div>
+      <h3>고객별 상품</h3>
+      <p>고객 유형별 상품</p>
+    </div>
+    <div class="category-item">
+      <div class="icon-wrap">
+        <img src="./images/main_new.png" alt="">
+      </div>
+      <h3>신규상품</h3>
+      <p>새로 출시된 상품</p>
+    </div>
+  </section>
+
+  <!-- 공지사항 + 이벤트 -->
+  <section class="notice-event">
+    <div class="notice">
+      <div class="notice-header">
+        <h3>공지 / 새 소식</h3>
+        <a href="#">전체보기</a>
+      </div>
+      <ul>
+        <li>
+          <span class="date">2024.11.03</span>
+          <span class="title">금리 변동 안내</span>
+          <span class="badge">중요</span>
+          <p>예금 및 대출 금리 변동사항을 안내드립니다.</p>
+        </li>
+        <li>
+          <span class="date">2024.11.02</span>
+          <span class="title">시스템 점검 안내</span>
+          <p>인터넷뱅킹 시스템 점검 일정을 안내드립니다.</p>
+        </li>
+        <li>
+          <span class="date">2024.11.01</span>
+          <span class="title">신규 지점 개점 안내</span>
+          <p>해운대구 신규 지점 개점을 안내드립니다.</p>
+        </li>
+        <li>
+          <span class="date">2024.11.01</span>
+          <span class="title">신규 지점 개점 안내</span>
+          <p>해운대구 신규 지점 개점을 안내드립니다.</p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="event">
+      <div class="event-header">
+        <h3>이벤트 / 혜택</h3>
+        <a href="#">전체보기</a>
+      </div>
+      <div class="event-item">
+        <div>
+          <h4>신규고객 환영 이벤트</h4>
+          <p>최대 10만원 캐시백</p>
+        </div>
+        <button class="join-btn">신청하기</button>
+      </div>
+
+      <div class="event-item">
+        <div>
+          <h4>적금 특별금리 이벤트</h4>
+          <p>연 4.5% 우대금리</p>
+        </div>
+        <button class="join-btn">신청하기</button>
+      </div>
+
+      <div class="event-item">
+        <div>
+          <h4>적금 특별금리 이벤트</h4>
+          <p>연 4.5% 우대금리</p>
+        </div>
+        <button class="join-btn">신청하기</button>
+      </div>
+
+      <div class="event-item">
+        <div>
+          <h4>적금 특별금리 이벤트</h4>
+          <p>연 4.5% 우대금리</p>
+        </div>
+        <button class="join-btn">신청하기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 하단 바로가기 -->
+<section class="bottom-icons">
+  <div class="icon-item red">
+    <div class="circle">
+      <img src="./images/main_login.png" alt="로그인">
+      <p>로그인</p>
+    </div>
+  </div>
+
+  <div class="icon-item blue">
+    <div class="circle">
+      <img src="./images/main_card.png" alt="카드신청">
+      <p>카드신청</p>
+    </div>
+  </div>
+
+  <div class="icon-item green">
+    <div class="circle">
+      <img src="./images/main_calculator.png" alt="금리계산">
+      <p>금리계산</p>
+    </div>
+  </div>
+
+  <div class="icon-item purple">
+    <div class="circle">
+      <img src="./images/main_operator.png" alt="고객센터">
+      <p>고객센터</p>
+    </div>
+  </div>
+</section>
+
+<!-- 푸터-->
+<footer><div id="footer"></div></footer>
+
+</body>
+</html>
+<script src="main.js"></script>

@@ -1,0 +1,82 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="2CD279FC-6928-CFA2-BDAB-4DA0E45A8FA4" name="tbInvestInfo">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:21:55 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<ordsAlias>table_12</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="infoId" id="CBD6B10A-856B-B3AC-F069-AC1B20F816CD">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:23:23 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="category" id="05D397E9-AFC2-1FBE-8105-2F98AE188B09">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:23:23 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="title" id="85387252-D47A-89F3-0DBB-D6C7823D2052">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:23:23 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="filePath" id="86C5C693-CD10-FCEC-030D-A39F4AD81C30">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:23:23 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="regDate" id="D925CE1F-23D5-65E4-79FC-58F685F509D0">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:23:23 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="2D8540DD-62A5-85CC-0698-DF35BC2F172D" name="tbInvestInfo_PK">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:23:23 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CBD6B10A-856B-B3AC-F069-AC1B20F816CD"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

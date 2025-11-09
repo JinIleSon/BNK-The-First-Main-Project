@@ -1,0 +1,255 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="D84309B4-2D6A-6A5C-B8DB-23947959A732" name="user">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:34:48 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<ordsAlias>table_17</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="uId" id="BC39A34F-4A7D-D3B8-6F24-5E0C0249D8EB">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mId" id="FE8CC46C-E1EB-6E58-076E-C28A23C331EC">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mPw" id="9771A639-E9C4-E288-3D3F-CD378567759D">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mName" id="5BE1243C-74AD-6A1A-44B6-4F2EBB2BFEA5">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mBirth" id="B8CAA588-8776-F964-420A-EA33549E7A00">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mGender" id="752A1C97-1533-03C7-354B-95D1DF997B30">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mCarrier" id="CBED9810-1AD9-DD32-4B5D-9764C827DC09">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500</dataTypeSize>
+<ownDataTypeParameters>500,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mAddress" id="DFF37066-8AD5-368C-9BE5-5EA034ADC2DB">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mEmail" id="D2BE3897-2649-4798-85FF-DB6BF008B84A">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mPhone" id="1DBAB41C-8743-73F5-F254-DCED73398993">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mDate" id="23921F68-71F3-5778-994B-2F63B5F1A720">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mGrade" id="522125D1-851C-C264-A276-CFEAEEC100AF">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mJumin" id="A92FC11A-E215-F1D1-239B-9A94541E40F0">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>500 BYTE</dataTypeSize>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mCond" id="9D2A1425-9D7B-68A7-78FD-45CEA01A32A6">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>100 BYTE</dataTypeSize>
+<ownDataTypeParameters>100 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mNum" id="63A87A57-4E1C-7B99-5A69-FBC42EB45E99">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100 BYTE</dataTypeSize>
+<ownDataTypeParameters>100 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mAccess" id="16C7FC73-5F28-7F32-8C26-11068026F300">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mLimit" id="8AFC3F1D-3E1B-FAFC-9461-6E72E1428016">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mtitle" id="75208463-4F6C-88E5-816E-D220D4A88574">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT028</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mcontent" id="C202A155-58C0-532E-84CB-78BD1A8F1307">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT028</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="85AD793B-A5C6-C756-C8E5-12DD478DD544" name="user_PK">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 08:41:20 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="BC39A34F-4A7D-D3B8-6F24-5E0C0249D8EB"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="96F13FFC-B020-9E6A-EAD5-0BFE12BE9DDB" name="user__UNv1">
+<createdBy>user</createdBy>
+<createdTime>2025-11-08 09:09:52 UTC</createdTime>
+<ownerDesignName>BNK_DMD</ownerDesignName>
+<indexState>Unique Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FE8CC46C-E1EB-6E58-076E-C28A23C331EC"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
