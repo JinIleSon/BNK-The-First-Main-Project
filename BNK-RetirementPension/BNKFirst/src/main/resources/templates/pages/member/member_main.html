@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로그인</title>
+
+</head>
+<body>
+  <div id="header"></div>
+<script>
+// header 불러오기
+fetch('/layouts/header.html')
+    .then(response => response.text())
+    .then(data => {
+    document.getElementById('header').innerHTML = data;
+    });
+</script>
+<div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
+<div id="bnk-chatbot-slot"></div>
+</div>
+<script>
+/**
+* 외부 HTML을 불러와서:
+*  - <link rel="stylesheet">, <style>는 <head>로 옮기고
+*  - <script>는 실행되도록 새로 만들어 붙이고 (src/inline, module 모두 지원)
+*  - 나머지 DOM(예: <flowise-chatbot> / <flowise-embed>)은 mount에 삽입
+*/
+async function importHtmlWithAssets(url, mountSelector) {
+const res = await fetch(url, { credentials: 'same-origin' });
+if (!res.ok) throw new Error(`Failed to load ${url}`);
+const html = await res.text();
+
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, 'text/html');
+
+// 1) <link rel="stylesheet"> 들을 <head>로
+doc.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+  // 중복 로드 방지
+  const href = link.getAttribute('href');
+  if (href && ![...document.head.querySelectorAll('link[rel="stylesheet"]')]
+    .some(l => l.getAttribute('href') === href)) {
+    document.head.appendChild(link.cloneNode(true));
+  }
+});
+
+// 2) <style> 들을 <head>로
+doc.querySelectorAll('style').forEach(styleEl => {
+  const clone = document.createElement('style');
+  // CSS 텍스트 보존
+  clone.textContent = styleEl.textContent;
+  // (가능한 속성 복사)
+  [...styleEl.attributes].forEach(a => clone.setAttribute(a.name, a.value));
+  document.head.appendChild(clone);
+});
+
+// 3) 본문 콘텐츠를 mount에 붙임 (스크립트 제외)
+const mount = document.querySelector(mountSelector);
+// fragment 구성
+const frag = document.createDocumentFragment();
+[...doc.body.children].forEach(node => {
+  if (node.tagName.toLowerCase() !== 'script') frag.appendChild(node.cloneNode(true));
+});
+mount.appendChild(frag);
+
+// 4) 스크립트 실행 (src/inline/module 지원, 순서 보장)
+const scripts = [...doc.querySelectorAll('script')];
+for (const oldScript of scripts) {
+  const newScript = document.createElement('script');
+  // type/module/defer 등 속성 복사
+  [...oldScript.attributes].forEach(attr => newScript.setAttribute(attr.name, attr.value));
+  if (oldScript.src) {
+    // 네트워크 로드를 기다려 실행 순서 유지
+    await new Promise((resolve, reject) => {
+      newScript.onload = resolve;
+      newScript.onerror = resolve;   // 실패해도 진행(브랜딩 제거 같은 선택 기능 보호)
+      document.body.appendChild(newScript);
+    });
+  } else {
+    // inline 코드 복사
+    newScript.textContent = oldScript.textContent || '';
+    document.body.appendChild(newScript);
+  }
+}
+}
+
+// 실제 호출: 기존 chatbot.html(또는 chatbot_test.html) 경로로 바꿔도 됩니다.
+importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
+.catch(err => console.error('[Chatbot load failed]', err));
+</script>
+<script>
+// footer 불러오기
+fetch('/layouts/footer.html')
+    .then(response => response.text())
+    .then(data => {
+    document.getElementById('footer').innerHTML = data;
+    });
+</script>
+
+<main>
+  <div class="container">
+    <!-- 로그인 폼 -->
+    <section style="width: 580px; margin: 0 auto; margin-top: 30px;">
+
+      <!-- 감싸기 -->
+      <div class="form-card" style="height: 720px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
+
+        <!-- 로그인 테이블 -->
+        <table class="login-table">
+          <tr style="font-size: 25px;">
+            <td>로그인</td>
+          </tr>
+          <tr>
+            <td style="padding: 0 0 9px;">BNK 부산은행은 고객님의 정보를 소중히 보호합니다</td>
+          </tr>
+          <tr class="field-row">
+            <td class="field-label">아이디</td>            
+          </tr>
+          <tr class="field-row">
+            <td style="margin-bottom: 9px;">
+              <input id="usernameInput" type="text" name="member_id" placeholder="아이디를 입력하세요" autocomplete="username">
+            </td>
+          </tr>
+          <tr class="field-row">
+            <td class="field-label">비밀번호</td>            
+          </tr>
+          <tr class="field-row">
+            <td style="margin-bottom: 19px;">
+              <input id="passwordInput" type="password" name="member_pass" placeholder="비밀번호를 입력하세요" autocomplete="current-password"></td>
+          </tr>
+
+          <tr>
+            <td class="field-td" style="border-bottom: 1px solid #ddd;">
+              <button id="loginBtn" class="btn-pressable btn-sheen" style="box-sizing:border-box;width:500px;height:42px;border:none;border-radius:8px; cursor:pointer;border:1px solid #D1D5DB;background-color:white;">
+                로그인
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="field-td">
+                <button class="btn-register" style="width: 500px;">공인인증서 로그인</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="field-td">
+                <button class="btn-register" style="width: 500px;">간편인증으로 로그인</button>
+            </td>
+          </tr>
+          <tr>
+            <td class="field-td">
+              <a href="member_findid.html">아이디 찾기</a>
+              <span class="sep-dot">·</span>
+              <a href="member_findpass.html">비밀번호 찾기</a>
+              <span class="sep-dot">·</span>
+              <a href="member_terms.html">회원가입</a>
+            </td>
+          </tr>
+
+          <tr class="notice">
+            <td style="text-align: left; color: #444; font-size: 15px; line-height: 1.6;">
+              <span>🔒 보안 안내</span><br>
+              • 개인정보 보호를 위해 공용 PC에서는 로그인 상태 유지를 해제하세요.<br>
+              • 비밀번호는 정기적으로 변경하시기 바랍니다.
+            </td>
+          </tr>
+        </table>       
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+    window.addEventListener('load', () => {
+      const idInput  = document.getElementById('usernameInput');
+      const pwInput  = document.getElementById('passwordInput');
+      const loginBtn = document.getElementById('loginBtn');
+
+      const toast = (msg) => alert(msg);
+
+      // Enter로도 로그인
+      [idInput, pwInput].forEach(el => {
+        el?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') loginBtn?.click();
+        });
+      });
+
+      loginBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const id = (idInput?.value || '').trim();
+        const pw = (pwInput?.value || '').trim();
+
+        if (!id) return toast('아이디를 입력하세요.');
+        if (!pw) return toast('비밀번호를 입력하세요.');
+
+        // ===== [임시 로직] =====
+        // 1) 아무 아이디/비번이나 입력되면 성공
+        //    → 필요하면 2) 처럼 특정 계정만 통과하도록 교체하세요.
+        toast('로그인 성공 (임시)');
+        // 로그인 후 이동할 페이지
+        window.location.href = 'member_main.html';
+
+        // 2) 특정 계정만 통과시키고 싶다면 아래 주석 해제하고 1) 삭제:
+        // const OK = (id === 'testuser' && pw === '1234');
+        // if (OK) {
+        //   toast('로그인 성공 (임시 인증)');
+        //   window.location.href = 'member_main.html';
+        // } else {
+        //   toast('아이디 또는 비밀번호가 올바르지 않습니다. (임시 검증)');
+        // }
+      });
+    });
+  </script>
+
+  <script>
+    // footer 불러오기 (필요시 유지)
+    fetch("/layouts/footer.html")
+      .then(r => { if (!r.ok) throw new Error("Footer 파일을 불러오지 못했습니다."); return r.text(); })
+      .then(html => { document.getElementById("footer").innerHTML = html; })
+      .catch(console.error);
+  </script>
+  <footer><div id="footer"></div></footer>
+</body>
+
+<style>
+  main {
+    width: 1200px;
+    background-color: #F6F6F8;
+    padding: 80px 20px;
+    margin: 0 auto;
+  }
+  body {
+    font-family: 'Noto Sans KR', '맑은 고딕', sans-serif;
+    background: #F6F6F8;
+    color: #111827;
+    line-height: 1.5;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 40px; }  
+ 
+  /* 버튼 */
+  .btns { display: flex; justify-content: center; gap: 10px; margin: 25px 0 20px; }  
+  .btn-register {
+	  --bg1: #D91A1A;
+	  --bg2: #F03A3A;
+	  --shadow: rgba(217,26,26,.45);
+	  position: relative;
+	  box-sizing: border-box;
+	  width: 90px; height: 42px;
+	  border: none; border-radius: 8px;
+	  color: #fff; cursor: pointer;
+	  background: linear-gradient(180deg, var(--bg2), var(--bg1));
+	  outline: none;
+	  box-shadow: 0 6px 14px -10px var(--shadow);
+	  transition:
+	    background .18s ease,
+	    box-shadow .18s ease,
+	    transform .12s ease; /* 프레스만 사용할 예정 */
+	  will-change: background, box-shadow, transform;
+	}
+	
+	/* Hover: 컬러와 섀도우만 아주 미세하게 (리프트 없음) */
+	.btn-register:hover {
+	  background: linear-gradient(180deg, #f24a4a, #d61a1a);
+	  box-shadow: 0 8px 18px -12px var(--shadow);
+	  transform: none; /* 확실하게 떠오르지 않도록 고정 */
+	}
+	
+	/* Active: 살짝 눌리는 프레스 효과만 */
+	.btn-register:active {
+	  transform: scale(.98);
+	  box-shadow: 0 4px 10px -10px var(--shadow);
+	}
+	
+	/* 키보드 포커스 접근성 */
+	.btn-register:focus-visible {
+	  outline: 3px solid rgba(240,58,58,.55);
+	  outline-offset: 2px;
+	}
+	
+	/* 모션 최소화 존중 */
+	@media (prefers-reduced-motion: reduce) {
+	  .btn-register { transition: none !important; }
+	}
+	
+	@media (prefers-color-scheme: dark) {
+	  .btn-register { --shadow: rgba(240,58,58,.35); }
+	}
+
+  .btn-pressable {
+  position: relative;
+  transition: box-shadow .18s ease, transform .12s ease, background .18s ease;
+  will-change: box-shadow, transform, background;
+  --btn-shadow: rgba(0,0,0,.12);
+  --btn-shadow-hover: rgba(0,0,0,.18);
+  --btn-shadow-active: rgba(0,0,0,.22);
+  }
+  .btn-pressable:hover { box-shadow: 0 8px 18px -12px var(--btn-shadow-hover); }
+  .btn-pressable:active { transform: scale(.98); box-shadow: 0 4px 10px -10px var(--btn-shadow-active); }
+  .btn-pressable:focus-visible { outline: 3px solid rgba(240,58,58,.55); outline-offset: 2px; }
+  /* 공통 설정 */
+  .btn-sheen {
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  /* hover 시 아랫부분에 회색빛 음영이 은은하게 비침 */
+  .btn-sheen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+
+    /* 아래쪽 중심부에서 위로 번지는 부드러운 그라디언트 */
+    background: radial-gradient(
+      130% 90% at 50% 125%,           /* 중심을 버튼 아래쪽으로 이동 */
+      rgba(150,150,150,0.25) 0%,      /* 가장 아래: 옅은 회색빛 */
+      rgba(180,180,180,0.18) 28%,     /* 중간: 은은하게 퍼짐 */
+      rgba(200,200,200,0.08) 45%,     /* 상단으로 갈수록 흐려짐 */
+      rgba(255,255,255,0) 70%         /* 위로 갈수록 완전 투명 */
+    );
+
+    opacity: 0;
+    transition: opacity .22s ease;
+  }
+
+  .btn-sheen:hover::before {
+    opacity: 0.9; /* hover 시 부드럽게 나타남 */
+  }
+
+  /* 위쪽 경계선이 약간 밝아 보이도록 (살짝 반사 느낌) */
+  .btn-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: linear-gradient(
+      to top,
+      rgba(255,255,255,0.12) 0%,
+      rgba(255,255,255,0) 40%
+    );
+
+    opacity: 0;
+    transition: opacity .22s ease;
+  }
+
+  .btn-sheen:hover::after {
+    opacity: 1;
+  }
+
+  /* 모션 최소화 존중 */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-sheen::before,
+    .btn-sheen::after {
+      transition: none !important;
+    }
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  .input:focus,
+  .field-row input:focus,
+  .field-td input:focus {
+    border-color: #d1d5db;
+    box-shadow: 0 0 0 3px rgba(214,0,28,.12);
+    outline: none;
+  }
+
+
+  /* 감싸는 */
+  .form-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(2,6,23,.06);
+    padding: 28px 30px;
+    margin-bottom: 24px;
+  }
+
+  .field-td {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .field-td input {
+    width: 400px;
+    height: 44px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    outline: none;
+  }  
+  .sep-dot{ margin: 0 8px; }
+
+  .notice {
+    margin-top: 15px;
+    background: #eef4ff;
+    border: 1px solid #c7d7ff;
+    color: #1f3b8f;
+    border-radius: 12px;
+    padding: 20px 30px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .field-row {
+    display: flex;
+    margin: 5px;
+  }
+
+  .field-row input {
+    width: 500px;
+    height: 25px;
+    border: 1px solid #bbb;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .field-label {
+    font-size: 18px;
+  } 
+
+</style>
+</html>
+<!-- 백엔드 참고
+ 1. 약관동의 체크박스 입력 후 다음으로 이동 선택값 임시 저장
+ 2. 정보입력 폼 데이터 전송 입력 검증, 임시 저장
+ 3. 본인인증 인증 요청, 코드 입력 외부 인증 API 호출, 검증
+ 4. 가입완료 완료 페이지 표시 본 DB에 저장, 임시 데이터 삭제
+--> 
