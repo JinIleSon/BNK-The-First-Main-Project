@@ -143,9 +143,7 @@
         </style>
 </head>
 <body>
-    <header>
-        <div id="header"></div>
-    </header>
+<div th:replace="~{layouts/header}"></div>
     
     <main style=" display: flex; justify-content: center;">
         <div style="width: 1200px; ">
@@ -579,9 +577,8 @@
     </div>
     </main>
 
-    <footer>
-        <div id="footer"></div>
-    </footer>
+    <!--푸터-->
+    <div th:replace="~{layouts/footer}"></div>
     <script>
     // header 불러오기
     fetch('/layouts/header.html')
