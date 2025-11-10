@@ -3,17 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>약관동의</title>
+    <title>약관동의</title>
 </head>
 <body>
-  <div id="header"></div>
-
-<script>
-// header 불러오기
-fetch('/layouts/header.html')
-  .then(response => response.text())
-  .then(data => { document.getElementById('header').innerHTML = data; });
-</script>
+    <div th:replace="~{layouts/header.html}"></div>
 
 <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
   <div id="bnk-chatbot-slot"></div>
@@ -72,13 +65,6 @@ async function importHtmlWithAssets(url, mountSelector) {
   }
 }
 importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot').catch(console.error);
-</script>
-
-<script>
-// footer 불러오기
-fetch('/layouts/footer.html')
-  .then(response => response.text())
-  .then(data => { document.getElementById('footer').innerHTML = data; });
 </script>
 
 <main>
@@ -270,11 +256,11 @@ fetch('/layouts/footer.html')
 
     <!-- 버튼 -->
     <div class="btns">
-      <a href="member_main.html" class="btn-pressable" 
+      <a th:href="@{/member/main}" class="btn-pressable"
         style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
         취소
       </a>
-      <a href="member_info.html" class="btn-register" 
+      <a th:href="@{/member/info}" class="btn-register"
         style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
         다음
       </a>
@@ -331,14 +317,7 @@ fetch('/layouts/footer.html')
   }
 </script>
 
-<script>
-  // footer 불러오기 (필요시 유지)
-  fetch("/layouts/footer.html")
-    .then(r => { if (!r.ok) throw new Error("Footer 파일을 불러오지 못했습니다."); return r.text(); })
-    .then(html => { document.getElementById("footer").innerHTML = html; })
-    .catch(console.error);
-</script>
-<footer><div id="footer"></div></footer>
+  <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
 
 <style>
@@ -401,24 +380,8 @@ fetch('/layouts/footer.html')
   .notice ul { margin: 0 0 0 25px; padding: 0; }
 
   /* 버튼 */
-  .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }  
-  .btn-register { --bg1:#D91A1A; --bg2:#F03A3A; --shadow:rgba(217,26,26,.45); position:relative; box-sizing:border-box; width:90px; height:42px; border:none; border-radius:8px; color:#fff; cursor:pointer; background:linear-gradient(180deg,var(--bg2),var(--bg1)); outline:none; box-shadow:0 6px 14px -10px var(--shadow); transition: background .18s ease, box-shadow .18s ease, transform .12s ease; }
-  .btn-register:hover { background:linear-gradient(180deg,#f24a4a,#d61a1a); box-shadow:0 8px 18px -12px var(--shadow); transform:none; }
-  .btn-register:active { transform:scale(.98); box-shadow:0 4px 10px -10px var(--shadow); }
-  .btn-register:focus-visible { outline:3px solid rgba(240,58,58,.55); outline-offset:2px; }
-  @media (prefers-reduced-motion: reduce){ .btn-register{ transition:none!important; } }
-  @media (prefers-color-scheme: dark){ .btn-register{ --shadow:rgba(240,58,58,.35); } }
+  .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
 
-  .btn-pressable { position:relative; transition:box-shadow .18s ease, transform .12s ease, background .18s ease; --btn-shadow:rgba(0,0,0,.12); --btn-shadow-hover:rgba(0,0,0,.18); --btn-shadow-active:rgba(0,0,0,.22); }
-  .btn-pressable:hover { box-shadow: 0 8px 18px -12px var(--btn-shadow-hover); }
-  .btn-pressable:active { transform: scale(.98); box-shadow: 0 4px 10px -10px var(--btn-shadow-active); }
-  .btn-pressable:focus-visible { outline: 3px solid rgba(240,58,58,.55); outline-offset: 2px; }
-
-  .btn-sheen { position: relative; overflow: hidden; border-radius: inherit; }
-  .btn-sheen::before { content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; background: radial-gradient(130% 90% at 50% 125%, rgba(150,150,150,0.25) 0%, rgba(180,180,180,0.18) 28%, rgba(200,200,200,0.08) 45%, rgba(255,255,255,0) 70%); opacity: 0; transition: opacity .22s ease; }
-  .btn-sheen:hover::before { opacity: .9; }
-  .btn-sheen::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: linear-gradient(to top, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 40%); opacity: 0; transition: opacity .22s ease; }
-  .btn-sheen:hover::after { opacity: 1; }
 
   a { text-decoration: none; color: inherit; }
 </style>
