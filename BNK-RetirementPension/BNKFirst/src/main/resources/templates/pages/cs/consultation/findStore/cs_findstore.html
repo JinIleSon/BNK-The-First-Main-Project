@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객상담>영업점찾기</title>
+    <link rel="stylesheet" href="./cs_findstore.style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!--푸터-->
+    <header><div id="header"></div></header>
+    
+    <div class="consultation-page">
+        <!--왼쪽 사이드바-->
+        <aside class="all-sidebar">
+            <ul class="sidebar-menu">
+                <h2>고객상담</h2>
+                <li>FAQ</li>
+                <li>필요서류 안내</li>
+                <li>전화상담</li>
+                <li class="active">영업점 찾기</li>
+            </ul>
+
+            <!--추가 도움 영역-->
+            <section class="all-help">
+                <div class="help-box">
+                    <h3>추가 도움이 필요하신가요?</h3>
+                    <p>전문 상담원이 친절하게 도와드리겠습니다.</p>
+                    <div class="help-buttons">
+                        <button class="btn-call">전화상담</button>
+                        <button class="btn-chat">Talk상담</button>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!--메인 컨텐츠-->
+        <main class="consultation-content">
+            <div class="consultation-header">
+                <h1>영업점 찾기</h1>
+                <p>빠르게 답을 찾으세요. 원하는 질문을 바로 검색할 수 있어요</p>
+
+                <div class="consultation-search-all">
+                    <select class="category-select">
+                        <option>ALL</option>
+                        <option>지역명</option>
+                        <option>영업점명</option>
+                        <option>지점코드</option>
+                        <option>주소로 찾기</option>
+                    </select>
+
+                    <div class="consultation-search">
+                        <input type="text" placeholder="검색어를 입력하세요">
+                        <button class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="consultation-list-top">
+                    <p>총 <strong>135</strong>건 현재: <strong>1/14</strong>페이지</p>
+                </div>
+
+                <!-- 표 구조 -->
+                <table class="store-table">
+                    <thead>
+                    <tr>
+                        <th style="padding-top: 20px; padding-bottom: 20px;">영업점명</th>
+                        <th style="padding-top: 20px; padding-bottom: 20px;">주소</th>
+                        <th style="padding-top: 20px; padding-bottom: 20px;">전화번호</th>
+                        <th style="padding-top: 20px; padding-bottom: 20px;">팩스번호</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--js 로 데이터 채워짐-->
+                    </tbody>
+                </table>
+
+
+                <!-- 페이지네이션 -->
+                <div class="pagination">
+                    <button disabled><i class="fas fa-angle-double-left"></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>4</button>
+                    <button>5</button>
+                    <button><i class="fas fa-angle-double-right"></i></button>
+                </div>
+        </main>
+    </div>
+
+    <!--푸터-->
+    <footer><div id="footer"></div></footer>
+</body>
+</html>
+<script src="./cs_findstore.js"></script>
