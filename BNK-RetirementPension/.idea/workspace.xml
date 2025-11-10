@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e2e9e0f5-82e0-463c-b3c9-c41a28aebbda" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/BNK-The-First-Main-Project.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="32ac5f2e-1e91-4634-8a7b-a19f92f93036" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/BNK-RetirementPension.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pages/member/member_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/../pages/member/member_main.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,24 +16,22 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
+  "associatedIndex": 1
 }]]></component>
-  <component name="ProjectId" id="35GRWVwsku2jJRdgpZFt4I0FKsA" />
+  <component name="ProjectId" id="35HPXqphlKfikUrk8wtD0UUaJfv" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "feature/junwoo",
-    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/GGG/Desktop/BNK-The-First-Main-Project",
+    "last_opened_file_path": "C:/Users/GGG/Desktop/BNK-The-First-Main-Project/BNK-RetirementPension",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -45,12 +45,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="e2e9e0f5-82e0-463c-b3c9-c41a28aebbda" name="Changes" comment="" />
-      <created>1762734455656</created>
+      <changelist id="32ac5f2e-1e91-4634-8a7b-a19f92f93036" name="Changes" comment="" />
+      <created>1762764066829</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1762734455656</updated>
-      <workItem from="1762734456866" duration="188000" />
+      <updated>1762764066829</updated>
+      <workItem from="1762764068091" duration="223000" />
     </task>
     <servers />
   </component>
