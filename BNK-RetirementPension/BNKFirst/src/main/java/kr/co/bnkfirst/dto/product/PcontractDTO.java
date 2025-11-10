@@ -13,25 +13,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class PcontractDTO {
-    private String pcUid;
-    private String pcPid;
-    private String pcCptp;
-    private String pcCprd;
-    private String pcWcat;
-    private String pcWdac;
-    private int pcMdps;
-    private int pcGamn;
-    private String pcAtapp;
-    private int pcAtdt;
-    private String pcAtac;
-    private String pcCns;
-    private String pcNtcs;
-    private String pcNapw;
-    private String pAcc;
+    private String pcuid;
+    private String pcpid;
+    private String pccptp;
+    private String pccprd;
+    private String pcwcat;
+    private String pcwdac;
+    private int pcmdps;
+    private int pcgamn;
+    private String pcatapp;
+    private int pcatdt;
+    private String pcatac;
+    private String pccns;
+    private String pcntcs;
+    private String pcnapw;
+    private String pacc;
     @CreationTimestamp
-    private LocalDateTime pNew;
+    private LocalDateTime pnew;
     @CreationTimestamp
-    private LocalDateTime pEnd;
-    private int pBalance;
+    private LocalDateTime pend;
+    private int pbalance;
 
 }

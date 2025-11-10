@@ -2,10 +2,15 @@ package kr.co.bnkfirst.mapper;
 
 import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.dto.product.PcontractDTO;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 @Mapper
 public interface MypageMapper {
-    UsersDTO findById(String mId);
-    DealDTO findByDeal(String mId);
+    UsersDTO findById(String mid);
+    DealDTO findByDeal(String mid);
+    PcontractDTO findByBalance(String mid);
+    List<PcontractDTO> findByContract(String mid);
 }

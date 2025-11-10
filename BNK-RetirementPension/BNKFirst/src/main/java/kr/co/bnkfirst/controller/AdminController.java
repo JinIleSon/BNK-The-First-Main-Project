@@ -10,38 +10,38 @@ public class AdminController {
 
     @GetMapping("/admin/main")
     public String main(){
-        return "pages/admin/admin_main";
+        return "admin/admin_main";
     }
     @GetMapping("/admin/member")
     public String member(){
-        return "pages/admin/admin_member";
+        return "admin/admin_member";
     }
     @GetMapping("/admin/env")
     public String env(){
-        return "pages/admin/admin_env";
+        return "admin/admin_env";
     }
     @GetMapping("/admin/prod")
     public String prod(){
-        return "pages/admin/admin_prod";
+        return "admin/admin_prod";
     }
     @GetMapping("/admin/prod/modify")
     public String prodmodify(){
-        return "pages/admin/admin_prodModify";
+        return "admin/admin_prodModify";
     }
     @GetMapping("/admin/prod/register")
     public String prodregister(){
-        return "pages/admin/admin_prodregister";
+        return "admin/admin_prodregister";
     }
     @GetMapping("/admin/cs")
     public String cs(){
-        return "pages/admin/admin_cs";
+        return "admin/admin_cs";
     }
     @GetMapping("/admin/cs/register")
     public String csregister(){
-        return "pages/admin/admin_csregister";
+        return "admin/admin_csregister";
     }
     @GetMapping("/admin/cs/modify")
     public String csmodify(){
-        return "pages/admin/admin_csmodify";
+        return "admin/admin_csmodify";
     }
 }
