@@ -1,6 +1,9 @@
 package kr.co.bnkfirst.dto;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -9,21 +12,24 @@ import lombok.*;
 @AllArgsConstructor
 public class UsersDTO {
 
-    private String uId;
+    private int uId;
     private String mId;
     private String mPw;
     private String mName;
-    private String mBirth;
+    @CreationTimestamp
+    private LocalDateTime mBirth;
     private String mGender;
     private String mCarrier;
     private String mEmail;
     private String mPhone;
-    private String mDate;
+    @CreationTimestamp
+    private LocalDateTime mDate;
     private String mGrade;
     private String mJumin;
     private String mCond;
     private String mNum;
-    private String mAccess;
+    @CreationTimestamp
+    private LocalDateTime mAccess;
     private String mLimit;
 
     /*
