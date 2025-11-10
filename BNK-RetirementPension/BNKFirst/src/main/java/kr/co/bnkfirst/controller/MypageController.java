@@ -38,4 +38,5 @@ public class MypageController {
     public String Setup() {
         return "mypage/mypage_setup";
     }
+
 }

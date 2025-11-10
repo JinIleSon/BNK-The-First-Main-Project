@@ -30,7 +30,6 @@ public class UsersController {
         model.addAttribute("userDTO", new UsersDTO());
         return "member/member_main";
     }
-
     /*
     @GetMapping("/login")
     public String memberLogin(Model model){

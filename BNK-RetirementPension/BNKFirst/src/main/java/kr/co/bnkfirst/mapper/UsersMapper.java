@@ -7,5 +7,4 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UsersMapper {
     UsersDTO findUserById(@Param("mid") String mid);
-
 }
