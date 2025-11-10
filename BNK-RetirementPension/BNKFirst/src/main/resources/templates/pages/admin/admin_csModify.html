@@ -345,20 +345,9 @@
 </head>
 <body>
   <header>
-    <div id="header"></div>
+      <div th:replace="~{layouts/admin_header.html}"></div>
   </header>
-  <script>
-    // header 불러오기
-    fetch("/layouts/admin_header.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Header 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("header").innerHTML = data;
-      })
-      .catch(error => console.error(error));
-  </script>
+
   <script>
     async function includeWithScripts(targetSelector, url) {
       const res = await fetch(url, { credentials: 'same-origin' });
@@ -471,7 +460,7 @@
             <div>
               <div style="display: flex;"><div style="margin-right: 2px;">작성자</div></div>
               <div>
-                <input type="text" value="관리자" readonly placeholder="작성자를 입력하세요" value="BNK 정기예금" style="background-color: #F9FAFB; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                <input type="text" value="관리자" readonly placeholder="작성자를 입력하세요" style="background-color: #F9FAFB; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
               </div>
             </div>
             <div>
@@ -664,18 +653,6 @@
   // 실제 호출: 기존 chatbot.html(또는 chatbot_test.html) 경로로 바꿔도 됩니다.
   importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
     .catch(err => console.error('[Chatbot load failed]', err));
-  </script>
-  <script>
-    // footer 불러오기
-    fetch("/layouts/footer.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Footer 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("footer").innerHTML = data;
-      })
-      .catch(error => console.error(error));
   </script>
   <script>
   const startEl = document.getElementById('startDate');
@@ -876,7 +853,7 @@
   })();
 </script>
   <footer>
-    <div id="footer"></div>
+      <div th:replace="~{layouts/footer.html}"></div>
   </footer>
 </body>
 </html>

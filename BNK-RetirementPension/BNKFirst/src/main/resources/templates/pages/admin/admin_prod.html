@@ -8,20 +8,8 @@
 </head>
 <body>
   <header>
-    <div id="header"></div>
+      <div th:replace="~{layouts/admin_header.html}"></div>
   </header>
-  <script>
-    // header 불러오기
-    fetch("/layouts/admin_header.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Header 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("header").innerHTML = data;
-      })
-      .catch(error => console.error(error));
-  </script>
   <script>
     async function includeWithScripts(targetSelector, url) {
       const res = await fetch(url, { credentials: 'same-origin' });
@@ -766,20 +754,8 @@
   importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
     .catch(err => console.error('[Chatbot load failed]', err));
   </script>
-  <script>
-    // footer 불러오기
-    fetch("/layouts/footer.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Footer 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("footer").innerHTML = data;
-      })
-      .catch(error => console.error(error));
-  </script>
   <footer>
-    <div id="footer"></div>
+      <div th:replace="~{layouts/footer.html}"></div>
   </footer>
 </body>
 </html>
