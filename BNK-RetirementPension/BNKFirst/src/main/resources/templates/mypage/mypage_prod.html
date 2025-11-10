@@ -7,7 +7,7 @@
     <style>
         main {
             background-color: #F6F6F8;
-            padding: 80px 20px;
+            padding: 10px 20px 80px;
         }
         body {
             background-color: #F6F6F8;
@@ -1156,24 +1156,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
 </style>
-
-<!-- ② "빠른 서비스" 카드 묶음 안에 계좌이체 카드 하나 추가 -->
-<!-- (기존 4개 카드 아래쪽에 아래 <a> 하나를 그대로 추가) -->
-<a href="javascript:void(0)" class="menu-link" id="quick-transfer-card">
-  <div class="menu-card" style="display:flex;justify-content:center;align-items:center;width:150px;height:84px;box-sizing:border-box;background-color:#F9FAFB;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.05); border:1px solid #E5E7EB;">
-    <div style="text-align:center">
-      <div style="display:flex;justify-content:center;height:24px;margin-bottom:2px;">
-        <!-- 양방향 화살표 아이콘 -->
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <path d="M7 5h7.586L12.293 2.707A1 1 0 1 1 13.707 1.293l4 4a1 1 0 0 1 0 1.414l-4 4A1 1 0 1 1 12.293 9.293L14.586 7H7a1 1 0 1 1 0-2Z" fill="#4B5563"/>
-          <path d="M17 19H9.414l2.293 2.293a1 1 0 1 1-1.414 1.414l-4-4a1 1 0 0 1 0-1.414l4-4a1 1 0 1 1 1.414 1.414L9.414 17H17a1 1 0 1 1 0 2Z" fill="#4B5563"/>
-        </svg>
-      </div>
-      <div style="font-size:14px;color:#374151;">계좌이체</div>
-      <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">빠른 송금 서비스</div>
-    </div>
-  </div>
-</a>
 
 <!-- ③ main 끝나기 직전(</main> 위) 모달 HTML 추가 -->
 <div class="bnk-transfer__overlay" id="bnkTransfer">
