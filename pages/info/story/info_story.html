@@ -3,7 +3,7 @@
 
 <script>
     // header.html 파일을 불러와서 #header에 삽입
-    fetch('/layouts/header.html')
+    fetch('../_header.html')
         .then(res => res.text())
         .then(data => {
             document.getElementById('header').innerHTML = data;
@@ -18,6 +18,7 @@
 
 <main>
     <div class="container">
+
         <!-- 보도자료 -->
         <section class="news">
             <div class="press-section">
@@ -60,7 +61,7 @@
 
         <!-- 공지사항 -->
         <section class="notice">
-
+            
             <div class="press-section">
                 <div class="press-header">
                     <h2>공지사항</h2>
@@ -68,12 +69,12 @@
                 </div>
 
                 <div class="press-content">
-                    <ul>
-                        <li>공동대출 약관 및 약정서(추가약정서) 개정 안내</li>
-                        <li>본인확인서비스, 비대면 실명확인 등록 안내</li>
-                        <li>비대면 채무조정 프로세스 구축 제공 안내</li>
-                    </ul>
-                </div>
+            <ul>
+                <li>공동대출 약관 및 약정서(추가약정서) 개정 안내</li>
+                <li>본인확인서비스, 비대면 실명확인 등록 안내</li>
+                <li>비대면 채무조정 프로세스 구축 제공 안내</li>
+            </ul>
+            </div>
 
         </section>
 
@@ -121,10 +122,12 @@
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23E60012'/%3E%3Ctext x='50' y='58' font-size='56' text-anchor='middle' fill='white' font-family='Arial, Helvetica, sans-serif'%3EB%3C/text%3E%3C/svg%3E" />
 <style>
     body {
-        font-family: "Noto Sans KR", sans-serif;
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: #F6F6F8;
         margin: 0;
         padding: 0;
-        background-color: #f7f7f7;
+        color: #222;
+        line-height: 1.7;
     }
 
     header {
@@ -149,7 +152,7 @@
     }
 
     .container {
-        width: 1200px;
+        width: 1000px;
         margin: 30px auto;
         background: #fff;
         padding: 30px;
@@ -165,7 +168,6 @@
     /* 보도자료 */
     .news {
         margin-top: 20px;
-        width: 80%;
     }
 
     .news .main img {
@@ -250,7 +252,7 @@
         border: 1px solid #ddd;
         background: #fff;
         padding: 20px;
-        width: 1000px;
+        width: 900px;
         margin: 0 auto;
     }
 
