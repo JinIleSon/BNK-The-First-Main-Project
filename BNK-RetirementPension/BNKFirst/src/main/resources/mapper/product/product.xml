@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.team3.mapper.product.ProductMapper">
+    <select id="selectWithKeyword" resultType="kr.co.bnkfirst.dto.product.ProductDTO">
+
+    </select>
+    <select id="countWithKeyword" resultType="int">
+        SELECT COUNT(*)
+        FROM PRODUCT_ITEM
+        WHERE P_NAME LIKE '%' || #{pageRequestDTO.keyword} || '%'
+        OR P_DESC LIKE '%' || #{pageRequestDTO.keyword} || '%'
+        ORDER BY P_PID
+    </select>
+</mapper>
