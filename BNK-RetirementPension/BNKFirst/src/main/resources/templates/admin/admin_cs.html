@@ -8,20 +8,9 @@
 </head>
 <body>
   <header>
-    <div id="header"></div>
+      <div th:replace="~{layouts/admin_header.html}"></div>
   </header>
-  <script>
-    // header 불러오기
-    fetch("/layouts/admin_header.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Header 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("header").innerHTML = data;
-      })
-      .catch(error => console.error(error));
-  </script>
+
   <script>
     async function includeWithScripts(targetSelector, url) {
       const res = await fetch(url, { credentials: 'same-origin' });
@@ -64,6 +53,9 @@
       window.initAdminHeader && window.initAdminHeader('cs');
     })
     .catch(console.error);
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.initAdminHeader) window.initAdminHeader('cs');
+    });
   </script>
 
   <main style="background-color: #F6F6F8; display: flex; justify-content: center;">
@@ -212,7 +204,7 @@
                               width:32px; height:32px; border:none; background:transparent; 
                               border-radius:6px; cursor:pointer;"
                         aria-label="회원 수정"
-                        onclick="location.href='#'">
+                        th:onclick="|location.href='@{/admin/cs/modify}'|">
                   <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_191_277)">
                     <path d="M14.7375 5.67832C14.0531 4.99395 12.9469 4.99395 12.2625 5.67832L11.3219 6.61582L14.3813 9.6752L15.3219 8.73457C16.0063 8.0502 16.0063 6.94395 15.3219 6.25957L14.7375 5.67832ZM5.3875 12.5533C5.19687 12.7439 5.05 12.9783 4.96562 13.2377L4.04063 16.0127C3.95 16.2814 4.02188 16.5783 4.22188 16.7814C4.42188 16.9846 4.71875 17.0533 4.99062 16.9627L7.76562 16.0377C8.02188 15.9533 8.25625 15.8064 8.45 15.6158L13.6781 10.3846L10.6156 7.32207L5.3875 12.5533ZM3 7.0002C1.34375 7.0002 0 8.34395 0 10.0002V18.0002C0 19.6564 1.34375 21.0002 3 21.0002H11C12.6562 21.0002 14 19.6564 14 18.0002V15.0002C14 14.4471 13.5531 14.0002 13 14.0002C12.4469 14.0002 12 14.4471 12 15.0002V18.0002C12 18.5533 11.5531 19.0002 11 19.0002H3C2.44688 19.0002 2 18.5533 2 18.0002V10.0002C2 9.44707 2.44688 9.0002 3 9.0002H6C6.55312 9.0002 7 8.55332 7 8.0002C7 7.44707 6.55312 7.0002 6 7.0002H3Z" fill="#2B2F36"/>
@@ -535,7 +527,7 @@
           </button>
         </div>
         <div style="grid-column: 3; margin-left: auto; box-sizing: border-box;">
-          <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 90px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
+          <button th:onclick="|location.href='@{/admin/cs/register}'|" class="btn-register" style="gap:6px; box-sizing: border-box; width: 90px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
             <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
               <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 2.5C8 1.94687 7.55312 1.5 7 1.5C6.44688 1.5 6 1.94687 6 2.5V7H1.5C0.946875 7 0.5 7.44688 0.5 8C0.5 8.55312 0.946875 9 1.5 9H6V13.5C6 14.0531 6.44688 14.5 7 14.5C7.55312 14.5 8 14.0531 8 13.5V9H12.5C13.0531 9 13.5 8.55312 13.5 8C13.5 7.44688 13.0531 7 12.5 7H8V2.5Z" fill="white"/>
@@ -721,20 +713,8 @@
   importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
     .catch(err => console.error('[Chatbot load failed]', err));
   </script>
-  <script>
-    // footer 불러오기
-    fetch("/layouts/footer.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Footer 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("footer").innerHTML = data;
-      })
-      .catch(error => console.error(error));
-  </script>
   <footer>
-    <div id="footer"></div>
+      <div th:replace="~{layouts/footer.html}"></div>
   </footer>
 </body>
 </html>
