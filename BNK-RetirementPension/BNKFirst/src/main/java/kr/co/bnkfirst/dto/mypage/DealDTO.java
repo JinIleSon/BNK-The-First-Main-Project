@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @Builder
 public class DealDTO {
 
-    private int dId;
-    private String mId;
-    private int dBalance;
-    private String dWho;
+    private int did;
+    private String mid;
+    private int dbalance;
+    private String dwho;
     @CreationTimestamp
-    private LocalDateTime dDate;
+    private LocalDateTime ddate;
 }

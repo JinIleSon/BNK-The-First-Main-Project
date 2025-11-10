@@ -21,18 +21,20 @@ public class MypageController {
         // a123은 나중에 로그인할 때 바꾸기
         model.addAttribute("usersList", mypageService.findById("a123"));
         model.addAttribute("dealList", mypageService.findByDeal("a123"));
-        return "pages/mypage/mypage_main";
+        model.addAttribute("balance", mypageService.findByBalance("a123"));
+        model.addAttribute("contractList", mypageService.findByContract("a123"));
+        return "mypage/mypage_main";
     }
     @GetMapping("/mypage/prod")
     public String Prod() {
-        return "pages/mypage/mypage_prod";
+        return "mypage/mypage_prod";
     }
-    @GetMapping("/mypage/prodcancel")
+    @GetMapping("/mypage/prod/cancel")
     public String ProdCancel() {
-        return "pages/mypage/mypage_prodCancel";
+        return "mypage/mypage_prodCancel";
     }
     @GetMapping("/mypage/setup")
     public String Setup() {
-        return "pages/mypage/mypage_setup";
+        return "mypage/mypage_setup";
     }
 }

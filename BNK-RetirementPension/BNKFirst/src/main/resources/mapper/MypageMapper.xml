@@ -7,12 +7,18 @@
 
     <!-- 아이디로 회원 조회 -->
     <select id="findById" resultType="kr.co.bnkfirst.dto.UsersDTO">
-        select * from users where mid = #{mId}
+        select * from users where mid = #{mid}
     </select>
 
     <select id="findByDeal" resultType="kr.co.bnkfirst.dto.mypage.DealDTO">
-        select * from deal where mid = #{mId} fetch first 1 rows only
+        select * from deal where mid = #{mid} fetch first 1 rows only
     </select>
 
-    <select id="findByBalance" resultType="kr.co.bnkfirst.dto."
+    <select id="findByBalance" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        SELECT sum(c.PBALANCE) FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid}
+    </select>
+
+    <select id="findByContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid}
+    </select>
 </mapper>
