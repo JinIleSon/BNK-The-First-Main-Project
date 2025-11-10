@@ -52,6 +52,9 @@
       window.initAdminHeader && window.initAdminHeader('env');
     })
     .catch(console.error);
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.initAdminHeader) window.initAdminHeader('env');
+    });
   </script>
 
   <main style="background: var(--bg); display: flex; justify-content: center;">

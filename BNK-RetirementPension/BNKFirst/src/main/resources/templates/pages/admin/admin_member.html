@@ -52,6 +52,9 @@
       window.initAdminHeader && window.initAdminHeader('member');
     })
     .catch(console.error);
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.initAdminHeader) window.initAdminHeader('member');
+    });
   </script>
 
   <main style="background-color: #F6F6F8; display: flex; justify-content: center;">

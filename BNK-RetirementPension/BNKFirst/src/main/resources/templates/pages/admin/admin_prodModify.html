@@ -512,6 +512,9 @@
       window.initAdminHeader && window.initAdminHeader('product');
     })
     .catch(console.error);
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.initAdminHeader) window.initAdminHeader('product');
+    });
   </script>
   
 
@@ -524,7 +527,7 @@
         <div style="display: flex;">
           <div style="font-size: 16px; color: #4B5563;">등록된 상품 정보를 수정하고 상태를 변경할 수 있습니다.</div>
           <div style="display: flex; margin-left: auto; margin-right: 10px;">
-            <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
+            <button th:onclick="|location.href='@{/admin/prod}'|" class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
               <div style="display: flex; gap: 8px; justify-content: center; align-content: center;">
                 <div style="margin-top: 2px;">
                   <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
