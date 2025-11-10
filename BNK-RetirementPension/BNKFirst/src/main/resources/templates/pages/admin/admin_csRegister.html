@@ -345,20 +345,9 @@
 </head>
 <body>
   <header>
-    <div id="header"></div>
+    <<div th:replace="~{layouts/admin_header.html}"></div>
   </header>
-  <script>
-    // header 불러오기
-    fetch("/layouts/admin_header.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Header 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("header").innerHTML = data;
-      })
-      .catch(error => console.error(error));
-  </script>
+
   <script>
     async function includeWithScripts(targetSelector, url) {
       const res = await fetch(url, { credentials: 'same-origin' });
@@ -401,6 +390,9 @@
       window.initAdminHeader && window.initAdminHeader('product');
     })
     .catch(console.error);
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.initAdminHeader) window.initAdminHeader('cs');
+    });
   </script>
   
 
@@ -413,7 +405,7 @@
         <div style="display: flex;">
           <div style="font-size: 16px; color: #4B5563;">고객상담, 이용안내, 금융소비자보호, 상품공시실, 서식/약관/자료실의 새 글을 등록합니다.</div>
           <div style="display: flex; margin-left: auto; margin-right: 10px;">
-            <button class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
+            <button th:onclick="|location.href='@{/admin/cs}'|" class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 150px; height: 42.5px; border:none; border-radius: 8px; cursor: pointer; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; background-color: white;">
               <div style="display: flex; gap: 8px; justify-content: center; align-content: center;">
                 <div style="margin-top: 2px;">
                   <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -471,7 +463,7 @@
             <div>
               <div style="display: flex;"><div style="margin-right: 2px;">작성자</div></div>
               <div>
-                <input type="text" value="관리자" readonly placeholder="작성자를 입력하세요" value="BNK 정기예금" style="background-color: #F9FAFB; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                <input type="text" value="관리자" readonly placeholder="작성자를 입력하세요" style="background-color: #F9FAFB; margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
               </div>
             </div>
             <div>
@@ -665,18 +657,7 @@
   importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
     .catch(err => console.error('[Chatbot load failed]', err));
   </script>
-  <script>
-    // footer 불러오기
-    fetch("/layouts/footer.html")
-      .then(response => {
-        if (!response.ok) throw new Error("Footer 파일을 불러오지 못했습니다.");
-        return response.text();
-      })
-      .then(data => {
-        document.getElementById("footer").innerHTML = data;
-      })
-      .catch(error => console.error(error));
-  </script>
+
   <script>
   const startEl = document.getElementById('startDate');
   const endEl   = document.getElementById('endDate');
@@ -876,7 +857,7 @@
   })();
 </script>
   <footer>
-    <div id="footer"></div>
+      <div th:replace="~{layouts/footer.html}"></div>
   </footer>
 </body>
 </html>
