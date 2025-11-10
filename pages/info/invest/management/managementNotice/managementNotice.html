@@ -5,6 +5,132 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BNK부산은행 | 경영공시</title>
 
+</head>
+
+<body>
+  <div id="header"></div>
+
+  <main>
+    <!-- ===== 사이드바 ===== -->
+    <aside class="sidebar">
+      <h3>투자자정보</h3>
+
+      <div class="menu-item active">
+        <a href="#" class="menu-title active">경영정보</a>
+        <div class="submenu open">
+          <div class="submenu-title">경영공시</div>
+          <ul>
+            <li><a href="#">바젤3 자본공시</a></li>
+            <li><a href="#">지배구조 관련공시</a></li>
+            <li><a href="#">커버드본드</a></li>
+            <li><a href="#">기타공시</a></li>
+            <li><a href="#">재무제표</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="menu-item"><a href="#" class="menu-title">공고</a></div>
+      <div class="menu-item"><a href="#" class="menu-title">신용등급</a></div>
+      <div class="menu-item"><a href="#" class="menu-title">BNK금융지주</a></div>
+      <div class="menu-item"><a href="#" class="menu-title">IR정보</a></div>
+
+      <div class="sidebar-bottom">
+        <div class="icon-links">
+          <a href="#"><img src="../../../assets/img/talk.svg" alt="">Talk상담</a>
+          <a href="#"><img src="../../../assets/img/mail.svg" alt="">메일상담</a>
+          <a href="#"><img src="../../../assets/img/faq.svg" alt="">FAQ</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== 본문 ===== -->
+    <section class="content">
+      <div class="page-title">
+        <h1>경영공시</h1>
+        <p>부산은행의 경영소식 및 주주총회, 기타 현황에 대한 자료를 제공합니다.</p>
+      </div>
+
+      <div class="strategy-card" style="padding:20px; border:1px solid #eee; border-radius:10px; background:#fff; margin-bottom:20px;">
+        <p style="font-size:15px; color:#444; margin:0;">
+          총 <strong style="color:#000;">92건</strong> 현재: <strong style="color:#000;">1/10페이지</strong>
+        </p>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>제목</th>
+              <th>첨부파일</th>
+              <th>등록일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>2025년 상반기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2025-08-29</td></tr>
+            <tr><td>2</td><td>2025년 1분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2025-05-30</td></tr>
+            <tr><td>3</td><td>2024년 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2025-03-31</td></tr>
+            <tr><td>4</td><td>2024년 3분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2024-11-29</td></tr>
+            <tr><td>5</td><td>2024년 상반기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2024-08-30</td></tr>
+            <tr><td>6</td><td>2024년 1/4분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2024-05-31</td></tr>
+            <tr><td>7</td><td>2023년 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2024-03-29</td></tr>
+            <tr><td>8</td><td>2023년 3분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2023-11-30</td></tr>
+            <tr><td>9</td><td>2023년 상반기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2023-08-31</td></tr>
+            <tr><td>10</td><td>2023년 1/4분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2023-05-31</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <a href="#">«</a>
+        <a href="#">‹</a>
+        <a href="#" class="active">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">4</a>
+        <a href="#">5</a>
+        <a href="#">›</a>
+        <a href="#">»</a>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+
+  <script>
+    // Header & Footer include
+    fetch('../../../_header.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('header').innerHTML = data);
+
+    fetch('../../../_footer.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('footer').innerHTML = data);
+
+    // Sidebar toggle
+    const titles = document.querySelectorAll(".menu-title");
+    titles.forEach(title => {
+      title.addEventListener("click", () => {
+        const isActive = title.classList.contains("active");
+        titles.forEach(t => {
+          t.classList.remove("active");
+          const next = t.nextElementSibling;
+          if (next && next.classList.contains("submenu")) {
+            next.style.maxHeight = null;
+          }
+        });
+        if (!isActive) {
+          title.classList.add("active");
+          const submenu = title.nextElementSibling;
+          if (submenu && submenu.classList.contains("submenu")) {
+            submenu.style.maxHeight = submenu.scrollHeight + "px";
+          }
+        }
+      });
+    });
+  </script>
+  
   <style>
     body {
       font-family: "Noto Sans KR", sans-serif;
@@ -19,7 +145,7 @@
       gap: 40px;
       align-items: flex-start;
       max-width: 1200px;
-      margin: 0 auto;
+      margin: 100px auto;
       padding: 40px 20px;
     }
 
@@ -227,134 +353,5 @@
       margin-top: 40px;
     }
   </style>
-</head>
-
-<body>
-  <div id="header"></div>
-
-  <main>
-    <!-- ===== 사이드바 ===== -->
-    <aside class="sidebar">
-      <h3>투자자정보</h3>
-
-      <div class="menu-item active">
-        <a href="#" class="menu-title active">경영정보</a>
-        <div class="submenu open">
-          <div class="submenu-title">경영공시</div>
-          <ul>
-            <li><a href="#">바젤3 자본공시</a></li>
-            <li><a href="#">지배구조 관련공시</a></li>
-            <li><a href="#">커버드본드</a></li>
-            <li><a href="#">기타공시</a></li>
-            <li><a href="#">재무제표</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="menu-item"><a href="#" class="menu-title">공고</a></div>
-      <div class="menu-item"><a href="#" class="menu-title">신용등급</a></div>
-      <div class="menu-item"><a href="#" class="menu-title">BNK금융지주</a></div>
-      <div class="menu-item"><a href="#" class="menu-title">IR정보</a></div>
-
-      <div class="sidebar-bottom">
-        <div class="icon-links">
-          <a href="#"><img src="/icons/talk.svg" alt="">Talk상담</a>
-          <a href="#"><img src="/icons/mail.svg" alt="">메일상담</a>
-          <a href="#"><img src="/icons/faq.svg" alt="">FAQ</a>
-        </div>
-      </div>
-    </aside>
-
-    <!-- ===== 본문 ===== -->
-    <section class="content">
-      <div class="page-title">
-        <h1>경영공시</h1>
-        <p>부산은행의 경영소식 및 주주총회, 기타 현황에 대한 자료를 제공합니다.</p>
-      </div>
-
-      <div class="strategy-card" style="padding:20px; border:1px solid #eee; border-radius:10px; background:#fff; margin-bottom:20px;">
-        <p style="font-size:15px; color:#444; margin:0;">
-          총 <strong style="color:#000;">92건</strong> 현재: <strong style="color:#000;">1/10페이지</strong>
-        </p>
-      </div>
-
-      <div style="overflow-x:auto;">
-        <table>
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>첨부파일</th>
-              <th>등록일</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td>2025년 상반기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2025-08-29</td></tr>
-            <tr><td>2</td><td>2025년 1분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2025-05-30</td></tr>
-            <tr><td>3</td><td>2024년 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2025-03-31</td></tr>
-            <tr><td>4</td><td>2024년 3분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2024-11-29</td></tr>
-            <tr><td>5</td><td>2024년 상반기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2024-08-30</td></tr>
-            <tr><td>6</td><td>2024년 1/4분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2024-05-31</td></tr>
-            <tr><td>7</td><td>2023년 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2024-03-29</td></tr>
-            <tr><td>8</td><td>2023년 3분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2023-11-30</td></tr>
-            <tr><td>9</td><td>2023년 상반기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2023-08-31</td></tr>
-            <tr><td>10</td><td>2023년 1/4분기 부산은행 현황</td><td><button class="btn-download">다운로드</button></td><td>2023-05-31</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="pagination">
-        <a href="#">«</a>
-        <a href="#">‹</a>
-        <a href="#" class="active">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">4</a>
-        <a href="#">5</a>
-        <a href="#">›</a>
-        <a href="#">»</a>
-      </div>
-    </section>
-  </main>
-
-  <div id="footer"></div>
-
-  <footer>
-    고객센터 1588-6200 | 해외 82-2-1588-6200<br>
-    COPYRIGHT © 2024 BUSANBANK. ALL RIGHTS RESERVED.
-  </footer>
-
-  <script>
-    // Header & Footer include
-    fetch('/layouts/_header.html')
-      .then(res => res.text())
-      .then(data => document.getElementById('header').innerHTML = data);
-
-    fetch('/layouts/_footer.html')
-      .then(res => res.text())
-      .then(data => document.getElementById('footer').innerHTML = data);
-
-    // Sidebar toggle
-    const titles = document.querySelectorAll(".menu-title");
-    titles.forEach(title => {
-      title.addEventListener("click", () => {
-        const isActive = title.classList.contains("active");
-        titles.forEach(t => {
-          t.classList.remove("active");
-          const next = t.nextElementSibling;
-          if (next && next.classList.contains("submenu")) {
-            next.style.maxHeight = null;
-          }
-        });
-        if (!isActive) {
-          title.classList.add("active");
-          const submenu = title.nextElementSibling;
-          if (submenu && submenu.classList.contains("submenu")) {
-            submenu.style.maxHeight = submenu.scrollHeight + "px";
-          }
-        }
-      });
-    });
-  </script>
 </body>
 </html>
