@@ -53,17 +53,24 @@
                 </div>
                 <script>
                     /* ---- 예시 데이터 (백엔드 연동 시 이 부분을 API 응답으로 대체) ---- */
-                    const PRODUCTS = [
-                        { id: 1, type: '정기예금', name: 'BNK 플러스 정기예금', baseRate: 3.5, bonusRate: 0.7, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'], releasedAt: '2024-07-10' },
-                        { id: 2, type: '정기예금', name: 'BNK 프리미엄 정기예금', baseRate: 3.8, bonusRate: 0.7, term: '12~24개월', join: ['인터넷', '영업점'], benefits: ['급여이체 +0.5%'], releasedAt: '2024-10-15' },
-                        { id: 3, type: '정기예금', name: 'BNK 스마트 정기예금', baseRate: 3.3, bonusRate: 0.5, term: '3~12개월', join: ['인터넷'], benefits: ['모바일 가입 +0.2%'], releasedAt: '2024-05-30' },
-                        { id: 4, type: '정기예금', name: 'BNK 자유적립 정기예금', baseRate: 3.1, bonusRate: 0.5, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'], releasedAt: '2023-12-20' },
-                        { id: 5, type: '정기예금', name: 'BNK 만기이자지급식 예금', baseRate: 3.4, bonusRate: 0.5, term: '12~24개월', join: ['인터넷', '영업점'], benefits: ['카드사용 +0.2%'], releasedAt: '2024-03-18' },
-                        { id: 6, type: '정기예금', name: 'BNK 정기예금(특판)', baseRate: 3.6, bonusRate: 0.9, term: '6~12개월', join: ['인터넷'], benefits: ['신규우대 +0.3%'], releasedAt: '2024-11-01' },
-                        { id: 7, type: '정기예금', name: 'BNK e-정기예금', baseRate: 3.2, bonusRate: 0.6, term: '12~36개월', join: ['인터넷'], benefits: ['자동이체 +0.3%'], releasedAt: '2022-09-10' },
-                        { id: 8, type: '정기예금', name: 'BNK 프리미엄Plus', baseRate: 3.7, bonusRate: 0.6, term: '3~24개월', join: ['영업점'], benefits: ['급여이체 +0.4%'], releasedAt: '2024-08-05' },
-                        { id: 9, type: '정기예금', name: 'BNK 스텝업예금', baseRate: 3.1, bonusRate: 0.7, term: '6~24개월', join: ['인터넷', '영업점'], benefits: ['잔액유지 +0.2%'], releasedAt: '2024-01-25' },
-                    ].map(p => ({ ...p, maxRate: +(p.baseRate + p.bonusRate).toFixed(2) }));
+                    // const PRODUCTS = [
+                    //     { id: 1, type: '정기예금', name: 'BNK 플러스 정기예금', baseRate: 3.5, bonusRate: 0.7, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'], releasedAt: '2024-07-10' },
+                    //     { id: 2, type: '정기예금', name: 'BNK 프리미엄 정기예금', baseRate: 3.8, bonusRate: 0.7, term: '12~24개월', join: ['인터넷', '영업점'], benefits: ['급여이체 +0.5%'], releasedAt: '2024-10-15' },
+                    //     { id: 3, type: '정기예금', name: 'BNK 스마트 정기예금', baseRate: 3.3, bonusRate: 0.5, term: '3~12개월', join: ['인터넷'], benefits: ['모바일 가입 +0.2%'], releasedAt: '2024-05-30' },
+                    //     { id: 4, type: '정기예금', name: 'BNK 자유적립 정기예금', baseRate: 3.1, bonusRate: 0.5, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'], releasedAt: '2023-12-20' },
+                    //     { id: 5, type: '정기예금', name: 'BNK 만기이자지급식 예금', baseRate: 3.4, bonusRate: 0.5, term: '12~24개월', join: ['인터넷', '영업점'], benefits: ['카드사용 +0.2%'], releasedAt: '2024-03-18' },
+                    //     { id: 6, type: '정기예금', name: 'BNK 정기예금(특판)', baseRate: 3.6, bonusRate: 0.9, term: '6~12개월', join: ['인터넷'], benefits: ['신규우대 +0.3%'], releasedAt: '2024-11-01' },
+                    //     { id: 7, type: '정기예금', name: 'BNK e-정기예금', baseRate: 3.2, bonusRate: 0.6, term: '12~36개월', join: ['인터넷'], benefits: ['자동이체 +0.3%'], releasedAt: '2022-09-10' },
+                    //     { id: 8, type: '정기예금', name: 'BNK 프리미엄Plus', baseRate: 3.7, bonusRate: 0.6, term: '3~24개월', join: ['영업점'], benefits: ['급여이체 +0.4%'], releasedAt: '2024-08-05' },
+                    //     { id: 9, type: '정기예금', name: 'BNK 스텝업예금', baseRate: 3.1, bonusRate: 0.7, term: '6~24개월', join: ['인터넷', '영업점'], benefits: ['잔액유지 +0.2%'], releasedAt: '2024-01-25' },
+                    // ].map(p => ({ ...p, maxRate: +(p.baseRate + p.bonusRate).toFixed(2) }));
+                    async function getItems() {
+                        const response = fetch('/BNK/product/items', {method:'GET'});
+                        if (!response.ok) throw new Error(response.status);
+                        const PRODUCTS = response.json();
+                        console.log(PRODUCTS);
+                    }
+
 
                     /* ================= 상태 ================= */
                     let view = 'grid';         // 'grid' | 'list'
