@@ -11,6 +11,6 @@ import java.util.List;
 public interface MypageMapper {
     UsersDTO findById(String mid);
     DealDTO findByDeal(String mid);
-    PcontractDTO findByBalance(String mid);
+    int findByBalance(String mid);
     List<PcontractDTO> findByContract(String mid);
 }
