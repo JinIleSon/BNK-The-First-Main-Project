@@ -29,9 +29,9 @@ public class ProductController {
     @PermitAll
     @ResponseBody
     @GetMapping("/product/items")
-    public List<ProductDTO> getItems() {
+    public ResponseEntity<List<ProductDTO>> getItems() {
         List<ProductDTO> products = productService.findAll();
-        return products;
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/product/view")
