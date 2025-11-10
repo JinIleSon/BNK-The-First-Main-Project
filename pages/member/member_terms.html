@@ -7,7 +7,6 @@
 </head>
 <body>
   <div id="header"></div>
-
 <script>
 // header 불러오기
 fetch('/layouts/header.html')
@@ -278,18 +277,7 @@ fetch('/layouts/footer.html')
         style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
         다음
       </a>
-    </div>
-    <script>
-      // "다음" 버튼 클릭 시 필수 약관 체크 확인(이벤트)
-      document.querySelector('.btn-register[href="member_info.html"]').addEventListener('click', function (e) {
-        const requiredChecks = document.querySelectorAll('.reqchk');
-        const allChecked = Array.from(requiredChecks).every(chk => chk.checked);
-        if (!allChecked) {
-          e.preventDefault();
-          alert('필수 약관에 모두 동의하거라');
-        }
-      });
-    </script>
+    </div>   
   </div>
 </main>
 
@@ -339,6 +327,56 @@ fetch('/layouts/footer.html')
     .catch(console.error);
 </script>
 <footer><div id="footer"></div></footer>
+
+<!-- 필수 약관 미동의 시 뜨는 모달 -->
+<div id="agreeModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="agreeModalTitle">
+    <div class="modal-header">
+      <h3 id="agreeModalTitle" style="margin:0;">알림</h3>
+      <button type="button" class="modal-close" title="닫기" data-close-modal>&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin:0; font-size:16px; color:#111827;">
+        모든 필수 약관에 동의하신 후 계속 진행해 주세요.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-register" data-close-modal style="width:100%;">확인</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 모달 열기/닫기 제어
+  const agreeModal = document.getElementById('agreeModal');
+
+  function openAgreeModal() {
+    agreeModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAgreeModal() {
+    agreeModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  // 닫기 버튼 및 배경 클릭 시 닫기
+  agreeModal.querySelectorAll('[data-close-modal]').forEach(el => {
+    el.addEventListener('click', closeAgreeModal);
+  });
+
+  // "다음" 버튼 클릭 시 검사
+  const nextBtn = document.querySelector('.btn-register[href="member_info.html"]');
+  nextBtn.addEventListener('click', function (e) {
+    const requiredChecks = document.querySelectorAll('.reqchk');
+    const allChecked = Array.from(requiredChecks).every(chk => chk.checked);
+    if (!allChecked) {
+      e.preventDefault();
+      openAgreeModal();
+    }
+  });
+</script>
 </body>
 
 <style>
@@ -421,5 +459,48 @@ fetch('/layouts/footer.html')
   .btn-sheen:hover::after { opacity: 1; }
 
   a { text-decoration: none; color: inherit; }
+
+  /* 모달 창 */
+  #agreeModal[aria-hidden="true"] { display:none; }
+  #agreeModal[aria-hidden="false"] { display:block; }
+
+  #agreeModal .modal-backdrop {
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(2px);
+    z-index:9998;
+  }
+
+  #agreeModal .modal-dialog {
+    position:fixed;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    width:360px; max-width:92vw;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    box-shadow:0 20px 60px rgba(2,6,23,.2);
+    padding:18px;
+    z-index:9999;
+  }
+
+  #agreeModal .modal-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:8px;
+  }
+
+  #agreeModal .modal-close {
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    cursor:pointer;
+  }
+
+  #agreeModal .modal-body { padding:12px 2px; text-align:center; }
+  #agreeModal .modal-footer { margin-top:16px; text-align:center; }
 </style>
 </html>

@@ -132,7 +132,6 @@ fetch('/layouts/footer.html')
               <div class="hint">영문, 숫자 조합 4~20자</div>
             </td>
           </tr>
-
           <!-- 비밀번호 -->
           <tr class="field">
             <th scope="row"><label class="field-label" for="pwInput">비밀번호<span class="reqdot">*</span></label></th>
@@ -141,7 +140,6 @@ fetch('/layouts/footer.html')
               <div class="hint">영문, 숫자, 특수문자 조합 8~16자</div>
             </td>
           </tr>
-
           <!-- 비밀번호 확인 -->
           <tr class="field">
             <th scope="row"><label class="field-label" for="pw2Input">비밀번호 확인<span class="reqdot">*</span></label></th>
@@ -150,7 +148,6 @@ fetch('/layouts/footer.html')
               <div class="hint">비밀번호와 일치해야 합니다</div>
             </td>
           </tr>
-
           <!-- 이름 -->
           <tr class="field">
             <th scope="row"><label class="field-label" for="nameInput">이름<span class="reqdot">*</span></label></th>
@@ -158,27 +155,29 @@ fetch('/layouts/footer.html')
               <input id="nameInput" type="text" class="input" placeholder="실명을 입력해주세요">
             </td>
           </tr>
-
           <!-- 주민등록번호 -->
-<tr class="field">
-  <th scope="row">
-    <label class="field-label" for="rrnInput">주민등록번호<span class="reqdot">*</span></label>
-  </th>
-  <td>
-    <input id="rrnInput" type="text" class="input" placeholder="예: 900101-1234567" maxlength="14" pattern="\d{6}-\d{7}">
-    <div class="hint">숫자 13자리 형식으로 입력해주세요 (예: 900101-1234567)</div>
-  </td>
-</tr>
-
-
-          <!-- 생년월일 -->
           <tr class="field">
-            <th scope="row"><label class="field-label" for="birthInput">생년월일<span class="reqdot">*</span></label></th>
+            <th scope="row">
+              <label class="field-label" for="rrnInput">주민등록번호<span class="reqdot">*</span></label>
+            </th>
             <td>
-              <input id="birthInput" type="date" class="input" placeholder="YYYY-MM-DD">
+              <input id="rrnInput" type="text" class="input" placeholder="예: 900101-1234567" maxlength="14" pattern="\d{6}-\d{7}">
             </td>
           </tr>
-
+          <!-- 생년월일 -->
+          <tr class="field">
+            <th scope="row">
+              <label class="field-label" for="birthInput">생년월일<span class="reqdot">*</span></label>
+            </th>
+            <td>
+              <input id="birthInput" 
+                    type="text" 
+                    class="input" 
+                    placeholder="예: 1999-12-31" 
+                    maxlength="10"
+                    pattern="^\d{4}-\d{2}-\d{2}$">
+            </td>
+          </tr>
           <!-- 이메일 -->
           <tr class="field">
             <th scope="row"><label class="field-label" for="emailInput">이메일<span class="reqdot">*</span></label></th>
@@ -198,7 +197,6 @@ fetch('/layouts/footer.html')
               </div>
             </td>
           </tr>
-
           <!-- 주소 정보: 우편번호/검색 -->
           <tr class="field">
             <th scope="row"><label class="field-label" for="zipInput">주소 정보<span class="reqdot">*</span></label></th>
@@ -209,7 +207,6 @@ fetch('/layouts/footer.html')
               </div>
             </td>
           </tr>
-
           <!-- 기본주소 -->
           <tr class="field">
             <th scope="row"><label class="field-label" for="baseAddrInput">기본주소<span class="reqdot">*</span></label></th>
@@ -219,7 +216,6 @@ fetch('/layouts/footer.html')
               </div>
             </td>
           </tr>
-
           <!-- 상세주소 -->
           <tr class="field">
             <th scope="row"><label class="field-label" for="detailAddrInput">상세주소<span class="reqdot">*</span></label></th>
@@ -229,7 +225,6 @@ fetch('/layouts/footer.html')
               </div>
             </td>
           </tr>
-
           <!-- 버튼 -->
           <tr>
             <td colspan="2">
@@ -240,14 +235,12 @@ fetch('/layouts/footer.html')
                           text-align:center; color:#111; text-decoration:none;">
                   취소
                 </a>
-
                 <button type="button" id="nextBtn" class="btn-register" style="flex:1; height:42px; border-radius:8px;">
                   다음
                 </button>
               </div>
             </td>
-          </tr>
-          
+          </tr>          
         </tbody>
       </table>
     </div>
@@ -258,20 +251,21 @@ fetch('/layouts/footer.html')
 window.addEventListener('load', () => {
   const toast = (msg) => alert(msg);
 
-  // ---------- 요소 참조 (id 사용: 테이블 레이아웃에서도 안정) ----------
+  // ---------- 요소 참조 ----------
   const idInput   = document.getElementById('idInput');
   const idCheckBtn= document.getElementById('idCheckBtn');
   const pwInput   = document.getElementById('pwInput');
   const pw2Input  = document.getElementById('pw2Input');
   const nameInput = document.getElementById('nameInput');
   const birthInput= document.getElementById('birthInput');
+  const rrnInput  = document.getElementById('rrnInput');
   const emailInput = document.getElementById('emailInput');
   const emailReqBtn = document.getElementById('emailReqBtn');
   const emailCodeInput = document.getElementById('emailCodeInput');
   const emailChkBtn = document.getElementById('emailChkBtn');
-  const zipInput        = document.getElementById('zipInput');
-  const addrSearchBtn   = document.getElementById('addrSearchBtn');
-  const baseAddrInput   = document.getElementById('baseAddrInput');
+  const zipInput = document.getElementById('zipInput');
+  const addrSearchBtn = document.getElementById('addrSearchBtn');
+  const baseAddrInput = document.getElementById('baseAddrInput');
   const detailAddrInput = document.getElementById('detailAddrInput');
   const nextBtn = document.getElementById('nextBtn');
 
@@ -283,7 +277,7 @@ window.addEventListener('load', () => {
   idCheckBtn?.addEventListener('click', () => {
     const v = idInput.value.trim();
     const valid = /^[a-zA-Z0-9]{4,20}$/.test(v);
-    if (!valid) return toast('아이디 형식이 올바르지 않습니다. (영문/숫자 6~20자)');
+    if (!valid) return toast('아이디 형식이 올바르지 않습니다. (영문/숫자 4~20자)');
     if (USED_IDS.has(v.toLowerCase())) {
       idUsable = false;
       toast('이미 사용 중인 아이디입니다.');
@@ -299,15 +293,14 @@ window.addEventListener('load', () => {
   const checkPwMatch = () => {
     if (pw2Input.value && pwInput.value !== pw2Input.value) {
       pw2Input.setCustomValidity('비밀번호가 일치하지 않습니다.');
-    } else pw2Input.setCustomValidity('');
+    } else {
+      pw2Input.setCustomValidity('');
+    }
   };
   pwInput.addEventListener('input', checkPwMatch);
   pw2Input.addEventListener('input', checkPwMatch);
 
-  // ---------- 3) 생년월일 ----------
-  // (input[type=date] 이미 적용)
-
-  // ---------- 4) 이메일 인증 ----------
+  // ---------- 3) 이메일 인증 ----------
   let emailCode = '';
   let emailVerified = false;
 
@@ -319,24 +312,21 @@ window.addEventListener('load', () => {
     }
     emailCode = Math.floor(100000 + Math.random() * 900000).toString();
     emailVerified = false;
-    toast(`인증번호가 이메일로 발송되었습니다.\n(데모 코드: ${emailCode})`);
+    toast(`인증번호가 이메일로 발송되었습니다.\n(인증번호: ${emailCode})`);
   });
 
   emailChkBtn?.addEventListener('click', () => {
-    if (!emailCode) {
-      toast('먼저 인증요청을 해주세요.');
-      return;
-    }
+    if (!emailCode) return toast('먼저 인증요청을 해주세요.');
     const code = emailCodeInput.value.trim();
     if (code === emailCode) {
       emailVerified = true;
-      toast('이메일 인증 완료되었습니다.');
+      toast('이메일 인증이 완료되었습니다.');
     } else {
       toast('인증번호가 올바르지 않습니다.');
     }
   });
 
-  // ---------- 5) 주소검색 ----------
+  // ---------- 4) 주소검색 ----------
   addrSearchBtn?.addEventListener('click', (e) => {
     e.preventDefault();
     new daum.Postcode({
@@ -354,7 +344,7 @@ window.addEventListener('load', () => {
     });
   });
 
-  // ---------- 6) 다음 버튼 ----------
+  // ---------- 5) 다음 버튼 ----------
   nextBtn?.addEventListener('click', (e) => {
     e.preventDefault();
     const errors = [];
@@ -367,31 +357,25 @@ window.addEventListener('load', () => {
     else if (pwInput.value !== pw2Input.value) errors.push('비밀번호가 일치하지 않습니다.');
 
     if (!nameInput.value.trim()) errors.push('이름을 입력해주세요.');
-    if (!birthInput.value.trim()) errors.push('생년월일을 선택해주세요.');
+    if (!rrnInput.value.trim()) errors.push('주민등록번호를 입력해주세요.');
+    else if (!/^\d{6}-\d{7}$/.test(rrnInput.value)) errors.push('주민등록번호 형식이 올바르지 않습니다. 다시 확인해주세요.');
+
+    if (!birthInput.value.trim()) errors.push('생년월일을 입력해주세요.');
+    else if (!/^\d{4}-\d{2}-\d{2}$/.test(birthInput.value.trim())) errors.push('생년월일을 YYYY-MM-DD 형식으로 입력해주세요.');
 
     if (!emailInput.value.trim()) errors.push('이메일을 입력해주세요.');
     if (!emailVerified) errors.push('이메일 인증을 완료해주세요.');
 
-    if (!zipInput.value.trim() || !baseAddrInput.value.trim() || !detailAddrInput.value.trim()) {
+    if (!zipInput.value.trim() || !baseAddrInput.value.trim() || !detailAddrInput.value.trim())
       errors.push('주소를 모두 입력해주세요.');
-    }
 
     if (errors.length > 0) {
       toast(errors[0]);
       return;
     }
 
-    toast('정보 입력 감사띠');
+    toast('입력하신 정보가 확인되었습니다. 본인 인증 단계로 이동합니다.');
     window.location.href = 'member_auth.html';
-
-    // ---------- 7) 주민등록 번호 ----------
-    const rrnInput = document.getElementById('rrnInput');
-
-    if (!/^\d{6}-\d{7}$/.test(rrnInput.value)) {
-      toast('주민등록번호 형식이 올바르지 않습니다.');
-      return;
-    }
-
   });
 });
 </script>
@@ -404,8 +388,50 @@ window.addEventListener('load', () => {
       .catch(console.error);
   </script>
   <footer><div id="footer"></div></footer>
-</body>
 
+  <!-- 모달창 템플릿 -->
+<div id="infoModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+    <div class="modal-header">
+      <h3 id="infoModalTitle" style="margin:0;">안내</h3>
+      <button type="button" class="modal-close" title="닫기" data-close-modal>&times;</button>
+    </div>
+    <div class="modal-body">
+      <p id="infoModalMsg" style="margin:0; font-size:16px; color:#111827; text-align:center;">안내 메시지</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-register" data-close-modal style="width:100%;">확인</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 모달창 제어 로직
+  const infoModal = document.getElementById('infoModal');
+  const infoModalMsg = document.getElementById('infoModalMsg');
+
+  function openInfoModal(message) {
+    infoModalMsg.textContent = message;
+    infoModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeInfoModal() {
+    infoModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  infoModal.querySelectorAll('[data-close-modal]').forEach(el =>
+    el.addEventListener('click', closeInfoModal)
+  );
+
+  // ✅ 기존 alert()을 모달로 재정의
+  window.alert = function(message) {
+    openInfoModal(message);
+  };
+</script>
+</body>
 <style>
   main {
     width: 1200px;
@@ -597,5 +623,52 @@ window.addEventListener('load', () => {
   .form-table { width: 650px; border-collapse: separate; border-spacing: 0 12px; margin: 0 auto;}
   .form-table th { width: 130px; text-align: left; vertical-align: top;}
   .form-table td { vertical-align: top; }
+  /* ✅ auth 모달 스타일 기반 */
+  #infoModal[aria-hidden="true"] { display:none; }
+  #infoModal[aria-hidden="false"] { display:block; }
+
+  #infoModal .modal-backdrop {
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(2px);
+    z-index:9998;
+  }
+
+  #infoModal .modal-dialog {
+    position:fixed;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    width:360px; max-width:92vw;
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    box-shadow:0 20px 60px rgba(2,6,23,.2);
+    padding:18px;
+    z-index:9999;
+    animation: fadeInUp .25s ease;
+  }
+
+  #infoModal .modal-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:8px;
+  }
+
+  #infoModal .modal-close {
+    width:32px; height:32px;
+    border-radius:8px;
+    border:1px solid #e5e7eb;
+    background:#fff;
+    cursor:pointer;
+  }
+
+  #infoModal .modal-body { padding:12px 2px; text-align:center; }
+  #infoModal .modal-footer { margin-top:16px; text-align:center; }
+
+  @keyframes fadeInUp {
+    from { opacity:0; transform:translate(-50%, -46%); }
+    to { opacity:1; transform:translate(-50%, -50%); }
+  }
 </style>
 </html>
