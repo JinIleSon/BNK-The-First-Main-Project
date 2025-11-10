@@ -14,7 +14,7 @@
         select * from deal where mid = #{mid} fetch first 1 rows only
     </select>
 
-    <select id="findByBalance" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+    <select id="findByBalance" resultType="int">
         SELECT sum(c.PBALANCE) FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid}
     </select>
 

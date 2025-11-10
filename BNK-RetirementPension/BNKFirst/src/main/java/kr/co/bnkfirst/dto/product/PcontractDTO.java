@@ -34,4 +34,5 @@ public class PcontractDTO {
     private LocalDateTime pend;
     private int pbalance;
 
+    private String pname;
 }

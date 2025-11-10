@@ -31,7 +31,7 @@ public class MypageService{
         return mypageMapper.findByContract(mid);
     }
 
-    public PcontractDTO findByBalance(String mid) {
+    public int findByBalance(String mid) {
         return mypageMapper.findByBalance(mid);
     }
 }

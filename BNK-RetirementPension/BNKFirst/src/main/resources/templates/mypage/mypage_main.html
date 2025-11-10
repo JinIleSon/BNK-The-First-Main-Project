@@ -152,7 +152,7 @@
             <div style="margin-top:25px; padding:30px; box-sizing: border-box; background-color: #D91A1A; width: 100%; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                 <div style="display: flex;">
                     <div>
-                        <div style="color: white; font-size: 30px; font-weight: 300;"><span th:text="${usersList.MName}"></span> 고객님, 안녕하세요!</div>
+                        <div style="color: white; font-size: 30px; font-weight: 300;"><span th:text="${usersList.mname}"></span> 고객님, 안녕하세요!</div>
                         <div style="color: white; font-size: 20px; font-weight: 300;">BNK부산은행과 함께하는 마이뱅킹</div>
                     </div>
                     <div style="padding: 20px; margin-left: auto; width: 300px; height: 208px; background-color: white; box-sizing: border-box; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
@@ -160,7 +160,7 @@
                             <div style="font-size: 18px; color: #D91A1A; margin-bottom: 20px;">접속현황</div>
                             <div style="display: flex; margin-bottom: 13px;">
                                 <div style="font-size: 14px; color: #4A4A4A;">최근 접속일시</div>
-                                <div style="margin-left: auto;font-size: 14px;"><span th:text="${#temporals.format(usersList.MAccess, 'yyyy-MM-dd HH:mm:ss')}"></span></div>
+                                <div style="margin-left: auto;font-size: 14px;"><span th:text="${#temporals.format(usersList.maccess, 'yyyy-MM-dd HH:mm:ss')}"></span></div>
                             </div>
                             <div style="display: flex; margin-bottom: 13px;">
                                 <div style="font-size: 14px; color: #4A4A4A;">접속 IP</div>
@@ -168,7 +168,7 @@
                             </div>
                             <div style="display: flex; margin-bottom: 13px;">
                                 <div style="font-size: 14px; color: #4A4A4A;">최근 거래일시</div>
-                                <div style="margin-left: auto; font-size: 14px;"><span th:text="${#temporals.format(dealList.DDate, 'yyyy.MM.dd HH:mm')}"></span></div>
+                                <div style="margin-left: auto; font-size: 14px;"><span th:text="${#temporals.format(dealList.ddate, 'yyyy.MM.dd HH:mm')}"></span></div>
                             </div>
                             <div style="display: flex;">
                                 <div style="font-size: 14px; color: #4A4A4A;">인증서 만료일</div>
@@ -182,14 +182,14 @@
                 <div style="margin-top:25px; padding:30px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                     <div>
                         <div style="display: flex; margin-bottom: 10px;">
-                            <div style="font-size: 20px; color: #111827; margin-right: 20px;"><span th:text="${usersList.MName}"></span></div>
+                            <div style="font-size: 20px; color: #111827; margin-right: 20px;"><span th:text="${usersList.mname}"></span></div>
                             <div style="margin-top: 1px;">
-                                <div class="status-badge" style=""><span th:text="${usersList.MGrade}"></span></div>
+                                <div class="status-badge" style=""><span th:text="${usersList.mgrade}"></span></div>
                             </div>
                         </div>
                         <div style="display: grid; grid-template-columns: max-content 13ch 1fr; margin-bottom: 5px;">
                             <div style="font-size: 14px; color: #4B5563;">고객번호:&nbsp;&nbsp;</div>
-                            <div id="custNo" class="maskable" data-type="custno" th:attr="data-raw=${usersList.mNum}" style="font-size: 14px; color: #4B5563; width: 120px;"></div>
+                            <div id="custNo" class="maskable" data-type="custno" th:attr="data-raw=${usersList.mnum}" style="font-size: 14px; color: #4B5563; width: 120px;"></div>
                             <button class="eye-btn" data-target="custNo" aria-label="고객번호 보기/가리기" style="margin-left: 30px; width:16px;background:none; border:none; padding:0; cursor:pointer;">
                                 <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_185_295)">
@@ -205,7 +205,7 @@
                         </div>
                         <div style="display: grid; grid-template-columns: max-content 14.4ch 1fr; margin-bottom: 5px;">
                             <div style="font-size: 14px; color: #4B5563;">이메일:&nbsp;&nbsp;</div>
-                            <div id="email" class="maskable" data-type="email" th:attr="data-raw=${usersList.MEmail}" style="font-size: 14px; color: #4B5563; width: 150px;"></div>
+                            <div id="email" class="maskable" data-type="email" th:attr="data-raw=${usersList.memail}" style="font-size: 14px; color: #4B5563; width: 150px;"></div>
                             <button class="eye-btn" data-target="email" aria-label="이메일 보기/가리기" style="margin-left:30px; width:16px; background:none; border:none; padding:0; cursor:pointer;">
                                 <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_185_295)">
@@ -221,7 +221,7 @@
                         </div>
                         <div style="display: grid; grid-template-columns: max-content 14.4ch 1fr;">
                             <div style="font-size: 14px; color: #4B5563;">휴대폰:&nbsp;&nbsp;</div>
-                            <div id="mobile" class="maskable" data-type="mobile" th:attr="data-raw=${usersList.MPhone}"  style="font-size: 14px; color: #4B5563;"></div>
+                            <div id="mobile" class="maskable" data-type="mobile" th:attr="data-raw=${usersList.mphone}"  style="font-size: 14px; color: #4B5563;"></div>
                             <button class="eye-btn" data-target="mobile" aria-label="휴대폰 보기/가리기" style="margin-left:30px; width: 16px; background:none; border:none; padding:0; cursor:pointer;">
                                 <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g clip-path="url(#clip0_185_295)">
@@ -256,7 +256,7 @@
                                 간편인증 사용 중
                             </div>
                             <div style="color: #6B7280; font-size: 14px; margin-left: 10px;">·</div>
-                            <div style="color: #4B5563; font-size: 14px; margin-left: 10px;">최근 접속 : <span th:text="${#temporals.format(usersList.MAccess, 'yyyy년MM월dd일 HH:mm')}"></span></div>
+                            <div style="color: #4B5563; font-size: 14px; margin-left: 10px;">최근 접속 : <span th:text="${#temporals.format(usersList.maccess, 'yyyy년MM월dd일 HH:mm')}"></span></div>
                         </div>
                     </div>
                 </div>
@@ -373,52 +373,12 @@
                     <th style="width: 200px;">잔액(원)</th>
                     <th style="">작업</th>
                 </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>BNK 자유적금</td>
-                    <td>101-2345-678901</td>
-                    <td>2023.01.15</td>
-                    <td>2024.01.15</td>
-                    <td>5230000</td>
-                    <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
-                    </td>
-                </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>BNK 정기예금</td>
-                    <td>101-2345-678902</td>
-                    <td>2023.01.15</td>
-                    <td>2024.01.15</td>
-                    <td>10000000</td>
-                    <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
-                    </td>
-                </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>BNK 입출금통장</td>
-                    <td>101-2345-678903</td>
-                    <td>2023.01.15</td>
-                    <td>2024.01.15</td>
-                    <td>1250000</td>
-                    <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
-                    </td>
-                </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>BNK 자유적금</td>
-                    <td>101-2345-678901</td>
-                    <td>2023.01.15</td>
-                    <td>2024.01.15</td>
-                    <td>5230000</td>
-                    <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
-                    </td>
-                </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>BNK 자유적금</td>
-                    <td>101-2345-678901</td>
-                    <td>2023.01.15</td>
-                    <td>2024.01.15</td>
-                    <td>5230000</td>
+                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;" th:each="contract:${contractList}">
+                    <td>[[${contract.pname}]]</td>
+                    <td>[[${contract.pacc}]]</td>
+                    <td><span th:text="${#temporals.format(contract.pnew, 'yyyy.MM.dd')}"></span></td>
+                    <td><span th:text="${#temporals.format(contract.pend, 'yyyy.MM.dd')}"></span></td>
+                    <td><span th:text="${#numbers.formatInteger(contract.pbalance, '3', 'COMMA')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
                         <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
                     </td>
@@ -529,7 +489,7 @@
                         </div>
                       </div>
                       <div style="margin-top: 10px; font-size: 24px; height: 35px">
-                        16480000원
+                        <span th:text="${#numbers.formatInteger(balance, '3', 'COMMA')}"></span>원
                       </div>
                     </div>
                   </div>
@@ -561,9 +521,9 @@
                         </div>
                       </div>
                       <div style="margin-top: 10px; font-size: 14px; height: 35px; display: flex; align-items: center; justify-content: center;">
-                        <span th:text="${#temporals.format(dealList.DDate, 'MM.dd')}"></span>&nbsp;
-                          <span th:text="${dealList.DWho.substring(0, 1) + #strings.repeat('○', #strings.length(dealList.DWho) - 1)}"></span>님께&nbsp;
-                          <span th:text="${#numbers.formatInteger(dealList.DBalance, 3, 'COMMA')}"></span>원
+                        <span th:text="${#temporals.format(dealList.ddate, 'MM.dd')}"></span>&nbsp;
+                          <span th:text="${dealList.dwho.substring(0, 1) + #strings.repeat('○', #strings.length(dealList.dwho) - 1)}"></span>님께&nbsp;
+                          <span th:text="${#numbers.formatInteger(dealList.dbalance, 3, 'COMMA')}"></span>원
                       </div>
                     </div>
                   </div>
@@ -623,7 +583,7 @@
                         </div>
                       </div>
                       <div style="margin-top: 10px; font-size: 14px; height: 35px; display: flex; align-items: center;">
-                        1일&nbsp;<span th:text="${#numbers.formatInteger(usersList.MLimit, 3, 'COMMA')}"></span>원
+                        1일&nbsp;<span th:text="${#numbers.formatInteger(usersList.mlimit, 3, 'COMMA')}"></span>원
                       </div>
                     </div>
                   </div>
