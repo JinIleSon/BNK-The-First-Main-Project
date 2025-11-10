@@ -1,5 +1,6 @@
 package kr.co.bnkfirst.service;
 
+import kr.co.bnkfirst.dto.DocumentDTO;
 import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
@@ -31,7 +32,11 @@ public class MypageService{
         return mypageMapper.findByContract(mid);
     }
 
-    public PcontractDTO findByBalance(String mid) {
+    public int findByBalance(String mid) {
         return mypageMapper.findByBalance(mid);
+    }
+
+    public List<DocumentDTO> findByDocumentList(String mid) {
+        return mypageMapper.findByDocumentList(mid);
     }
 }

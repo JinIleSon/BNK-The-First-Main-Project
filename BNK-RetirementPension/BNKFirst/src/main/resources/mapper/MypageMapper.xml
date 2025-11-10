@@ -11,14 +11,18 @@
     </select>
 
     <select id="findByDeal" resultType="kr.co.bnkfirst.dto.mypage.DealDTO">
-        select * from deal where mid = #{mid} fetch first 1 rows only
+        select * from deal where mid = #{mid} order by ddate desc fetch first 1 rows only
     </select>
 
-    <select id="findByBalance" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+    <select id="findByBalance" resultType="int">
         SELECT sum(c.PBALANCE) FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid}
     </select>
 
     <select id="findByContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
         SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid}
+    </select>
+
+    <select id="findByDocumentList" resultType="kr.co.bnkfirst.dto.DocumentDTO">
+        SELECT * FROM DOCUMENT d JOIN USERS u ON d.MID = u.MID WHERE d.MID = #{mid} ORDER BY d.DOCUPDATE desc
     </select>
 </mapper>
