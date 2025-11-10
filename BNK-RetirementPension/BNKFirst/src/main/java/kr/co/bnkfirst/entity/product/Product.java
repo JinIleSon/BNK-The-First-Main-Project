@@ -1,32 +1,51 @@
-package kr.co.bnkfirst.dto.product;
+package kr.co.bnkfirst.entity.product;
 
-import kr.co.bnkfirst.entity.product.Product;
+import jakarta.persistence.*;
+import kr.co.bnkfirst.dto.product.ProductDTO;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Nationalized;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Builder
-public class ProductDTO {
+@Entity
+@Table(name = "product")
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String pid;
+    @Nationalized
+    @Column(length = 500)
     private String ptype;
+    @Nationalized
+    @Column(length = 500)
     private String pname;
     private float pbirate;
     private float phirate;
     private String pcprd;
     private String pelgbl;
+    @Nationalized
+    @Column(length = 500)
     private String prmthd;
+    @Nationalized
+    @Column(length = 500)
     private String pprfcrt;
     private String pirinfo;
     private String pttitle;
     private String ptlink;
     private String pcond;
-    private String pupdate;
 
-    public Product toEntity(){
-        return Product.builder()
+    @CreationTimestamp
+    private LocalDateTime pupdate;
+
+    public ProductDTO toDTO(){
+        return ProductDTO.builder()
                 .id(id)
                 .pid(pid)
                 .ptype(ptype)
@@ -34,12 +53,12 @@ public class ProductDTO {
                 .pbirate(pbirate)
                 .phirate(phirate)
                 .pcprd(pcprd)
-                .pelgbl(pelgbl)
                 .pprfcrt(pprfcrt)
                 .pirinfo(pirinfo)
                 .pttitle(pttitle)
                 .ptlink(ptlink)
                 .pcond(pcond)
+                .pupdate(pupdate.toString())
                 .build();
     }
 }
