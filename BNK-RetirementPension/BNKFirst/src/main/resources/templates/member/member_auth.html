@@ -11,57 +11,6 @@
 <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
   <div id="bnk-chatbot-slot"></div>
 </div>
-<script>
-/* 외부 HTML 불러오기 (스타일/스크립트 실행 유지) */
-async function importHtmlWithAssets(url, mountSelector) {
-  const res = await fetch(url, { credentials: 'same-origin' });
-  if (!res.ok) throw new Error(`Failed to load ${url}`);
-  const html = await res.text();
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-
-  // <link rel="stylesheet"> 복제(head)
-  doc.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-    const href = link.getAttribute('href');
-    if (href && ![...document.head.querySelectorAll('link[rel="stylesheet"]')]
-      .some(l => l.getAttribute('href') === href)) {
-      document.head.appendChild(link.cloneNode(true));
-    }
-  });
-
-  // <style> 복제(head)
-  doc.querySelectorAll('style').forEach(styleEl => {
-    const clone = document.createElement('style');
-    clone.textContent = styleEl.textContent;
-    [...styleEl.attributes].forEach(a => clone.setAttribute(a.name, a.value));
-    document.head.appendChild(clone);
-  });
-
-  // 본문 mount
-  const mount = document.querySelector(mountSelector);
-  const frag = document.createDocumentFragment();
-  [...doc.body.children].forEach(node => {
-    if (node.tagName.toLowerCase() !== 'script') frag.appendChild(node.cloneNode(true));
-  });
-  mount.appendChild(frag);
-
-  // 스크립트 재실행
-  const scripts = [...doc.querySelectorAll('script')];
-  for (const oldScript of scripts) {
-    const newScript = document.createElement('script');
-    [...oldScript.attributes].forEach(attr => newScript.setAttribute(attr.name, attr.value));
-    if (oldScript.src) {
-      await new Promise((resolve)=>{ newScript.onload=resolve; newScript.onerror=resolve; document.body.appendChild(newScript); });
-    } else {
-      newScript.textContent = oldScript.textContent || '';
-      document.body.appendChild(newScript);
-    }
-  }
-}
-importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot').catch(console.error);
-</script>
-
 <main>
   <div class="container">
     <h1 style="text-align: center;">회원가입</h1>

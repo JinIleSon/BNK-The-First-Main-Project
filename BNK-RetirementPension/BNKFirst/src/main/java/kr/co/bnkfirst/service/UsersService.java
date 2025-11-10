@@ -13,7 +13,7 @@ public class UsersService {
 
     private final UsersMapper usersMapper;
 
-    /**
+    /*
      * 로그인 로직
      * @param mId 아이디
      * @param mPw 비밀번호
@@ -32,7 +32,7 @@ public class UsersService {
         }
 
         // 비밀번호 검증
-        if (!user.getMPw().equals(mPw)) {
+        if (!user.getMpw().equals(mPw)) {
             log.warn("Password mismatch for ID: {}", mId);
             return null;
         }
