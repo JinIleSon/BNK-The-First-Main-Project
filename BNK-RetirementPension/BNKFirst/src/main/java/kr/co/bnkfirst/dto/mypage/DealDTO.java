@@ -1,4 +1,4 @@
-package kr.co.bnkfirst.dto;
+package kr.co.bnkfirst.dto.mypage;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

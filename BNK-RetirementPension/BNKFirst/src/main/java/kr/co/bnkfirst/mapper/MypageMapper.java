@@ -1,6 +1,6 @@
 package kr.co.bnkfirst.mapper;
 
-import kr.co.bnkfirst.dto.DealDTO;
+import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
 import org.apache.ibatis.annotations.Mapper;
 

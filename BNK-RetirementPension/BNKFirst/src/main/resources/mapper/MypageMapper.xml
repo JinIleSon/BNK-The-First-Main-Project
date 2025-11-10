@@ -10,7 +10,7 @@
         select * from users where mid = #{mId}
     </select>
 
-    <select id="findByDeal" resultType="kr.co.bnkfirst.dto.DealDTO">
+    <select id="findByDeal" resultType="kr.co.bnkfirst.dto.mypage.DealDTO">
         select * from deal where mid = #{mId} fetch first 1 rows only
     </select>
 
