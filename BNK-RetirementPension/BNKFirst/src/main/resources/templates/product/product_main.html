@@ -115,7 +115,7 @@
             outline: none;
             transition: border-color 0.2s;
             margin-right: 5px;
-            background: url('/components/images/product/searchIcon.png') no-repeat right 14px center;
+            background: url('/images/product/searchIcon.png') no-repeat right 14px center;
             background-color: white;
             background-size: 16px;
         }
@@ -475,42 +475,42 @@
                 <h2>상품 카테고리</h2>
                 <div class="category-container">
                     <div>
-                        <img th:src="@{/components/images/product/termDeposit.png}">
+                        <img th:src="@{/images/product/termDeposit.png}">
                         <h2>정기예금</h2>
                         <p>
                             안정적인 수익을 원하는 분들께 추천하는 기본 예금상품
                         </p>
                     </div>
                     <div>
-                        <img th:src="@{/components/images/product/freeDeposit.png}">
+                        <img th:src="@{/images/product/freeDeposit.png}">
                         <h2>자유예금</h2>
                         <p>
                             언제든지 입출금이 자유로운 유연한 예금상품
                         </p>
                     </div>
                     <div>
-                        <img th:src="@{/components/images/product/savings.png}">
+                        <img th:src="@{/images/product/savings.png}">
                         <h2>적금</h2>
                         <p>
                             목돈 마련을 위한 체계적인 저축상품
                         </p>
                     </div>
                     <div>
-                        <img th:src="@{/components/images/product/foreignCurrencyDeposit.png}">
+                        <img th:src="@{/images/product/foreignCurrencyDeposit.png}">
                         <h2>외환예금</h2>
                         <p>
                             외화 자산 운용을 위한 다양한 통화별 예금
                         </p>
                     </div>
                     <div>
-                        <img th:src="@{/components/images/product/taxBond.png}">
+                        <img th:src="@{/images/product/taxBond.png}">
                         <h2>세금우대/비과세</h2>
                         <p>
                             세제혜택을 받을 수 있는 특별 우대상품
                         </p>
                     </div>
                     <div>
-                        <img th:src="@{/components/images/product/housingPurchase.png}">
+                        <img th:src="@{/images/product/housingPurchase.png}">
                         <h2>주택마련</h2>
                         <p>
                             내 집 마련의 꿈을 실현하는 주택청약 전용 상품
@@ -659,7 +659,7 @@
             <article>
                 <!-- 만기 계산기 -->
                 <div class="card">
-                    <img th:src="@{/components/images/product/calculator.png}" alt="만기 계산기">
+                    <img th:src="@{/images/product/calculator.png}" alt="만기 계산기">
                     <h3>만기 계산기</h3>
                     <label>예치금액</label>
                     <input type="text" id="amount" placeholder="1,000,000" />
@@ -676,7 +676,7 @@
 
                 <!-- 영업점 찾기 -->
                 <div class="card">
-                    <img th:src="@{/components/images/product/location.png}" alt="영업점 찾기">
+                    <img th:src="@{/images/product/location.png}" alt="영업점 찾기">
                     <h3>영업점 찾기</h3>
                     <p class="info-text">가까운 BNK부산은행 영업점을 찾아보세요</p>
                     <p class="info-text">🏦 평일 09:00 - 16:00<br>📞 1588-6200</p>
@@ -685,7 +685,7 @@
 
                 <!-- 자주 묻는 질문 -->
                 <div class="card">
-                    <img th:src="@{/components/images/product/faq.png}" alt="자주 묻는 질문">
+                    <img th:src="@{/images/product/faq.png}" alt="자주 묻는 질문">
                     <h3>자주 묻는 질문</h3>
                     <ul class="faq-list">
                         <li>예금자보호법 적용 받는가?</li>
@@ -706,7 +706,7 @@
 </body>
 
 </html>
-<script th:src="@{product.js}"></script>
+<script th:src="@{../../static/js/product.js}"></script>
 <!-- 추천 상품 탭 스크립트 -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
