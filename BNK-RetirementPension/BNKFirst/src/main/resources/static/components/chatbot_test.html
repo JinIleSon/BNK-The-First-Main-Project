@@ -139,7 +139,7 @@
     </style>
     
 
-    <style>
+    <style th:inline="css">
       /* 🔴 Flowise 챗봇 버튼을 커스텀 이미지로 교체 */
       flowise-chatbot::part(button) {
         background-image: url([[@{/images/chatbot.png}]]); /* 업로드한 경로로 수정 */
@@ -170,3 +170,118 @@
         overflow: visible;
       }
     </style>
+<script>
+    // 커스텀 버튼 아이콘 적용
+    // const applyCustomChatbotButton = () => {
+    //     const host = document.querySelector('flowise-chatbot, flowise-embed')
+    //     const root = host && host.shadowRoot
+    //     if (!root) return
+    //
+    //     // 버튼 후보 (버전별로 클래스가 다를 수 있어 여러 개 탐색)
+    //     const btn =
+    //         root.querySelector('[part="button"]') ||
+    //         root.querySelector('button') ||
+    //         root.querySelector('.chatbot-button') ||
+    //         root.querySelector('[class*="button"]')
+    //     if (!btn) return
+    //
+    //     // 기본 아이콘/이미지 가리기(SVG, IMG, I 등)
+    //     btn.querySelectorAll('svg, img, i, span[class*="icon"]').forEach(n => {
+    //         n.style.display = 'none'
+    //     })
+    //
+    //     // 배경 스타일 강제
+    //     btn.style.backgroundImage = "url('/images/chatbot.png')"   // 👉 경로 유지
+    //     btn.style.backgroundSize = 'cover'
+    //     btn.style.backgroundPosition = 'center'
+    //     btn.style.backgroundRepeat = 'no-repeat'
+    //     btn.style.backgroundColor = 'transparent'
+    //     btn.style.border = 'none'
+    //     btn.style.outline = 'none'
+    //     btn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)'
+    //     btn.style.padding = '0'
+    //
+    //     // 크기/모양 보정
+    //     btn.style.width = '64px'
+    //     btn.style.height = '64px'
+    //     btn.style.borderRadius = '50%'
+    //
+    //     // 버튼을 감싸는 컨테이너가 배경을 덮는 경우 대비
+    //     const container =
+    //         btn.parentElement && btn.parentElement.shadowRoot ? null : btn.parentElement
+    //     if (container) {
+    //         container.style.background = 'transparent'
+    //         container.style.boxShadow = 'none'
+    //     }
+    // }
+
+    // 최초 적용 + 변경 감지(렌더링이 바뀌어도 재적용)
+    const startCustomButton = () => {
+        const host = document.querySelector('flowise-chatbot, flowise-embed')
+        if (!host || !host.shadowRoot) return false
+        applyCustomChatbotButton()
+        const obs = new MutationObserver(applyCustomChatbotButton)
+        obs.observe(host.shadowRoot, { childList: true, subtree: true })
+        return true
+    }
+    const bootBtn = setInterval(() => { if (startCustomButton()) clearInterval(bootBtn) }, 300);
+        (function strongOverride(){
+            const CSS = `
+  /* 1) 버튼/말풍선 컨테이너 배경/그림자 제거 */
+  [part="host-bubble"], [class*="bubble"], [class*="host"] {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  /* 2) 버튼 후보들에 우리 이미지 강제 */
+  [part="button"], button, .chatbot-button, [class*="button"] {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 50% !important;
+    background-image: url('/images/chatbot.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+    padding: 0 !important;
+  }
+  /* 3) 기본 아이콘/레이어 숨김 */
+  [part="button"] svg, [part="button"] img, [part="button"] i,
+  button svg, button img, button i,
+  .chatbot-button svg, .chatbot-button img, .chatbot-button i,
+  [class*="button"] svg, [class*="button"] img, [class*="button"] i {
+    display: none !important;
+  }
+  /* 4) 의사요소로 그린 말풍선/꼬리도 제거 */
+  [part="button"]::before, [part="button"]::after,
+  [part="host-bubble"]::before, [part="host-bubble"]::after {
+    display: none !important; content: none !important;
+  }`;
+
+            const inject = () => {
+                const host = document.querySelector('flowise-chatbot, flowise-embed')
+                const root = host && host.shadowRoot
+                if (!root) return false
+
+                // 중복 주입 방지
+                if (root.getElementById('flowise-strong-override')) return true;
+
+                const style = document.createElement('style')
+                style.id = 'flowise-strong-override'
+                style.textContent = CSS
+                root.appendChild(style)
+
+                // 렌더 변경에도 유지
+                const obs = new MutationObserver(() => {
+                    if (!root.getElementById('flowise-strong-override')) {
+                        root.appendChild(style)
+                    }
+                })
+                obs.observe(root, { childList: true, subtree: true })
+                return true
+            }
+
+            const boot = setInterval(() => { if (inject()) clearInterval(boot) }, 300)
+        })();
+</script>

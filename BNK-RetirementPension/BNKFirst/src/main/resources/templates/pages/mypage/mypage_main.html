@@ -144,7 +144,7 @@
 </head>
 <body>
     <header>
-        <div id="header"></div>
+        <div th:replace="~{layouts/header.html}"></div>
     </header>
     
     <main style=" display: flex; justify-content: center;">
@@ -633,16 +633,8 @@
     </main>
 
     <footer>
-        <div id="footer"></div>
+        <div th:replace="~{layouts/footer.html}"></div>
     </footer>
-    <script>
-    // header 불러오기
-    fetch('/layouts/header.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('header').innerHTML = data;
-        });
-    </script>
     <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
     <div id="bnk-chatbot-slot"></div>
   </div>
@@ -726,14 +718,7 @@
         console.error(err);
       });
   </script>
-    <script>
-    // footer 불러오기
-    fetch('/layouts/footer.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('footer').innerHTML = data;
-        });
-    </script>
+
     <script>
         window.addEventListener('DOMContentLoaded', () => {
         const BADGE = {

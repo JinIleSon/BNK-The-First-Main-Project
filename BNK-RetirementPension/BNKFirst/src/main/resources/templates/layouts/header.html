@@ -1,6 +1,7 @@
+<link rel="stylesheet" th:href="@{/components/button.css}">
 <div class="nav-root" style="border-bottom:5px solid #DE0000;">
     <div class="nav-wrap" style="display:flex; padding-top:10px; padding-bottom: 8px; padding-left: 30px; padding-right: 10px;">
-        <img src="/components/images/bnk_logo.svg" 
+        <img th:src="@{/images/bnk_logo.svg}"
         alt=""
         style="width:161px; height:43px;">
         <div style="flex-grow: 1;">
@@ -210,12 +211,12 @@
                     <div style="display: flex; align-items: center;">
                         <div style=" width: 60px;">
                             <a href="#">
-                                <img src="/layouts/images/magnifier.png" alt="">
+                                <img th:src="@{/images/magnifier.png}" alt="">
                             </a>
                         </div>
                         <div style="width: 60px;">
                             <a href="#">
-                                <img src="/layouts/images/globe.png" alt="">
+                                <img th:src="@{/images/globe.png}" alt="">
                             </a>
                         </div>
                         <div style="width: 115px;">
@@ -224,7 +225,7 @@
                         </div>
                         <div style="width: 60px;">
                             <a href="#">
-                                <img src="/layouts/images/human.png" alt="">
+                                <img th:src="@{/images/human.png}" alt="">
                             </a>
                         </div>
                     </div>

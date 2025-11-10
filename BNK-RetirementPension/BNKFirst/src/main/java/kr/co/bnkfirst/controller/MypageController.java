@@ -12,4 +12,16 @@ public class MypageController {
     public String mainPage() {
         return "pages/mypage/mypage_main";
     }
+    @GetMapping("/mypage/prod")
+    public String Prod() {
+        return "pages/mypage/mypage_prod";
+    }
+    @GetMapping("/mypage/prodcancel")
+    public String ProdCancel() {
+        return "pages/mypage/mypage_prodCancel";
+    }
+    @GetMapping("/mypage/setup")
+    public String Setup() {
+        return "pages/mypage/mypage_setup";
+    }
 }
