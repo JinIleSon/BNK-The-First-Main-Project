@@ -22,4 +22,6 @@ public class DocumentDTO {
     private LocalDateTime docupdate;
     private String doccontent;
 
+    // 추가 필드 - 손진일
+    private String mname;
 }

@@ -23,6 +23,7 @@ public class MypageController {
         model.addAttribute("dealList", mypageService.findByDeal("a123"));
         model.addAttribute("balance", mypageService.findByBalance("a123"));
         model.addAttribute("contractList", mypageService.findByContract("a123"));
+        model.addAttribute("documentList", mypageService.findByDocumentList("a123"));
         return "mypage/mypage_main";
     }
     @GetMapping("/mypage/prod")

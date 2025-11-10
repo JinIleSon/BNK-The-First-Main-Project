@@ -7,7 +7,7 @@
     <style>
         main {
             background-color: #F6F6F8;
-            padding: 80px 20px;
+            padding: 10px 20px 80px;
         }
         body {
             background-color: #F6F6F8;
@@ -412,52 +412,13 @@
                     <th style="width: 200px;">등록일</th>
                     <th style="">글 보기</th>
                 </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>001</td>
-                    <td>글제목글제목글제목글제목글제목글제목</td>
-                    <td>김철수</td>
-                    <td>고객상담</td>
-                    <td>2024.01.15</td>
-                    <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
-                    </td>
-                </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>001</td>
-                    <td>글제목글제목글제목글제목글제목글제목</td>
-                    <td>김철수</td>
-                    <td>이용안내</td>
-                    <td>2024.01.15</td>
-                    <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
-                    </td>
-                </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>001</td>
-                    <td>글제목글제목글제목글제목글제목글제목</td>
-                    <td>김철수</td>
-                    <td>금융소비자보호</td>
-                    <td>2024.01.15</td>
-                    <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
-                    </td>
-                </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>001</td>
-                    <td>글제목글제목글제목글제목글제목글제목</td>
-                    <td>김철수</td>
-                    <td>상품공시실</td>
-                    <td>2024.01.15</td>
-                    <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
-                    </td>
-                </tr>
-                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-                    <td>001</td>
-                    <td>글제목글제목글제목글제목글제목글제목</td>
-                    <td>김철수</td>
-                    <td>서식/약관/자료실</td>
-                    <td>2024.01.15</td>
+                <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;"
+                th:each="document, stat:${documentList}">
+                    <td><span th:text="${documentList.size() - stat.index}"></span></td>
+                    <td><span th:text="${document.doctitle}"></span></td>
+                    <td><span th:text="${document.mname}"></span></td>
+                    <td><span th:text="${document.doctype}"></span></td>
+                    <td><span th:text="${#temporals.format(document.docupdate, 'yyyy.MM.dd')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
                         <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
                     </td>
