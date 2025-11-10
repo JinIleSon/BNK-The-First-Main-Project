@@ -27,7 +27,8 @@ public class MypageController {
         return "mypage/mypage_main";
     }
     @GetMapping("/mypage/prod")
-    public String Prod() {
+    public String Prod(Model model) {
+        model.addAttribute("balance", mypageService.findByBalance("a123"));
         return "mypage/mypage_prod";
     }
     @GetMapping("/mypage/prod/cancel")
