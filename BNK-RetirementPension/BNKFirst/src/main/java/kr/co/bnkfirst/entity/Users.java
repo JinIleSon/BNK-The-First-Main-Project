@@ -1,8 +1,7 @@
-package kr.co.bnkfirst.dto;
+package kr.co.bnkfirst.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import kr.co.bnkfirst.entity.Users;
+import jakarta.persistence.*;
+import kr.co.bnkfirst.dto.UsersDTO;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,8 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UsersDTO {
+@Entity
+@Table(name = "users")
+public class Users {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uId;
     private String mId;
@@ -43,8 +45,8 @@ public class UsersDTO {
     private String mTitle;
     private String mContent;
 
-    public Users toEntity(){
-        return Users.builder()
+    public UsersDTO toDTO(){
+        return UsersDTO.builder()
                 .uId(uId)
                 .mId(mId)
                 .mPw(mPw)
@@ -65,4 +67,5 @@ public class UsersDTO {
                 .mContent(mContent)
                 .build();
     }
+
 }
