@@ -149,7 +149,7 @@
 </head>
 <body>
     <header>
-        <div id="header"></div>
+        <div th:replace="~{layouts/header.html}"></div>
     </header>
 
     <main style="display: flex; justify-content: center;padding-top: 120px !important;">
@@ -395,8 +395,8 @@
                         </div>
                 </div>
                 <div style="margin-top: 15px; box-sizing: border-box;">
-                    <a href="#" style="text-decoration: none;">
-                        <div id="lang-card" style="box-sizing: border-box; background-color: white; width: 100%; height: 90px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                    <a id="lang-card" href="#" style="text-decoration: none;">
+                        <div style="box-sizing: border-box; background-color: white; width: 100%; height: 90px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                             <div style="padding: 21px;">
                                 <div>
                                     <div style="display: flex;">
@@ -583,18 +583,8 @@
     </main>
 
     <footer>
-        <div id="footer"></div>
+        <div th:replace="~{layouts/footer.html}"></div>
     </footer>
-    <script>
-    // header 불러오기
-    fetch('/layouts/header.html')
-        .then(r => r.text())
-        .then(html => {
-            document.getElementById('header').innerHTML = html;
-            // ★ 헤더가 붙은 뒤 현재 언어로 다시 번역
-            applyLanguage(getSavedLang());
-        });
-    </script>
     <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
     <div id="bnk-chatbot-slot"></div>
     </div>
@@ -667,14 +657,6 @@
     importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
     .catch(err => console.error('[Chatbot load failed]', err));
     </script>
-    <script>
-    // footer 불러오기
-    fetch('/layouts/footer.html')
-        .then(response => response.text())
-        .then(data => {
-        document.getElementById('footer').innerHTML = data;
-        });
-</script>
 <script>
   // 토글 클릭 시 a 태그로 상위 클릭 전파 막기
   document.addEventListener('click', (e) => {
@@ -774,7 +756,7 @@
     </div>
   </div>
 </div>
-<script>
+<script th:inline="none">
 /** 1) 의미 키 기반 번역 사전 */
 const I18N = {
   title_settings:          { ko:'설정', en:'Settings', zh:'设置', ja:'設定' },
@@ -1136,18 +1118,12 @@ document.addEventListener('DOMContentLoaded', initI18N);
   if (cprP)  cprP.textContent  = (I18N.footer_cpr_tpl?.[lang]  || '').replace('{year}', year);
   if (addrP) addrP.textContent = (I18N.footer_addr_tpl?.[lang] || '');
 })();
+
+document.querySelectorAll('a[href="#"]').forEach(a=>{
+    a.addEventListener('click', e=> e.preventDefault());
+    a.setAttribute('target', '_self'); // 혹시 모를 base 영향 차단
+});
 </script>
-<script>
-// === aria-label 속성도 번역 (헤더 .mega 패널 등) ===
-(function translateAriaLabels(){
-  document.querySelectorAll('[aria-label]').forEach(el => {
-    const cur = (el.getAttribute('aria-label') || '').trim();
-    const key = valueToKey[cur];
-    if (!key) return;
-    const next = I18N[key]?.[document.documentElement.getAttribute('lang') || 'ko'];
-    if (next && next !== cur) el.setAttribute('aria-label', next);
-  });
-})();
-</script>
+
 </body>
 </html>
