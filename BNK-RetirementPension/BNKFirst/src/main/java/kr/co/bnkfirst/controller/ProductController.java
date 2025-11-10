@@ -14,4 +14,19 @@ public class ProductController {
     public String listPage() {
         return "product/product_list";
     }
+
+    @GetMapping("/product/view")
+    public String viewPage() {
+        return "product/product_view";
+    }
+
+    @GetMapping("/product/insertInfo")
+    public String insertInfoPage() {
+        return "product/product_insert_info";
+    }
+
+    @GetMapping("/product/subCmpl")
+    public String subCmplPage() {
+        return "product/product_sub_cmpl";
+    }
 }

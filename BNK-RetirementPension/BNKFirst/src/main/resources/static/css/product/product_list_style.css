@@ -172,7 +172,7 @@ main {
     border-radius: 8px;
     outline: none;
     color: #374151;
-    background: url('/components/images/product/searchIcon.png') no-repeat left 14px center;
+    background: url('/BNK/images/product/searchIcon.png') no-repeat left 14px center;
     background-color: white;
     background-size: 16px;
 }

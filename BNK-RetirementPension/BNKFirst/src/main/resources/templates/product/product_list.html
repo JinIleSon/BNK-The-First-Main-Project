@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상품 목록(검색)</title>
-    <link rel="stylesheet" href="../../static/css/product/product_list_style.css">
+    <link rel="stylesheet" th:href="@{/css/product/product_list_style.css}">
 </head>
 
 <body>
     <header>
-        <div id="header"></div>
+        <div id="header" th:replace="~{layouts/header.html}"></div>
     </header>
     <main class="product-list-search">
         <section class="list-title">
@@ -41,9 +41,9 @@
                         </div>
                         <div class="sort">
                             <select id="sortSelect" aria-label="정렬">
-                                <option value="rate_desc">금리높은순</option>
-                                <option value="rate_asc">금리낮은순</option>
-                                <option value="name_asc">이름순</option>
+                                <option value="join_internet">인터넷가입</option>
+                                <option value="rate_desc">금리순</option>
+                                <option value="release_desc">출시순</option>
                             </select>
                         </div>
                     </div>
@@ -54,33 +54,53 @@
                 <script>
                     /* ---- 예시 데이터 (백엔드 연동 시 이 부분을 API 응답으로 대체) ---- */
                     const PRODUCTS = [
-                        { id: 1, type: '정기예금', name: 'BNK 플러스 정기예금', baseRate: 3.5, bonusRate: 0.7, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'] },
-                        { id: 2, type: '정기예금', name: 'BNK 프리미엄 정기예금', baseRate: 3.8, bonusRate: 0.7, term: '12~24개월', join: ['인터넷', '영업점'], benefits: ['급여이체 +0.5%'] },
-                        { id: 3, type: '정기예금', name: 'BNK 스마트 정기예금', baseRate: 3.3, bonusRate: 0.5, term: '3~12개월', join: ['인터넷'], benefits: ['모바일 가입 +0.2%'] },
-                        { id: 4, type: '정기예금', name: 'BNK 자유적립 정기예금', baseRate: 3.1, bonusRate: 0.5, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'] },
-                        { id: 5, type: '정기예금', name: 'BNK 만기이자지급식 예금', baseRate: 3.4, bonusRate: 0.5, term: '12~24개월', join: ['인터넷', '영업점'], benefits: ['카드사용 +0.2%'] },
-                        { id: 6, type: '정기예금', name: 'BNK 정기예금(특판)', baseRate: 3.6, bonusRate: 0.9, term: '6~12개월', join: ['인터넷'], benefits: ['신규우대 +0.3%'] },
-                        { id: 7, type: '정기예금', name: 'BNK e-정기예금', baseRate: 3.2, bonusRate: 0.6, term: '12~36개월', join: ['인터넷'], benefits: ['자동이체 +0.3%'] },
-                        { id: 8, type: '정기예금', name: 'BNK 프리미엄Plus', baseRate: 3.7, bonusRate: 0.6, term: '3~24개월', join: ['영업점'], benefits: ['급여이체 +0.4%'] },
-                        { id: 9, type: '정기예금', name: 'BNK 스텝업예금', baseRate: 3.1, bonusRate: 0.7, term: '6~24개월', join: ['인터넷', '영업점'], benefits: ['잔액유지 +0.2%'] },
+                        { id: 1, type: '정기예금', name: 'BNK 플러스 정기예금', baseRate: 3.5, bonusRate: 0.7, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'], releasedAt: '2024-07-10' },
+                        { id: 2, type: '정기예금', name: 'BNK 프리미엄 정기예금', baseRate: 3.8, bonusRate: 0.7, term: '12~24개월', join: ['인터넷', '영업점'], benefits: ['급여이체 +0.5%'], releasedAt: '2024-10-15' },
+                        { id: 3, type: '정기예금', name: 'BNK 스마트 정기예금', baseRate: 3.3, bonusRate: 0.5, term: '3~12개월', join: ['인터넷'], benefits: ['모바일 가입 +0.2%'], releasedAt: '2024-05-30' },
+                        { id: 4, type: '정기예금', name: 'BNK 자유적립 정기예금', baseRate: 3.1, bonusRate: 0.5, term: '6~36개월', join: ['인터넷', '영업점'], benefits: ['자동이체 +0.3%'], releasedAt: '2023-12-20' },
+                        { id: 5, type: '정기예금', name: 'BNK 만기이자지급식 예금', baseRate: 3.4, bonusRate: 0.5, term: '12~24개월', join: ['인터넷', '영업점'], benefits: ['카드사용 +0.2%'], releasedAt: '2024-03-18' },
+                        { id: 6, type: '정기예금', name: 'BNK 정기예금(특판)', baseRate: 3.6, bonusRate: 0.9, term: '6~12개월', join: ['인터넷'], benefits: ['신규우대 +0.3%'], releasedAt: '2024-11-01' },
+                        { id: 7, type: '정기예금', name: 'BNK e-정기예금', baseRate: 3.2, bonusRate: 0.6, term: '12~36개월', join: ['인터넷'], benefits: ['자동이체 +0.3%'], releasedAt: '2022-09-10' },
+                        { id: 8, type: '정기예금', name: 'BNK 프리미엄Plus', baseRate: 3.7, bonusRate: 0.6, term: '3~24개월', join: ['영업점'], benefits: ['급여이체 +0.4%'], releasedAt: '2024-08-05' },
+                        { id: 9, type: '정기예금', name: 'BNK 스텝업예금', baseRate: 3.1, bonusRate: 0.7, term: '6~24개월', join: ['인터넷', '영업점'], benefits: ['잔액유지 +0.2%'], releasedAt: '2024-01-25' },
                     ].map(p => ({ ...p, maxRate: +(p.baseRate + p.bonusRate).toFixed(2) }));
 
                     /* ================= 상태 ================= */
                     let view = 'grid';         // 'grid' | 'list'
-                    let sortKey = 'rate_desc'; // 정렬 키
+                    let sortKey = 'join_internet'; // 정렬 키
                     let page = 1;
                     const pageSize = 6;
 
                     /* ================= 유틸 ================= */
                     function sortItems(items, key) {
                         const cp = [...items];
+                        const toTime = v => (v ? new Date(v).getTime() : 0);
+
                         switch (key) {
-                            case 'rate_desc': cp.sort((a, b) => b.maxRate - a.maxRate); break;
-                            case 'rate_asc': cp.sort((a, b) => a.maxRate - b.maxRate); break;
-                            case 'name_asc': cp.sort((a, b) => a.name.localeCompare(b.name, 'ko')); break;
+                            case 'join_internet':
+                                // '인터넷' 가입 가능 상품을 앞으로, 그다음은 최고금리 높은 순 → 이름순
+                                cp.sort((a, b) => {
+                                    const ai = a.join?.includes('인터넷') ? 0 : 1;
+                                    const bi = b.join?.includes('인터넷') ? 0 : 1;
+                                    if (ai !== bi) return ai - bi;
+                                    if (b.maxRate !== a.maxRate) return b.maxRate - a.maxRate;
+                                    return a.name.localeCompare(b.name, 'ko');
+                                });
+                                break;
+
+                            case 'rate_desc':
+                                // 최고금리 높은 순
+                                cp.sort((a, b) => b.maxRate - a.maxRate || a.name.localeCompare(b.name, 'ko'));
+                                break;
+
+                            case 'release_desc':
+                                // 출시 최신순 (releasedAt 내림차순)
+                                cp.sort((a, b) => toTime(b.releasedAt) - toTime(a.releasedAt) || a.name.localeCompare(b.name, 'ko'));
+                                break;
                         }
                         return cp;
                     }
+
                     // 페이지당 size(여기서는 6)개씩 보이게
                     function paginate(items, p, size) {
                         const start = (p - 1) * size;
@@ -381,12 +401,11 @@
         </section>
     </main>
     <footer>
-        <div id="footer"></div>
+        <div id="footer" th:replace="~{layouts/footer.html}"></div>
     </footer>
     <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
-        <div id="bnk-chatbot-slot"></div>
+        <div id="bnk-chatbot-slot" th:replace="~{layouts/chatbot_test.html}"></div>
     </div>
 </body>
 
 </html>
-<script src="../../static/js/product.js"></script>
