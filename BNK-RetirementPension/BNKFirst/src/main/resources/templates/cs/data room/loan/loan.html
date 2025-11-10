@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자료실>대출</title>
+    <link rel="stylesheet" href="loan.style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!--푸터-->
+    <header><div id="header"></div></header>
+    
+    <div class="productsRoom-page">
+        <!--왼쪽 사이드바-->
+        <aside class="all-sidebar">
+            <ul class="sidebar-menu">
+                <h2>서식/약관/자료실</h2>
+                <li>예금</li>
+                <li>펀드</li>
+                <li>신탁</li>
+                <li class="active">대출</li>
+            </ul>
+
+            <!--추가 도움 영역-->
+            <section class="all-help">
+                <div class="help-box">
+                    <h3>추가 도움이 필요하신가요?</h3>
+                    <p>전문 상담원이 친절하게 도와드리겠습니다.</p>
+                    <div class="help-buttons">
+                        <button class="btn-call">전화상담</button>
+                        <button class="btn-chat">Talk상담</button>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="productsRoom-content">
+            <div class="productsRoom-header">
+                <h1>대출</h1>
+            </div>
+
+            <!-- 1단계 상위 탭 -->
+            <div class="main-tab-btns">
+                <button class="main-btn active" onclick="showMainTab('terms')">상품약관</button>
+                <button class="main-btn" onclick="showMainTab('guide')">상품설명서</button>
+                <button class="main-btn" onclick="showMainTab('forms')">서식자료실</button>
+            </div>
+
+            <section id="terms" class="tab-content active">
+                <div class="list-top">
+                  <p>총 <strong>156</strong>건 현재: <strong>1/16</strong>페이지</p>
+                </div>
+
+                <!-- 표 구조 -->
+                <table class="deposit-table">
+                    <thead>
+                        <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>파일</th>
+                        <th>거래조건변경사항</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>1</td>
+                        <td>BNK썸농구단 우승기원적금</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>2</td>
+                        <td>Only One 주거래 법인적금</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>3</td>
+                        <td>청년 주택드림 청약통장</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>4</td>
+                        <td>주택청약종합저축</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>5</td>
+                        <td>Only One 주거래 우대적금</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>6</td>
+                        <td>사장님 월급통장</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>7</td>
+                        <td>아이사랑 적금</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>8</td>
+                        <td>아기천사 적금</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>9</td>
+                        <td>너만손 적금</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                        <tr>
+                        <td>10</td>
+                        <td>신라대학교 예금 토론 전자저금 특약</td>
+                        <td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td>
+                        <td><button class="change-btn">변경사항보기</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            
+
+            <!-- 설명서 탭 -->
+            <section id="guide" class="tab-content">
+            <div class="list-top">
+                <p>총 <strong>156</strong>건 현재: <strong>1/16</strong>페이지</p>
+            </div>
+            <table class="deposit-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>파일</th>
+                    <th>거래조건변경사항</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td>1</td><td>Only One 주거래 법인적금</td><td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td><td><button class="change-btn">변경사항보기</button></td></tr>
+                <tr><td>2</td><td>공공기관 전용 정기예금</td><td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td><td><button class="change-btn">변경사항보기</button></td></tr>
+                <tr><td>3</td><td>BNK ONE SHOT 통장</td><td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td><td><button class="change-btn">변경사항보기</button></td></tr>
+                <tr><td>4</td><td>거래당좌예금</td><td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td><td><button class="change-btn">변경사항보기</button></td></tr>
+                </tbody>
+            </table>
+            </section>
+
+            <!-- 서식자료실 탭 -->
+            <section id="forms" class="tab-content">
+            <div class="list-top">
+                <p>총 <strong>42</strong>건 현재: <strong>1/5</strong>페이지</p>
+            </div>
+            <table class="deposit-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>파일</th>
+                    <th>거래조건변경사항</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td>1</td><td>예금 신규 신청서</td><td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td><td><button class="change-btn">변경사항보기</button></td></tr>
+                <tr><td>2</td><td>예금 해지 신청서</td><td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td><td><button class="change-btn">변경사항보기</button></td></tr>
+                <tr><td>3</td><td>자동이체 등록 신청서</td><td><button class="file-btn"><i class="fa-solid fa-download"></i></button></td><td><button class="change-btn">변경사항보기</button></td></tr>
+                </tbody>
+            </table>
+            </section>
+
+
+            <!-- 페이지네이션 -->
+            <div class="pagination">
+                <button disabled><i class="fas fa-angle-double-left"></i></button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>4</button>
+                <button>5</button>
+                <button><i class="fas fa-angle-double-right"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <!--푸터-->
+    <footer><div id="footer"></div></footer>
+</body>
+</html>
+<script src="loan.js"></script>

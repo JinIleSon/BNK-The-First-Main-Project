@@ -3,7 +3,7 @@ spring:
   application:
     name: BNKFirst
   profiles:
-    active: prod
+    active: local
 
 mybatis:
   mapper-locations: classpath:/mapper/**/*.xml
