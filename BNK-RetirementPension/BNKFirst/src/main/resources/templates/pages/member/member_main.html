@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>로그인</title>
+    <title>로그인 메인</title>
 </head>
 <body>
     <div th:replace="~{layouts/header.html}"></div>
@@ -81,7 +81,6 @@ importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
 .catch(err => console.error('[Chatbot load failed]', err));
 </script>
 
-
 <main>
   <div class="container">
     <!-- 로그인 폼 -->
@@ -90,6 +89,7 @@ importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
       <!-- 감싸기 -->
       <div class="form-card" style="height: 720px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.6;">
 
+      <form th:action="@{/member/main}" th:object="${userDTO}" method="post">
         <!-- 로그인 테이블 -->
         <table class="login-table">
           <tr style="font-size: 25px;">
@@ -103,15 +103,16 @@ importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
           </tr>
           <tr class="field-row">
             <td style="margin-bottom: 9px;">
-              <input id="usernameInput" type="text" name="member_id" placeholder="아이디를 입력하세요" autocomplete="username">
+                <input type="text" th:field="*{mId}" placeholder="아이디를 입력하세요" autocomplete="username">
             </td>
           </tr>
           <tr class="field-row">
-            <td class="field-label">비밀번호</td>            
+            <td class="field-label">비밀번호</td>
           </tr>
           <tr class="field-row">
             <td style="margin-bottom: 19px;">
-              <input id="passwordInput" type="password" name="member_pass" placeholder="비밀번호를 입력하세요" autocomplete="current-password"></td>
+                <input type="password" th:field="*{mPw}" placeholder="비밀번호를 입력하세요" autocomplete="current-password">
+            </td>
           </tr>
 
           <tr>
@@ -148,55 +149,12 @@ importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
               • 비밀번호는 정기적으로 변경하시기 바랍니다.
             </td>
           </tr>
-        </table>       
+        </table>
+      </form>
       </div>
     </section>
   </div>
 </main>
-
-<script>
-    window.addEventListener('load', () => {
-      const idInput  = document.getElementById('usernameInput');
-      const pwInput  = document.getElementById('passwordInput');
-      const loginBtn = document.getElementById('loginBtn');
-
-      const toast = (msg) => alert(msg);
-
-      // Enter로도 로그인
-      [idInput, pwInput].forEach(el => {
-        el?.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter') loginBtn?.click();
-        });
-      });
-
-      loginBtn?.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        const id = (idInput?.value || '').trim();
-        const pw = (pwInput?.value || '').trim();
-
-        if (!id) return toast('아이디를 입력하세요.');
-        if (!pw) return toast('비밀번호를 입력하세요.');
-
-        // ===== [임시 로직] =====
-        // 1) 아무 아이디/비번이나 입력되면 성공
-        //    → 필요하면 2) 처럼 특정 계정만 통과하도록 교체하세요.
-        toast('로그인 성공 (임시)');
-        // 로그인 후 이동할 페이지
-        window.location.href = 'member_main.html';
-
-        // 2) 특정 계정만 통과시키고 싶다면 아래 주석 해제하고 1) 삭제:
-        // const OK = (id === 'testuser' && pw === '1234');
-        // if (OK) {
-        //   toast('로그인 성공 (임시 인증)');
-        //   window.location.href = 'member_main.html';
-        // } else {
-        //   toast('아이디 또는 비밀번호가 올바르지 않습니다. (임시 검증)');
-        // }
-      });
-    });
-  </script>
-
   <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
 

@@ -1,10 +1,13 @@
 package kr.co.bnkfirst.controller;
 
+import jakarta.servlet.http.HttpSession;
+import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -12,9 +15,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class UsersController {
 
+    private final UsersService usersService;
+
+    @PostMapping("/main")
+    public String login(@ModelAttribute UsersDTO userDTO, HttpSession session) {
+        UsersDTO foundUser = usersService.login(userDTO.getMId(), userDTO.getMPw());
+        if (foundUser == null) return "redirect:/member/login?error";
+        session.setAttribute("loginUser", foundUser);
+        return "redirect:/member/main";
+    }
+
     @GetMapping("/main")
-    public String memberMain(){
+    public String memberMain(Model model){
+        model.addAttribute("userDTO", new UsersDTO());
         return "pages/member/member_main";
+    }
+    @GetMapping("/login")
+    public String memberLogin(Model model){
+        model.addAttribute("userDTO", new UsersDTO());
+        return "pages/member/member_login";
     }
 
     @GetMapping("/terms")

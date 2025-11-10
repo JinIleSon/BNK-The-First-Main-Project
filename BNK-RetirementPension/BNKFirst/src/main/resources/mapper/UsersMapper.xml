@@ -6,12 +6,12 @@
 <mapper namespace="kr.co.bnkfirst.mapper.UsersMapper">
 
     <!-- 아이디로 회원 조회 -->
-    <select id="findById" resultType="kr.co.bnkfirst.dto.UsersDTO">
+    <select id="findUserById" parameterType="string" resultType="kr.co.bnkfirst.dto.UsersDTO">
         SELECT
-            m_id AS mId,
-            m_pw AS mPw
+            MID AS mid,
+            MPW AS mpw
         FROM USERS
-        WHERE m_id = #{mId}
+        WHERE MID = #{mid}
     </select>
 
 </mapper>
