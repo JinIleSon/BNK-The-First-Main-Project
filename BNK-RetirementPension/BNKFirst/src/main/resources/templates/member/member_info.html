@@ -7,15 +7,8 @@
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
-  <div id="header"></div>
-<script>
-// header 불러오기
-fetch('/layouts/header.html')
-    .then(response => response.text())
-    .then(data => {
-    document.getElementById('header').innerHTML = data;
-    });
-</script>
+    <div th:replace="~{layouts/header.html}"></div>
+
 <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
 <div id="bnk-chatbot-slot"></div>
 </div>
@@ -88,14 +81,6 @@ for (const oldScript of scripts) {
 importHtmlWithAssets('/components/chatbot_test.html', '#bnk-chatbot-slot')
 .catch(err => console.error('[Chatbot load failed]', err));
 </script>
-<script>
-// footer 불러오기
-fetch('/layouts/footer.html')
-    .then(response => response.text())
-    .then(data => {
-    document.getElementById('footer').innerHTML = data;
-    });
-</script>
 
 <main>
   <div class="container">
@@ -166,7 +151,6 @@ fetch('/layouts/footer.html')
   </th>
   <td>
     <input id="rrnInput" type="text" class="input" placeholder="예: 900101-1234567" maxlength="14" pattern="\d{6}-\d{7}">
-    <div class="hint">숫자 13자리 형식으로 입력해주세요 (예: 900101-1234567)</div>
   </td>
 </tr>
 
@@ -234,16 +218,17 @@ fetch('/layouts/footer.html')
           <tr>
             <td colspan="2">
               <div class="btns" style="display:flex; justify-content:space-between; gap:8px;">
-                <a href="member_main.html" class="btn-pressable"
+                <a th:href="@{/member/main}" class="btn-pressable"
                   style="flex:1; height:42px; line-height:42px; border-radius:8px;
                           border:1px solid #D1D5DB; background-color:white;
                           text-align:center; color:#111; text-decoration:none;">
-                  취소
+                    취소
                 </a>
-
-                <button type="button" id="nextBtn" class="btn-register" style="flex:1; height:42px; border-radius:8px;">
-                  다음
-                </button>
+                  <a th:href="@{/member/auth}" class="btn-register"
+                     style="flex:1; height:42px; border-radius:8px; display:flex;
+                      justify-content:center; align-items:center; text-decoration:none;">
+                    다음
+                  </a>
               </div>
             </td>
           </tr>
@@ -253,7 +238,7 @@ fetch('/layouts/footer.html')
     </div>
   </div>
 </main>
-
+<!-- 브레이크 걸리는게 많아서 주석처리
 <script>
 window.addEventListener('load', () => {
   const toast = (msg) => alert(msg);
@@ -395,15 +380,9 @@ window.addEventListener('load', () => {
   });
 });
 </script>
+-->
 
-  <script>
-    // footer 불러오기 (필요시 유지)
-    fetch("/layouts/footer.html")
-      .then(r => { if (!r.ok) throw new Error("Footer 파일을 불러오지 못했습니다."); return r.text(); })
-      .then(html => { document.getElementById("footer").innerHTML = html; })
-      .catch(console.error);
-  </script>
-  <footer><div id="footer"></div></footer>
+    <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
 
 <style>
@@ -460,125 +439,7 @@ window.addEventListener('load', () => {
   .hint { font-size:12px; color:#6b7280; margin-top:6px; }
 
   /* 버튼 */
-  .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }  
-  .btn-register {
-	  --bg1: #D91A1A;
-	  --bg2: #F03A3A;
-	  --shadow: rgba(217,26,26,.45);
-	  position: relative;
-	  box-sizing: border-box;
-	  width: 90px; height: 42px;
-	  border: none; border-radius: 8px;
-	  color: #fff; cursor: pointer;
-	  background: linear-gradient(180deg, var(--bg2), var(--bg1));
-	  outline: none;
-	  box-shadow: 0 6px 14px -10px var(--shadow);
-	  transition:
-	    background .18s ease,
-	    box-shadow .18s ease,
-	    transform .12s ease; /* 프레스만 사용할 예정 */
-	  will-change: background, box-shadow, transform;
-	}
-	
-	/* Hover: 컬러와 섀도우만 아주 미세하게 (리프트 없음) */
-	.btn-register:hover {
-	  background: linear-gradient(180deg, #f24a4a, #d61a1a);
-	  box-shadow: 0 8px 18px -12px var(--shadow);
-	  transform: none; /* 확실하게 떠오르지 않도록 고정 */
-	}
-	
-	/* Active: 살짝 눌리는 프레스 효과만 */
-	.btn-register:active {
-	  transform: scale(.98);
-	  box-shadow: 0 4px 10px -10px var(--shadow);
-	}
-	
-	/* 키보드 포커스 접근성 */
-	.btn-register:focus-visible {
-	  outline: 3px solid rgba(240,58,58,.55);
-	  outline-offset: 2px;
-	}
-	
-	/* 모션 최소화 존중 */
-	@media (prefers-reduced-motion: reduce) {
-	  .btn-register { transition: none !important; }
-	}
-	
-	@media (prefers-color-scheme: dark) {
-	  .btn-register { --shadow: rgba(240,58,58,.35); }
-	}
-
-  .btn-pressable {
-  position: relative;
-  transition: box-shadow .18s ease, transform .12s ease, background .18s ease;
-  will-change: box-shadow, transform, background;
-  --btn-shadow: rgba(0,0,0,.12);
-  --btn-shadow-hover: rgba(0,0,0,.18);
-  --btn-shadow-active: rgba(0,0,0,.22);
-  }
-  .btn-pressable:hover { box-shadow: 0 8px 18px -12px var(--btn-shadow-hover); }
-  .btn-pressable:active { transform: scale(.98); box-shadow: 0 4px 10px -10px var(--btn-shadow-active); }
-  .btn-pressable:focus-visible { outline: 3px solid rgba(240,58,58,.55); outline-offset: 2px; }
-  /* 공통 설정 */
-  .btn-sheen {
-    position: relative;
-    overflow: hidden;
-    border-radius: inherit;
-  }
-
-  /* hover 시 아랫부분에 회색빛 음영이 은은하게 비침 */
-  .btn-sheen::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border-radius: inherit;
-
-    /* 아래쪽 중심부에서 위로 번지는 부드러운 그라디언트 */
-    background: radial-gradient(
-      130% 90% at 50% 125%,           /* 중심을 버튼 아래쪽으로 이동 */
-      rgba(150,150,150,0.25) 0%,      /* 가장 아래: 옅은 회색빛 */
-      rgba(180,180,180,0.18) 28%,     /* 중간: 은은하게 퍼짐 */
-      rgba(200,200,200,0.08) 45%,     /* 상단으로 갈수록 흐려짐 */
-      rgba(255,255,255,0) 70%         /* 위로 갈수록 완전 투명 */
-    );
-
-    opacity: 0;
-    transition: opacity .22s ease;
-  }
-
-  .btn-sheen:hover::before {
-    opacity: 0.9; /* hover 시 부드럽게 나타남 */
-  }
-
-  /* 위쪽 경계선이 약간 밝아 보이도록 (살짝 반사 느낌) */
-  .btn-sheen::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: linear-gradient(
-      to top,
-      rgba(255,255,255,0.12) 0%,
-      rgba(255,255,255,0) 40%
-    );
-
-    opacity: 0;
-    transition: opacity .22s ease;
-  }
-
-  .btn-sheen:hover::after {
-    opacity: 1;
-  }
-
-  /* 모션 최소화 존중 */
-  @media (prefers-reduced-motion: reduce) {
-    .btn-sheen::before,
-    .btn-sheen::after {
-      transition: none !important;
-    }
-  }
+  .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
 
   a { text-decoration: none; color: inherit; }
 
