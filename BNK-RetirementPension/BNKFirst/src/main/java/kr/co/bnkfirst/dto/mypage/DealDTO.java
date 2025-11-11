@@ -1,5 +1,7 @@
 package kr.co.bnkfirst.dto.mypage;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 public class DealDTO {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int did;
     private String mid;
     private int dbalance;

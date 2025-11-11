@@ -1,10 +1,13 @@
 package kr.co.bnkfirst.controller;
 
+import jakarta.servlet.http.HttpSession;
+import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -12,39 +15,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class UsersController {
 
-    @GetMapping("/main")
-    public String memberMain(){
-        return "pages/member/member_main";
+    private final UsersService usersService;
+
+    @PostMapping("/main")
+    public String login(@ModelAttribute UsersDTO userDTO, HttpSession session) {
+        UsersDTO foundUser = usersService.login(userDTO.getMid(), userDTO.getMpw());
+        if (foundUser == null) return "redirect:/member/login?error";
+        session.setAttribute("loginUser", foundUser);
+        return "redirect:/member/main";
     }
+
+    @GetMapping("/main")
+    public String memberMain(Model model){
+        model.addAttribute("userDTO", new UsersDTO());
+        return "member/member_main";
+    }
+    /*
+    @GetMapping("/login")
+    public String memberLogin(Model model){
+        model.addAttribute("userDTO", new UsersDTO());
+        return "member/member_login";
+    }
+     */
 
     @GetMapping("/terms")
     public String memberTerms(){
-        return "pages/member/member_terms";
+        return "member/member_terms";
     }
 
     @GetMapping("/info")
     public String memberInfo(){
-        return "pages/member/member_info";
+        return "member/member_info";
     }
 
     @GetMapping("/auth")
     public String memberAuth(){
-        return "pages/member/member_auth";
+        return "member/member_auth";
     }
 
     @GetMapping("/active")
     public String memberActive(){
-        return "pages/member/member_active";
+        return "member/member_active";
     }
 
     @GetMapping("/findid")
     public String memberFindid(){
-        return "pages/member/member_findid";
+        return "member/member_findid";
     }
 
     @GetMapping("/findpw")
     public String memberFindpw(){
-        return "pages/member/member_findpw";
+        return "member/member_findpw";
     }
-
 }
