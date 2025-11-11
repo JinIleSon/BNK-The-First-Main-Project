@@ -553,12 +553,14 @@
 
   <!-- 하단 바로가기 -->
 <section class="bottom-icons">
-  <div class="icon-item red">
-    <div class="circle">
-      <img th:src="@{/images/main_login.png}" alt="로그인">
-      <p>로그인</p>
-    </div>
-  </div>
+    <a th:href="@{/member/main}" style="text-decoration: none;">
+      <div class="icon-item red">
+        <div class="circle">
+          <img th:src="@{/images/main_login.png}" alt="로그인">
+          <p>로그인</p>
+        </div>
+      </div>
+    </a>
 
   <div class="icon-item blue">
     <div class="circle">
