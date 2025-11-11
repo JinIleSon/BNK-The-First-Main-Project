@@ -17,9 +17,9 @@
     <div class="stepper">
       <div class="step active"><span class="dot">1</span>약관동의</div>
       <div class="sep"></div>
-      <div class="step"><span class="dot">2</span>정보입력</div>
+      <div class="step"><span class="dot">2</span>본인인증</div>
       <div class="sep"></div>
-      <div class="step"><span class="dot">3</span>본인인증</div>
+      <div class="step"><span class="dot">3</span>정보입력</div>
       <div class="sep"></div>
       <div class="step"><span class="dot">4</span>가입완료</div>
     </div>
@@ -151,7 +151,7 @@
           <span class="bullet" style="background-color: #2563eb;">!</span>선택 약관 동의
         </div>
 
-        <!-- ✅ 선택 약관: div.list → table.list 로 변경 -->
+        <!-- 선택 약관: div.list → table.list 로 변경 -->
         <table class="list" style="width:100%; border-collapse:separate; border-spacing:0 10px;">
           <tbody class="item">
             <tr>
@@ -182,7 +182,6 @@
             </tr>
           </tbody>
         </table>
-
       </div>
     </section>
 
@@ -197,29 +196,17 @@
         </ul>
       </div>
     </div>
-
-    <!-- 버튼 -->
-    <div class="btns">
-      <a th:href="@{/member/main}" class="btn-pressable"
-        style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
-        취소
-      </a>
-      <a th:href="@{/member/info}" class="btn-register"
-        style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
-        다음
-      </a>
-    </div>
-    <script>
-      // "다음" 버튼 클릭 시 필수 약관 체크 확인(이벤트)
-      document.querySelector('.btn-register[href="member_info.html"]').addEventListener('click', function (e) {
-        const requiredChecks = document.querySelectorAll('.reqchk');
-        const allChecked = Array.from(requiredChecks).every(chk => chk.checked);
-        if (!allChecked) {
-          e.preventDefault();
-          alert('필수 약관에 모두 동의하세요');
-        }
-      });
-    </script>
+      <!-- 버튼 -->
+      <div class="btns">
+          <a th:href="@{/member/main}" class="btn-pressable"
+             style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background-color:white; text-align:center; color:#111; text-decoration:none;">
+              취소
+          </a>
+          <a th:href="@{/member/auth}" id="nextBtn" class="btn-register"
+             style="display:inline-block; box-sizing:border-box; width:40%; height:42px; line-height:42px; border-radius:8px; background-color:#007BFF; color:white; text-align:center; text-decoration:none;">
+              다음
+          </a>
+      </div>
   </div>
 </main>
 
@@ -245,7 +232,6 @@
       }
     });
 
-    // 초기 접힘 상태 강제
     panel.style.maxHeight = 0;
   });
 
@@ -261,7 +247,43 @@
   }
 </script>
 
-  <footer><div th:replace="~{layouts/footer.html}"></div></footer>
+    <!-- 모달 창 -->
+    <div id="modal-alert" class="modal-overlay">
+        <div class="modal-box">
+            <p class="modal-message">필수 약관에 모두 동의해야 다음 단계로 진행할 수 있습니다.</p>
+            <button id="modal-close" class="btn-register">확인</button>
+        </div>
+    </div>
+
+    <!-- ✅ JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const nextBtn = document.getElementById('nextBtn');
+            const reqChecks = document.querySelectorAll('.reqchk');
+            const modal = document.getElementById('modal-alert');
+            const modalClose = document.getElementById('modal-close');
+
+            nextBtn.addEventListener('click', function (e) {
+                const allChecked = Array.from(reqChecks).every(chk => chk.checked);
+                if (!allChecked) {
+                    e.preventDefault();
+                    modal.classList.add('show');
+                }
+            });
+
+            modalClose.addEventListener('click', function () {
+                modal.classList.remove('show');
+            });
+
+            // ESC 키 닫기
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') modal.classList.remove('show');
+            });
+        });
+    </script>
+
+
+    <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
 
 <style>
@@ -327,5 +349,48 @@
   .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
 
   a { text-decoration: none; color: inherit; }
+  /* ✅ 모달창 스타일 */
+  .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+      z-index: 10000;
+  }
+
+  .modal-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+  }
+
+  .modal-box {
+      background: #fff;
+      padding: 24px 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 600px;
+      width: auto;
+      animation: popIn .25s ease;
+  }
+
+  .modal-message {
+      font-size: 16px;
+      color: #111;
+      margin-bottom: 18px;
+      line-height: 1.4;
+      white-space: nowrap;
+  }
+
+  @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+  }
+
 </style>
 </html>
