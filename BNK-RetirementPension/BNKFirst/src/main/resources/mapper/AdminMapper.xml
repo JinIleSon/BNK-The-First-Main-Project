@@ -5,7 +5,7 @@
 
 <mapper namespace="kr.co.bnkfirst.mapper.AdminMapper">
 
-
+<!--상품 목록 출력-->
     <sql id="searchWhere">
         <where>
             <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != ''">
@@ -39,6 +39,9 @@
         SELECT COUNT(*) FROM product
         <include refid="searchWhere"/>
     </select>
-
-
+<!--상품 목록 출력-->
+<!--    상품 삭제-->
+    <delete id="deleteByProduct">
+        delete from product where pid = #{pid}
+    </delete>
 </mapper>

@@ -130,7 +130,8 @@
                         style="display:inline-flex; align-items:center; justify-content:center;
                               width:32px; height:32px; border:none; background:transparent; 
                               border-radius:6px; cursor:pointer;"
-                        aria-label="회원 삭제">
+                        aria-label="회원 삭제"
+                        th:onclick="|location.href='@{/admin/prod/delete(pid=${product.pid})}'|">
                   <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_191_278)">
                     <path d="M4.225 5.55313L4 6H1C0.446875 6 0 6.44687 0 7C0 7.55312 0.446875 8 1 8H13C13.5531 8 14 7.55312 14 7C14 6.44687 13.5531 6 13 6H10L9.775 5.55313C9.60625 5.2125 9.25938 5 8.88125 5H5.11875C4.74062 5 4.39375 5.2125 4.225 5.55313ZM13 9H1L1.6625 19.5938C1.7125 20.3844 2.36875 21 3.15937 21H10.8406C11.6312 21 12.2875 20.3844 12.3375 19.5938L13 9Z" fill="#D91A1A"/>
@@ -571,5 +572,38 @@
   <footer>
       <div th:replace="~{layouts/footer.html}"></div>
   </footer>
+  <div th:if="${toastSuccess}" class="toast success" th:text="${toastSuccess}"></div>
+  <div th:if="${toastError}" class="toast error"   th:text="${toastError}"></div>
+  <<style>
+      .toast{
+          position: fixed; left:50%; bottom:28px; transform:translateX(-50%);
+          min-width:260px; max-width:90vw; padding:14px 16px; border-radius:10px;
+          color:#fff; box-shadow:0 10px 24px rgba(0,0,0,.28);
+          font-size:14px; text-align:center; z-index:10000; opacity:0;
+          transition:opacity .22s ease, transform .22s ease; display:none;
+      }
+      .toast.show{ display:block; opacity:1; transform:translate(-50%,-4px); }
+      .toast.success{ background:#111827; }
+      .toast.error{   background:#B91C1C; }
+  </style>
+
+  <script>
+      function showToastEl(el, duration = 2200) {
+          if (!el) return;
+          el.style.display = 'block';
+          requestAnimationFrame(() => el.classList.add('show'));
+          setTimeout(() => {
+              el.classList.remove('show');
+              setTimeout(() => { el.style.display = 'none'; }, 220);
+          }, duration);
+      }
+
+      // 페이지 로드 시 표시 (존재하는 것만)
+      document.addEventListener('DOMContentLoaded', () => {
+          showToastEl(document.querySelector('.toast.success'));
+          showToastEl(document.querySelector('.toast.error'));
+      });
+  </script>
+
 </body>
 </html>
