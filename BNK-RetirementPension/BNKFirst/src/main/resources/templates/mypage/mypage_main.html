@@ -263,7 +263,7 @@
                 <div style="margin-top:25px; padding:30px; box-sizing: border-box; background-color: white; width: 370px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                     <div style="color: #111827; font-size: 18px;margin-bottom: 10px;">빠른 서비스</div>
                     <div style="display: flex; gap: 10px;">
-                        <a href="#" style="text-decoration: none;" class="menu-link">
+                        <a th:href="@{/mypage/setup}" style="text-decoration: none;" class="menu-link">
                             <div class="menu-card" style="height:10px; display: flex; justify-content: center; align-items: center; width: 150px; height: 84px; box-sizing: border-box; background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                                 <div style="">
                                     <div style="height: 24px;">
@@ -380,7 +380,7 @@
                     <td><span th:text="${#temporals.format(contract.pend, 'yyyy.MM.dd')}"></span></td>
                     <td><span th:text="${#numbers.formatInteger(contract.pbalance, '3', 'COMMA')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
+                        <button th:onclick="|location.href='@{/mypage/prod}'|" class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
                     </td>
                 </tr>
             </table>
@@ -420,7 +420,7 @@
                     <td><span th:text="${document.doctype}"></span></td>
                     <td><span th:text="${#temporals.format(document.docupdate, 'yyyy.MM.dd')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
+                        <button th:onclick="|location.href='@{/mypage/prod}'|" class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
                     </td>
                 </tr>
             </table>
