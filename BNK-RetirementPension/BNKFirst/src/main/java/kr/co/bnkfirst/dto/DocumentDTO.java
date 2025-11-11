@@ -21,6 +21,7 @@ public class DocumentDTO {
     private String docfile;
     private LocalDateTime docupdate;
     private String doccontent;
+    private String docgroup;
 
     // 추가 필드 - 손진일
     private String mname;

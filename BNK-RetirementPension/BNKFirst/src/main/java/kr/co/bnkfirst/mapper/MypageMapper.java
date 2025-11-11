@@ -22,4 +22,6 @@ public interface MypageMapper {
     List<DealDTO> findByDealList(String mid);
     int findBySumPlusDbalance(String mid);
     int findBySumMinusDbalance(String mid);
+    void updateRecvContract(@Param("pbalance") int pbalance, @Param("pacc") String pacc);
+    void deleteContract(String pacc);
 }
