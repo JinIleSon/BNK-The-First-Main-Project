@@ -1,5 +1,6 @@
-package kr.co.bnkfirst.dto;
+package kr.co.bnkfirst.dto.admin;
 
+import kr.co.bnkfirst.dto.PageRequestDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,13 +35,13 @@ public class PageResponseAdminProductDTO {
         this.dtoList = dtoList;
 
         this.startNo = total - ((pg - 1) * size);
-        this.end = (int)(Math.ceil(this.pg / 10.0)) * 10;
-        this.start = this.end - 9;
+        this.end = (int)(Math.ceil(this.pg / 5.0)) * 5;
+        this.start = this.end - 4;
 
         int last = (int)(Math.ceil(total / (double) size));
         this.end = Math.min(end, last);
-        this.prev = this.start > 1;
-        this.next = total > this.end * this.size;
+        this.prev = this.pg > 1;
+        this.next = this.pg < last;
 
         this.searchType = pageRequestDTO.getSearchType();
         this.keyword = pageRequestDTO.getKeyword();
