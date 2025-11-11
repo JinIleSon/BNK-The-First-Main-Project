@@ -39,5 +39,27 @@
         SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pacc=#{pacc}
     </select>
 
+<!--    최근 거래-->
+    <select id="findByDealList" resultType="kr.co.bnkfirst.dto.mypage.DealDTO">
+        SELECT * FROM deal WHERE mid = #{mid} ORDER BY ddate desc FETCH FIRST 3 ROWS ONLY
+    </select>
+
+<!--    이번 달 입금 및 출금-->
+    <select id="findBySumPlusDbalance" resultType="int">
+        SELECT sum(dbalance)
+        FROM deal
+        WHERE mid = #{mid}
+          AND dbalance > 0
+          AND ddate >= trunc(sysdate, 'MM')
+        ORDER BY ddate DESC
+    </select>
+    <select id="findBySumMinusDbalance" resultType="int">
+        SELECT sum(dbalance)
+        FROM deal
+        WHERE mid = #{mid}
+          AND dbalance &lt; 0
+          AND ddate >= trunc(sysdate, 'MM')
+        ORDER BY ddate DESC
+    </select>
 
 </mapper>

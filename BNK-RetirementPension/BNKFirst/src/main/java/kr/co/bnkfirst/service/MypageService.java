@@ -60,4 +60,16 @@ public class MypageService{
         updateContract(findByOneContract(myAcc).getPbalance() - dbalance, myAcc);
         updateContract(findByOneContract(yourAcc).getPbalance() + dbalance, yourAcc);
     }
+
+    public List<DealDTO> findByDealList(String mid){
+        return mypageMapper.findByDealList(mid);
+    }
+
+    public int findBySumPlusDbalance(String mid){
+        return mypageMapper.findBySumPlusDbalance(mid);
+    }
+
+    public int findBySumMinusDbalance(String mid){
+        return mypageMapper.findBySumMinusDbalance(mid);
+    }
 }
