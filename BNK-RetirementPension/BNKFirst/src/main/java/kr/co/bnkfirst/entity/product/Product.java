@@ -19,6 +19,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(length = 500)
     private String pid;
     @Nationalized
     @Column(length = 500)
@@ -26,9 +27,15 @@ public class Product {
     @Nationalized
     @Column(length = 500)
     private String pname;
+    @Column(name = "PBIRATE", columnDefinition = "NUMBER")
     private float pbirate;
+    @Column(name = "PHIRATE", columnDefinition = "NUMBER")
     private float phirate;
+    @Nationalized
+    @Column(length = 100)
     private String pcprd;
+    @Nationalized
+    @Column(length = 500)
     private String pelgbl;
     @Nationalized
     @Column(length = 500)
@@ -36,9 +43,12 @@ public class Product {
     @Nationalized
     @Column(length = 500)
     private String pprfcrt;
+    @Lob
     private String pirinfo;
     private String pttitle;
     private String ptlink;
+    @Nationalized
+    @Column(length = 100)
     private String pcond;
 
     @CreationTimestamp
@@ -53,6 +63,8 @@ public class Product {
                 .pbirate(pbirate)
                 .phirate(phirate)
                 .pcprd(pcprd)
+                .pelgbl(pelgbl)
+                .prmthd(prmthd)
                 .pprfcrt(pprfcrt)
                 .pirinfo(pirinfo)
                 .pttitle(pttitle)

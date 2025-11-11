@@ -49,6 +49,14 @@ public class CsDocumentController {
         return ResponseEntity.ok("등록완료");
     }
 
+    /**서식/약관/자료실 예금 페이지*/
+    @GetMapping("/cs/data_room/deposit")
+    public String depositPage(@RequestParam(defaultValue = "") String type, Model model) {
+        List<DocumentDTO> deposit = documentService.getAllDocuments(type);
+        model.addAttribute("deposit", deposit);
+        return "cs/data_room/deposit/deposit";
+    }
+
     /**검색 기능 (AJAX 호출 시 JSON 반환)*/
     @GetMapping("/search")
     @ResponseBody
