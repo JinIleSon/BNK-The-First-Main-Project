@@ -34,5 +34,8 @@ public class PcontractDTO {
     private LocalDateTime pend;
     private int pbalance;
 
+    // 추가 컬럼 - 손진일
     private String pname;
+    private String ptype;
+    private float phirate;
 }

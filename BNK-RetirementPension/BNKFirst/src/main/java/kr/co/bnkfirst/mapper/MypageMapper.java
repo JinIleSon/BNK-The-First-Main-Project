@@ -5,6 +5,7 @@ import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +16,12 @@ public interface MypageMapper {
     int findByBalance(String mid);
     List<PcontractDTO> findByContract(String mid);
     List<DocumentDTO> findByDocumentList(String mid);
+    void registerDeal(@Param("mid") String mid, @Param("dbalance") int dbalance, @Param("dwho") String dwho);
+    void updateContract(@Param("pbalance") int pbalance, @Param("pacc") String pacc);
+    PcontractDTO findByOneContract(String pacc);
+    List<DealDTO> findByDealList(String mid);
+    int findBySumPlusDbalance(String mid);
+    int findBySumMinusDbalance(String mid);
+    void updateRecvContract(@Param("pbalance") int pbalance, @Param("pacc") String pacc);
+    void deleteContract(String pacc);
 }

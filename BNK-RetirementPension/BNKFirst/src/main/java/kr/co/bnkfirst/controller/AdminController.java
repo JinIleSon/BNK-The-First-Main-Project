@@ -1,7 +1,10 @@
 package kr.co.bnkfirst.controller;
 
+import kr.co.bnkfirst.dto.PageRequestDTO;
+import kr.co.bnkfirst.dto.PageResponseAdminProductDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Slf4j
@@ -21,7 +24,9 @@ public class AdminController {
         return "admin/admin_env";
     }
     @GetMapping("/admin/prod")
-    public String prod(){
+    public String prod(Model model, PageRequestDTO pageRequestDTO){
+
+//        PageResponseAdminProductDTO pageResponseDTO =
         return "admin/admin_prod";
     }
     @GetMapping("/admin/prod/modify")

@@ -263,7 +263,7 @@
                 <div style="margin-top:25px; padding:30px; box-sizing: border-box; background-color: white; width: 370px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                     <div style="color: #111827; font-size: 18px;margin-bottom: 10px;">빠른 서비스</div>
                     <div style="display: flex; gap: 10px;">
-                        <a href="#" style="text-decoration: none;" class="menu-link">
+                        <a th:href="@{/mypage/setup}" style="text-decoration: none;" class="menu-link">
                             <div class="menu-card" style="height:10px; display: flex; justify-content: center; align-items: center; width: 150px; height: 84px; box-sizing: border-box; background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                                 <div style="">
                                     <div style="height: 24px;">
@@ -322,7 +322,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a href="#" style="text-decoration: none;" class="menu-link">
+                        <a th:href="@{/cs/main}" style="text-decoration: none;" class="menu-link">
                             <div class="menu-card" style="display: flex; justify-content: center; align-items: center; width: 150px; height: 84px; box-sizing: border-box; background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                                 <div style="">
                                     <div>
@@ -350,7 +350,7 @@
                 <div>
                     <div style="height: 70px; display: flex; justify-content: end; background-color: white; align-items: flex-end;">
                         <div style="color: #13263A; font-size: 20px; margin-bottom: 20px; margin-left: 30px;">보유계좌 목록</div>
-                        <button class="btn-register" style="margin-left:auto; height: 35px !important; width: 100px !important; margin-bottom: 17px; margin-right: 40px;">
+                        <button th:onclick="|location.href='@{/product/main}'|" class="btn-register" style="margin-left:auto; height: 35px !important; width: 100px !important; margin-bottom: 17px; margin-right: 40px;">
                             <div style="display: flex; justify-content: center;">
                                 <div style="margin-top: 2.5px; margin-right: 5px;">
                                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -380,7 +380,7 @@
                     <td><span th:text="${#temporals.format(contract.pend, 'yyyy.MM.dd')}"></span></td>
                     <td><span th:text="${#numbers.formatInteger(contract.pbalance, '3', 'COMMA')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
+                        <button th:onclick="|location.href='@{/mypage/prod}'|" class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
                     </td>
                 </tr>
             </table>
@@ -389,7 +389,7 @@
                 <div>
                     <div style="height: 70px; display: flex; justify-content: end; background-color: white; align-items: flex-end;">
                         <div style="color: #13263A; font-size: 20px; margin-bottom: 20px; margin-left: 30px;">나의 문의내역</div>
-                        <button class="btn-register" style="margin-left:auto; height: 35px !important; width: 100px !important; margin-bottom: 17px; margin-right: 40px;">
+                        <button class="btn-register" th:onclick="|location.href='@{/cs/consultation/Q&A}'|" style="margin-left:auto; height: 35px !important; width: 100px !important; margin-bottom: 17px; margin-right: 40px;">
                             <div style="display: flex; justify-content: center;">
                                 <div style="margin-top: 2.5px; margin-right: 5px;">
                                     <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -417,10 +417,10 @@
                     <td><span th:text="${documentList.size() - stat.index}"></span></td>
                     <td><span th:text="${document.doctitle}"></span></td>
                     <td><span th:text="${document.mname}"></span></td>
-                    <td><span th:text="${document.doctype}"></span></td>
+                    <td><span th:text="${document.docgroup}"></span></td>
                     <td><span th:text="${#temporals.format(document.docupdate, 'yyyy.MM.dd')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
-                        <button class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
+                        <button th:onclick="|location.href='@{/mypage/prod}'|" class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>
                     </td>
                 </tr>
             </table>
