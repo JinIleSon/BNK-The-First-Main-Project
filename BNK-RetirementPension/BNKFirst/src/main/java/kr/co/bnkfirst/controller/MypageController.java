@@ -1,7 +1,7 @@
 package kr.co.bnkfirst.controller;
 
 import kr.co.bnkfirst.service.MypageService;
-import kr.co.bnkfirst.service.UserService;
+import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -39,4 +39,5 @@ public class MypageController {
     public String Setup() {
         return "mypage/mypage_setup";
     }
+
 }
