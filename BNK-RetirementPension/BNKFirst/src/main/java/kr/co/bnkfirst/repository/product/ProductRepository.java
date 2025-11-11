@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product,Integer> {
     @Query("""
@@ -49,4 +50,5 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             Pageable pageable                     // 페이지/사이즈만 사용 (Sort는 무시됨)
     );
 
+    Optional<Product> findByPid(String pid);
 }

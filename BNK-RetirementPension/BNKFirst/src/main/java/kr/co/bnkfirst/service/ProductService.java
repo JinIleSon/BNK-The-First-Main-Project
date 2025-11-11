@@ -10,11 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,5 +74,11 @@ public class ProductService {
                 return null;
             }
         }
+    }
+
+    @Transactional(readOnly = true) // 조회 전용이라는 힌트를 DB/JPA/Spring에게 주는 어노테이션
+    public Optional<ProductDTO> findProductByPid(String pid) {
+        if (pid == null || pid.isBlank()) return Optional.empty();
+        return productRepository.findByPid(pid).map(Product::toDTO);
     }
 }
