@@ -39,4 +39,11 @@ public class AdminService {
     public int selectCountTotal(PageRequestDTO pageRequestDTO) {
         return adminMapper.selectCountTotal(pageRequestDTO);
     }
+
+    // 상품 삭제
+
+    public void deleteByProduct(String pid){
+        adminMapper.deleteByProduct(pid);
+    }
+
 }
