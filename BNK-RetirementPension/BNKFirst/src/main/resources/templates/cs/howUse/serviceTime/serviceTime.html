@@ -923,3 +923,22 @@
         .catch(err => console.error('[Footer load failed]', err));
 
 </script>
+
+<script>
+    //상위 탭 전환
+    function showMainTab(id){
+        document.querySelectorAll('.main-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.main-section').forEach(sec=>sec.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById(id).classList.add('active');
+    }
+
+    //하위 탭 전환
+    function showSubTab(id, el){
+        const parent = el.closest('.main-section');
+        parent.querySelectorAll('.sub-btn').forEach(btn => btn.classList.remove('active'));
+        parent.querySelectorAll('.sub-section').forEach(sec => sec.classList.remove('active'));
+        el.classList.add('active');
+        parent.querySelector('#'+id).classList.add('active');
+    }
+</script>
