@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @MapperScan("kr.co.bnkfirst.mapper")
-@DataJpaTest
 class BnkFirstApplicationTests {
 
     @Test
