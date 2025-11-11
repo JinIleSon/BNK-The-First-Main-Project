@@ -463,7 +463,7 @@
         //////////////////////////////
         let documentData = [];
         try{
-            const res = await fetch('/BNK/api/document');
+            const res = await fetch('/BNK/api/document/list?type=필요서류');
             if(!res.ok) throw new Error("서버 응답 오류");
             documentData = await res.json();
             console.log("서버에서 문서 목록 불러옴:", documentData);
