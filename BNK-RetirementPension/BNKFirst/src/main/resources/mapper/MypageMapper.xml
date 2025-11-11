@@ -15,7 +15,7 @@
     </select>
 
     <select id="findByBalance" resultType="int">
-        SELECT sum(c.PBALANCE) FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{pcuid}
+        SELECT sum(c.PBALANCE) FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pcuid = #{mid}
     </select>
 
     <select id="findByContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
@@ -25,4 +25,19 @@
     <select id="findByDocumentList" resultType="kr.co.bnkfirst.dto.DocumentDTO">
         SELECT * FROM DOCUMENT d JOIN USERS u ON d.MID = u.MID WHERE d.MID = #{mid} ORDER BY d.DOCUPDATE desc
     </select>
+
+<!-- 거래 한 번에 두 번 사용 -->
+    <insert id="registerDeal">
+        insert into deal (mid, dbalance, dwho) values(#{mid}, #{dbalance}, #{dwho})
+    </insert>
+<!--  거래 한 번에 두 번 사용  -->
+    <update id="updateContract">
+        update pcontract set pbalance=#{pbalance} where pacc=#{pacc}
+    </update>
+<!--계좌이체용 계좌 찾기-->
+    <select id="findByOneContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pacc=#{pacc}
+    </select>
+
+
 </mapper>
