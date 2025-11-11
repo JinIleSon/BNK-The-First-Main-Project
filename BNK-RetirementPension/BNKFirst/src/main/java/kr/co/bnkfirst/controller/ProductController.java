@@ -39,10 +39,12 @@ public class ProductController {
                                                      @RequestParam(defaultValue = "6") int pageSize,
                                                      @RequestParam(required = false) String target,
                                                      @RequestParam(required = false) String join,
-                                                     @RequestParam(required = false) String tax) {
-        log.info("args = {}, {}, {}, {}, {}, {}", sort, page, pageSize,target, join, tax);
+                                                     @RequestParam(required = false) String tax,
+                                                     @RequestParam(required = false) String keyword) {
+        log.info("args = {}, {}, {}, {}, {}, {}. {}", sort, page, pageSize,target, join, tax, keyword);
         Pageable pageable = PageRequest.of(page-1,pageSize, Sort.by(sort).descending());
-        Page<ProductDTO> products = productService.findProducts(target,join,tax,pageable);
+        Page<ProductDTO> products = productService.findProducts(sort, page, pageSize,target, join, tax, keyword);
+        log.info("products total {}", products.getTotalElements());
         return ResponseEntity.ok(products);
     }
 

@@ -568,6 +568,13 @@ main {
     cursor: pointer
 }
 
+.list-content .page-btn:first-child {
+    text-align: left;
+}
+.list-content .page-btn:last-child {
+    text-align: right;
+}
+
 .list-content .page-btn.active {
     background: var(--red);
     border-color: var(--red);

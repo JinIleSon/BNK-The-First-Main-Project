@@ -62,6 +62,8 @@ public class Product {
                 .pbirate(pbirate)
                 .phirate(phirate)
                 .pcprd(pcprd)
+                .pelgbl(pelgbl)
+                .prmthd(prmthd)
                 .pprfcrt(pprfcrt)
                 .pirinfo(pirinfo)
                 .pttitle(pttitle)
