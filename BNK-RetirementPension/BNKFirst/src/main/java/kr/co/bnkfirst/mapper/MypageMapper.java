@@ -19,4 +19,7 @@ public interface MypageMapper {
     void registerDeal(@Param("mid") String mid, @Param("dbalance") int dbalance, @Param("dwho") String dwho);
     void updateContract(@Param("pbalance") int pbalance, @Param("pacc") String pacc);
     PcontractDTO findByOneContract(String pacc);
+    List<DealDTO> findByDealList(String mid);
+    int findBySumPlusDbalance(String mid);
+    int findBySumMinusDbalance(String mid);
 }
