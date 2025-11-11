@@ -20,7 +20,7 @@ class ProductRepositoryTest {
     void findTest() {
         Pageable pageable = PageRequest.of(0, 6, Sort.by("phirate").descending());
         Page<Product> products = productRepository.findDynamicProducts("개인", null, null, pageable);
-        System.out.println(products.map(Product::toDTO).getContent());
+        System.out.println(products.getContent());
     }
 
     @Autowired
