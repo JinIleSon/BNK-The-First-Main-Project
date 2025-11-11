@@ -28,19 +28,19 @@ public class CsController {
     //data room
     @GetMapping("/cs/data_room/deposit")
     public String deposit() {
-        return "/cs/data room/deposit/deposit";
+        return "/cs/data_room/deposit/deposit";
     }
     @GetMapping("/cs/data_room/fund")
     public String fund() {
-        return "/cs/data room/fund/fund";
+        return "/cs/data_room/fund/fund";
     }
     @GetMapping("/cs/data_room/loan")
     public String loan() {
-        return "/cs/data room/loan/loan";
+        return "/cs/data_room/loan/loan";
     }
     @GetMapping("/cs/data_room/trust")
     public String trust() {
-        return "/cs/data room/trust/trust";
+        return "/cs/data_room/trust/trust";
     }
 
     //consumerProtection
