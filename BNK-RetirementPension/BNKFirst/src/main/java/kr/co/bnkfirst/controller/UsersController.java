@@ -30,7 +30,7 @@ public class UsersController {
 
         // 로그인 성공 시 세션 저장 + 10분 유지
         session.setAttribute("loginUser", foundUser);
-        session.setMaxInactiveInterval(600); // 600초 = 10분
+        session.setMaxInactiveInterval(600);
         log.info("로그인 성공: {}", foundUser.getMid());
 
         return "redirect:/member/main";
@@ -52,10 +52,11 @@ public class UsersController {
         return "member/member_main";
     }
 
+    // 로그아웃 기능(세션 삭제)
     @GetMapping("/logout")
     @ResponseBody
     public void logout(HttpSession session) {
-        session.invalidate(); // 세션 전체 삭제
+        session.invalidate();
     }
 
     @GetMapping("/terms")
@@ -63,14 +64,29 @@ public class UsersController {
         return "member/member_terms";
     }
 
-    @GetMapping("/info")
-    public String memberInfo() {
-        return "member/member_info";
-    }
-
     @GetMapping("/auth")
     public String memberAuth() {
         return "member/member_auth";
+    }
+
+    // 회원가입 데이터 저장
+    /*
+    @PostMapping("/insert")
+    public String insert(@ModelAttribute UsersDTO usersDTO) {
+        log.info("insert");
+        try {
+
+        }catch (Exception e){
+
+            return "redirect:/member/info";
+        }
+    }
+     */
+
+
+    @GetMapping("/info")
+    public String memberInfo() {
+        return "member/member_info";
     }
 
     @GetMapping("/active")
