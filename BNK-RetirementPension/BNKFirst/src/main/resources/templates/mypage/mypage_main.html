@@ -417,7 +417,7 @@
                     <td><span th:text="${documentList.size() - stat.index}"></span></td>
                     <td><span th:text="${document.doctitle}"></span></td>
                     <td><span th:text="${document.mname}"></span></td>
-                    <td><span th:text="${document.doctype}"></span></td>
+                    <td><span th:text="${document.docgroup}"></span></td>
                     <td><span th:text="${#temporals.format(document.docupdate, 'yyyy.MM.dd')}"></span></td>
                     <td style="vertical-align: middle; text-align: center;">
                         <button th:onclick="|location.href='@{/mypage/prod}'|" class="btn-register" style="width: 55px !important; height: 30px !important;">조회</button>

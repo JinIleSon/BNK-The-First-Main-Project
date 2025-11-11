@@ -23,7 +23,7 @@
     </select>
 
     <select id="findByDocumentList" resultType="kr.co.bnkfirst.dto.DocumentDTO">
-        SELECT * FROM DOCUMENT d JOIN USERS u ON d.MID = u.MID WHERE d.MID = #{mid} ORDER BY d.DOCUPDATE desc
+        SELECT * FROM DOCUMENT d JOIN USERS u ON d.MID = u.MID WHERE d.MID = #{mid} and doctype = 'Q&amp;A' ORDER BY d.DOCUPDATE desc
     </select>
 
 <!-- 거래 한 번에 두 번 사용 -->
