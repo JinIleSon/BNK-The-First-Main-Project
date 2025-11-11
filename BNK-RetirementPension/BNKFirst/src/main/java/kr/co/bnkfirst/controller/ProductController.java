@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +42,7 @@ public class ProductController {
                                                      @RequestParam(required = false) String join,
                                                      @RequestParam(required = false) String tax,
                                                      @RequestParam(required = false) String keyword) {
-        log.info("args = {}, {}, {}, {}, {}, {}. {}", sort, page, pageSize,target, join, tax, keyword);
+//        log.info("args = {}, {}, {}, {}, {}, {}. {}", sort, page, pageSize,target, join, tax, keyword);
         Pageable pageable = PageRequest.of(page-1,pageSize, Sort.by(sort).descending());
         Page<ProductDTO> products = productService.findProducts(sort, page, pageSize,target, join, tax, keyword);
         log.info("products total {}", products.getTotalElements());
@@ -51,6 +52,11 @@ public class ProductController {
     @GetMapping("/product/view")
     public String viewPage() {
         return "product/product_view";
+    }
+
+    @GetMapping("/product/details")
+    public String getProductDetails(@RequestParam String pid, Model model) {
+        return null;
     }
 
     @GetMapping("/product/insertInfo")

@@ -19,6 +19,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(length = 500)
     private String pid;
     @Nationalized
     @Column(length = 500)
