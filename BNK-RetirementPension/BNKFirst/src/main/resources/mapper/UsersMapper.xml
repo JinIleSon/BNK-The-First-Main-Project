@@ -14,5 +14,4 @@
         WHERE MID = #{mid}
     </select>
 
-
 </mapper>
