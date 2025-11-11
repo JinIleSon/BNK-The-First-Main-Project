@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'join', label: '가입방법', field: 'join', fieldType: 'array',
             options: [
                 {value: '인터넷', label: '인터넷가입'},
-                {value: '스마트폰', label: '스마트폰가입'},
                 {value: '영업점', label: '영업점가입'},
+                {value: '스마트폰', label: '스마트폰가입'},
             ]
         },
         {
@@ -229,8 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                   <div class="name">${p.pname}</div>
                                   <div class="rate-big">${p.phirate}%</div>
                                   <div class="meta">기본금리 ${Number(p.pbirate).toFixed(2)}%<br>계약기간: ${p.pcprd}</div>
-                                  <div class="chips">
-                                    ${(p.pprfcrt.split(", ") || []).map(b => `<span class="chip">${b}</span>`).join('')}
+                                  <div class="Chips">
+                                    ${(p.pprfcrt.split(",") || []).map(b => `<span class="Chip">${b}</span>`).join('')}
                                   </div>
                                   <div class="btns">
                                     <button class="btn btn-white">자세히</button>
@@ -274,12 +274,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <div class="cell"><span class="term">${p.pcprd}</span></div>
                                     <div class="cell">
                                       <div class="method">
-                                        ${(p.prmthd.split(", ") || []).map(j => `<span class="badge-soft">${j}</span>`).join('')}
+                                        ${(p.prmthd.split(",") || []).map(j => `<span class="badge-soft">${j}</span>`).join('')}
                                       </div>
                                     </div>
                                     <div class="cell">
                                       <div class="benefits">
-                                        ${(p.pprfcrt.split(", ") || []).map(b => `<span class="badge-green">${b}</span>`).join('')}
+                                        ${(p.pprfcrt.split(",") || []).map(b => `<span class="badge-green">${b}</span>`).join('')}
                                       </div>
                                     </div>
                                     <div class="cell btn-apply">
@@ -310,6 +310,16 @@ document.addEventListener('DOMContentLoaded', () => {
         page = 1;
         fetchProducts();
     };
+    // 모든 추천 키워드 버튼 선택
+    const keywordButtons = document.querySelectorAll('.keywords button');
+
+    // 각 버튼 클릭 시 input에 해당 텍스트 입력
+    keywordButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            keywordInput.value = button.textContent;
+            keywordInput.focus(); // 커서를 입력창으로 이동
+        });
+    });
 
     /* ================= 초기 로드 ================= */
     renderChipBar();

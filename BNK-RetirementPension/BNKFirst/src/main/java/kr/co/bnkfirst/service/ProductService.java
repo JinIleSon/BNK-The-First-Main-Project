@@ -11,13 +11,35 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ProductService {
     private final ProductRepository productRepository;
+    private static final List<String> ORDER_JOIN   = List.of("인터넷", "영업점", "스마트폰");
+    private static final Set<String>  ALLOWED_JOIN = Set.copyOf(ORDER_JOIN);
+
+    private static final List<String> ORDER_TARGET   = List.of("개인", "기업", "개인사업자");  // 예시
+    private static final Set<String>  ALLOWED_TARGET = Set.copyOf(ORDER_TARGET);
+
+    private static final List<String> ORDER_TAX   = List.of("비과세", "세금우대", "소득공제"); // 예시
+    private static final Set<String>  ALLOWED_TAX = Set.copyOf(ORDER_TAX);
+
+    public static String normalizeMulti(String raw, List<String> order, Set<String> allowed) {
+        if (raw == null || raw.isBlank()) return null; // 필터 미적용
+        return Arrays.stream(raw.split("\\s*,\\s*"))     // 쉼표 기준, 양옆 공백 무시
+                .map(String::trim)
+                .filter(s -> !s.isBlank() && allowed.contains(s)) // 허용값만
+                .distinct()                                      // 중복 제거
+                .sorted(Comparator.comparingInt(order::indexOf)) // 고정 순서
+                .collect(Collectors.joining(","));
+    }
 
     public Page<ProductDTO> findProducts(String sort,
                                          int page,
@@ -28,22 +50,25 @@ public class ProductService {
                                          String keyword) {
         Page<Product> products = null;
         Pageable pageable = null;
+        String normTarget = normalizeMulti(target, ORDER_TARGET, ALLOWED_TARGET);
+        String normJoin = normalizeMulti(join, ORDER_JOIN, ALLOWED_JOIN);
+        String normTax = normalizeMulti(tax, ORDER_TAX, ALLOWED_TAX);
         switch (sort) {
             case "join_internet" -> {
                 pageable = PageRequest.of(page - 1, pageSize);
-                products = productRepository.findPrefSorted(keyword, "인터넷", target, join, tax, pageable);
+                products = productRepository.findPrefSorted(keyword, "인터넷", normTarget, normJoin, normTax, pageable);
                 log.info("products = {}", products);
                 return products.map(Product::toDTO);
             }
             case "rate_desc" -> {
                 pageable = PageRequest.of(page - 1, pageSize, Sort.by("phirate").descending());
-                products = productRepository.findDynamicProducts(target, join, tax, pageable);
+                products = productRepository.findDynamicProducts(normTarget, normJoin, normTax, pageable);
                 log.info("products = {}", products);
                 return products.map(Product::toDTO);
             }
             case "release_desc" -> {
                 pageable = PageRequest.of(page - 1, pageSize, Sort.by("pupdate").descending());
-                products = productRepository.findDynamicProducts(target, join, tax, pageable);
+                products = productRepository.findDynamicProducts(normTarget, normJoin, normTax, pageable);
                 log.info("products = {}", products);
                 return products.map(Product::toDTO);
             }
