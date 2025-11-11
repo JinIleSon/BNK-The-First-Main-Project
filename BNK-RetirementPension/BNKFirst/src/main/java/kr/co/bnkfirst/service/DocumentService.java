@@ -12,8 +12,12 @@ import java.util.List;
 public class DocumentService {
     private final DocumentMapper documentMapper;
 
-    public List<DocumentDTO> getAllDocuments() {
-        return documentMapper.selectAllDocuments();
+    public List<DocumentDTO> getAllDocuments(String type) {
+        return documentMapper.selectAllDocumentsByType(type);
+    }
+
+    public void insertDocument(DocumentDTO dto){
+        documentMapper.insertDocument(dto);
     }
 
     public List<DocumentDTO> searchDocuments(String keyword) {
