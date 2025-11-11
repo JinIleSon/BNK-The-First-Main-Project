@@ -62,4 +62,12 @@
         ORDER BY ddate DESC
     </select>
 
+<!--    상품 해지 과정-->
+    <update id="updateRecvContract">
+        update pcontract set pbalance=pbalance+#{pbalance} where pacc=#{pacc}
+    </update>
+    <delete id="deleteContract">
+        delete from pcontract where pacc = #{pacc}
+    </delete>
+
 </mapper>
