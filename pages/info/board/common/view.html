@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BNK부산은행 | 보도자료 상세보기</title>
-  <link rel="stylesheet" href="./board.css" />
+  <link rel="stylesheet" href="../css/board.css" />
 </head>
 
 <body>
@@ -61,11 +61,11 @@
 
   <script>
     // 공통 header/footer 로드
-    fetch('../_header.html')
+    fetch('../../_header.html')
       .then(res => res.text())
       .then(html => document.getElementById('header').innerHTML = html);
 
-    fetch('../_footer.html')
+    fetch('../../_footer.html')
       .then(res => res.text())
       .then(html => document.getElementById('footer').innerHTML = html);
   </script>

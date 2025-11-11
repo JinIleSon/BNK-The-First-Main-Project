@@ -8,14 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const footer = document.getElementById("footer");
 
   if (header) {
-    fetch("../_header.html")
+    fetch("../../_header.html")
       .then((res) => res.text())
       .then((html) => (header.innerHTML = html))
       .catch((err) => console.error("Header load error:", err));
   }
 
   if (footer) {
-    fetch("../_footer.html")
+    fetch("../../_footer.html")
       .then((res) => res.text())
       .then((html) => (footer.innerHTML = html))
       .catch((err) => console.error("Footer load error:", err));
