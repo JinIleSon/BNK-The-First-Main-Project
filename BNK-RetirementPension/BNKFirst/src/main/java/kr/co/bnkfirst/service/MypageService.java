@@ -9,6 +9,7 @@ import kr.co.bnkfirst.mapper.MypageMapper;
 import kr.co.bnkfirst.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,5 +60,32 @@ public class MypageService{
         registerDeal(findByOneContract(yourAcc).getPcuid(), dbalance, findById(mid).getMname());
         updateContract(findByOneContract(myAcc).getPbalance() - dbalance, myAcc);
         updateContract(findByOneContract(yourAcc).getPbalance() + dbalance, yourAcc);
+    }
+
+    public List<DealDTO> findByDealList(String mid){
+        return mypageMapper.findByDealList(mid);
+    }
+
+    public int findBySumPlusDbalance(String mid){
+        return mypageMapper.findBySumPlusDbalance(mid);
+    }
+
+    public int findBySumMinusDbalance(String mid){
+        return mypageMapper.findBySumMinusDbalance(mid);
+    }
+
+//    상품 해지 과정
+    public void updateRecvContract(int pbalance, String pacc) {
+        mypageMapper.updateRecvContract(pbalance, pacc);
+    }
+
+    public void deleteContract(String pacc) {
+        mypageMapper.deleteContract(pacc);
+    }
+
+    @Transactional
+    public void deleteContractProcess(int pbalance, String pacc, String recvAcc) {
+        updateRecvContract(pbalance, recvAcc);
+        deleteContract(pacc);
     }
 }

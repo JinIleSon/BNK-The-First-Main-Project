@@ -170,6 +170,33 @@
             -webkit-tap-highlight-color: transparent;
           }
         </style>
+    <style>
+        .bnk-toast{
+            position: fixed;
+            left: 50%;
+            transform: translate(-50%, 12px);
+            bottom: 24px;
+            background: #111827;
+            color: #fff;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.25);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .18s ease, transform .18s ease;
+            z-index: 10000;
+        }
+        .bnk-toast.show{
+            opacity: 1;
+            transform: translate(-50%, 0);
+            pointer-events: auto;
+        }
+        @media (prefers-reduced-motion: reduce){
+            .bnk-toast{ transition: none; transform: translate(-50%, 0); }
+        }
+    </style>
 </head>
 <body>
   <svg id="icon-plus" style="display:none;" width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -221,7 +248,7 @@
                             </div>
                             <div style="display: flex; color: white; font-size: 14px; font-weight: 300;">
                               <div style="margin-right: 5px;">이번 달 입금</div>
-                              <div class="amount">2300000원</div>
+                              <div class="amount"><span th:text="${plus}"></span>원</div>
                             </div>
                           </div>
                           <div style="display: flex;">
@@ -239,30 +266,23 @@
                             </div>
                             <div style="display: flex; color: white; font-size: 14px; font-weight: 300;">
                               <div style="margin-right: 5px;">이번 달 출금</div> 
-                              <div class="amount">-1850000원</div>
+                              <div class="amount"><span th:text="${minus}"></span>원</div>
                             </div>
                           </div>
                         </div>
                     </div>
                     <div style="margin-left: auto; width: 368px;">
                       <div style="color: white; font-size: 14px; font-weight: 300; margin-bottom: 15px;">최근 거래</div>
-                      <div style="display: flex;">
+                      <div th:each="deal:${dealList}"
+                              style="display: flex; margin-top:7px;">
                         <div class="icon" style="margin-right: 9px;">
                         </div>
-                        <div style="display: flex; align-items: center;color: white; font-size: 14px; font-weight: 300;">카드 결제</div>
-                        <div class="amount" style="margin-left:auto; color: white; font-size: 14px; font-weight: 300;">3200000원</div>
-                      </div>
-                      <div style="display: flex; margin-top: 7px;">
-                        <div class="icon" style="margin-right: 9px;">
+                        <div style="display: flex; align-items: center;color: white; font-size: 14px; font-weight: 300;">
+                            <span th:text="${deal.dbalance >= 0 ? '계좌 입금' : '계좌 이체'}"></span>
                         </div>
-                        <div style=" display: flex; align-items: center;color: white; font-size: 14px; font-weight: 300;">급여 입금</div>
-                        <div class="amount" style="margin-left:auto; color: white; font-size: 14px; font-weight: 300;">-450000원</div>
-                      </div>
-                      <div style="display: flex; margin-top: 7px;">
-                        <div class="icon" style="margin-right: 9px;">
+                        <div class="amount" style="margin-left:auto; color: white; font-size: 14px; font-weight: 300;">
+                            <span th:text="${deal.dbalance}"></span>원
                         </div>
-                        <div style="display: flex; align-items: center; color: white; font-size: 14px; font-weight: 300;">계좌 이체</div>
-                        <div class="amount" style="margin-left:auto; color: white; font-size: 14px; font-weight: 300;">-200000원</div>
                       </div>
                     </div>
                 </div>
@@ -1378,6 +1398,9 @@ overlay.addEventListener('click', (e) => {
         recvAccount.value = normalizeAcct(recvAccount.value);
         recvNum.value     = normalizeAcct(recvNum.value);
 
+        showToast('출금이 완료되었습니다');                    // 현재 페이지에서도 바로 보이게
+        sessionStorage.setItem('bnk_toast_msg','출금이 완료되었습니다'); // 리다이렉트 후에도 보이게
+
         form.submit();
     }
   });
@@ -1406,6 +1429,36 @@ overlay.addEventListener('click', (e) => {
     }
   }
 </script>
+  <!-- Toast -->
+  <div class="bnk-toast" id="bnkToast" role="status" aria-live="polite" aria-atomic="true">
+      <span class="bnk-toast__msg">알림</span>
+  </div>
+  <script>
+      // --- Toast 유틸 ---
+      (function(){
+          const toast = document.getElementById('bnkToast');
+          let timer = null;
 
+          window.showToast = function(msg, duration = 2500){
+              if(!toast) return;
+              toast.querySelector('.bnk-toast__msg').textContent = msg || '';
+              toast.classList.add('show');
+              clearTimeout(timer);
+              timer = setTimeout(()=> toast.classList.remove('show'), duration);
+          };
+
+          // 클릭하면 즉시 닫기
+          toast?.addEventListener('click', ()=> toast.classList.remove('show'));
+
+          // 페이지 리다이렉트 뒤에도 토스트를 보여주고 싶으면 sessionStorage 사용
+          document.addEventListener('DOMContentLoaded', () => {
+              const msg = sessionStorage.getItem('bnk_toast_msg');
+              if(msg){
+                  showToast(msg);
+                  sessionStorage.removeItem('bnk_toast_msg');
+              }
+          });
+      })();
+  </script>
 </body>
 </html>
