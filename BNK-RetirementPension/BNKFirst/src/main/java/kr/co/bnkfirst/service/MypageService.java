@@ -9,6 +9,7 @@ import kr.co.bnkfirst.mapper.MypageMapper;
 import kr.co.bnkfirst.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,5 +72,20 @@ public class MypageService{
 
     public int findBySumMinusDbalance(String mid){
         return mypageMapper.findBySumMinusDbalance(mid);
+    }
+
+//    상품 해지 과정
+    public void updateRecvContract(int pbalance, String pacc) {
+        mypageMapper.updateRecvContract(pbalance, pacc);
+    }
+
+    public void deleteContract(String pacc) {
+        mypageMapper.deleteContract(pacc);
+    }
+
+    @Transactional
+    public void deleteContractProcess(int pbalance, String pacc, String recvAcc) {
+        updateRecvContract(pbalance, recvAcc);
+        deleteContract(pacc);
     }
 }
