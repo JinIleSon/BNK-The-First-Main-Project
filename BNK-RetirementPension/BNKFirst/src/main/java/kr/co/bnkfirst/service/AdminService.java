@@ -53,7 +53,7 @@ public class AdminService {
         // MyBatis 처리
         List<UsersDTO> dtoList = adminMapper.selectAllUsers(pageRequestDTO);
 
-        int total = adminMapper.selectCountTotal(pageRequestDTO);
+        int total = adminMapper.selectCountTotalUsers(pageRequestDTO);
 
         return PageResponseAdminUsersDTO.builder()
                 .pageRequestDTO(pageRequestDTO)

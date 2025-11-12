@@ -27,12 +27,24 @@ public class AdminController {
     public String member(Model model, PageRequestDTO pageRequestDTO){
 
         log.info("pageRequestDTO={}", pageRequestDTO);
-        PageResponseAdminProductDTO pageResponseDTO = adminService.selectAllProduct(pageRequestDTO);
+        PageResponseAdminUsersDTO pageResponseDTO = adminService.selectAllUsers(pageRequestDTO);
 
         model.addAttribute("pageResponseDTO", pageResponseDTO);
 
         return "admin/admin_member";
     }
+    @GetMapping("/admin/member/search")
+    public String adminmemberSearch(PageRequestDTO pageRequestDTO, Model model){
+
+        log.info("pageRequestDTO:{}",pageRequestDTO);
+
+        PageResponseAdminUsersDTO pageResponseDTO = adminService.selectAllUsers(pageRequestDTO);
+        model.addAttribute("pageResponseDTO", pageResponseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
+
+        return "admin/admin_member_searchList";
+    }
+
     @GetMapping("/admin/env")
     public String env(){
         return "admin/admin_env";
@@ -41,7 +53,7 @@ public class AdminController {
     public String prod(Model model, PageRequestDTO pageRequestDTO){
 
         log.info("pageRequestDTO={}", pageRequestDTO);
-        PageResponseAdminUsersDTO pageResponseDTO = adminService.selectAllUsers(pageRequestDTO);
+        PageResponseAdminProductDTO pageResponseDTO = adminService.selectAllProduct(pageRequestDTO);
 
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         return "admin/admin_prod";
