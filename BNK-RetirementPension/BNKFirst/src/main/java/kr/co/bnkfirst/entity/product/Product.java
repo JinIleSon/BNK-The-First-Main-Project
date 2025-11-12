@@ -54,6 +54,8 @@ public class Product {
     @CreationTimestamp
     private LocalDateTime pupdate;
 
+    private String pjnfee;
+
     public ProductDTO toDTO(){
         return ProductDTO.builder()
                 .id(id)
@@ -71,6 +73,7 @@ public class Product {
                 .ptlink(ptlink)
                 .pcond(pcond)
                 .pupdate(pupdate.toString())
+                .pjnfee(pjnfee)
                 .build();
     }
 }

@@ -9,12 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -49,14 +53,20 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/product/view")
-    public String viewPage() {
+    @GetMapping("/product/view/{pid}")
+    public String viewPage(@PathVariable String pid, Model model) {
+        model.addAttribute("pid", pid);
         return "product/product_view";
     }
 
-    @GetMapping("/product/details")
-    public String getProductDetails(@RequestParam String pid, Model model) {
-        return null;
+    @ResponseBody
+    @GetMapping("/product/details/{pid}")
+    public ResponseEntity<Optional<ProductDTO>> getProductDetails(@PathVariable String pid, Model model) {
+        Optional<ProductDTO> dtoOptional = productService.findProductByPid(pid);
+        if(dtoOptional.isPresent()) {
+            return ResponseEntity.ok(dtoOptional);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @GetMapping("/product/insertInfo")

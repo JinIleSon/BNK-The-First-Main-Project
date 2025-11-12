@@ -24,6 +24,7 @@ public class ProductDTO {
     private String ptlink;
     private String pcond;
     private String pupdate;
+    private String pjnfee;
 
     public Product toEntity(){
         return Product.builder()
@@ -40,6 +41,7 @@ public class ProductDTO {
                 .pttitle(pttitle)
                 .ptlink(ptlink)
                 .pcond(pcond)
+                .pjnfee(pjnfee)
                 .build();
     }
 }

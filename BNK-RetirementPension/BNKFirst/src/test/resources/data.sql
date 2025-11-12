@@ -12,3 +12,5 @@ insert into product (id, pid, ptype, pname, pbirate, phirate, pcprd, pelgbl, prm
 
 insert into product (id, pid, ptype, pname, pbirate, phirate, pcprd, pelgbl, prmthd, pprfcrt, pirinfo, pttitle, ptlink, pcond, pupdate) values
     (12,'BNK-TD-12','펀드','적금 플러스 펀드',2.05,2.45,'3~36개월','개인,기업,개인사업자','인터넷,영업점,스마트폰','비과세',null,null,null,'종료',timestamp'2025-11-01 00:00:00');
+
+insert into product pjnfee values '월 2만원~50만원' where pid = 'BNK-TD-1';
