@@ -550,3 +550,13 @@
         .catch(err => console.error('[Footer load failed]', err));
 
 </script>
+
+<script>
+    //탭 전환
+    function showSection(id) {
+        document.querySelectorAll('.join-btn').forEach(btn=>btn.classList.remove('active'));
+        document.querySelectorAll('.join-section').forEach(sec=>sec.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        event.target.classList.add('active');
+    }
+</script>

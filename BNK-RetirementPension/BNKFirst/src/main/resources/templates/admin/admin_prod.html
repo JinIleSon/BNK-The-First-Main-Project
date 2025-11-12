@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>admin_prod</title>
-    
+    <style>
+        .page-btn.placeholder{
+            visibility:hidden; /* 보이진 않지만 레이아웃은 유지 */
+        }
+    </style>
 </head>
 <body>
   <header>
@@ -91,15 +95,16 @@
             <th style="width: 170px;">등록일</th>
             <th>관리</th>
           </tr>
-          <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-            <td>DEP001</td>
-            <td>정기예금 플러스</td>
-            <td style="color: #D91A1A;">3.2%</td>
-            <td>12개월</td>
+          <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;"
+              th:each="product, stat:${pageResponseDTO.dtoList}">
+            <td><span th:text="${product.pid}"></span></td>
+            <td><span th:text="${product.pname}"></span></td>
+            <td style="color: #D91A1A;"><span th:text="${product.phirate}"></span>%</td>
+            <td><span th:text="${product.pcprd}"></span></td>
             <td style="vertical-align: middle; text-align: center;">
-              활성
+              <span th:text="${product.pcond}"></span>
             </td>
-            <td>2024-01-15</td>
+            <td><span th:text="${product.pupdate.substring(0, 10)}"></span></td>
             <td style="vertical-align: middle; text-align: center;">
               <div style="display: flex; align-items: center; justify-content: center; gap: 0px;">
                 <button type="button"
@@ -125,7 +130,8 @@
                         style="display:inline-flex; align-items:center; justify-content:center;
                               width:32px; height:32px; border:none; background:transparent; 
                               border-radius:6px; cursor:pointer;"
-                        aria-label="회원 삭제">
+                        aria-label="회원 삭제"
+                        th:onclick="|location.href='@{/admin/prod/delete(pid=${product.pid})}'|">
                   <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_191_278)">
                     <path d="M4.225 5.55313L4 6H1C0.446875 6 0 6.44687 0 7C0 7.55312 0.446875 8 1 8H13C13.5531 8 14 7.55312 14 7C14 6.44687 13.5531 6 13 6H10L9.775 5.55313C9.60625 5.2125 9.25938 5 8.88125 5H5.11875C4.74062 5 4.39375 5.2125 4.225 5.55313ZM13 9H1L1.6625 19.5938C1.7125 20.3844 2.36875 21 3.15937 21H10.8406C11.6312 21 12.2875 20.3844 12.3375 19.5938L13 9Z" fill="#D91A1A"/>
@@ -140,203 +146,6 @@
               </div>
             </td>
           </tr>
-          <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-            <td>DEP002</td>
-            <td>정기예금 알파플러스</td>
-            <td style="color: #D91A1A;">3.7%</td>
-            <td>24개월</td>
-            <td style="vertical-align: middle; text-align: center;">
-              대기
-            </td>
-            <td>2024-01-15</td>
-            <td style="vertical-align: middle; text-align: center;">
-              <div style="display: flex; align-items: center; justify-content: center; gap: 0px;">
-                <button type="button"
-                        id="btnModify"
-                        style="display:inline-flex; align-items:center; justify-content:center;
-                              width:32px; height:32px; border:none; background:transparent; 
-                              border-radius:6px; cursor:pointer;"
-                        aria-label="회원 수정"
-                        onclick="location.href='#'">
-                  <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_277)">
-                    <path d="M14.7375 5.67832C14.0531 4.99395 12.9469 4.99395 12.2625 5.67832L11.3219 6.61582L14.3813 9.6752L15.3219 8.73457C16.0063 8.0502 16.0063 6.94395 15.3219 6.25957L14.7375 5.67832ZM5.3875 12.5533C5.19687 12.7439 5.05 12.9783 4.96562 13.2377L4.04063 16.0127C3.95 16.2814 4.02188 16.5783 4.22188 16.7814C4.42188 16.9846 4.71875 17.0533 4.99062 16.9627L7.76562 16.0377C8.02188 15.9533 8.25625 15.8064 8.45 15.6158L13.6781 10.3846L10.6156 7.32207L5.3875 12.5533ZM3 7.0002C1.34375 7.0002 0 8.34395 0 10.0002V18.0002C0 19.6564 1.34375 21.0002 3 21.0002H11C12.6562 21.0002 14 19.6564 14 18.0002V15.0002C14 14.4471 13.5531 14.0002 13 14.0002C12.4469 14.0002 12 14.4471 12 15.0002V18.0002C12 18.5533 11.5531 19.0002 11 19.0002H3C2.44688 19.0002 2 18.5533 2 18.0002V10.0002C2 9.44707 2.44688 9.0002 3 9.0002H6C6.55312 9.0002 7 8.55332 7 8.0002C7 7.44707 6.55312 7.0002 6 7.0002H3Z" fill="#2B2F36"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_277">
-                    <path d="M0 5H16V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-                <button type="button"
-                        class="btn-delete"
-                        style="display:inline-flex; align-items:center; justify-content:center;
-                              width:32px; height:32px; border:none; background:transparent; 
-                              border-radius:6px; cursor:pointer;"
-                        aria-label="회원 삭제">
-                  <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_278)">
-                    <path d="M4.225 5.55313L4 6H1C0.446875 6 0 6.44687 0 7C0 7.55312 0.446875 8 1 8H13C13.5531 8 14 7.55312 14 7C14 6.44687 13.5531 6 13 6H10L9.775 5.55313C9.60625 5.2125 9.25938 5 8.88125 5H5.11875C4.74062 5 4.39375 5.2125 4.225 5.55313ZM13 9H1L1.6625 19.5938C1.7125 20.3844 2.36875 21 3.15937 21H10.8406C11.6312 21 12.2875 20.3844 12.3375 19.5938L13 9Z" fill="#D91A1A"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_278">
-                    <path d="M0 5H14V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-            <td>SAV001</td>
-            <td>자유적금 스마트</td>
-            <td style="color: #D91A1A;">2.8%</td>
-            <td>36개월</td>
-            <td style="vertical-align: middle; text-align: center;">
-              종료
-            </td>
-            <td>2024-01-15</td>
-            <td style="vertical-align: middle; text-align: center;">
-              <div style="display: flex; align-items: center; justify-content: center; gap: 0px;">
-                <button type="button"
-                        id="btnModify"
-                        style="display:inline-flex; align-items:center; justify-content:center;
-                              width:32px; height:32px; border:none; background:transparent; 
-                              border-radius:6px; cursor:pointer;"
-                        aria-label="회원 수정"
-                        onclick="location.href='#'">
-                  <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_277)">
-                    <path d="M14.7375 5.67832C14.0531 4.99395 12.9469 4.99395 12.2625 5.67832L11.3219 6.61582L14.3813 9.6752L15.3219 8.73457C16.0063 8.0502 16.0063 6.94395 15.3219 6.25957L14.7375 5.67832ZM5.3875 12.5533C5.19687 12.7439 5.05 12.9783 4.96562 13.2377L4.04063 16.0127C3.95 16.2814 4.02188 16.5783 4.22188 16.7814C4.42188 16.9846 4.71875 17.0533 4.99062 16.9627L7.76562 16.0377C8.02188 15.9533 8.25625 15.8064 8.45 15.6158L13.6781 10.3846L10.6156 7.32207L5.3875 12.5533ZM3 7.0002C1.34375 7.0002 0 8.34395 0 10.0002V18.0002C0 19.6564 1.34375 21.0002 3 21.0002H11C12.6562 21.0002 14 19.6564 14 18.0002V15.0002C14 14.4471 13.5531 14.0002 13 14.0002C12.4469 14.0002 12 14.4471 12 15.0002V18.0002C12 18.5533 11.5531 19.0002 11 19.0002H3C2.44688 19.0002 2 18.5533 2 18.0002V10.0002C2 9.44707 2.44688 9.0002 3 9.0002H6C6.55312 9.0002 7 8.55332 7 8.0002C7 7.44707 6.55312 7.0002 6 7.0002H3Z" fill="#2B2F36"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_277">
-                    <path d="M0 5H16V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-                <button type="button"
-                        class="btn-delete"
-                        style="display:inline-flex; align-items:center; justify-content:center;
-                              width:32px; height:32px; border:none; background:transparent; 
-                              border-radius:6px; cursor:pointer;"
-                        aria-label="회원 삭제">
-                  <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_278)">
-                    <path d="M4.225 5.55313L4 6H1C0.446875 6 0 6.44687 0 7C0 7.55312 0.446875 8 1 8H13C13.5531 8 14 7.55312 14 7C14 6.44687 13.5531 6 13 6H10L9.775 5.55313C9.60625 5.2125 9.25938 5 8.88125 5H5.11875C4.74062 5 4.39375 5.2125 4.225 5.55313ZM13 9H1L1.6625 19.5938C1.7125 20.3844 2.36875 21 3.15937 21H10.8406C11.6312 21 12.2875 20.3844 12.3375 19.5938L13 9Z" fill="#D91A1A"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_278">
-                    <path d="M0 5H14V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-            <td>ESG001</td>
-            <td>ESG 친환경예금</td>
-            <td style="color: #D91A1A;">3.5%</td>
-            <td>18개월</td>
-            <td style="vertical-align: middle; text-align: center;">
-              활성
-            </td>
-            <td>2024-01-15</td>
-            <td style="vertical-align: middle; text-align: center;">
-              <div style="display: flex; align-items: center; justify-content: center; gap: 0px;">
-                <button type="button"
-                        id="btnModify"
-                        style="display:inline-flex; align-items:center; justify-content:center;
-                              width:32px; height:32px; border:none; background:transparent; 
-                              border-radius:6px; cursor:pointer;"
-                        aria-label="회원 수정"
-                        onclick="location.href='#'">
-                  <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_277)">
-                    <path d="M14.7375 5.67832C14.0531 4.99395 12.9469 4.99395 12.2625 5.67832L11.3219 6.61582L14.3813 9.6752L15.3219 8.73457C16.0063 8.0502 16.0063 6.94395 15.3219 6.25957L14.7375 5.67832ZM5.3875 12.5533C5.19687 12.7439 5.05 12.9783 4.96562 13.2377L4.04063 16.0127C3.95 16.2814 4.02188 16.5783 4.22188 16.7814C4.42188 16.9846 4.71875 17.0533 4.99062 16.9627L7.76562 16.0377C8.02188 15.9533 8.25625 15.8064 8.45 15.6158L13.6781 10.3846L10.6156 7.32207L5.3875 12.5533ZM3 7.0002C1.34375 7.0002 0 8.34395 0 10.0002V18.0002C0 19.6564 1.34375 21.0002 3 21.0002H11C12.6562 21.0002 14 19.6564 14 18.0002V15.0002C14 14.4471 13.5531 14.0002 13 14.0002C12.4469 14.0002 12 14.4471 12 15.0002V18.0002C12 18.5533 11.5531 19.0002 11 19.0002H3C2.44688 19.0002 2 18.5533 2 18.0002V10.0002C2 9.44707 2.44688 9.0002 3 9.0002H6C6.55312 9.0002 7 8.55332 7 8.0002C7 7.44707 6.55312 7.0002 6 7.0002H3Z" fill="#2B2F36"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_277">
-                    <path d="M0 5H16V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-                <button type="button"
-                        class="btn-delete"
-                        style="display:inline-flex; align-items:center; justify-content:center;
-                              width:32px; height:32px; border:none; background:transparent; 
-                              border-radius:6px; cursor:pointer;"
-                        aria-label="회원 삭제">
-                  <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_278)">
-                    <path d="M4.225 5.55313L4 6H1C0.446875 6 0 6.44687 0 7C0 7.55312 0.446875 8 1 8H13C13.5531 8 14 7.55312 14 7C14 6.44687 13.5531 6 13 6H10L9.775 5.55313C9.60625 5.2125 9.25938 5 8.88125 5H5.11875C4.74062 5 4.39375 5.2125 4.225 5.55313ZM13 9H1L1.6625 19.5938C1.7125 20.3844 2.36875 21 3.15937 21H10.8406C11.6312 21 12.2875 20.3844 12.3375 19.5938L13 9Z" fill="#D91A1A"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_278">
-                    <path d="M0 5H14V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
-            <td>ESG002</td>
-            <td>재활용 예금 플러스</td>
-            <td style="color: #D91A1A;">2.2%</td>
-            <td>12개월</td>
-            <td style="vertical-align: middle; text-align: center;">
-              활성
-            </td>
-            <td>2024-01-15</td>
-            <td style="vertical-align: middle; text-align: center;">
-              <div style="display: flex; align-items: center; justify-content: center; gap: 0px;">
-                <button type="button"
-                        id="btnModify"
-                        style="display:inline-flex; align-items:center; justify-content:center;
-                              width:32px; height:32px; border:none; background:transparent; 
-                              border-radius:6px; cursor:pointer;"
-                        aria-label="회원 수정"
-                        onclick="location.href='#'">
-                  <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_277)">
-                    <path d="M14.7375 5.67832C14.0531 4.99395 12.9469 4.99395 12.2625 5.67832L11.3219 6.61582L14.3813 9.6752L15.3219 8.73457C16.0063 8.0502 16.0063 6.94395 15.3219 6.25957L14.7375 5.67832ZM5.3875 12.5533C5.19687 12.7439 5.05 12.9783 4.96562 13.2377L4.04063 16.0127C3.95 16.2814 4.02188 16.5783 4.22188 16.7814C4.42188 16.9846 4.71875 17.0533 4.99062 16.9627L7.76562 16.0377C8.02188 15.9533 8.25625 15.8064 8.45 15.6158L13.6781 10.3846L10.6156 7.32207L5.3875 12.5533ZM3 7.0002C1.34375 7.0002 0 8.34395 0 10.0002V18.0002C0 19.6564 1.34375 21.0002 3 21.0002H11C12.6562 21.0002 14 19.6564 14 18.0002V15.0002C14 14.4471 13.5531 14.0002 13 14.0002C12.4469 14.0002 12 14.4471 12 15.0002V18.0002C12 18.5533 11.5531 19.0002 11 19.0002H3C2.44688 19.0002 2 18.5533 2 18.0002V10.0002C2 9.44707 2.44688 9.0002 3 9.0002H6C6.55312 9.0002 7 8.55332 7 8.0002C7 7.44707 6.55312 7.0002 6 7.0002H3Z" fill="#2B2F36"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_277">
-                    <path d="M0 5H16V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-                <button type="button"
-                        class="btn-delete"
-                        style="display:inline-flex; align-items:center; justify-content:center;
-                              width:32px; height:32px; border:none; background:transparent; 
-                              border-radius:6px; cursor:pointer;"
-                        aria-label="회원 삭제">
-                  <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g clip-path="url(#clip0_191_278)">
-                    <path d="M4.225 5.55313L4 6H1C0.446875 6 0 6.44687 0 7C0 7.55312 0.446875 8 1 8H13C13.5531 8 14 7.55312 14 7C14 6.44687 13.5531 6 13 6H10L9.775 5.55313C9.60625 5.2125 9.25938 5 8.88125 5H5.11875C4.74062 5 4.39375 5.2125 4.225 5.55313ZM13 9H1L1.6625 19.5938C1.7125 20.3844 2.36875 21 3.15937 21H10.8406C11.6312 21 12.2875 20.3844 12.3375 19.5938L13 9Z" fill="#D91A1A"/>
-                    </g>
-                    <defs>
-                    <clipPath id="clip0_191_278">
-                    <path d="M0 5H14V21H0V5Z" fill="white"/>
-                    </clipPath>
-                    </defs>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          </tr>
-          
         </table>
         <script>
           document.addEventListener('DOMContentLoaded', () => {
@@ -414,22 +223,25 @@
       </div>
       <div class="pager" style="width: 100%;margin-top: 25px; display:grid; grid-template-columns: 1fr auto 1fr; align-items:center;">
         <div style="display: flex; grid-column: 2; width: 100%;">
-          <button class="page-btn page-prev" aria-label="이전 페이지" style="margin-right: 8px;">
-            <!-- 이전 아이콘 -->
-            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0.293701 7.29414C-0.0969238 7.68477 -0.0969238 8.31914 0.293701 8.70977L6.2937 14.7098C6.68433 15.1004 7.3187 15.1004 7.70933 14.7098C8.09995 14.3191 8.09995 13.6848 7.70933 13.2941L2.41558 8.00039L7.7062 2.70664C8.09683 2.31602 8.09683 1.68164 7.7062 1.29102C7.31558 0.900391 6.6812 0.900391 6.29058 1.29102L0.290576 7.29102L0.293701 7.29414Z" />
-            </svg>
-          </button>
+            <a th:if="${pageResponseDTO.prev}" th:href="@{/admin/prod(pg=${pageResponseDTO.pg - 1})}" class="prev page-btn page-prev">
+                <!-- 이전 아이콘 -->
+                <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.293701 7.29414C-0.0969238 7.68477 -0.0969238 8.31914 0.293701 8.70977L6.2937 14.7098C6.68433 15.1004 7.3187 15.1004 7.70933 14.7098C8.09995 14.3191 8.09995 13.6848 7.70933 13.2941L2.41558 8.00039L7.7062 2.70664C8.09683 2.31602 8.09683 1.68164 7.7062 1.29102C7.31558 0.900391 6.6812 0.900391 6.29058 1.29102L0.290576 7.29102L0.293701 7.29414Z" />
+                </svg>
+            </a>
+            <span th:unless="${pageResponseDTO.prev}" class="page-btn placeholder" aria-hidden="true"></span>
 
-          <button class="page-btn is-active" aria-current="page" style="margin-right: 8px;">1</button>
-          <button class="page-btn" style="margin-right: 8px;">2</button>
-          <button class="page-btn" style="margin-right: 8px;">3</button>
+            <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                <a th:href="@{/admin/prod(pg=${num})}" th:class="${num == pageResponseDTO.pg ? 'page-btn is-active' : 'page-btn'}" style="margin-right: 8px; text-decoration: none;">[[${num}]]</a>
+            </th:block>
 
-          <button class="page-btn page-next" aria-label="다음 페이지">
-            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9.70615 7.29414C10.0968 7.68477 10.0968 8.31914 9.70615 8.70977L3.70615 14.7098C3.31553 15.1004 2.68115 15.1004 2.29053 14.7098C1.8999 14.3191 1.8999 13.6848 2.29053 13.2941L7.58428 8.00039L2.29365 2.70664C1.90303 2.31602 1.90303 1.68164 2.29365 1.29102C2.68428 0.900391 3.31865 0.900391 3.70928 1.29102L9.70928 7.29102L9.70615 7.29414Z" fill="#2B2F36"/>
-            </svg>
-          </button>
+            <a th:if="${pageResponseDTO.next}" th:href="@{/admin/prod(pg=${pageResponseDTO.pg + 1})}" class="next page-btn page-next">
+                <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9.70615 7.29414C10.0968 7.68477 10.0968 8.31914 9.70615 8.70977L3.70615 14.7098C3.31553 15.1004 2.68115 15.1004 2.29053 14.7098C1.8999 14.3191 1.8999 13.6848 2.29053 13.2941L7.58428 8.00039L2.29365 2.70664C1.90303 2.31602 1.90303 1.68164 2.29365 1.29102C2.68428 0.900391 3.31865 0.900391 3.70928 1.29102L9.70928 7.29102L9.70615 7.29414Z" fill="#2B2F36"/>
+                </svg>
+            </a>
+            <span th:unless="${pageResponseDTO.next}" class="page-btn placeholder" aria-hidden="true"></span>
+
         </div>
         <div style="grid-column: 3; margin-left: auto; box-sizing: border-box;">
           <button th:onclick="|location.href='@{/admin/prod/register}'|" class="btn-register" style="gap:6px; box-sizing: border-box; width: 90px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
@@ -760,5 +572,38 @@
   <footer>
       <div th:replace="~{layouts/footer.html}"></div>
   </footer>
+  <div th:if="${toastSuccess}" class="toast success" th:text="${toastSuccess}"></div>
+  <div th:if="${toastError}" class="toast error"   th:text="${toastError}"></div>
+  <<style>
+      .toast{
+          position: fixed; left:50%; bottom:28px; transform:translateX(-50%);
+          min-width:260px; max-width:90vw; padding:14px 16px; border-radius:10px;
+          color:#fff; box-shadow:0 10px 24px rgba(0,0,0,.28);
+          font-size:14px; text-align:center; z-index:10000; opacity:0;
+          transition:opacity .22s ease, transform .22s ease; display:none;
+      }
+      .toast.show{ display:block; opacity:1; transform:translate(-50%,-4px); }
+      .toast.success{ background:#111827; }
+      .toast.error{   background:#B91C1C; }
+  </style>
+
+  <script>
+      function showToastEl(el, duration = 2200) {
+          if (!el) return;
+          el.style.display = 'block';
+          requestAnimationFrame(() => el.classList.add('show'));
+          setTimeout(() => {
+              el.classList.remove('show');
+              setTimeout(() => { el.style.display = 'none'; }, 220);
+          }, duration);
+      }
+
+      // 페이지 로드 시 표시 (존재하는 것만)
+      document.addEventListener('DOMContentLoaded', () => {
+          showToastEl(document.querySelector('.toast.success'));
+          showToastEl(document.querySelector('.toast.error'));
+      });
+  </script>
+
 </body>
 </html>
