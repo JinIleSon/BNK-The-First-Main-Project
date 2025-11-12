@@ -42,7 +42,7 @@
                         <input id="idInput" name="mid" type="text" class="input" placeholder="아이디를 입력해주세요" required>
                         <button id="idCheckBtn" type="button" class="btn-register">중복확인</button>
                     </div>
-                    <div class="hint">영문, 숫자 조합 4~10자</div>
+                    <div class="idhint">영문, 숫자 조합 5~15자</div>
                 </td>
             </tr>
             <!-- 비밀번호 & 비밀번호 확인 -->
@@ -51,12 +51,12 @@
                 <td style="display:flex; align-items:center; gap:12px;">
                     <div style="flex:1;">
                         <input id="pwInput" name="mpw" type="password" class="input" placeholder="비밀번호를 입력해주세요" required>
-                        <div class="hint">영문, 숫자, 특수문자 조합 8~16자</div>
+                        <div id="pwHint" class="hint">영문, 숫자, 특수문자 포함 5~15자</div>
                     </div>
 
                     <div style="flex:1;">
-                        <input id="pw2Input" type="password" class="input" placeholder="비밀번호 확인" required>
-                        <div class="hint">비밀번호가 일치해야 합니다</div>
+                        <input id="pw2Input" type="password" class="input" placeholder="비밀번호를 다시 입력해주세요" required>
+                        <div id="pw2Hint" class="hint"></div>
                     </div>
                 </td>
             </tr>
@@ -162,7 +162,64 @@
     </div>
   </div>
 </main>
+    <!-- 모달 -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>회원가입 정보를 확인해주세요</h3>
+            <p>입력하신 정보로 가입을 진행하시겠습니까?</p>
+            <div class="modal-btns">
+                <button id="modalConfirm" class="btn-register" style="width:100%;">확인</button>
+            </div>
+        </div>
+    </div>
+
+
 <script>
+    // 아이디 유효성 검사 정규식: 영문, 숫자 5~15자
+    const idInput = document.getElementById('idInput');
+    const idHint = document.getElementById('idHint');
+    const idCheckBtn = document.getElementById('idCheckBtn');
+
+    function validateIdFormat(value) {
+        const regex = /^[a-zA-Z0-9]{5,15}$/;
+        return regex.test(value);
+    }
+
+    idCheckBtn.addEventListener('click', async () => {
+        const mid = idInput.value.trim();
+
+        if (!mid) {
+            idHint.textContent = "아이디를 입력해주세요.";
+            idHint.style.color = "#d6001c";
+            idInput.focus();
+            return;
+        }
+
+        if (!validateIdFormat(mid)) {
+            idHint.textContent = "영문과 숫자 조합 5~15자로 입력해주세요.";
+            idHint.style.color = "#d6001c";
+            return;
+        }
+
+        try {
+            // 서버에 중복확인 요청 (백엔드 API 필요)
+            const res = await fetch(`/member/id-check?mid=${encodeURIComponent(mid)}`);
+            const data = await res.json();
+
+            if (data.duplicated) {
+                idHint.textContent = "이미 사용 중인 아이디입니다.";
+                idHint.style.color = "#d6001c";
+            } else {
+                idHint.textContent = "사용 가능한 아이디입니다.";
+                idHint.style.color = "#059669";
+            }
+        } catch (err) {
+            console.error(err);
+            idHint.textContent = "서버 오류가 발생했습니다. 다시 시도해주세요.";
+            idHint.style.color = "#d6001c";
+        }
+    });
+
     // 주소검색 (카카오)
     document.getElementById("addrSearchBtn").addEventListener("click", function () {
         new daum.Postcode({
@@ -219,41 +276,70 @@
         document.getElementById('fullAddress').value = `${zip},${base},${detail}`;
     });
 
-    // 비밀번호 일치 검사
+    // 비밀번호 유효성 검사 정규식: 8~16자, 영문+숫자+특수문자 포함
+    const pwInput = document.getElementById('pwInput');
+    const pw2Input = document.getElementById('pw2Input');
+    const pwHint = document.getElementById('pwHint');
+    const pw2Hint = document.getElementById('pw2Hint');
+
+    function validatePasswordStrength(value) {
+        const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{5,15}$/;
+        return regex.test(value);
+    }
+
+    function checkPasswords() {
+        const pw = pwInput.value.trim();
+        const pw2 = pw2Input.value.trim();
+
+        // 강도 검사
+        if (!pw) {
+            pwHint.textContent = "비밀번호를 입력해주세요.";
+            pwHint.style.color = "#6b7280";
+        } else if (!validatePasswordStrength(pw)) {
+            pwHint.textContent = "특수문자, 영문, 숫자 모두 포함해야 합니다.";
+            pwHint.style.color = "#d6001c";
+        } else {
+            if (pw2 && pw === pw2) {
+                // 형식도 맞고 두 번째 비밀번호도 일치할 때
+                pwHint.textContent = "비밀번호가 일치합니다.";
+                pwHint.style.color = "#059669";
+            } else {
+                // 형식은 맞지만 아직 일치하지 않거나 입력 전
+                pwHint.textContent = "사용 가능한 비밀번호입니다.";
+                pwHint.style.color = "#059669";
+            }
+        }
+
+        // 일치 여부 검사
+        if (!pw2) {
+            pw2Hint.textContent = "";
+        } else if (pw !== pw2) {
+            pw2Hint.textContent = "비밀번호가 일치하지 않습니다.";
+            pw2Hint.style.color = "#d6001c";
+        } else {
+            pw2Hint.textContent = "비밀번호가 일치합니다.";
+            pw2Hint.style.color = "#059669";
+        }
+    }
+
+    // 입력 시마다 실시간 검사
+    pwInput.addEventListener('input', checkPasswords);
+    pw2Input.addEventListener('input', checkPasswords);
+
+    // 폼 제출 시 최종 유효성 검사
     document.getElementById('memberForm').addEventListener('submit', (e) => {
-        const pw = document.getElementById('pwInput').value.trim();
-        const pw2 = document.getElementById('pw2Input').value.trim();
+        const pw = pwInput.value.trim();
+        const pw2 = pw2Input.value.trim();
+        if (!validatePasswordStrength(pw)) {
+            e.preventDefault();
+            alert('비밀번호 형식이 올바르지 않습니다. (영문, 숫자, 특수문자 포함 5~15자)');
+            pwInput.focus();
+            return;
+        }
         if (pw !== pw2) {
             e.preventDefault();
             alert('비밀번호가 일치하지 않습니다.');
-        }
-    });
-
-    // 아이디 중복확인
-    document.getElementById('idCheckBtn').addEventListener('click', async () => {
-        const mid = document.getElementById('idInput').value.trim();
-        if (!mid) return alert('아이디를 입력하세요.');
-        const res = await fetch(`/member/id-check?mid=${encodeURIComponent(mid)}`);
-        const data = await res.json();
-        if (data.duplicated) alert('이미 사용 중인 아이디입니다.');
-        else alert('사용 가능한 아이디입니다.');
-    });
-
-    // 이메일 인증번호 확인
-    document.getElementById('emailChkBtn').addEventListener('click', async () => {
-        const email = document.getElementById('emailInput').value.trim();
-        const code = document.getElementById('emailCodeInput').value.trim();
-        if (!code || code.length !== 6) return alert('6자리 인증번호를 입력해주세요.');
-
-        const res = await fetch(`/member/email-verify?email=${encodeURIComponent(email)}&code=${encodeURIComponent(code)}`);
-        const data = await res.json();
-
-        if (data.verified) {
-            alert('이메일 인증 완료!');
-            document.getElementById('emailInput').readOnly = true;
-            document.getElementById('emailReqBtn').disabled = true;
-        } else {
-            alert('❌ 인증번호가 올바르지 않습니다.');
+            pw2Input.focus();
         }
     });
 </script>
@@ -264,7 +350,30 @@
         locale: "ko",
     });
 </script>
+<script>
+    const nextBtn = document.getElementById("nextBtn");
+    const modal = document.getElementById("confirmModal");
+    const modalConfirm = document.getElementById("modalConfirm");
+    const memberForm = document.getElementById("memberForm");
 
+    // "다음" 버튼 클릭 시 모달 표시
+    nextBtn.addEventListener("click", () => {
+        modal.style.display = "flex";
+    });
+
+    // 모달 확인 버튼 클릭 시 제출
+    modalConfirm.addEventListener("click", () => {
+        modal.style.display = "none";
+        memberForm.submit();
+    });
+
+    // ESC나 외부 클릭 시 닫기
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+</script>
 
     <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 </body>
@@ -320,7 +429,8 @@
   }
 
   .field-row { display:flex; gap:8px; align-items:center; }
-  .hint { font-size:12px; color:#6b7280; margin-top:6px; }
+  .hint { font-size: 12px; color: #6b7280; margin-top: 6px; min-height: 18px; }
+  .idhint { font-size: 12px; color: #6b7280; margin-top: 6px; min-height: 18px; }
 
   /* 버튼 */
   .btns { display: flex; justify-content: center; gap: 10px; margin-top: 22px; }
@@ -342,5 +452,37 @@
   .form-table { width: 650px; border-collapse: separate; border-spacing: 0 12px; margin: 0 auto;}
   .form-table th { width: 110px; text-align: left; vertical-align: top;}
   .form-table td { vertical-align: top; }
+  .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+  }
+
+  .modal-content {
+      background: #fff;
+      border-radius: 16px;
+      padding: 30px 24px;
+      width: 360px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  .modal h3 {
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      color: #111827;
+  }
+  .modal p {
+      color: #6b7280;
+      margin-bottom: 20px;
+      font-size: 14px;
+  }
+  .modal-btns { display: flex; justify-content: center; gap: 8px; }
 </style>
 </html>
