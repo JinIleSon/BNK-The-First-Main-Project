@@ -16,7 +16,7 @@
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
 <dataTypeSize>500 BYTE</dataTypeSize>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<ownDataTypeParameters>500 BYTE,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 <associations>
 <colAssociation fkAssociation="A8711512-1632-1A2F-2A2E-A33C2EB9CFFB" referredColumn="FE8CC46C-E1EB-6E58-076E-C28A23C331EC"/>

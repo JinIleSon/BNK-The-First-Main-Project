@@ -8,15 +8,14 @@
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="year" id="D605CBD2-69F4-33FF-B8CB-710619BBBAF8">
+<Column name="orderNo" id="2C9E9A37-A326-80B3-2CA8-7FF24640C9D6">
 <createdBy>user</createdBy>
 <createdTime>2025-11-08 08:30:40 UTC</createdTime>
 <ownerDesignName>BNK_DMD</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>10 BYTE</dataTypeSize>
-<ownDataTypeParameters>10 BYTE,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 <Column name="title" id="A769A507-EE37-9CD3-A891-8CA1ED0C0474">
@@ -42,15 +41,15 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="orderNo" id="2C9E9A37-A326-80B3-2CA8-7FF24640C9D6">
+<Column name="year" id="D605CBD2-69F4-33FF-B8CB-710619BBBAF8">
 <createdBy>user</createdBy>
 <createdTime>2025-11-08 08:30:40 UTC</createdTime>
 <ownerDesignName>BNK_DMD</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>10 BYTE</dataTypeSize>
+<ownDataTypeParameters>10 BYTE,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
@@ -63,7 +62,7 @@
 <indexState>Primary Constraint</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
-<colUsage columnID="D605CBD2-69F4-33FF-B8CB-710619BBBAF8"/>
+<colUsage columnID="2C9E9A37-A326-80B3-2CA8-7FF24640C9D6"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>
