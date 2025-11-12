@@ -44,7 +44,7 @@ public class AdminService {
 
     // 상품 삭제
 
-    public void deleteByProduct(String pid){
+    public void deleteByProduct(String pid) {
         adminMapper.deleteByProduct(pid);
     }
 
@@ -65,6 +65,5 @@ public class AdminService {
     public int selectCountTotalUsers(PageRequestDTO pageRequestDTO) {
         return adminMapper.selectCountTotalUsers(pageRequestDTO);
     }
-
 
 }
