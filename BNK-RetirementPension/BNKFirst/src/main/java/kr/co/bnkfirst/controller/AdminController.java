@@ -2,6 +2,7 @@ package kr.co.bnkfirst.controller;
 
 import kr.co.bnkfirst.dto.PageRequestDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminProductDTO;
+import kr.co.bnkfirst.dto.admin.PageResponseAdminUsersDTO;
 import kr.co.bnkfirst.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,13 @@ public class AdminController {
         return "admin/admin_main";
     }
     @GetMapping("/admin/member")
-    public String member(){
+    public String member(Model model, PageRequestDTO pageRequestDTO){
+
+        log.info("pageRequestDTO={}", pageRequestDTO);
+        PageResponseAdminProductDTO pageResponseDTO = adminService.selectAllProduct(pageRequestDTO);
+
+        model.addAttribute("pageResponseDTO", pageResponseDTO);
+
         return "admin/admin_member";
     }
     @GetMapping("/admin/env")
@@ -34,7 +41,7 @@ public class AdminController {
     public String prod(Model model, PageRequestDTO pageRequestDTO){
 
         log.info("pageRequestDTO={}", pageRequestDTO);
-        PageResponseAdminProductDTO pageResponseDTO = adminService.selectAllProduct(pageRequestDTO);
+        PageResponseAdminUsersDTO pageResponseDTO = adminService.selectAllUsers(pageRequestDTO);
 
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         return "admin/admin_prod";

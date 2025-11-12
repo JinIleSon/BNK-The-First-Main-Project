@@ -44,4 +44,40 @@
     <delete id="deleteByProduct">
         delete from product where pid = #{pid}
     </delete>
+
+<!--유저 목록 출력-->
+    <sql id="searchWhereUsers">
+        <where>
+            <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != ''">
+                <choose>
+                    <when test="pageRequestDTO.searchType == 'title'">
+                        AND mname LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'content'">
+                        AND memail LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'writer'">
+                        AND mcond LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAllUsers" resultType="kr.co.bnkfirst.dto.UsersDTO">
+        SELECT
+        *
+        FROM users
+        <include refid="searchWhereUsers"/>
+        ORDER BY uid DESC
+        OFFSET #{pageRequestDTO.offset} ROWS
+        FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
+    </select>
+
+
+    <select id="selectCountTotalUsers" resultType="int">
+        SELECT COUNT(*) FROM users
+        <include refid="searchWhereUsers"/>
+    </select>
+
 </mapper>
