@@ -44,7 +44,7 @@ public class AdminService {
 
     // 상품 삭제
 
-    public void deleteByProduct(String pid){
+    public void deleteByProduct(String pid) {
         adminMapper.deleteByProduct(pid);
     }
 
@@ -66,6 +66,7 @@ public class AdminService {
         return adminMapper.selectCountTotalUsers(pageRequestDTO);
     }
 
+
     // 전체회원 수 출력
     public int countAllUsers(){
         return adminMapper.countAllUsers();
@@ -84,3 +85,4 @@ public class AdminService {
     };
 
 }
+
