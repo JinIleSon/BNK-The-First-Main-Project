@@ -31,12 +31,30 @@ public class AdminController {
 
         model.addAttribute("pageResponseDTO", pageResponseDTO);
 
+        // 전체회원 수 출력
+        model.addAttribute("countAllUsers", adminService.countAllUsers());
+        // 신규가입 수 출력(현재 시간으로부터 6개월까지)
+        model.addAttribute("countSixMonthUsers", adminService.countSixMonthUsers());
+        // 상태가 휴면인 회원 수 출력
+        model.addAttribute("countWait", adminService.countWait());
+        // 상태가 탈퇴인 회원 수 출력
+        model.addAttribute("countWithdrawal", adminService.countWithdrawal());
+
         return "admin/admin_member";
     }
     @GetMapping("/admin/member/search")
     public String adminmemberSearch(PageRequestDTO pageRequestDTO, Model model){
 
         log.info("pageRequestDTO:{}",pageRequestDTO);
+
+        // 전체회원 수 출력
+        model.addAttribute("countAllUsers", adminService.countAllUsers());
+        // 신규가입 수 출력(현재 시간으로부터 6개월까지)
+        model.addAttribute("countSixMonthUsers", adminService.countSixMonthUsers());
+        // 상태가 휴면인 회원 수 출력
+        model.addAttribute("countWait", adminService.countWait());
+        // 상태가 탈퇴인 회원 수 출력
+        model.addAttribute("countWithdrawal", adminService.countWithdrawal());
 
         PageResponseAdminUsersDTO pageResponseDTO = adminService.selectAllUsers(pageRequestDTO);
         model.addAttribute("pageResponseDTO", pageResponseDTO);
