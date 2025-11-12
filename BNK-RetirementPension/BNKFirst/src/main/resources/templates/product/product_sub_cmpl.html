@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>가입 완료</title>
-    <link rel="stylesheet" href="../../static/css/product/product_sub_cmpl.css">
+    <link rel="stylesheet" th:href="@{/css/product/product_sub_cmpl.css}">
     <style>
 
     </style>
@@ -13,7 +13,7 @@
 
 <body>
     <header>
-        <div id="header"></div>
+        <div id="header" th:replace="~{layouts/header.html}"></div>
     </header>
     <main class="container">
 
@@ -46,8 +46,6 @@
                         <div class="kv">
                             <div class="k">고객명</div>
                             <div class="v">홍길동</div>
-                            <div class="k">수령방법</div>
-                            <div class="v">SMS</div>
                             <div class="k">수령 연락처</div>
                             <div class="v">010-****-1234</div>
                         </div>
@@ -72,10 +70,6 @@
                             <div class="row">
                                 <div class="cell k">과세구분</div>
                                 <div class="cell">일반과세</div>
-                            </div>
-                            <div class="row">
-                                <div class="cell k">출금계좌</div>
-                                <div class="cell">123-****-**45</div>
                             </div>
                             <div class="row">
                                 <div class="cell k">신규계좌</div>
@@ -261,12 +255,8 @@
         </div>
     </main>
     <footer>
-        <div id="footer"></div>
+        <div id="footer" th:replace="~{layouts/footer.html}"></div>
     </footer>
-    <div id="bnk-chatbot-container" style="position: fixed; right: 20px; bottom: 20px; z-index: 9999;">
-        <div id="bnk-chatbot-slot"></div>
-    </div>
 </body>
 
 </html>
-<script src="../../static/js/product.js"></script>

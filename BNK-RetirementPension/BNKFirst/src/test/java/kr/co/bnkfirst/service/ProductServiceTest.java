@@ -2,11 +2,9 @@ package kr.co.bnkfirst.service;
 
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import org.junit.jupiter.api.Test;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
