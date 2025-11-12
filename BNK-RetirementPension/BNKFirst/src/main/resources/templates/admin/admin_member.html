@@ -321,10 +321,11 @@
       <div style="margin-top:25px;border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
         <table style="border-collapse: collapse; width: 100%;">
           <tr style="color: #2B2F36; font-size: 14px; height: 52px; border-bottom: 1px #E5E7EB;">
-            <th style="">ID</th>
-            <th style="">이름</th>
-            <th style="">이메일</th>
-            <th style="">가입일</th>
+            <th style="width:170px;">ID</th>
+            <th style="width:170px;">이름</th>
+            <th style="width:280px;">이메일</th>
+            <th style="width:170px;">가입일</th>
+            <th style="width:200px;">등급</th>
             <th style="">상태</th>
           </tr>
           <tr style="font-size: 14px; text-align: center; height: 63.5px; background-color: white;">
@@ -332,6 +333,9 @@
             <td>김철수</td>
             <td>kim@example.com</td>
             <td>2024.01.15</td>
+            <td>
+                <div class="status-badge">Family</div>
+            </td>
             <td style="vertical-align: middle; text-align: center;">
               활동중
             </td>
@@ -347,7 +351,7 @@
             };
 
             // 테이블의 5번째 컬럼(상태) 모든 셀을 순회
-            document.querySelectorAll('table tr td:nth-child(5)').forEach(td => {
+            document.querySelectorAll('table tr td:nth-child(6)').forEach(td => {
               const status = td.textContent.trim();   // 셀 안의 상태 텍스트
               const s = BADGE[status];
               if (!s) return; // 매핑 없으면 패스
@@ -390,6 +394,39 @@
           $filter.addEventListener('change', applyStatusFilter);
           document.addEventListener('DOMContentLoaded', applyStatusFilter);
         </script>
+          <script>
+              window.addEventListener('DOMContentLoaded', () => {
+                  const BADGE = {
+                      'Royal VIP': { color:'white', bg:'#3c4249', w:57, h:22 },
+                      'Gold VIP'  : { color:'#B8860B', bg:'#FFF6DC', w:46, h:24 },
+                      'Silver VIP': { color:'#6B7280', bg:'#F3F4F6', w:46, h:24 },
+                      'Green VIP' : { color:'#15803D', bg:'#DCFCE7', w:46, h:24 },
+                      'Family'    : { color:'#2563EB', bg:'#DBEAFE', w:46, h:24 },
+                  };
+
+                  document.querySelectorAll('.status-badge').forEach(el => {
+                      const key = el.textContent.trim();
+                      const s = BADGE[key];
+                      if (!s) return;
+
+                      Object.assign(el.style, {
+                          display: 'inline-flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          padding: '0 8px',
+                          fontSize: '12px',
+                          fontWeight: '500',
+                          lineHeight: '1',
+                          color: s.color,
+                          backgroundColor: s.bg,
+                          borderRadius: '20px',
+                          height: s.h + 'px',
+                          minWidth: s.w + 'px',
+                          boxSizing: 'border-box',
+                      });
+                  });
+              });
+          </script>
       </div>
       <div class="pager" style="margin-top: 25px; display:flex; justify-content:center; align-items:center;">
         <button class="page-btn page-prev" aria-label="이전 페이지">
