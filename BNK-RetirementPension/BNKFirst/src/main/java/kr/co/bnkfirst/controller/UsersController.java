@@ -70,19 +70,15 @@ public class UsersController {
     }
 
     // 회원가입 데이터 저장
-    /*
     @PostMapping("/insert")
     public String insert(@ModelAttribute UsersDTO usersDTO) {
-        log.info("insert");
-        try {
-
-        }catch (Exception e){
-
-            return "redirect:/member/info";
+        boolean result = usersService.register(usersDTO);
+        if (result) {
+            return "redirect:active";   // 가입완료 페이지로 이동
+        } else {
+            return "redirect:info";     // 실패 시 다시 입력 페이지로
         }
     }
-     */
-
 
     @GetMapping("/info")
     public String memberInfo() {

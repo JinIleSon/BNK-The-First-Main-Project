@@ -5,6 +5,7 @@ import kr.co.bnkfirst.dto.UsersDTO;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,12 +22,12 @@ public class Users {
     private String mid;
     private String mpw;
     private String mname;
-    @CreationTimestamp
-    private LocalDateTime mbirth;
+    private LocalDate mbirth;
     private String mgender;
     private String mcarrier;
     private String memail;
     private String mphone;
+    private String maddress;
     @CreationTimestamp
     private LocalDateTime mdate;
     private String mgrade;
@@ -56,6 +57,7 @@ public class Users {
                 .mcarrier(mcarrier)
                 .memail(memail)
                 .mphone(mphone)
+                .maddress(maddress)
                 .mdate(mdate)
                 .mgrade(mgrade)
                 .mjumin(mjumin)
