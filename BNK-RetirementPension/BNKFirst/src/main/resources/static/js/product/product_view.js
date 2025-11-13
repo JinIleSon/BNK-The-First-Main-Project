@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderInfo(pirinfo) {
         const prodInfo = document.getElementById('prodInfo');
         const productInfo = null;
-        try
-        productInfo = JSON.parse(pirinfo);
+        // try
+        // productInfo = JSON.parse(pirinfo);
     }
 });
