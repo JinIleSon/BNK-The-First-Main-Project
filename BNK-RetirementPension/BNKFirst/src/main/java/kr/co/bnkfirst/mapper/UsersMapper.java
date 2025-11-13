@@ -8,5 +8,11 @@ import org.apache.ibatis.annotations.Param;
 public interface UsersMapper {
     UsersDTO findUserById(@Param("mid") String mid);
 
-    int insertUser(UsersDTO user); // 회원가입용 insert
+    // 정보입력(info) insert
+    int insertUser(UsersDTO user);
+
+    // 정보입력(info) 아이디 중복확인
+    int existsByMid(@Param("mid") String mid);
+
+
 }

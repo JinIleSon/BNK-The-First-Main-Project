@@ -2,6 +2,7 @@ package kr.co.bnkfirst.service;
 
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.mapper.UsersMapper;
+import kr.co.bnkfirst.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class UsersService {
 
     private final UsersMapper usersMapper;
 
-    // 로그인
+    // member_main 로그인
     public UsersDTO login(String mId, String mPw) {
         log.info("Trying to login user: {}", mId);
 
@@ -33,7 +34,7 @@ public class UsersService {
         return user;
     }
 
-    // 회원가입
+    // member_info 정보입력
     public boolean register(UsersDTO dto) {
         log.info("회원가입 시도: {}", dto.getMid());
         try {
@@ -43,6 +44,11 @@ public class UsersService {
             log.error("회원가입 중 오류 발생", e);
             return false;
         }
+    }
+
+    // member_info 아이디 중복확인
+    public boolean existsByMid(String mid) {
+        return usersMapper.existsByMid(mid) > 0;
     }
 
 }
