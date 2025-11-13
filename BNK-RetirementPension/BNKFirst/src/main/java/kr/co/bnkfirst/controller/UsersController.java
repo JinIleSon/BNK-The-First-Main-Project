@@ -78,13 +78,53 @@ public class UsersController {
 
     // 회원가입 데이터 저장
     @PostMapping("/insert")
-    public String insert(@ModelAttribute UsersDTO usersDTO) {
+    public String insert(@ModelAttribute UsersDTO usersDTO, HttpSession session) {
         boolean result = usersService.register(usersDTO);
+
         if (result) {
-            return "redirect:active";   // 가입완료 페이지로 이동
+            session.setAttribute("newUser", usersDTO);
+            return "redirect:active";
         } else {
-            return "redirect:info";     // 실패 시 다시 정보입력 페이지로
+            return "redirect:info";
         }
+    }
+
+    @GetMapping("/id-check")
+    @ResponseBody
+    public boolean idCheck(@RequestParam String mid) {
+        return usersService.existsByMid(mid);
+    }
+
+    @GetMapping("/active")
+    public String memberActive(HttpSession session, Model model) {
+
+        UsersDTO newUser = (UsersDTO) session.getAttribute("newUser");
+
+        if (newUser == null) {
+            return "redirect:/member/info";
+        }
+
+        // XML로 추가 정보만 전달 (SYSDATE, Family)
+        String xml =
+                "<extra>" +
+                        "   <grade>Family</grade>" +
+                        "   <joinDate>SYSDATE</joinDate>" +
+                        "</extra>";
+
+        model.addAttribute("member", newUser);  // DTO 그대로 전달
+        model.addAttribute("xml", xml);         // XML 별도 전달
+
+        return "member/member_active";
+    }
+
+    @GetMapping("/findid")
+    public String memberFindid() {
+        return "member/member_findid";
+    }
+
+    @GetMapping("/findpw")
+    public String memberFindpw() {
+        return "member/member_findpw";
     }
 
     /* AWS prod 시스템함수 추가 후 진행(이메일 인증)
@@ -106,25 +146,4 @@ public class UsersController {
         }
     }
      */
-
-    @GetMapping("/id-check")
-    @ResponseBody
-    public boolean idCheck(@RequestParam String mid) {
-        return usersService.existsByMid(mid);
-    }
-
-    @GetMapping("/active")
-    public String memberActive() {
-        return "member/member_active";
-    }
-
-    @GetMapping("/findid")
-    public String memberFindid() {
-        return "member/member_findid";
-    }
-
-    @GetMapping("/findpw")
-    public String memberFindpw() {
-        return "member/member_findpw";
-    }
 }

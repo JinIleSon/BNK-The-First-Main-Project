@@ -65,4 +65,8 @@ public class UsersService {
     public boolean existsByMid(String mid) {
         return usersMapper.existsByMid(mid) > 0;
     }
+
+    public UsersDTO findByMid(String mid) {
+        return usersMapper.findUserById(mid);
+    }
 }
