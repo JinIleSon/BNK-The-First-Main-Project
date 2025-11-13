@@ -70,12 +70,11 @@
               <td class="value-td wide" th:text="${member.mid}"></td>
 
               <td class="label-td">가입일시</td>
-              <td class="value-td" th:text="'SYSDATE'"></td>
+              <td class="value-td" th:text="${#temporals.format(member.mdate, 'yyyy.MM.dd HH:mm:ss')}"></td>
           </tr>
           <tr>
               <td class="label-td">이메일</td>
               <td class="value-td wide" th:text="${member.memail}"></td>
-
               <td class="label-td">회원등급</td>
               <td class="value-td" th:text="'Family'"></td>
           </tr>
