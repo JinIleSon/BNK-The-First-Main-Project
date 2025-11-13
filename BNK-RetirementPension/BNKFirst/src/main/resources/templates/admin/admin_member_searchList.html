@@ -435,24 +435,24 @@
       </div>
         <div class="pager" style="width: 100%;margin-top: 25px; display:grid; grid-template-columns: 1fr auto 1fr; align-items:center;">
             <div style="display: flex; grid-column: 2; width: 100%;">
-                <a th:if="${pageResponseDTO.prev}" th:href="@{/admin/member(pg=${pageResponseDTO.pg - 1})}" class="prev page-btn page-prev" style="margin-right: 8px;">
+                <a th:if="${pageResponseDTO.prev}" th:href="@{/admin/member/search(pg=${pageResponseDTO.pg - 1}, mname=${pageRequestDTO.mname}, memail=${pageRequestDTO.memail}, mcond=${pageRequestDTO.mcond})}" class="prev page-btn page-prev" style="margin-right: 8px;">
                     <!-- 이전 아이콘 -->
                     <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.293701 7.29414C-0.0969238 7.68477 -0.0969238 8.31914 0.293701 8.70977L6.2937 14.7098C6.68433 15.1004 7.3187 15.1004 7.70933 14.7098C8.09995 14.3191 8.09995 13.6848 7.70933 13.2941L2.41558 8.00039L7.7062 2.70664C8.09683 2.31602 8.09683 1.68164 7.7062 1.29102C7.31558 0.900391 6.6812 0.900391 6.29058 1.29102L0.290576 7.29102L0.293701 7.29414Z" />
                     </svg>
                 </a>
-                <span th:unless="${pageResponseDTO.prev}" class="placeholder" aria-hidden="true"></span>
+                <span th:unless="${pageResponseDTO.prev}" class="page-btn placeholder" aria-hidden="true"></span>
 
                 <th:block th:each="num:${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
-                    <a th:href="@{/admin/member(pg=${num})}" th:class="${num == pageResponseDTO.pg ? 'page-btn is-active' : 'page-btn'}" style="margin-right: 8px; text-decoration: none;">[[${num}]]</a>
+                    <a th:href="@{/admin/member/search(pg=${num}, mname=${pageRequestDTO.mname}, memail=${pageRequestDTO.memail}, mcond=${pageRequestDTO.mcond})}" th:class="${num == pageResponseDTO.pg ? 'page-btn is-active' : 'page-btn'}" style="margin-right: 8px; text-decoration: none;">[[${num}]]</a>
                 </th:block>
 
-                <a th:if="${pageResponseDTO.next}" th:href="@{/admin/member(pg=${pageResponseDTO.pg + 1})}" class="next page-btn page-next">
+                <a th:if="${pageResponseDTO.next}" th:href="@{/admin/member/search(pg=${pageResponseDTO.pg + 1}, mname=${pageRequestDTO.mname}, memail=${pageRequestDTO.memail}, mcond=${pageRequestDTO.mcond})}" class="next page-btn page-next">
                     <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M9.70615 7.29414C10.0968 7.68477 10.0968 8.31914 9.70615 8.70977L3.70615 14.7098C3.31553 15.1004 2.68115 15.1004 2.29053 14.7098C1.8999 14.3191 1.8999 13.6848 2.29053 13.2941L7.58428 8.00039L2.29365 2.70664C1.90303 2.31602 1.90303 1.68164 2.29365 1.29102C2.68428 0.900391 3.31865 0.900391 3.70928 1.29102L9.70928 7.29102L9.70615 7.29414Z" fill="#2B2F36"/>
                     </svg>
                 </a>
-                <span th:unless="${pageResponseDTO.next}" class="placeholder" aria-hidden="true"></span>
+                <span th:unless="${pageResponseDTO.next}" class="page-btn placeholder" aria-hidden="true"></span>
 
             </div>
         </div>
@@ -487,17 +487,6 @@
         .page-btn:hover svg path{ opacity:.9; }
         /* 비활성화가 필요할 경우 */
         .page-btn.is-disabled{ opacity:.4; pointer-events:none; }
-        /* 자리만 차지하는 placeholder (hover/클릭 불가) */
-        .placeholder{
-            width:42px; height:40px; border-radius:8px;
-            background:#F6F6F8;             /* 필요하면 투명으로 */
-            margin-right:8px;                /* 이전쪽과 동일 간격 */
-            pointer-events:none;             /* 클릭/hover 무시 */
-            cursor:default;
-            display:flex; align-items:center; justify-content:center;
-            border:1px solid transparent;    /* 정렬용 테두리 두께 맞춤 */
-            box-shadow:none;
-        }
       </style>
       <script>
         document.addEventListener('DOMContentLoaded', () => {

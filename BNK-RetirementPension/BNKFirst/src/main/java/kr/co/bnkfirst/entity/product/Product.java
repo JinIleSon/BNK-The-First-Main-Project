@@ -45,14 +45,16 @@ public class Product {
     private String pprfcrt;
     @Lob
     private String pirinfo;
-    private String pttitle;
-    private String ptlink;
+    //private String pttitle;
+    //private String ptlink;
     @Nationalized
     @Column(length = 100)
     private String pcond;
 
     @CreationTimestamp
     private LocalDateTime pupdate;
+
+    private String pjnfee;
 
     public ProductDTO toDTO(){
         return ProductDTO.builder()
@@ -67,10 +69,11 @@ public class Product {
                 .prmthd(prmthd)
                 .pprfcrt(pprfcrt)
                 .pirinfo(pirinfo)
-                .pttitle(pttitle)
-                .ptlink(ptlink)
+                //.pttitle(pttitle)
+                //.ptlink(ptlink)
                 .pcond(pcond)
                 .pupdate(pupdate.toString())
+                .pjnfee(pjnfee)
                 .build();
     }
 }
