@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!response.ok) throw new Error('상품 정보를 가져오는 도중 문제 발생');
             const productInfo = await response.json();
             console.log(productInfo);
-            renderProduct(productInfo);
+            return productInfo;
         } catch (e) {
             console.error(e);
         }
@@ -111,21 +111,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    renderProduct(fetchProduct());
+    fetchProduct().then(data => {
+        renderProduct(data);
+        try {
+            // console.log(JSON.parse(data.pterms));
+            renderTerms(JSON.parse(data.pterms));
+        } catch (e) {
+            console.error('pterms JSON 파싱 실패');
+            return null;
+        }
+    });
 
     // 약관 데이터 (원하면 URL을 실제 파일로 교체)
-    const TERMS = [
-        { title: '예금거래기본약관', url: '#' },
-        { title: '적립식예금약관', url: '#' },
-        { title: '주택청약종합저축 특약', url: '#' },
-        { title: '주택청약종합저축 상품설명서', url: '#' },
-    ];
+    // const TERMS = [
+    //     { title: '예금거래기본약관', link: '#' },
+    //     { title: '적립식예금약관', link: '#' },
+    //     { title: '주택청약종합저축 특약', link: '#' },
+    //     { title: '주택청약종합저축 상품설명서', link: '#' },
+    // ];
 
-    function renderTerms() {
+    function renderTerms(terms) {
         const ul = document.getElementById('termsList');
         if (!ul) return;
-        ul.innerHTML = TERMS.map(t => `
-      <li class="doc-item" tabindex="0" data-url="${t.url}">
+        ul.innerHTML = terms.map(t => `
+      <li class="doc-item" tabindex="0" data-link="${t.link}">
         <span class="title">${t.title}</span>
         <svg class="chev" viewBox="0 0 24 24" aria-hidden="true">
           <path fill="currentColor" d="M9 6l6 6-6 6"></path>
@@ -136,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 클릭/엔터 시 열기
         ul.querySelectorAll('.doc-item').forEach(li => {
             const open = () => {
-                const href = li.dataset.url;
+                const href = li.dataset.link;
                 if (href && href !== '#') window.open(href, '_blank');
                 // 데모일 땐 알림만
                 else alert(li.querySelector('.title').textContent + ' 문서를 연결해주세요.');
@@ -147,5 +156,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 초기 렌더 한 번 실행
-    renderTerms();
+    // renderTerms();
 });

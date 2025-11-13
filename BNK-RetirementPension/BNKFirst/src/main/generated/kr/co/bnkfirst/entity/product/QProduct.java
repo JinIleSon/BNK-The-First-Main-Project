@@ -27,6 +27,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath pcprd = createString("pcprd");
 
+    public final StringPath pdirate = createString("pdirate");
+
     public final StringPath pelgbl = createString("pelgbl");
 
     public final NumberPath<Float> phirate = createNumber("phirate", Float.class);
@@ -42,6 +44,8 @@ public class QProduct extends EntityPathBase<Product> {
     public final StringPath pprfcrt = createString("pprfcrt");
 
     public final StringPath prmthd = createString("prmthd");
+
+    public final StringPath pterms = createString("pterms");
 
     public final StringPath ptype = createString("ptype");
 
