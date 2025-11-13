@@ -20,8 +20,8 @@ public class ProductDTO {
     private String prmthd;
     private String pprfcrt;
     private String pirinfo;
-    private String pttitle;
-    private String ptlink;
+    //private String pttitle;
+    //private String ptlink;
     private String pcond;
     private String pupdate;
     private String pjnfee;
@@ -38,8 +38,8 @@ public class ProductDTO {
                 .pelgbl(pelgbl)
                 .pprfcrt(pprfcrt)
                 .pirinfo(pirinfo)
-                .pttitle(pttitle)
-                .ptlink(ptlink)
+                //.pttitle(pttitle)
+                //.ptlink(ptlink)
                 .pcond(pcond)
                 .pjnfee(pjnfee)
                 .build();
