@@ -81,4 +81,18 @@ public class ProductService {
         if (pid == null || pid.isBlank()) return Optional.empty();
         return productRepository.findByPid(pid).map(Product::toDTO);
     }
+
+    @Transactional(readOnly = true)
+    public List<ProductDTO> searchProducts(String keyword) {
+        List<Product> products = productRepository
+                .findByPnameContainingIgnoreCaseOrPtypeContainingIgnoreCase(keyword, keyword);
+
+        // 콘솔 로그로 확인
+        log.info("[DB 조회 완료] keyword='{}', 결과 {}건", keyword, products.size());
+
+        return products.stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }
