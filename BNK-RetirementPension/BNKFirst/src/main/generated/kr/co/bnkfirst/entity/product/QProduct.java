@@ -43,10 +43,6 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath prmthd = createString("prmthd");
 
-    public final StringPath ptlink = createString("ptlink");
-
-    public final StringPath pttitle = createString("pttitle");
-
     public final StringPath ptype = createString("ptype");
 
     public final DateTimePath<java.time.LocalDateTime> pupdate = createDateTime("pupdate", java.time.LocalDateTime.class);
