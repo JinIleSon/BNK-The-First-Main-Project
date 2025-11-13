@@ -88,4 +88,17 @@ public class ProductService {
     public PcontractDTO resultPcontract(String mid, String pcpid){
         return productMapper.resultPcontract(mid, pcpid);
     }
+    @Transactional(readOnly = true)
+    public List<ProductDTO> searchProducts(String keyword) {
+        List<Product> products = productRepository
+                .findByPnameContainingIgnoreCaseOrPtypeContainingIgnoreCase(keyword, keyword);
+
+        // 콘솔 로그로 확인
+        log.info("[DB 조회 완료] keyword='{}', 결과 {}건", keyword, products.size());
+
+        return products.stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }
