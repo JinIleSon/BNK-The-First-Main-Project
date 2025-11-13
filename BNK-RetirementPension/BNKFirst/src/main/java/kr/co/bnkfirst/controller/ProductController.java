@@ -1,6 +1,7 @@
 package kr.co.bnkfirst.controller;
 
 import jakarta.annotation.security.PermitAll;
+import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -74,8 +75,19 @@ public class ProductController {
         return "product/product_insert_info";
     }
 
-    @GetMapping("/product/subCmpl")
-    public String subCmplPage() {
+    @GetMapping("/product/subCmpl/list")
+    public String subCmplPage(Model model) {
+        model.addAttribute("mid", "a123");
+        model.addAttribute("pcpid", "BNK-TD-1");
         return "product/product_sub_cmpl";
+    }
+
+
+    @GetMapping("/product/subCmpl")
+    public ResponseEntity<PcontractDTO> subCmplPage(
+                                                    @RequestParam("mid") String mid,
+                                                    @RequestParam("pcpid") String pcpid) {
+
+        return ResponseEntity.ok(productService.resultPcontract(mid, pcpid));
     }
 }
