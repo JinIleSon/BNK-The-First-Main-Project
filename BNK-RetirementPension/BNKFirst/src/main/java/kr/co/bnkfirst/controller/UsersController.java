@@ -69,6 +69,11 @@ public class UsersController {
         return "member/member_auth";
     }
 
+    @GetMapping("/info")
+    public String memberInfo() {
+        return "member/member_info";
+    }
+
     // 회원가입 데이터 저장
     @PostMapping("/insert")
     public String insert(@ModelAttribute UsersDTO usersDTO) {
@@ -76,13 +81,14 @@ public class UsersController {
         if (result) {
             return "redirect:active";   // 가입완료 페이지로 이동
         } else {
-            return "redirect:info";     // 실패 시 다시 입력 페이지로
+            return "redirect:info";     // 실패 시 다시 정보입력 페이지로
         }
     }
 
-    @GetMapping("/info")
-    public String memberInfo() {
-        return "member/member_info";
+    @GetMapping("/id-check")
+    @ResponseBody
+    public boolean idCheck(@RequestParam String mid) {
+        return usersService.existsByMid(mid);
     }
 
     @GetMapping("/active")
