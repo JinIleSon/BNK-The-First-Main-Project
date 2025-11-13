@@ -42,7 +42,7 @@
                         <input id="idInput" name="mid" type="text" class="input" placeholder="아이디를 입력해주세요" required>
                         <button id="idCheckBtn" type="button" class="btn-register">중복확인</button>
                     </div>
-                    <div class="idhint">영문, 숫자 조합 5~15자</div>
+                    <div id="idHint" class="idhint">영문, 숫자 조합 5~15자</div>
                 </td>
             </tr>
             <!-- 비밀번호 & 비밀번호 확인 -->
@@ -175,48 +175,92 @@
 
 
 <script>
-    // 아이디 유효성 검사 정규식: 영문, 숫자 5~15자
+    // 아이디 관련 요소
     const idInput = document.getElementById('idInput');
-    const idHint = document.getElementById('idHint');
     const idCheckBtn = document.getElementById('idCheckBtn');
+    const idHint = document.getElementById('idHint');
 
+    // 🟡 모달 요소 (아이디 중복확인 결과용)
+    const idCheckModal = document.createElement("div");
+    idCheckModal.classList.add("modal");
+    idCheckModal.innerHTML = `
+  <div class="modal-content">
+    <h3 id="idCheckTitle"></h3>
+    <p id="idCheckMsg"></p>
+    <div class="modal-btns">
+        <button id="modalClose" class="btn-register" style="width:100%;">확인</button>
+    </div>
+  </div>`;
+    document.body.appendChild(idCheckModal);
+
+    const idCheckTitle = document.getElementById("idCheckTitle");
+    const idCheckMsg = document.getElementById("idCheckMsg");
+    const modalClose = document.getElementById("modalClose");
+
+    // 🩵 아이디 형식 검사
     function validateIdFormat(value) {
         const regex = /^[a-zA-Z0-9]{5,15}$/;
         return regex.test(value);
     }
 
-    idCheckBtn.addEventListener('click', async () => {
+    // 입력 중 (5자 미만이면 경고 표시)
+    idInput.addEventListener("input", () => {
+        const value = idInput.value.trim();
+
+        if (value.length > 0 && value.length < 5) {
+            idHint.textContent = "영문과 숫자 조합 5~15자로 입력해주세요.";
+            idHint.style.color = "#d6001c";
+        } else {
+            idHint.textContent = "";
+        }
+    });
+
+    // 중복확인 버튼 클릭 시
+    idCheckBtn.addEventListener("click", async () => {
         const mid = idInput.value.trim();
 
         if (!mid) {
-            idHint.textContent = "아이디를 입력해주세요.";
-            idHint.style.color = "#d6001c";
+            showModal("입력 오류", "아이디를 입력해주세요.", "#d6001c");
             idInput.focus();
             return;
         }
 
         if (!validateIdFormat(mid)) {
-            idHint.textContent = "영문과 숫자 조합 5~15자로 입력해주세요.";
-            idHint.style.color = "#d6001c";
+            showModal("형식 오류", "영문과 숫자 조합 5~15자로 입력해주세요.", "#d6001c");
             return;
         }
 
         try {
-            // 서버에 중복확인 요청 (백엔드 API 필요)
-            const res = await fetch(`/member/id-check?mid=${encodeURIComponent(mid)}`);
-            const data = await res.json();
+            const res = await fetch(`${window.location.origin}/BNK/member/id-check?mid=${encodeURIComponent(mid)}`)
+            const duplicated = await res.json();
 
-            if (data.duplicated) {
-                idHint.textContent = "이미 사용 중인 아이디입니다.";
-                idHint.style.color = "#d6001c";
+            if (duplicated) {
+                showModal("중복확인 결과", "이미 사용 중인 아이디입니다.", "#d6001c");
             } else {
-                idHint.textContent = "사용 가능한 아이디입니다.";
-                idHint.style.color = "#059669";
+                showModal("중복확인 결과", "사용 가능한 아이디입니다.", "#059669");
             }
         } catch (err) {
             console.error(err);
-            idHint.textContent = "서버 오류가 발생했습니다. 다시 시도해주세요.";
-            idHint.style.color = "#d6001c";
+            showModal("서버 오류", "서버 오류가 발생했습니다. 다시 시도해주세요.", "#d6001c");
+        }
+    });
+
+    // 모달 표시 함수
+    function showModal(title, msg, color) {
+        idCheckTitle.textContent = title;
+        idCheckMsg.textContent = msg;
+        idCheckMsg.style.color = color;
+        idCheckModal.style.display = "flex";
+    }
+
+    modalClose.addEventListener("click", () => {
+        idCheckModal.style.display = "none";
+    });
+
+    // ESC 또는 외부 클릭 시 닫기
+    window.addEventListener("click", (e) => {
+        if (e.target === idCheckModal) {
+            idCheckModal.style.display = "none";
         }
     });
 
@@ -452,6 +496,7 @@
   .form-table { width: 650px; border-collapse: separate; border-spacing: 0 12px; margin: 0 auto;}
   .form-table th { width: 110px; text-align: left; vertical-align: top;}
   .form-table td { vertical-align: top; }
+
   .modal {
       display: none;
       position: fixed;

@@ -5,7 +5,7 @@
 
 <mapper namespace="kr.co.bnkfirst.mapper.UsersMapper">
 
-    <!-- member_main -->
+    <!-- member_main 로그인 -->
     <select id="findUserById" parameterType="string" resultType="kr.co.bnkfirst.dto.UsersDTO">
         SELECT
             MID AS mid,
@@ -14,7 +14,7 @@
         WHERE MID = #{mid}
     </select>
 
-    <!-- member_info -->
+    <!-- member_info 정보입력 -->
     <insert id="insertUser" parameterType="kr.co.bnkfirst.entity.Users">
         INSERT INTO USERS (
             "uId", MID, MPW, MNAME, MGENDER, MJUMIN,
@@ -29,5 +29,12 @@
                    SYSDATE, 'Family', '활동중'
                )
     </insert>
+
+    <!-- member_info 아이디 중복확인 -->
+    <select id="existsByMid" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM USERS
+        WHERE "MID" = #{mid}
+    </select>
 
 </mapper>
