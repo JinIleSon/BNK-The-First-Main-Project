@@ -6,6 +6,8 @@ import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -84,6 +86,26 @@ public class UsersController {
             return "redirect:info";     // 실패 시 다시 정보입력 페이지로
         }
     }
+
+    /* AWS prod 시스템함수 추가 후 진행(이메일 인증)
+    @RestController
+    @RequiredArgsConstructor
+    public class MailTestController {
+
+        private final JavaMailSender mailSender;
+
+        @GetMapping("/test-mail")
+        public String testMail() {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo("받을이메일@gmail.com");
+            message.setSubject("테스트 메일");
+            message.setText("메일 발송 테스트 성공!");
+
+            mailSender.send(message);
+            return "메일 발송 완료!";
+        }
+    }
+     */
 
     @GetMapping("/id-check")
     @ResponseBody
