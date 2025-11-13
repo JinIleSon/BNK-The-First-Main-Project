@@ -67,6 +67,9 @@ public class AdminService {
     }
 
 
+
+
+
     // 전체회원 수 출력
     public int countAllUsers(){
         return adminMapper.countAllUsers();
@@ -85,4 +88,4 @@ public class AdminService {
     };
 
 }
-
+=
