@@ -18,7 +18,6 @@
     .banner {
       position: relative;
       width: 100%;
-      height: 60%;
       overflow: hidden;
       background: #ffffff;
     }
@@ -26,7 +25,8 @@
     .banner-slider {
       position: relative;
       width: 100%;
-      height: 650px;
+      aspect-ratio: 16/9;
+      max-height: 800px;
     }
 
     .banner-slide {
@@ -48,7 +48,7 @@
     /* 이미지: 가로 100%, 세로는 비율 유지 (잘리지 않음) */
     .banner-slide img {
       width: 100%;
-      height: 700px;
+      height: 100%;
       display: block;
     }
 
