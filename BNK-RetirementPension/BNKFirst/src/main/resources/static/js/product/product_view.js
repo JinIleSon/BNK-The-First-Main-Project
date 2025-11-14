@@ -38,7 +38,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 기준일자(오늘) 표시
     const now = new Date();
-    const y = now.getFullYear(), m = String(now.getMonth() + 1).padStart(2, '0'), d = String(now.getDate()).padStart(2, '0');
+    const y = now.getFullYear(), m = String(now.getMonth() + 1).padStart(2, '0'),
+        d = String(now.getDate()).padStart(2, '0');
     const ref = `${y}-${m}-${d}`;
     const refEl = document.getElementById('rateRefDate');
     if (refEl) refEl.textContent = ref;
@@ -55,8 +56,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             // 탭 active/aria
-            tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
-            btn.classList.add('active'); btn.setAttribute('aria-selected', 'true');
+            tabBtns.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected', 'true');
 
             // 패널 전환
             const key = btn.dataset.tab;           // guide | rate | terms
@@ -151,7 +156,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 else alert(li.querySelector('.title').textContent + ' 문서를 연결해주세요.');
             };
             li.addEventListener('click', open);
-            li.addEventListener('keydown', e => { if (e.key === 'Enter') open(); });
+            li.addEventListener('keydown', e => {
+                if (e.key === 'Enter') open();
+            });
         });
     }
 
@@ -159,72 +166,75 @@ document.addEventListener('DOMContentLoaded', async () => {
     // renderTerms();
 
     const DUMMY_PIRINFO = {
-        "title":"우대이율",
+        "title": "우대이율",
         "children": [
             {
-                "content":"개인형 우대이율 (최대 0.40%p)",
-                "type":"list",
-                "children":[
+                "content": "개인형 우대이율 (최대 0.40%p)",
+                "type": "list",
+                "children": [
                     {
-                        "content":"저탄소 실천 적금 보유 우대이율 : 0.10%p",
-                        "type":"list",
-                        "children":[
+                        "content": "저탄소 실천 적금 보유 우대이율 : 0.10%p",
+                        "type": "list",
+                        "children": [
                             {
-                                "content":"이 예금의 해지 시 저탄소 실천 적금 보유하고있는 경우 적용",
-                                "type":"text"
+                                "content": "이 예금의 해지 시 저탄소 실천 적금 보유하고있는 경우 적용",
+                                "type": "list"
                             },
                             {
-                                "content":"만기일 당일 해지분은 우대이율 적용",
-                                "type":"text"
+                                "content": "만기일 당일 해지분은 우대이율 적용",
+                                "type": "list"
                             }
                         ]
                     },
                     {
-                        "content":"비대면 채널 가입 또는 종이통장 미발행 우대이율 : 0.10%p",
-                        "type":"list",
-                        "children":[
+                        "content": "비대면 채널 가입 또는 종이통장 미발행 우대이율 : 0.10%p",
+                        "type": "list",
+                        "children": [
                             {
-                                "content":"비대면 채널을 통해 이 예금을 가입하거나 만기일까지 종이통장을 미발행하는 경우 적용",
-                                "type":"text"
+                                "content": "비대면 채널을 통해 이 예금을 가입하거나 만기일까지 종이통장을 미발행하는 경우 적용",
+                                "type": "list"
                             },
                             {
-                                "content":"단, 종이통장 미발행 우대이율은 개인 및 개인사업자만 적용가능(법인 불가)",
-                                "type":"text"
+                                "content": "단, 종이통장 미발행 우대이율은 개인 및 개인사업자만 적용가능(법인 불가)",
+                                "type": "list"
                             }
                         ]
                     },
                     {
-                        "content":"대중교통 이용실적 우대이율 : 0.10%p",
-                        "type":"list",
-                        "children":[
+                        "content": "대중교통 이용실적 우대이율 : 0.10%p",
+                        "type": "list",
+                        "children": [
                             {
-                                "content":[
+                                "content": [
                                     {
-                                        "text":"부산은행 신용(체크)카드 후불교통 이용 실적 발생 월이 가입기간의 2/3개월 이상 존재하는 경우 적용"
+                                        "content": "부산은행 신용(체크)카드 후불교통 이용 실적 발생 월이 가입기간의 2/3개월 이상 존재하는 경우 적용",
+                                        "type": "text"
                                     },
                                     {
-                                        "text":"(단, 페이형식 결제(삼성페이, 페이코 등) 및 후불 하이패스 이용실적은 제외)",
-                                        "color":"red"
+                                        "content": "(단, 페이형식 결제(삼성페이, 페이코 등) 및 후불 하이패스 이용실적은 제외)",
+                                        "color": "red",
+                                        "type": "text"
                                     },
                                     {
-                                        "text":"※ 대중교통의 범위 : 지하철, 시내버스, 시외버스, 공항버스"
+                                        "content": "※ 대중교통의 범위 : 지하철, 시내버스, 시외버스, 공항버스",
+                                        "type": "text"
                                     }
                                 ],
-                                "type":"text"
+                                "type": "list"
                             },
                             {
-                                "content":"만기일 전일까지 매월 말일 기준 실적 보유",
-                                "type":"text"
+                                "content": "만기일 전일까지 매월 말일 기준 실적 보유",
+                                "type": "list"
                             }
                         ]
                     },
                     {
-                        "content":"탄소포인트제 참여 우대이율 : 0.10%p",
-                        "type":"list",
-                        "children":[
+                        "content": "탄소포인트제 참여 우대이율 : 0.10%p",
+                        "type": "list",
+                        "children": [
                             {
-                                "content":"정부(https://cpoint.or.kr)에서 시행하는 '탄소포인트제'에 참여하고 만기일 전일까지 '탄소포인트제 가입 확인서'를 은행에 제시하는 경우 적용(영업점 창구를 통한 대면 제시 또는 모바일뱅킹을 통해 사진 촬영하여 제시)",
-                                "type":"text"
+                                "content": "정부(https://cpoint.or.kr)에서 시행하는 '탄소포인트제'에 참여하고 만기일 전일까지 '탄소포인트제 가입 확인서'를 은행에 제시하는 경우 적용(영업점 창구를 통한 대면 제시 또는 모바일뱅킹을 통해 사진 촬영하여 제시)",
+                                "type": "list"
                             }
                         ]
                     }
@@ -233,35 +243,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         ]
     }
 
-    function configureHtml(infoJson, html) {
-        for (const child of infoJson.children) {
-            switch (child.type) {
-                case "list":
-                    html += `<ul><li>`;
-                    for (const listItem of child.children) {
-                        infoJson += `<li>`;
-                        configureHtml(listItem);
-                        infoJson += `</li>`
-                    }
-                    // if (child.children.isArray) {
-                    //
-                    // }
-                    html += `</li></ul>`;
-                    break;
-                case "text":
-                    if (child.content.isArray) {
-                        for (const contentElement of child.content) {
-                            html += `<span`
-                                + (`${child.color}` ? `style="color: ${child.color}>` : `>`)
-                                + `${child.content}</span><br>`;
+    function configureHtml(infoJson, html, parentType = null, stage = 0) {
+        switch (infoJson.type) {
+            case "list":
+                if (stage !== 0) html += `<br>`;
+                console.log(stage);
+                html += `<ul><li>`;
+                // console.log('list stage = ' + stage + ' content = ' + infoJson.content
+                //     + ' type = ' + infoJson.type + ' children = ' + infoJson.children);
+                if (Array.isArray(infoJson.content)) {
+                    for (const [i, v] of infoJson.content.entries()) {
+                        html = configureHtml(v, html);
+                        if (i !== infoJson.content.length - 1) {
+                            html += '<br>';
+                            console.log('text index = ' + i);
                         }
-                        html += `<span`
-                            + (`${child.color}` ? `style="color: ${child.color}>` : `>`)
-                            + `${child.content}</span>`;
                     }
-                    break;
-            }
+                } else {
+                    html += `${infoJson.content}`;
+                }
+                if (infoJson.children !== undefined) {
+                    for (const listItem of infoJson.children) {
+                        stage += 1;
+                        html = configureHtml(listItem, html, infoJson.type, stage);
+                        stage -= 1;
+                    }
+                }
+                html += `</li></ul>`;
+                break;
+            case "text":
+                if (infoJson.color != null) {
+                    html += `<span style="color: ${infoJson.color}">${infoJson.content}</span>`;
+                } else {
+                    html += `<span>${infoJson.content}</span>`;
+                }
+                console.log('text else : ' + infoJson.content);
+                break;
         }
+        return html;
     }
 
     function renderInfo(pirinfo) {
@@ -272,29 +291,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         } catch (e) {
             console.error('JSON 파싱 실패');
         }
-        let htmls = `<h4>${pirinfo.title}</h4>`;
-        if (pirinfo.children.isArray) {
-            let featureContent = `<div class="feature-content">`;
-            for (const child of pirinfo.children) {
-                switch (child.type) {
-                    case "list":
-                        featureContent += `<ul><li>`;
-                        for (const listItem of child.children) {
-                            again
-                        }
-                        // if (child.children.isArray) {
-                        //
-                        // }
-                        // featureContent += `</li></ul>`;
-                        break;
-                    case "text":
-                        featureContent += `<span`
-                            + (`${child.color}` ? `style="color: ${child.color}>` : `>`)
-                            + `${child.content}</span>`;
-                        break;
-                }
+        let htmls = `<div class="feature-title"><h4>${productInfo.title}</h4></div>`;
+        if (Array.isArray(productInfo.children)) {
+            for (const child of productInfo.children) {
+                htmls += `<div class="feature-list">`;
+                htmls = configureHtml(child, htmls);
+                htmls += `</div>`;
+                // console.log(htmls);
+                // console.log(child);
             }
-            featureContent = featureContent + `</div>`;
+        } else {
+            htmls += `<div class="feature-content">`;
+            configureHtml(productInfo, htmls);
+            htmls += `</div>`;
         }
+        prodInfo.innerHTML = htmls;
+        // console.log(htmls);
     }
+
+    renderInfo(JSON.stringify(DUMMY_PIRINFO));
 });
