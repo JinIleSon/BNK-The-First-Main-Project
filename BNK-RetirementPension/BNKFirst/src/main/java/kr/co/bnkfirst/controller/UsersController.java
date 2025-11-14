@@ -30,9 +30,9 @@ public class UsersController {
             return "redirect:/member/main";
         }
 
-        // 로그인 성공 시 세션 저장 + 10분 유지
+        // 로그인 성공 시 세션 저장 + 30분 유지
         session.setAttribute("loginUser", foundUser);
-        session.setMaxInactiveInterval(600);
+        session.setMaxInactiveInterval(1800);
         log.info("로그인 성공: {}", foundUser.getMid());
 
         return "redirect:/main/main";
@@ -43,13 +43,12 @@ public class UsersController {
     public String memberMain(Model model, HttpSession session) {
         UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
 
-        // 로그인 안 되어 있어도 메인 페이지 유지
-        if (loginUser == null) {
-            log.info("비로그인 접근");
-            model.addAttribute("userDTO", new UsersDTO());
-        } else {
-            model.addAttribute("loginUser", loginUser);
+        // 로그인 후 login 쪽에 머무를 수 없도록 설정
+        if (loginUser != null) {
+            return "redirect:/main/main";
         }
+
+        // 로그인 안 한 경우에만 로그인 화면 보여줌
         model.addAttribute("userDTO", new UsersDTO());
         return "member/member_main";
     }

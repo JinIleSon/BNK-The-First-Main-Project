@@ -111,12 +111,22 @@
             </tr>
             <!-- 이메일 & 인증번호 -->
             <tr class="field">
-                <th scope="row"><label class="field-label" for="emailInput">이메일<span class="reqdot">*</span></label></th>
+                <th scope="row">
+                    <label class="field-label" for="emailInput">
+                        이메일<span class="reqdot">*</span>
+                    </label>
+                </th>
+
                 <td style="display:flex; align-items:center; gap:12px;">
                     <input id="emailInput" name="memail" type="text" class="input" placeholder="example@email.com" style="flex:1;">
-                    <button id="emailReqBtn" type="button" class="btn-register" style="width:90px;">인증요청</button>
+                    <button id="emailReqBtn" type="button" class="btn-register" style="width:90px;">
+                        인증요청
+                    </button>
                     <input id="emailCodeInput" type="text" class="input" placeholder="6자리 입력" maxlength="6" style="width:100px;">
-                    <button id="emailChkBtn" type="button" class="btn-register" style="width:80px;">확인</button>
+                    <button id="emailChkBtn" type="button"
+                            class="btn-register" style="width:80px;">
+                        확인
+                    </button>
                 </td>
             </tr>
             <!-- 주소 정보-->
@@ -151,7 +161,7 @@
                     <div class="btns" style="display:flex; justify-content:space-between; gap:8px;">
                         <a th:href="@{/member/main}" class="btn-pressable"
                            style="flex:1; height:42px; line-height:42px; border-radius:8px; border:1px solid #D1D5DB; background:#fff; text-align:center;">취소</a>
-                        <button type="submit" class="btn-register"
+                        <button id="nextBtn" type="submit" class="btn-register"
                                 style="flex:1; height:42px; border-radius:8px;">다음</button>
                     </div>
                 </td>
@@ -196,7 +206,7 @@
     const idCheckMsg = document.getElementById("idCheckMsg");
     const modalClose = document.getElementById("modalClose");
 
-    // 🩵 아이디 형식 검사
+    // 아이디 형식 검사
     function validateIdFormat(value) {
         const regex = /^[a-zA-Z0-9]{5,15}$/;
         return regex.test(value);
@@ -386,54 +396,69 @@
         }
     });
 
-    // 이메일 인증
+    // 이메일 인증번호 요청
     document.getElementById("emailReqBtn").addEventListener("click", async () => {
-        const email = document.getElementById("emailInput").value;
+        const email = document.getElementById("emailInput").value.trim();
 
         if (!email) {
             showModal("입력 오류", "이메일을 입력해주세요.", "#d6001c");
             return;
         }
 
-        const res = await fetch("/BNK/email/send", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ email })
-        });
+        try {
+            const res = await fetch("/BNK/api/verification/email/send", {   // ★ 수정됨
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
 
-        const data = await res.json();
+            const data = await res.json();
+            console.log("📧 이메일 발송 응답:", data);
 
-        if (data.send === true) {
-            showModal("메일 발송", "인증번호가 발송되었습니다!", "#059669");
-        } else {
-            showModal("전송 실패", data.error || "메일 전송에 실패했습니다.", "#d6001c");
+            if (data.send === true) {
+                showModal("발송 완료", "인증번호가 이메일로 전송되었습니다.", "#059669");
+            } else {
+                showModal("발송 실패", data.error || "메일 발송에 실패했습니다.", "#d6001c");
+            }
+
+        } catch (err) {
+            console.error(err);
+            showModal("서버 오류", "이메일 발송 중 오류가 발생했습니다.", "#d6001c");
         }
     });
 
-    let emailVerified = false; // 인증 상태 저장
+    // 이메일 인증번호 확인
+    let emailVerified = false;
 
     document.getElementById("emailChkBtn").addEventListener("click", async () => {
-        const code = document.getElementById("emailCodeInput").value;
+        const code = document.getElementById("emailCodeInput").value.trim();
 
         if (!code) {
             showModal("입력 오류", "인증번호를 입력해주세요.", "#d6001c");
             return;
         }
 
-        const res = await fetch("/BNK/email/verify", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ code })
-        });
+        try {
+            const res = await fetch("/BNK/api/verification/email/verify", { // ★ 수정됨
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code })
+            });
 
-        const data = await res.json();
+            const data = await res.json();
+            console.log("📧 이메일 인증 응답:", data);
 
-        if (data.matched === true) {
-            emailVerified = true;
-            showModal("인증 완료", "이메일 인증 성공!", "#059669");
-        } else {
-            emailVerified = false;
-            showModal("인증 실패", "인증번호가 올바르지 않습니다.", "#d6001c");
+            if (data.matched === true) {
+                emailVerified = true;
+                showModal("인증 완료", "이메일 인증이 완료되었습니다!", "#059669");
+            } else {
+                emailVerified = false;
+                showModal("인증 실패", "인증번호가 올바르지 않습니다.", "#d6001c");
+            }
+
+        } catch (err) {
+            console.error(err);
+            showModal("서버 오류", "인증 처리 중 오류가 발생했습니다.", "#d6001c");
         }
     });
 </script>

@@ -66,7 +66,7 @@
         <div class="form-card">
           <table class="auth-table">
             <tbody>
-              <!-- 1행: 이름 / 생년월일 -->
+              <!-- 이름 / 생년월일 -->
               <tr class="field">
                 <th scope="row" class="field-name">이름</th>
                 <td><input type="text" class="input" placeholder="홍길동"></td>
@@ -98,7 +98,7 @@
                 </td>
               </tr>
 
-              <!-- 3행: 휴대폰 번호 / 인증번호 -->
+              <!-- 휴대폰 번호 / 인증번호 -->
               <tr class="field">
                 <th scope="row"><label class="field-label">휴대폰번호</label></th>
                 <td>
@@ -300,11 +300,11 @@ function updateVerifyUI() {
 
   // 공인인증서 완료 시 버튼 라벨
   const openCertBtn = document.getElementById('btnOpenCertModal');
-  if (openCertBtn) openCertBtn.textContent = verifyState.cert ? '인증서 선택(완료)' : '공인인증서 선택';
+  if (openCertBtn) openCertBtn.textContent = verifyState.cert ? '인증서 선택' : '공인인증서 선택';
 }
 
 // 모든 '다음' 링크에 가드
-document.querySelectorAll('a.next-link[href="member_active.html"]').forEach(a => {
+document.querySelectorAll('a.next-link[href="member_info.html"]').forEach(a => {
   a.addEventListener('click', (e) => {
     if (!(verifyState.phone || verifyState.cert)) {
       e.preventDefault();
@@ -313,29 +313,81 @@ document.querySelectorAll('a.next-link[href="member_active.html"]').forEach(a =>
   });
 });
 
-// ----- 휴대폰 인증(데모) -----
+// ----- 실제 휴대폰 SMS 인증 로직 -----
+let phoneVerified = false;
+
 const btnPhoneReq = document.getElementById('btnPhoneReq');
 const btnPhoneVerify = document.getElementById('btnPhoneVerify');
+const phoneInput = document.querySelector('#panel-phone input[placeholder="010-0000-0000"]');
 const phoneCode = document.getElementById('phoneCode');
 
+// 1) 인증번호 요청
 if (btnPhoneReq) {
-  btnPhoneReq.addEventListener('click', () => {
-    alert('인증번호가 발송되었습니다.');
-    phoneCode && phoneCode.focus();
-  });
+    btnPhoneReq.addEventListener('click', async () => {
+        const phoneNumber = phoneInput.value.trim();
+
+        if (!phoneNumber) {
+            alert("휴대폰 번호를 입력해주세요.");
+            return;
+        }
+
+        try {
+            const res = await fetch("/api/verification/sms/send", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ phoneNumber })
+            });
+
+            const data = await res.json();
+
+            if (data.send === true) {
+                alert("인증번호가 발송되었습니다.");
+                phoneCode.focus();
+            } else {
+                alert("발송 실패: " + (data.error || "다시 시도해주세요."));
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+            console.error(err);
+        }
+    });
 }
 
+// 2) 인증번호 확인
 if (btnPhoneVerify) {
-  btnPhoneVerify.addEventListener('click', () => {
-    // 데모: 코드 입력값이 있으면 인증 성공 처리
-    if (phoneCode && phoneCode.value.trim().length >= 6) {
-      verifyState.phone = true;
-      updateVerifyUI();
-      alert('휴대폰 인증이 완료되었습니다.');
-    } else {
-      alert('인증번호를 입력해주세요.');
-    }
-  });
+    btnPhoneVerify.addEventListener('click', async () => {
+        const phoneNumber = phoneInput.value.trim();
+        const code = phoneCode.value.trim();
+
+        if (!code) {
+            alert("인증번호를 입력해주세요.");
+            return;
+        }
+
+        try {
+            const res = await fetch("/api/verification/sms/verify", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ phoneNumber, code })
+            });
+
+            const data = await res.json();
+
+            if (data.ok === true) {
+                phoneVerified = true;
+                verifyState.phone = true;
+                updateVerifyUI();
+                alert("휴대폰 인증이 완료되었습니다!");
+            } else {
+                phoneVerified = false;
+                verifyState.phone = false;
+                alert(data.message || "인증에 실패했습니다.");
+            }
+        } catch (err) {
+            alert("서버 오류가 발생했습니다.");
+            console.error(err);
+        }
+    });
 }
 
 // ----- 공인인증서 모달 -----
