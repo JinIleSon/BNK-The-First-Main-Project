@@ -18,7 +18,6 @@
     .banner {
       position: relative;
       width: 100%;
-      height: 60%;
       overflow: hidden;
       background: #ffffff;
     }
@@ -26,7 +25,8 @@
     .banner-slider {
       position: relative;
       width: 100%;
-      height: 650px;
+      aspect-ratio: 16/9;
+      max-height: 800px;
     }
 
     .banner-slide {
@@ -48,7 +48,7 @@
     /* 이미지: 가로 100%, 세로는 비율 유지 (잘리지 않음) */
     .banner-slide img {
       width: 100%;
-      height: 700px;
+      height: 100%;
       display: block;
     }
 
@@ -574,7 +574,7 @@
 
   <!-- 카테고리 -->
   <section class="category">
-    <div class="category-item">
+    <div class="category-item" style="">
       <div class="icon-wrap">
         <img th:src="@{/images/main_best_seller.png}" alt="">
       </div>
@@ -688,12 +688,14 @@
     </div>
   </div>
 
-  <div class="icon-item purple">
-    <div class="circle">
-      <img th:src="@{/images/main_operator.png}" alt="고객센터">
-      <p>고객센터</p>
-    </div>
-  </div>
+    <a th:href="@{/cs/main}" style="text-decoration: none;">
+      <div class="icon-item purple">
+        <div class="circle">
+          <img th:src="@{/images/main_operator.png}" alt="고객센터">
+          <p>고객센터</p>
+        </div>
+      </div>
+    </a>
 </section>
 
   <!--푸터-->
