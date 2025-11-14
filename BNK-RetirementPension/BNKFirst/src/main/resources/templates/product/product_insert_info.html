@@ -874,6 +874,7 @@
         if (currentStep === totalSteps) {
             // 예: 서버 제출 (fetch) or 확인 모달
             alert('제출했습니다!');
+            window.location.href="/BNK/product/subCmpl/list";
             return;
         }
         showStep(currentStep + 1);
