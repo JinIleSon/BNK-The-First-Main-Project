@@ -574,7 +574,7 @@
 
   <!-- 카테고리 -->
   <section class="category">
-    <div class="category-item">
+    <div class="category-item" style="">
       <div class="icon-wrap">
         <img th:src="@{/images/main_best_seller.png}" alt="">
       </div>
@@ -688,12 +688,14 @@
     </div>
   </div>
 
-  <div class="icon-item purple">
-    <div class="circle">
-      <img th:src="@{/images/main_operator.png}" alt="고객센터">
-      <p>고객센터</p>
-    </div>
-  </div>
+    <a th:href="@{/cs/main}" style="text-decoration: none;">
+      <div class="icon-item purple">
+        <div class="circle">
+          <img th:src="@{/images/main_operator.png}" alt="고객센터">
+          <p>고객센터</p>
+        </div>
+      </div>
+    </a>
 </section>
 
   <!--푸터-->
