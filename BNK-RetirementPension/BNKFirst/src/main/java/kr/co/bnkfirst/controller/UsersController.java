@@ -35,7 +35,7 @@ public class UsersController {
         session.setMaxInactiveInterval(600);
         log.info("로그인 성공: {}", foundUser.getMid());
 
-        return "redirect:/member/main";
+        return "redirect:/main/main";
     }
 
     // 로그인 메인 페이지
@@ -129,23 +129,4 @@ public class UsersController {
         return "member/member_findpw";
     }
 
-    /* AWS prod 시스템함수 추가 후 진행(이메일 인증)
-    @RestController
-    @RequiredArgsConstructor
-    public class MailTestController {
-
-        private final JavaMailSender mailSender;
-
-        @GetMapping("/test-mail")
-        public String testMail() {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo("받을이메일@gmail.com");
-            message.setSubject("테스트 메일");
-            message.setText("메일 발송 테스트 성공!");
-
-            mailSender.send(message);
-            return "메일 발송 완료!";
-        }
-    }
-     */
 }
