@@ -71,4 +71,9 @@ public class MypageController {
         return "mypage/mypage_calc";
     }
 
+    @GetMapping("/mypage/calc/result")
+    public String calcResult(Model model) {
+        return "mypage/mypage_calcResult";
+    }
+
 }
