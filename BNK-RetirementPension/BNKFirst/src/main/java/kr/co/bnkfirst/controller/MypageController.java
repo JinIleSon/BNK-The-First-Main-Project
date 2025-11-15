@@ -84,5 +84,16 @@ public class MypageController {
         return "mypage/mypage_calcPension";
     }
 
+    // 연금 계산기 결과 - 연금수령방법 기준
+    @GetMapping("/mypage/calc/method/result")
+    public String calcMethodResult(Model model) {
+        return "mypage/mypage_calcPensionMethodResult";
+    }
+
+    // 연금 계산기 결과 - 현재 보유자산 기준
+    @GetMapping("/mypage/calc/money/result")
+    public String calcMoneyResult(Model model) {
+        return "mypage/mypage_calcPensionMoneyResult";
+    }
 
 }
