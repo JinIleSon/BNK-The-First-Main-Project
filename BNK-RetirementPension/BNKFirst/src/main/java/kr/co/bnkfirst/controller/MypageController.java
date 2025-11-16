@@ -68,23 +68,11 @@ public class MypageController {
 
     // 은퇴설계 계산기 - RetirementCalcController로 이동
 
-    // 은퇴설계 계산기 결과
-    @GetMapping("/mypage/calc/result")
-    public String calcResult(Model model) {
-        return "mypage/mypage_calcResult";
-    }
+    // 은퇴설계 계산기 결과 - RetirementCalcController로 이동
 
-    // 연금 계산기
-    @GetMapping("/mypage/calc/pension")
-    public String calcPension(Model model) {
-        return "mypage/mypage_calcPension";
-    }
+    // 연금 계산기 - PensionCalcController로 이동
 
-    // 연금 계산기 결과 - 연금수령방법 기준
-    @GetMapping("/mypage/calc/method/result")
-    public String calcMethodResult(Model model) {
-        return "mypage/mypage_calcPensionMethodResult";
-    }
+    // 연금 계산기 결과 - 연금수령방법 기준 - PensionCalcController로 이동
 
     // 연금 계산기 결과 - 현재 보유자산 기준
     @GetMapping("/mypage/calc/money/result")
