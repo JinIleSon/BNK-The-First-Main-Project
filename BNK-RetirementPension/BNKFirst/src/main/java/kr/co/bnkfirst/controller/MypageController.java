@@ -66,11 +66,7 @@ public class MypageController {
         return "mypage/mypage_setup";
     }
 
-    // 은퇴설계 계산기
-    @GetMapping("/mypage/calc")
-    public String calc(Model model) {
-        return "mypage/mypage_calc";
-    }
+    // 은퇴설계 계산기 - RetirementCalcController로 이동
 
     // 은퇴설계 계산기 결과
     @GetMapping("/mypage/calc/result")

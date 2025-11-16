@@ -480,16 +480,18 @@
                 </div>
                 <div style="padding:60px; box-sizing: border-box; background-color: white; width: 800px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                     <div style="color: #252525; font-weight: 700; font-size: 25px;">목표하시는 노후설계에 부족한 자금은</div>
-                    <div style="color: #252525; font-weight: 700; font-size: 25px;"><span style="color:#de0000;">45,052만원</span> 입니다</div>
+                    <div style="color: #252525; font-weight: 700; font-size: 25px;">
+                        <span style="color:#de0000;"
+                              th:text="${#numbers.formatInteger(result.shortageFund, 0, 'COMMA')} + '만원'">45,052만원</span> 입니다</div>
                     <div class="retire-wrap">
 
                         <!-- 타임라인 -->
                         <div class="age-timeline">
-                            <div class="age-item"><div class="age-circle">현재<br><strong>35세</strong></div></div>
+                            <div class="age-item"><div class="age-circle">현재<br><strong th:text="${form.currentAge} + '세'">35세</strong></div></div>
                             <div class="age-line"></div>
-                            <div class="age-item"><div class="age-circle age-circle-dark"><strong>20년</strong></div></div>
+                            <div class="age-item"><div class="age-circle age-circle-dark"><strong th:text="${result.workingYears} + '년'">20년</strong></div></div>
                             <div class="age-line"></div>
-                            <div class="age-item"><div class="age-circle">은퇴<br><strong>55세</strong></div></div>
+                            <div class="age-item"><div class="age-circle">은퇴<br><strong th:text="${form.retireAge} + '세'">55세</strong></div></div>
                         </div>
 
                         <!-- 상승 퍼센트 -->
@@ -520,13 +522,15 @@
                             <div style="padding:30px; text-align: center; border-right:1px solid #eaeaea;">
                                 <div style="">
                                     <div style="font-size: 15px;color: #686868; margin-bottom: 3px;">현재 총 생활비</div>
-                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;">32,928만원</div>
+                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;"
+                                         th:text="${#numbers.formatInteger(result.currentTotalLivingCost, 0, 'COMMA')} + '만원'">32,928만원</div>
                                 </div>
                             </div>
                             <div>
                                 <div style="padding:30px; text-align: center;">
                                     <div style="font-size: 15px;color: #686868; margin-bottom: 3px;">은퇴시점 총 생활비</div>
-                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;">59,472만원</div>
+                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;"
+                                         th:text="${#numbers.formatInteger(result.retirementTotalLivingCost, 0, 'COMMA')} + '만원'">59,472만원</div>
                                 </div>
                             </div>
                         </div>
@@ -534,7 +538,9 @@
                 </div>
                 <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                     <div style="color: #252525; font-weight: 700; font-size: 25px;">은퇴시점에 필요한 총 생활비는</div>
-                    <div style="color: #252525; font-weight: 700; font-size: 25px;"><span style="color:#de0000;">59,472만원</span> 입니다</div>
+                    <div style="color: #252525; font-weight: 700; font-size: 25px;">
+                        <span style="color:#de0000;"
+                              th:text="${#numbers.formatInteger(result.neededRetirementFund, 0, 'COMMA')} + '만원'">59,472만원</span> 입니다</div>
                     <div class="fund-wrap">
 
                         <!-- 상단: 필요한 은퇴자금 -->
@@ -564,15 +570,18 @@
                     <div style="background: #f8f8f8; border-radius: 12px; padding:30px;">
                         <div style="padding-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eaeaea;">
                             <div style="font-size: 15px;color: #686868;">필요한 은퇴자금</div>
-                            <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;">59,472만원</div>
+                            <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;"
+                                 th:text="${#numbers.formatInteger(result.neededRetirementFund, 0, 'COMMA')} + '만원'">59,472만원</div>
                         </div>
                         <div style="margin-top: 20px;display: flex; align-items: center;  justify-content: space-between;">
                             <div style="font-size: 15px;color: #686868;">준비 가능한 자금</div>
-                            <div style="color: #1f1f1f; font-size: 18px; font-weight: 700;">14,420만원</div>
+                            <div style="color: #1f1f1f; font-size: 18px; font-weight: 700;"
+                                 th:text="${#numbers.formatInteger(result.preparedFund, 0, 'COMMA')} + '만원'">14,420만원</div>
                         </div>
                         <div style="margin-top: 9px;display: flex; align-items: center;  justify-content: space-between;">
                             <div style="font-size: 15px;color: #686868;">부족한 자금</div>
-                            <div style="color: #1f1f1f; font-size: 18px; font-weight: 700;">45,052만원</div>
+                            <div style="color: #1f1f1f; font-size: 18px; font-weight: 700;"
+                                 th:text="${#numbers.formatInteger(result.shortageFund, 0, 'COMMA')} + '만원'">45,052만원</div>
                         </div>
                     </div>
                 </div>
@@ -793,8 +802,8 @@
 </script>
 <script>
     // ------- 값 세팅 (여기만 바꾸면 전부 자동 계산됨!) -------
-    const current = 150;
-    const retire = 177;
+    const current = [[${result.baseMonthlyLivingCost}]];
+    const retire = [[${result.retirementMonthlyLivingCost}]];
 
     // 퍼센트 증가율 계산
     const increaseRate = ((retire - current) / current * 100).toFixed(1);
@@ -818,8 +827,8 @@
 </script>
 <script>
     // ====== 여기 숫자만 바꾸면 전부 자동 업데이트 ======
-    const needed  = 59472;  // 필요한 은퇴자금
-    const prepared = 14420; // 준비된 자금
+    const needed  = [[${result.neededRetirementFund}]];  // 필요한 은퇴자금
+    const prepared = [[${result.preparedFund}]]; // 준비된 자금
     const shortage = needed - prepared; // 부족한 자금
 
     // 텍스트 표시 (천 단위 콤마)

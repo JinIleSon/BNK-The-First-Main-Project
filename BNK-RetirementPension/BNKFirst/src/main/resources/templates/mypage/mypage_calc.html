@@ -295,174 +295,184 @@
                 <div style="font-size: 32px; font-weight: 700; margin-bottom: 35px;">
                     은퇴설계 계산기
                 </div>
-                <div style="padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-                    <div style="color: #252525; font-weight: 700; font-size: 20px;">01. 현재 나이와 예상하는 은퇴나이를 입력해 주세요</div>
-                    <div class="slider-container" style="display: flex; justify-content: center;margin-top: 30px;">
-                        <!-- 현재나이 -->
-                        <div class="slider-group">
-                            <div class="slider-title">
-                                <span style="font-size: 16px; margin-top: 1px;">현재나이</span>
-                                <span class="slider-value" id="current-age-value">35세</span>
+                <form th:action="@{/mypage/calc}" method="post" th:object="${form}">
+                    <div style="padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                        <div style="color: #252525; font-weight: 700; font-size: 20px;">01. 현재 나이와 예상하는 은퇴나이를 입력해 주세요</div>
+                        <div class="slider-container" style="display: flex; justify-content: center;margin-top: 30px;">
+                            <!-- 현재나이 -->
+                            <div class="slider-group">
+                                <div class="slider-title">
+                                    <span style="font-size: 16px; margin-top: 1px;">현재나이</span>
+                                    <span class="slider-value" id="current-age-value">35세</span>
+                                </div>
+                                <input
+                                        type="range"
+                                        id="current-age"
+                                        class="age-range"
+                                        min="20"
+                                        max="65"
+                                        value="35"
+                                        th:field="*{currentAge}"
+                                />
+                                <div class="slider-min-max">
+                                    <span>20세</span>
+                                    <span>65세</span>
+                                </div>
                             </div>
-                            <input
-                                    type="range"
-                                    id="current-age"
-                                    class="age-range"
-                                    min="20"
-                                    max="65"
-                                    value="35"
-                            />
-                            <div class="slider-min-max">
-                                <span>20세</span>
-                                <span>65세</span>
-                            </div>
-                        </div>
 
-                        <!-- 은퇴나이 -->
-                        <div class="slider-group">
-                            <div class="slider-title">
-                                <span style="font-size: 16px; margin-top: 1px;">은퇴나이</span>
-                                <span class="slider-value" id="retire-age-value">55세</span>
-                            </div>
-                            <input
-                                    type="range"
-                                    id="retire-age"
-                                    class="age-range"
-                                    min="55"
-                                    max="85"
-                                    value="55"
-                            />
-                            <div class="slider-min-max">
-                                <span>55세</span>
-                                <span>85세</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-                    <div style="color: #252525; font-weight: 700; font-size: 20px;">02. 예상하는 기대수명을 입력해 주세요</div>
-                    <div class="slider-container" style="margin-top: 30px; margin-left: 40px;">
-                        <!-- 현재나이 -->
-                        <div class="slider-group">
-                            <div class="slider-title" style="text-align: center; width: 597px;">
-                                <span style="font-size: 16px; margin-top: 1px;">기대수명</span>
-                                <span class="slider-value" id="future-age-value">35세</span>
-                            </div>
-                            <input
-                                    type="range"
-                                    id="future-age"
-                                    class="age-range"
-                                    min="55"
-                                    max="110"
-                                    value="80"
-                                    style="width: 595px;"
-                            />
-                            <div class="slider-min-max" style="width: 595px;">
-                                <span>55세</span>
-                                <span>110세</span>
+                            <!-- 은퇴나이 -->
+                            <div class="slider-group">
+                                <div class="slider-title">
+                                    <span style="font-size: 16px; margin-top: 1px;">은퇴나이</span>
+                                    <span class="slider-value" id="retire-age-value">55세</span>
+                                </div>
+                                <input
+                                        type="range"
+                                        id="retire-age"
+                                        class="age-range"
+                                        min="55"
+                                        max="85"
+                                        value="55"
+                                        th:field="*{retireAge}"
+                                />
+                                <div class="slider-min-max">
+                                    <span>55세</span>
+                                    <span>85세</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-                    <div style="color: #252525; font-weight: 700; font-size: 20px;">03. 현재 월 생활비 정보를 입력해 주세요</div>
-                    <div style="border-bottom: 1px solid #b5b5b5; display: flex; align-items: center; padding-bottom: 8px; margin-top: 30px;">
-                        <div style="color: #686868; margin-right: 8px;">월 생활비</div>
-                        <div style="margin-right: 4px;"><input id="living-cost-input" type="text" value="200" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 555px;"></div>
-                        <div style="color: #1f1f1f; font-weight: 700;font-size: 23px; margin-bottom: 4px;">만원</div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 16px;">
-                        <div>
-                            <button type="button" class="living-btn-cost living-btn btn-pressable btn-sheen" data-amount="100" style="border-radius: 8px;">100만원</button>
-                            <button type="button" class="living-btn-cost living-btn btn-pressable btn-sheen" data-amount="200" style="border-radius: 8px;">200만원</button>
-                            <button type="button" class="living-btn-cost living-btn btn-pressable btn-sheen" data-amount="300" style="border-radius: 8px;">300만원</button>
-                        </div>
-                        <div style="font-size: 14px; color:#666;">
-                            은퇴 후 예상 생활비
-                            <span id="retire-living-text" style="color:#00804b; font-weight:700; margin-left:4px;">140만원</span>
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 422px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-                    <div style="color: #252525; font-weight: 700; font-size: 20px;">04. 추가로 저축할 기간과 월 저축금액을 입력해 주세요</div>
-                    <div style="border-bottom: 1px solid #b5b5b5; display: flex; align-items: center; padding-bottom: 8px; margin-top: 30px;">
-                        <div style="color: #686868; margin-right: 8px;">저축기간</div>
-                        <div style="margin-right: 4px;"><input id="year-input" type="text" value="10" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 580px;"></div>
-                        <div style="color: #1f1f1f; font-weight: 700;font-size: 23px; margin-bottom: 4px;">년</div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 16px;">
-                        <div style="margin-left: auto;">
-                            <button type="button" class="year-btn living-btn btn-pressable btn-sheen" data-amount2="5" style="border-radius: 8px;">5년</button>
-                            <button type="button" class="year-btn living-btn btn-pressable btn-sheen" data-amount2="10" style="border-radius: 8px;">10년</button>
-                            <button type="button" class="year-btn living-btn btn-pressable btn-sheen" data-amount2="20" style="border-radius: 8px;">20년</button>
-                            <button type="button" class="year-btn living-btn btn-pressable btn-sheen" data-amount2="30" style="border-radius: 8px;">30년</button>
-                        </div>
-                    </div>
-                    <div style="border-bottom: 1px solid #b5b5b5; display: flex; align-items: center; padding-bottom: 8px; margin-top: 30px;">
-                        <div style="color: #686868; margin-right: 8px;">월 저축금액</div>
-                        <div style="margin-right: 4px;"><input id="month-cost-input" type="text" value="100" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 540px;"></div>
-                        <div style="color: #1f1f1f; font-weight: 700;font-size: 23px; margin-bottom: 4px;">만원</div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 16px;">
-                        <div style="margin-left: auto;">
-                            <button type="button" class="month-living-btn living-btn btn-pressable btn-sheen" data-amount="10" style="border-radius: 8px;">10만원</button>
-                            <button type="button" class="month-living-btn living-btn btn-pressable btn-sheen" data-amount="50" style="border-radius: 8px;">50만원</button>
-                            <button type="button" class="month-living-btn living-btn btn-pressable btn-sheen" data-amount="100" style="border-radius: 8px;">100만원</button>
-                            <button type="button" class="month-living-btn living-btn btn-pressable btn-sheen" data-amount="300" style="border-radius: 8px;">300만원</button>
-                        </div>
-                    </div>
-                </div>
-                <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-                    <div style="color: #252525; font-weight: 700; font-size: 20px;">05. 예상하는 투자수익률과 물가상승률을 입력해 주세요</div>
-                    <div class="slider-container" style="display: flex; justify-content: center;margin-top: 30px;">
-                        <!--  -->
-                        <div class="slider-group">
-                            <div class="slider-title">
-                                <span style="font-size: 16px; margin-top: 1px;">투자수익률</span>
-                                <span class="slider-value" id="invest-value">4.0%</span>
-                            </div>
-                            <input
-                                    type="range"
-                                    id="invest"
-                                    class="age-range"
-                                    min="0"
-                                    max="20"
-                                    step="0.1"
-                                    value="4.0"
-                            />
-                            <div class="slider-min-max">
-                                <span>0%</span>
-                                <span>20%</span>
+                    <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                        <div style="color: #252525; font-weight: 700; font-size: 20px;">02. 예상하는 기대수명을 입력해 주세요</div>
+                        <div class="slider-container" style="margin-top: 30px; margin-left: 40px;">
+                            <!-- 현재나이 -->
+                            <div class="slider-group">
+                                <div class="slider-title" style="text-align: center; width: 597px;">
+                                    <span style="font-size: 16px; margin-top: 1px;">기대수명</span>
+                                    <span class="slider-value" id="future-age-value">35세</span>
+                                </div>
+                                <input
+                                        type="range"
+                                        id="future-age"
+                                        class="age-range"
+                                        min="55"
+                                        max="110"
+                                        value="80"
+                                        th:field="*{lifeExpectancy}"
+                                        style="width: 595px;"
+                                />
+                                <div class="slider-min-max" style="width: 595px;">
+                                    <span>55세</span>
+                                    <span>110세</span>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                    <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                        <div style="color: #252525; font-weight: 700; font-size: 20px;">03. 현재 월 생활비 정보를 입력해 주세요</div>
+                        <div style="border-bottom: 1px solid #b5b5b5; display: flex; align-items: center; padding-bottom: 8px; margin-top: 30px;">
+                            <div style="color: #686868; margin-right: 8px;">월 생활비</div>
+                            <div style="margin-right: 4px;"><input id="living-cost-input" type="text" value="200" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 555px;"
+                            th:field="*{currentMonthlyLivingCost}"></div>
+                            <div style="color: #1f1f1f; font-weight: 700;font-size: 23px; margin-bottom: 4px;">만원</div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 16px;">
+                            <div>
+                                <button type="button" class="living-btn-cost living-btn btn-pressable btn-sheen" data-amount="100" style="border-radius: 8px;">100만원</button>
+                                <button type="button" class="living-btn-cost living-btn btn-pressable btn-sheen" data-amount="200" style="border-radius: 8px;">200만원</button>
+                                <button type="button" class="living-btn-cost living-btn btn-pressable btn-sheen" data-amount="300" style="border-radius: 8px;">300만원</button>
+                            </div>
+                            <div style="font-size: 14px; color:#666;">
+                                은퇴 후 예상 생활비
+                                <span id="retire-living-text" style="color:#00804b; font-weight:700; margin-left:4px;">140만원</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 422px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                        <div style="color: #252525; font-weight: 700; font-size: 20px;">04. 추가로 저축할 기간과 월 저축금액을 입력해 주세요</div>
+                        <div style="border-bottom: 1px solid #b5b5b5; display: flex; align-items: center; padding-bottom: 8px; margin-top: 30px;">
+                            <div style="color: #686868; margin-right: 8px;">저축기간</div>
+                            <div style="margin-right: 4px;"><input id="year-input" type="text" value="10" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 580px;"
+                            th:field="*{savingYears}"></div>
+                            <div style="color: #1f1f1f; font-weight: 700;font-size: 23px; margin-bottom: 4px;">년</div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 16px;">
+                            <div style="margin-left: auto;">
+                                <button type="button" class="year-btn living-btn btn-pressable btn-sheen" data-amount2="5" style="border-radius: 8px;">5년</button>
+                                <button type="button" class="year-btn living-btn btn-pressable btn-sheen" data-amount2="10" style="border-radius: 8px;">10년</button>
+                                <button type="button" class="year-btn living-btn btn-pressable btn-sheen" data-amount2="20" style="border-radius: 8px;">20년</button>
+                                <button type="button" class="year-btn living-btn btn-pressable btn-sheen" data-amount2="30" style="border-radius: 8px;">30년</button>
+                            </div>
+                        </div>
+                        <div style="border-bottom: 1px solid #b5b5b5; display: flex; align-items: center; padding-bottom: 8px; margin-top: 30px;">
+                            <div style="color: #686868; margin-right: 8px;">월 저축금액</div>
+                            <div style="margin-right: 4px;"><input id="month-cost-input" type="text" value="100" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 540px;"
+                            th:field="*{monthlySavingAmount}"></div>
+                            <div style="color: #1f1f1f; font-weight: 700;font-size: 23px; margin-bottom: 4px;">만원</div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 16px;">
+                            <div style="margin-left: auto;">
+                                <button type="button" class="month-living-btn living-btn btn-pressable btn-sheen" data-amount="10" style="border-radius: 8px;">10만원</button>
+                                <button type="button" class="month-living-btn living-btn btn-pressable btn-sheen" data-amount="50" style="border-radius: 8px;">50만원</button>
+                                <button type="button" class="month-living-btn living-btn btn-pressable btn-sheen" data-amount="100" style="border-radius: 8px;">100만원</button>
+                                <button type="button" class="month-living-btn living-btn btn-pressable btn-sheen" data-amount="300" style="border-radius: 8px;">300만원</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                        <div style="color: #252525; font-weight: 700; font-size: 20px;">05. 예상하는 투자수익률과 물가상승률을 입력해 주세요</div>
+                        <div class="slider-container" style="display: flex; justify-content: center;margin-top: 30px;">
+                            <!--  -->
+                            <div class="slider-group">
+                                <div class="slider-title">
+                                    <span style="font-size: 16px; margin-top: 1px;">투자수익률</span>
+                                    <span class="slider-value" id="invest-value">4.0%</span>
+                                </div>
+                                <input
+                                        type="range"
+                                        id="invest"
+                                        class="age-range"
+                                        min="0"
+                                        max="20"
+                                        step="0.1"
+                                        value="4.0"
+                                        th:field="*{expectedReturnRate}"
+                                />
+                                <div class="slider-min-max">
+                                    <span>0%</span>
+                                    <span>20%</span>
+                                </div>
+                            </div>
 
-                        <!--  -->
-                        <div class="slider-group">
-                            <div class="slider-title">
-                                <span style="font-size: 16px; margin-top: 1px;">물가상승률</span>
-                                <span class="slider-value" id="price-value">3.0%</span>
-                            </div>
-                            <input
-                                    type="range"
-                                    id="price"
-                                    class="age-range"
-                                    min="0"
-                                    max="20"
-                                    step="0.1"
-                                    value="3.0"
-                            />
-                            <div class="slider-min-max">
-                                <span>0%</span>
-                                <span>20%</span>
+                            <!--  -->
+                            <div class="slider-group">
+                                <div class="slider-title">
+                                    <span style="font-size: 16px; margin-top: 1px;">물가상승률</span>
+                                    <span class="slider-value" id="price-value">3.0%</span>
+                                </div>
+                                <input
+                                        type="range"
+                                        id="price"
+                                        class="age-range"
+                                        min="0"
+                                        max="20"
+                                        step="0.1"
+                                        value="3.0"
+                                        th:field="*{inflationRate}"
+                                />
+                                <div class="slider-min-max">
+                                    <span>0%</span>
+                                    <span>20%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div style="display: flex; justify-content: center; margin-top:40px;">
-                    <button th:onclick="|location.href='@{/mypage/calc/result}'|" class="btn-register">
-                        결과보기
-                    </button>
-                </div>
+                    <div style="display: flex; justify-content: center; margin-top:40px;">
+                        <button type="submit" class="btn-register">
+                            결과보기
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
