@@ -45,6 +45,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath prmthd = createString("prmthd");
 
+    public final StringPath psubtitle = createString("psubtitle");
+
     public final StringPath pterms = createString("pterms");
 
     public final StringPath ptype = createString("ptype");
