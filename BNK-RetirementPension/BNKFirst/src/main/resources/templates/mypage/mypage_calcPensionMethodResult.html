@@ -396,8 +396,13 @@
                     연금 계산 결과
                 </div>
                 <div style="padding:60px; box-sizing: border-box; background-color: white; width: 800px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-                    <div style="color: #252525; font-weight: 700; font-size: 25px;">6개월 주기로 100만원을 15년간 수령하기 위해서는</div>
-                    <div style="color: #252525; font-weight: 700; font-size: 25px;"><span style="color:#de0000;">27,799,257원</span>이 필요해요</div>
+                    <div style="color: #252525; font-weight: 700; font-size: 25px;"
+                         th:text="${form.paymentCycleMonths} + '개월 주기로 '
+                                  + ${form.monthlyAmountMan} + '만원을 '
+                                  + ${form.years} + '년간 수령하기 위해서는'">6개월 주기로 100만원을 15년간 수령하기 위해서는</div>
+                    <div style="color: #252525; font-weight: 700; font-size: 25px;">
+                        <span style="color:#de0000;"
+                              th:text="${#numbers.formatInteger(result.currentNeedAmountWon, 0, 'COMMA')} + '원'">27,799,257원</span>이 필요해요</div>
                     <div class="retire-wrap">
 
                         <!-- 막대 그래프 -->
@@ -422,13 +427,15 @@
                             <div style="padding:30px; text-align: center; border-right:1px solid #eaeaea;">
                                 <div style="">
                                     <div style="font-size: 15px;color: #686868; margin-bottom: 3px;">현재 필요 금액</div>
-                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;">27,799,257원</div>
+                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;"
+                                         th:text="${#numbers.formatInteger(result.currentNeedAmountWon, 0, 'COMMA')} + '원'">27,799,257원</div>
                                 </div>
                             </div>
                             <div>
                                 <div style="padding:30px; text-align: center;">
                                     <div style="font-size: 15px;color: #686868; margin-bottom: 3px;">연금 수령금액 총액</div>
-                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;">30,000,000원</div>
+                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;"
+                                         th:text="${#numbers.formatInteger(result.totalPayoutAmountWon, 0, 'COMMA')} + '원'">30,000,000원</div>
                                 </div>
                             </div>
                         </div>
@@ -702,8 +709,8 @@
 </script>
 <script>
     // ------- 값 세팅 (여기만 바꾸면 전부 자동 계산됨!) -------
-    const current = 2780;
-    const retire = 3000;
+    const current = [[${result.currentNeedAmountMan}]];
+    const retire = [[${result.totalPayoutAmountMan}]];
 
     // 값 표시
     document.getElementById("valueCurrent").textContent = current + "만원";
