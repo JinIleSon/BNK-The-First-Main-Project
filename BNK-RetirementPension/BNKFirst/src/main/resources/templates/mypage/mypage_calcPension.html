@@ -462,9 +462,10 @@
 
 
                 <div id="section-by-asset" style="display:none;">
+                    <form th:action="@{/mypage/calc/pension/asset}" method="post" th:object="${assetForm}">
                     <div style="margin-top:25px; padding:60px; box-sizing: border-box; background-color: white; width: 800px; height: 272px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                         <div style="color: #252525; font-weight: 700; font-size: 20px;">02. 현재 나이와 예상되는 은퇴나이를 입력해 주세요</div>
-                        <div class="slider-container" style="display: flex; justify-content: center;margin-top: 30px;">
+                            <div class="slider-container" style="display: flex; justify-content: center;margin-top: 30px;">
                             <!-- 현재나이 -->
                             <div class="slider-group">
                                 <div class="slider-title">
@@ -478,6 +479,7 @@
                                         min="20"
                                         max="60"
                                         value="35"
+                                        th:field="*{currentAge}"
                                 />
                                 <div class="slider-min-max">
                                     <span>20세</span>
@@ -498,6 +500,7 @@
                                         min="40"
                                         max="80"
                                         value="55"
+                                        th:field="*{retireAge}"
                                 />
                                 <div class="slider-min-max">
                                     <span>40세</span>
@@ -510,7 +513,8 @@
                         <div style="color: #252525; font-weight: 700; font-size: 20px;">03. 연금 수령기간과 현재 보유한 자산을 입력해 주세요</div>
                         <div style="border-bottom: 1px solid #b5b5b5; display: flex; align-items: center; padding-bottom: 8px; margin-top: 30px;">
                             <div style="color: #686868; margin-right: 8px;">수령기간</div>
-                            <div style="margin-right: 4px;"><input id="year-input" type="text" placeholder="10~50" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 580px;"></div>
+                            <div style="margin-right: 4px;"><input id="year-input" type="text" placeholder="10~50" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 580px;"
+                                                                   th:field="*{pensionYears}"></div>
                             <div style="color: #1f1f1f; font-weight: 700;font-size: 23px; margin-bottom: 4px;">년</div>
                         </div>
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 16px;">
@@ -523,7 +527,8 @@
                         </div>
                         <div style="border-bottom: 1px solid #b5b5b5; display: flex; align-items: center; padding-bottom: 8px; margin-top: 30px;">
                             <div style="color: #686868; margin-right: 8px;">현재 보유자산</div>
-                            <div style="margin-right: 4px;"><input id="month-cost-input" type="text" placeholder="1~5,000,000" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 525px;"></div>
+                            <div style="margin-right: 4px;"><input id="month-cost-input" type="text" placeholder="1~5,000,000" style="border:none;font-size: 30px; text-align: end; font-weight: 700; width: 525px;"
+                                                                   th:field="*{currentAssetMan}"></div>
                             <div style="color: #1f1f1f; font-weight: 700;font-size: 23px; margin-bottom: 4px;">만원</div>
                         </div>
                     </div>
@@ -544,6 +549,7 @@
                                         max="20"
                                         step="0.1"
                                         value="3.0"
+                                        th:field="*{investAnnualRatePercent}"
                                 />
                                 <div class="slider-min-max">
                                     <span>0%</span>
@@ -565,6 +571,7 @@
                                         max="20"
                                         step="0.1"
                                         value="1.0"
+                                        th:field="*{pensionAnnualRatePercent}"
                                 />
                                 <div class="slider-min-max">
                                     <span>0%</span>
@@ -574,10 +581,11 @@
                         </div>
                     </div>
                     <div style="display: flex; justify-content: center; margin-top:40px;">
-                        <button th:onclick="|location.href='@{/mypage/calc/money/result}'|" class="btn-register">
+                        <button type="submit" class="btn-register">
                             결과보기
                         </button>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>

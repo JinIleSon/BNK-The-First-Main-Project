@@ -74,10 +74,6 @@ public class MypageController {
 
     // 연금 계산기 결과 - 연금수령방법 기준 - PensionCalcController로 이동
 
-    // 연금 계산기 결과 - 현재 보유자산 기준
-    @GetMapping("/mypage/calc/money/result")
-    public String calcMoneyResult(Model model) {
-        return "mypage/mypage_calcPensionMoneyResult";
-    }
-
+    // 연금 계산기 결과 - 현재 보유자산 기준 - PensionCalcController로 이동
+   
 }

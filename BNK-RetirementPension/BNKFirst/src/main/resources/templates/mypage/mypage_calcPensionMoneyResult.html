@@ -391,8 +391,11 @@
                     연금 계산 결과
                 </div>
                 <div style="padding:60px; box-sizing: border-box; background-color: white; width: 800px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
-                    <div style="color: #252525; font-weight: 700; font-size: 25px;">현재 보유자산 10만원으로</div>
-                    <div style="color: #252525; font-weight: 700; font-size: 25px;"><span style="color:#de0000;">55세 부터 20년간 매월 830원</span> 수령할 수 있어요</div>
+                    <div style="color: #252525; font-weight: 700; font-size: 25px;"
+                         th:text="|현재 보유자산 ${#numbers.formatInteger(result.currentAssetMan, 3, 'COMMA')}만원으로|">현재 보유자산 10만원으로</div>
+                    <div style="color: #252525; font-weight: 700; font-size: 25px;">
+                        <span style="color:#de0000;"
+                              th:text="|${result.retireAge}세 부터 ${result.pensionYears}년간 매월 ${#numbers.formatInteger(result.monthlyPension, 3, 'COMMA')}원|">55세 부터 20년간 매월 830원</span> 수령할 수 있어요</div>
                     <div class="retire-wrap">
 
                         <!-- 막대 그래프 -->
@@ -404,11 +407,13 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; text-align: center;">
                             <div>
                                 <div class="label">현재보유자산</div>
-                                <div class="value" id="valueCurrent"></div>
+                                <div class="value" id="valueCurrent"
+                                     th:text="|${#numbers.formatInteger(result.currentAssetMan, 3, 'COMMA')}만원|"></div>
                             </div>
                             <div>
                                 <div class="label">연금 개시시점 자산</div>
-                                <div class="value" id="valueRetire"></div>
+                                <div class="value" id="valueRetire"
+                                     th:text="|${#numbers.formatInteger(result.retirementAssetMan, 3, 'COMMA')}만원|"></div>
                             </div>
                         </div>
                     </div>
@@ -417,13 +422,15 @@
                             <div style="padding:30px; text-align: center; border-right:1px solid #eaeaea;">
                                 <div style="">
                                     <div style="font-size: 15px;color: #686868; margin-bottom: 3px;">연금 개시시점 자산</div>
-                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;">180,611원</div>
+                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;"
+                                         th:text="|${#numbers.formatInteger(result.retirementAsset, 3, 'COMMA')}원|">180,611원</div>
                                 </div>
                             </div>
                             <div>
                                 <div style="padding:30px; text-align: center;">
                                     <div style="font-size: 15px;color: #686868; margin-bottom: 3px;">매월 연금 수령 금액</div>
-                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;">830원</div>
+                                    <div style="color: #1f1f1f; font-size: 23px; font-weight: 700;"
+                                         th:text="|${#numbers.formatInteger(result.monthlyPension, 3, 'COMMA')}원|">830원</div>
                                 </div>
                             </div>
                         </div>
@@ -443,7 +450,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </main>
 
@@ -695,10 +701,10 @@
 
 
 </script>
-<script>
+<script th:inline="javascript">
     // ------- 값 세팅 (여기만 바꾸면 전부 자동 계산됨!) -------
-    const current = 10;
-    const retire = 18;
+    const current = [[${result.currentAssetMan}]];
+    const retire = [[${result.retirementAssetMan}]];
 
     // 값 표시
     document.getElementById("valueCurrent").textContent = current + "만원";
@@ -712,9 +718,6 @@
     document.getElementById("barCurrent").style.height = heightCurrent + "%";
     document.getElementById("barRetire").style.height = heightRetire + "%";
 
-    // 기준선: 낮은 막대 꼭대기 위치에 설정
-    const baselineHeight = Math.min(heightCurrent, heightRetire);
-    document.getElementById("baseline").style.bottom = baselineHeight + "%";
 </script>
 </body>
 </html>
