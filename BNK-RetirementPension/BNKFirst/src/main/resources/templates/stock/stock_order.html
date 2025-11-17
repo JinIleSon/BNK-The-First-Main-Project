@@ -252,6 +252,169 @@
             transition: left 0.4s ease, width 0.4s ease;
         }
     </style>
+    <style>
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;                 /* 항상 flex, 대신 투명도/포인터로 숨김 */
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+
+            opacity: 0;
+            /*visibility: hidden;*/
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .order-modal {
+            width: 460px;
+            max-width: calc(100% - 40px);
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px 28px 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+            font-size: 15px;
+            color: #222;
+        }
+
+        /* 보여줄 때 붙이는 클래스 */
+        .modal-overlay.show {
+            opacity: 1;
+            /*visibility: visible;*/
+            pointer-events: auto;
+        }
+
+        .order-modal-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .order-modal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .order-modal-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .order-modal-value {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .order-modal-sub {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .order-modal-divider {
+            border-top: 1px solid #eee;
+            margin: 14px 0 18px;
+        }
+
+        .order-modal-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-modal-actions {
+            display: flex;
+            margin-top: 24px;
+            gap: 10px;
+        }
+
+        .order-modal-btn {
+            flex: 1;
+            border-radius: 10px;
+            border: none;
+            padding: 12px 0;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .order-modal-btn-cancel {
+            background: #f4f4f5;
+            color: #333;
+        }
+
+        .order-modal-btn-confirm {
+            background: #e6424f;
+            color: #ffffff;
+        }
+
+        /* 토글 스위치 */
+        .modal-switch {
+            position: relative;
+            width: 46px;
+            height: 26px;
+            border-radius: 13px;
+            background: #e4e4ea;
+            display: inline-flex;
+            align-items: center;
+            padding: 3px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .modal-switch input {
+            display: none;
+        }
+
+        .modal-switch-slider {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ffffff;
+            transition: transform 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-switch input:checked + .modal-switch-slider {
+            transform: translateX(18px);
+        }
+    </style>
+    <style>
+        .toast {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: #181e27;
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 8px 18px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            z-index: 10000;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #22c55e;
+            margin-right: 8px;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -370,7 +533,7 @@
                                     </div>
                                 </div>
                                 <div style="margin-top: 10px;">
-                                    <button type="submit" style="cursor: pointer; background: #e6424f; border:none; border-radius: 8px; width: 100%; color: white; padding: 10px; font-size: 18px; font-weight: 700;">구매하기</button>
+                                    <button type="button" id="openOrderModal" style="cursor: pointer; background: #e6424f; border:none; border-radius: 8px; width: 100%; color: white; padding: 10px; font-size: 18px; font-weight: 700;">구매하기</button>
                                 </div>
                             </section>
                             <section class="order-section" data-section="sell" style="display: none;">
@@ -421,7 +584,7 @@
                                     </div>
                                 </div>
                                 <div style="margin-top: 10px;">
-                                    <button type="submit" style="cursor: pointer; background: #5184fc; border:none; border-radius: 8px; width: 100%; color: white; padding: 10px; font-size: 18px; font-weight: 700;">판매하기</button>
+                                    <button id="openSellModal" type="button" style="cursor: pointer; background: #5184fc; border:none; border-radius: 8px; width: 100%; color: white; padding: 10px; font-size: 18px; font-weight: 700;">판매하기</button>
                                 </div>
                             </section>
                             <section class="order-section" data-section="wait" style="display: none;">
@@ -447,6 +610,111 @@
 <footer>
     <div th:replace="~{layouts/footer.html}"></div>
 </footer>
+
+<!-- 주문 확인 모달 -->
+<div id="orderConfirmModal" class="modal-overlay">
+    <div class="order-modal" onclick="event.stopPropagation();">
+        <div class="order-modal-title">오라클 구매 1주</div>
+
+        <div class="order-modal-row">
+            <div class="order-modal-label">1주 희망가격</div>
+            <div class="order-modal-value">10,005원</div>
+        </div>
+
+        <div class="order-modal-row">
+            <div class="order-modal-label">
+                예상 수수료<br>
+                <span class="order-modal-sub">구매 수수료 무료</span>
+            </div>
+            <div class="order-modal-value">0원</div>
+        </div>
+
+        <div class="order-modal-row">
+            <div class="order-modal-label">총 주문 금액</div>
+            <div class="order-modal-value">10,005원</div>
+        </div>
+
+        <div class="order-modal-divider"></div>
+
+        <div class="order-modal-bottom">
+            <div class="order-modal-label">다음부터 확인창 없이 거래하기</div>
+            <label class="modal-switch">
+                <input type="checkbox" id="skipConfirm">
+                <span class="modal-switch-slider"></span>
+            </label>
+        </div>
+
+        <div class="order-modal-actions">
+            <button id="modalCancelBtn" class="order-modal-btn order-modal-btn-cancel">
+                취소
+            </button>
+            <button id="modalConfirmBtn" class="order-modal-btn order-modal-btn-confirm">
+                구매
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 판매 확인 모달 -->
+<div id="sellConfirmModal" class="modal-overlay">
+    <div class="order-modal" onclick="event.stopPropagation();">
+        <div class="order-modal-title">오라클 판매 1주</div>
+
+        <div class="order-modal-row">
+            <div class="order-modal-label">1주 판매가격</div>
+            <div class="order-modal-value">10,005원</div>
+        </div>
+
+        <div class="order-modal-row">
+            <div class="order-modal-label">
+                예상 수수료<br>
+                <span class="order-modal-sub">판매 수수료 무료</span>
+            </div>
+            <div class="order-modal-value">0원</div>
+        </div>
+
+        <div class="order-modal-row">
+            <div class="order-modal-label">총 주문 금액</div>
+            <div class="order-modal-value">10,005원</div>
+        </div>
+
+        <div class="order-modal-divider"></div>
+
+        <div class="order-modal-bottom">
+            <div class="order-modal-label">다음부터 확인창 없이 거래하기</div>
+            <label class="modal-switch">
+                <input type="checkbox" id="sellSkipConfirm">
+                <span class="modal-switch-slider"></span>
+            </label>
+        </div>
+
+        <div class="order-modal-actions">
+            <button id="sellModalCancelBtn"
+                    class="order-modal-btn order-modal-btn-cancel">
+                취소
+            </button>
+            <button id="sellModalConfirmBtn"
+                    class="order-modal-btn order-modal-btn-confirm"
+                    style="background:#5184fc;">
+                판매
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- 주문 완료 토스트 -->
+<div id="orderToast" class="toast">
+    <span class="toast-icon">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.5 4L6 9.5L3.5 7"
+                  stroke="white" stroke-width="1.6"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </span>
+    <span id="orderToastText">오라클 구매 주문 완료</span>
+</div>
+
 <script>
     // 일반 탭 active 처리 (위쪽 탭)
     function initTabs(ulId) {
@@ -751,6 +1019,94 @@
     document.addEventListener('DOMContentLoaded', function () {
         initOrderTabs('orderTabs', 'orderTabsActive');
     });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // === 구매 모달 ===
+        const openBtn    = document.getElementById('openOrderModal');   // 구매하기 버튼
+        const modal      = document.getElementById('orderConfirmModal');
+        const cancelBtn  = document.getElementById('modalCancelBtn');
+        const confirmBtn = document.getElementById('modalConfirmBtn');
+
+        if (openBtn && modal) {
+            openBtn.addEventListener('click', function () {
+                modal.classList.add('show');       // 서서히 나타남
+            });
+
+            // 오버레이 클릭 시 닫기
+            modal.addEventListener('click', function () {
+                modal.classList.remove('show');    // 서서히 사라짐
+            });
+        }
+
+
+        if (cancelBtn && modal) {
+            cancelBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                modal.classList.remove('show');
+            });
+        }
+
+        if (confirmBtn && modal) {
+            confirmBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                // TODO: 실제 구매 주문 로직
+
+                modal.classList.remove('show');
+                showOrderToast('오라클 구매 주문 완료');
+            });
+        }
+
+        // === 판매 모달 ===
+        const openSellBtn    = document.getElementById('openSellModal');   // 판매하기 버튼
+        const sellModal      = document.getElementById('sellConfirmModal');
+        const sellCancelBtn  = document.getElementById('sellModalCancelBtn');
+        const sellConfirmBtn = document.getElementById('sellModalConfirmBtn');
+
+        if (openSellBtn && sellModal) {
+            openSellBtn.addEventListener('click', function () {
+                sellModal.classList.add('show');
+            });
+
+            sellModal.addEventListener('click', function () {
+                sellModal.classList.remove('show');
+            });
+        }
+
+        if (sellCancelBtn && sellModal) {
+            sellCancelBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                sellModal.classList.remove('show');
+            });
+        }
+
+        if (sellConfirmBtn && sellModal) {
+            sellConfirmBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                // TODO: 실제 판매 주문 로직
+
+                sellModal.classList.remove('show');
+                showOrderToast('오라클 판매 주문 완료');
+            });
+        }
+    });
+</script>
+
+<script>
+    function showOrderToast(message) {
+        const toast = document.getElementById('orderToast');
+        const text  = document.getElementById('orderToastText');
+        if (!toast || !text) return;
+
+        text.textContent = message;
+        toast.classList.add('show');
+
+        // 이전 타이머가 있으면 제거
+        clearTimeout(window._orderToastTimer);
+        window._orderToastTimer = setTimeout(function () {
+            toast.classList.remove('show');
+        }, 1300); // 1.3초 후 사라짐
+    }
 </script>
 </body>
 </html>
