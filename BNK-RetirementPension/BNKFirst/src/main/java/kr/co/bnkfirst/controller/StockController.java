@@ -14,4 +14,9 @@ public class StockController {
     public String mainPage() {
         return "stock/stock_main";
     }
+
+    @GetMapping("/stock/order")
+    public String orderPage() {
+        return "stock/stock_order";
+    }
 }
