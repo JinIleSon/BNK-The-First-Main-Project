@@ -102,8 +102,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         title.innerText = productInfo.pname;
         subtitle.innerText = productInfo.psubtitle;
-        pbirate.innerText = productInfo.pbirate + '%';
-        phirate.innerText = productInfo.phirate + '%';
+        pbirate.innerText = productInfo.pbirate.toFixed(2) + '%';
+        phirate.innerText = productInfo.phirate.toFixed(2) + '%';
         pcprd.innerText = productInfo.pcprd;
         pjnfee.innerText = productInfo.pjnfee;
 
@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // console.log(JSON.parse(data.pterms));
             renderTerms(JSON.parse(data.pterms));
             renderIRInfo(JSON.parse(data.pirinfo));
+            renderDIInfo(JSON.parse(data.pdirate));
         } catch (e) {
             console.error('JSON 파싱 실패');
             return null;
@@ -212,16 +213,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     "content": [
                                         {
                                             "content": "부산은행 신용(체크)카드 후불교통 이용 실적 발생 월이 가입기간의 2/3개월 이상 존재하는 경우 적용",
-                                            "type": "text"
+                                            "type": "span"
                                         },
                                         {
                                             "content": "(단, 페이형식 결제(삼성페이, 페이코 등) 및 후불 하이패스 이용실적은 제외)",
                                             "color": "red",
-                                            "type": "text"
+                                            "type": "span"
                                         },
                                         {
                                             "content": "※ 대중교통의 범위 : 지하철, 시내버스, 시외버스, 공항버스",
-                                            "type": "text"
+                                            "type": "span"
                                         }
                                     ],
                                     "type": "list"
@@ -273,7 +274,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     ]
                 },
                 {
-                    "type": "text",
+                    "type": "p",
                     "content": "- 가입액 • 계약기간 • 적용금리 등 계약세부사항에 따라 변동될 수 있음"
                 }
             ]
@@ -308,18 +309,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 html += `</li></ul>`;
                 break;
-            case "text":
+            case "span":
                 if (infoJson.color != null) {
                     html += `<span style="color: ${infoJson.color}">${infoJson.content}</span>`;
                 } else {
                     html += `<span>${infoJson.content}</span>`;
                 }
-                console.log('text else : ' + infoJson.content);
+                // console.log('text else : ' + infoJson.content);
+                break;
+            case "p":
+                if (infoJson.color != null) {
+                    html += `<p style="color: ${infoJson.color}">${infoJson.content}</p>`;
+                } else {
+                    html += `<p>${infoJson.content}</p>`;
+                }
                 break;
             case "table":
                 html += '<table>';
                 for (const tr of infoJson.children) {
-                    html += '<tr>';
+                    html += '<tr style="text-align: center;">';
                     for (const td of tr.children) {
                         switch (td.type) {
                             case "th":
@@ -417,10 +425,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                     + `${td.content}</td>`;
             }
             html += `</tr>`;
-            console.log(html);
+            // console.log(html);
         }
         prodIrinfo.innerHTML = html;
     }
 
     // renderIRInfo(DUMMY_IRINFO);
+
+    function renderDIInfo(pdirate) {
+        const diinfoHeader = document.getElementById('diinfoHeader');
+        const prodDiinfo = document.getElementById('prodDiinfo');
+        diinfoHeader.innerText = `우대금리(최대 ${pdirate.maximum}%)`;
+        prodDiinfo.innerHTML = pdirate.content.map(li => `<li>${li}</li>`).join('');
+    }
 });
