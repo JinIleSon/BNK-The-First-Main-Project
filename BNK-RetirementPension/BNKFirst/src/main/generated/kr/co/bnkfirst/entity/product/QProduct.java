@@ -35,6 +35,8 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final StringPath pid = createString("pid");
 
+    public final StringPath pinfo = createString("pinfo");
+
     public final StringPath pirinfo = createString("pirinfo");
 
     public final StringPath pjnfee = createString("pjnfee");

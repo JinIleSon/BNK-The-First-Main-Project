@@ -26,6 +26,7 @@ public class ProductDTO {
     private String pterms;
     private String pdirate;
     private String psubtitle;
+    private String pinfo;
 
     public Product toEntity(){
         return Product.builder()
@@ -44,6 +45,7 @@ public class ProductDTO {
                 .pterms(pterms)
                 .pdirate(pdirate)
                 .psubtitle(psubtitle)
+                .pinfo(pinfo)
                 .build();
     }
 }

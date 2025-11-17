@@ -59,6 +59,8 @@ public class Product {
     private String pdirate;
     @Column(length = 500)
     private String psubtitle;
+    @Lob
+    private String pinfo;
 
     public ProductDTO toDTO(){
         return ProductDTO.builder()
@@ -79,6 +81,7 @@ public class Product {
                 .pterms(pterms)
                 .pdirate(pdirate)
                 .psubtitle(psubtitle)
+                .pinfo(pinfo)
                 .build();
     }
 }
