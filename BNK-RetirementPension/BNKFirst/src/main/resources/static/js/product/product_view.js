@@ -3,23 +3,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 렌더링
     fetchProduct().then(data => {
-            // console.log('check1');
+        // console.log('check1');
         renderProduct(data);
-            // console.log('check2');
+        // console.log('check2');
         try {
             // console.log(JSON.parse(data.pterms));
-            if (data.pterms !== null) {
+            if (data.pterms !== null)
                 renderTerms(JSON.parse(data.pterms));
-            }
             // console.log('check3');
-            if (data.pirinfo !== null) {
-                renderIRInfo(JSON.parse(data.pirinfo));}
-            // console.log('check4');
+            if (data.pirinfo !== null)
+                renderIRInfo(JSON.parse(data.pirinfo));
             // console.log('pdirate: '+data.pdirate);
             if (data.pdirate !== null) {
                 const pdirate = JSON.parse(data.pdirate);
                 renderDIInfo(pdirate);
-                initCalcFromRateTable(JSON.parse(data.pirinfo), Number(pdirate.maximum));
+                if (data.pirinfo !== null)
+                    initCalcFromRateTable(JSON.parse(data.pirinfo), Number(pdirate.maximum));
             } else {
                 const diinfoCard = document.getElementById('diinfoCard');
                 diinfoCard.style.display = "none";
