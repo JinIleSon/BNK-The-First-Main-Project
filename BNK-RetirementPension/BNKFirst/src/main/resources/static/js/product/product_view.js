@@ -7,8 +7,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             // console.log(JSON.parse(data.pterms));
             renderTerms(JSON.parse(data.pterms));
             renderIRInfo(JSON.parse(data.pirinfo));
-            renderDIInfo(JSON.parse(data.pdirate));
-            initCalcFromRateTable(JSON.parse(data.pirinfo));
+            const pdirate = JSON.parse(data.pdirate);
+            renderDIInfo(pdirate);
+            initCalcFromRateTable(JSON.parse(data.pirinfo), Number(pdirate.maximum));
         } catch (e) {
             console.error(e.message);
             return null;
