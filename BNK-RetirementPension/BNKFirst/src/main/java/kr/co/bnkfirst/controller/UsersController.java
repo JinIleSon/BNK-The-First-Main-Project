@@ -1,13 +1,10 @@
 package kr.co.bnkfirst.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -65,13 +62,30 @@ public class UsersController {
         return "member/member_terms";
     }
 
+    @PostMapping("/auth/save")
+    public String authSave(@ModelAttribute UsersDTO dto, HttpSession session) {
+
+        // 세션 저장
+        session.setAttribute("authData", dto);
+
+        return "redirect:/member/info";
+    }
+
+
     @GetMapping("/auth")
     public String memberAuth() {
         return "member/member_auth";
     }
 
     @GetMapping("/info")
-    public String memberInfo() {
+    public String memberInfo(HttpSession session, Model model) {
+
+        UsersDTO authData = (UsersDTO) session.getAttribute("authData");
+
+        if (authData != null) {
+            model.addAttribute("auth", authData);
+        }
+
         return "member/member_info";
     }
 
@@ -82,11 +96,11 @@ public class UsersController {
 
         if (result) {
             UsersDTO savedUser = usersService.findByMid(usersDTO.getMid());
-
             session.setAttribute("newUser", savedUser);
-            return "redirect:active";
+
+            return "redirect:/member/active";
         } else {
-            return "redirect:info";
+            return "redirect:/member/info";
         }
     }
 

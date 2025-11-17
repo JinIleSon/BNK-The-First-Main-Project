@@ -3,7 +3,7 @@ package kr.co.bnkfirst.service;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import kr.co.bnkfirst.dto.EmailDTO;
+import kr.co.bnkfirst.dto.VerificationDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +25,7 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
-    private final EmailDTO sessionData;
+    private final VerificationDTO sessionData;
 
     public void sendCode(String receiver) {
         log.info(">>> EmailService.sendCode called, receiver={}", receiver);

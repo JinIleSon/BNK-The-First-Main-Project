@@ -11,18 +11,15 @@ import org.springframework.web.context.annotation.SessionScope;
 @Data
 @Component
 @SessionScope
-public class EmailDTO {
+public class VerificationDTO {
 
     // 이메일
     private String code;
     private long codeTimestamp;
     private boolean verified = false;
 
-    // SMS 코드 현재 미구현
-    /*
+    // SMS 코드
     private String smsCode;
     private Long smsCodeTimestamp;
     private boolean smsVerified = false;
-     */
-
 }
