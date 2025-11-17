@@ -1,32 +1,20 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    /* 데모 데이터 */
-    const PRODUCT = {
-        name: 'BNK 스마트정기예금',
-        baseRate: 2.8, maxRate: 3.5   // 연이율(%)
-    };
-    const fmtKR = n => n.toLocaleString('ko-KR');
+    const {initCalcFromRateTable} = await import('/BNK/js/product/init-calc.js');
 
-    /* 초기 표시 */
-    document.getElementById('baseRate').textContent = PRODUCT.baseRate.toFixed(2) + '%';
-    document.getElementById('maxRate').textContent = PRODUCT.maxRate.toFixed(2) + '%';
-    document.getElementById('rateBig').textContent = PRODUCT.maxRate.toFixed(2) + '%';
+    fetchProduct().then(data => {
+        renderProduct(data);
+        try {
+            // console.log(JSON.parse(data.pterms));
+            renderTerms(JSON.parse(data.pterms));
+            renderIRInfo(JSON.parse(data.pirinfo));
+            renderDIInfo(JSON.parse(data.pdirate));
+            initCalcFromRateTable(JSON.parse(data.pirinfo));
+        } catch (e) {
+            console.error(e.message);
+            return null;
+        }
+    });
 
-    /* 이자 계산(단리 데모) */
-    function recalc() {
-        const amount = Math.max(0, Number(document.getElementById('amount').value || 0));
-        const months = Number(document.getElementById('period').value);
-        const r = PRODUCT.maxRate / 100;
-
-        const interest = Math.floor(amount * r * (months / 12));
-        const total = amount + interest;
-
-        document.getElementById('sumInt').textContent = fmtKR(interest) + '원';
-        document.getElementById('sumAmt').textContent = fmtKR(total) + '원';
-    }
-
-    document.getElementById('amount').addEventListener('input', recalc);
-    document.getElementById('period').addEventListener('change', recalc);
-    recalc();
 
     /* (옵션) 탭은 데모용 상태토글 */
     document.querySelectorAll('.tab').forEach(btn => {
@@ -117,19 +105,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             prmthd.style.display = "none";
         }
     }
-
-    fetchProduct().then(data => {
-        renderProduct(data);
-        try {
-            // console.log(JSON.parse(data.pterms));
-            renderTerms(JSON.parse(data.pterms));
-            renderIRInfo(JSON.parse(data.pirinfo));
-            renderDIInfo(JSON.parse(data.pdirate));
-        } catch (e) {
-            console.error('JSON 파싱 실패');
-            return null;
-        }
-    });
 
     // 약관 데이터 (원하면 URL을 실제 파일로 교체)
     // const TERMS = [

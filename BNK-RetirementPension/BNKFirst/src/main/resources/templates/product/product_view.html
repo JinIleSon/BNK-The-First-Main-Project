@@ -225,12 +225,9 @@
 
                             <div class="row">
                                 <label for="period">예치기간</label>
-                                <select id="period">
-                                    <option value="6">6개월</option>
-                                    <option value="12" selected>12개월</option>
-                                    <option value="24">24개월</option>
-                                    <option value="36">36개월</option>
-                                </select>
+                                <input id="period" class="input" type="number"
+                                       min="1" step="1" value="12" aria-describedby="perHelp">
+                                <div id="perHelp" class="small">단위: 개월</div>
                             </div>
 
                             <div class="row">
