@@ -104,7 +104,7 @@ function updateRateBig(ratePct) {
 }
 
 /* 계산기: input 값(개월)로 바로 계산 */
-function recalc() {
+function recalc(dirMax) {
     const amount = Math.max(0, Number(document.getElementById('amount').value || 0));
     let months = Number(document.getElementById('period').value);
 
@@ -112,7 +112,7 @@ function recalc() {
         months = 0; // 방어
     }
 
-    const maxRatePct = findRateByMonths(RULES, months) ?? 0;
+    const maxRatePct = findRateByMonths(RULES, months) + dirMax ?? 0;
     updateRateBig(maxRatePct);
 
     const r = maxRatePct / 100;
@@ -159,8 +159,48 @@ function maxMonthsFromRules(rules) {
     return candidates.length ? Math.max(...candidates) : 0;
 }
 
+// "3개월이상 6개월미만" → 3
+// "12개월 초과 ~ 24개월 이하" → 13
+// "N개월 이상" → N,  "N개월 초과" → N+1
+// "N개월 이하/이내/미만" → 하한 없음으로 보고 1
+// "36개월" → 36
+function lowerBoundMonths(label) {
+    const s = String(label).replace(/\s+/g, ' ').trim();
+
+    // 범위: A (이상|초과)? [구분자 생략 가능] B (미만|이하)?
+    let r = s.match(/(\d+\s*(?:개월|년))\s*(이상|초과)?\s*(?:[~\-]\s*|\s+)?(\d+\s*(?:개월|년))\s*(미만|이하)?/);
+    if (r) {
+        const lower = unitToMonths(r[1]);
+        const open  = r[2] === '초과';       // '초과'면 열린 경계
+        return open ? lower + 1 : lower;     // 초과 → +1, 이상 → 그대로
+    }
+
+    // 단독 하한
+    r = s.match(/^(\d+\s*(?:개월|년))\s*이상$/);
+    if (r) return unitToMonths(r[1]);
+    r = s.match(/^(\d+\s*(?:개월|년))\s*초과$/);
+    if (r) return unitToMonths(r[1]) + 1;
+
+    // 단독 상한(하한 없음) → 1로 간주
+    if (/이하$|이내$|미만$/.test(s)) return 1;
+
+    // 정확히 N개월/년
+    r = s.match(/^(\d+\s*(?:개월|년))$/);
+    if (r) return unitToMonths(r[1]);
+
+    return NaN; // 인식 실패
+}
+
+function minMonthsFromRules(rules) {
+    const candidates = rules
+        .map(r => lowerBoundMonths(r.label))
+        .filter(v => Number.isFinite(v) && v > 0);
+    // 하한이 하나도 없으면 기본 1개월
+    return candidates.length ? Math.min(...candidates) : 1;
+}
+
 /* ================== 3) 공개 API ================== */
-export function initCalcFromRateTable(rateTable) {
+export function initCalcFromRateTable(rateTable, dirMax) {
     // 문자열로 올 수도 있음
     if (!Array.isArray(rateTable)) {
         if (typeof rateTable === 'string') {
@@ -182,34 +222,37 @@ export function initCalcFromRateTable(rateTable) {
 
     if (!periodEl) throw new Error('#period input element not found.');
 
+    const minM = minMonthsFromRules(RULES);
     const maxM = maxMonthsFromRules(RULES);
-    if (Number.isFinite(maxM) && maxM > 0) {
-        periodEl.max = String(maxM);
-        const cur = Number(periodEl.value || 0);
-        if (cur > maxM) periodEl.value = String(maxM);
+    periodEl.min = String(minM);
+    if (Number.isFinite(maxM) && maxM > 0) periodEl.max = String(maxM);
 
-        const help = document.getElementById('perHelp');
-        if (help) help.textContent = `단위: 개월 (최대 ${maxM}개월)`;
-    }
+    // 현재 값이 범위 밖이면 보정
+    let cur = Number(periodEl.value || 0);
+    if (!Number.isFinite(cur) || cur < minM) cur = minM;
+    if (Number.isFinite(maxM) && cur > maxM) cur = maxM;
+    periodEl.value = String(Math.floor(cur));
+
+    // 도움말 업데이트
+    const help = document.getElementById('perHelp');
+    if (help) help.textContent = `단위: 개월 (최소 ${minM}개월${maxM ? `, 최대 ${maxM}개월` : ''})`;
 
     // 숫자 입력에 맞춰 이벤트 변경
     amountEl?.addEventListener('input', recalc);
     periodEl.addEventListener('input', () => {
-        // (옵션) min/max 강제 보정
         const min = Number(periodEl.min || 1);
         const max = Number(periodEl.max || 600);
         let v = Number(periodEl.value || 0);
         if (Number.isFinite(v)) {
             if (v < min) v = min;
             if (v > max) v = max;
-            // 정수만 허용
             v = Math.floor(v);
             if (String(v) !== periodEl.value) periodEl.value = String(v);
         }
-        recalc();
+        recalc(dirMax);
     });
 
-    recalc();
+    recalc(dirMax);
 }
 
 /* ================== 4) 함수 테스트 ================== */
