@@ -14,4 +14,7 @@ public interface UsersMapper {
     // 정보입력(info) 아이디 중복확인
     int existsByMid(@Param("mid") String mid);
 
+    // 아이디찾기(findid) Phone & Email
+    String findIdByPhone(@Param("name") String name, @Param("phone") String phone);
+    String findIdByEmail(@Param("name") String name, @Param("email") String email);
 }

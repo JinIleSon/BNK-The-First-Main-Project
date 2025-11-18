@@ -36,7 +36,7 @@
           </tr>
         </table>
 
-        <!-- ✅ 인증 방식 스위치 -->
+        <!-- 인증 방식 스위치 -->
         <div class="method-switch" role="tablist" aria-label="비밀번호 찾기 인증 방식">
           <button type="button" class="method-btn active" role="tab" aria-selected="true" aria-controls="panel-phone" id="tab-phone">휴대전화로 인증</button>
           <button type="button" class="method-btn" role="tab" aria-selected="false" aria-controls="panel-email" id="tab-email">이메일로 인증</button>
@@ -44,7 +44,7 @@
 
         <!-- 입력 테이블 -->
         <table class="login-table" style="margin-top: 12px;">
-          <!-- ✅ 휴대전화 인증 패널 -->
+          <!-- 휴대전화 인증 패널 -->
           <tbody id="panel-phone" class="method-panel" role="tabpanel" aria-labelledby="tab-phone">
             <tr class="field-row">
               <td class="field-label">아이디</td>
@@ -58,24 +58,24 @@
               <td class="field-label">휴대폰 번호</td>
             </tr>
             <tr class="field-row">
-              <td style="margin-bottom: 19px;">
-                <div class="phone-certify-row" style="max-width: 522px;">
-                    <input type="text" name="member_phone" placeholder="010-0000-0000" autocomplete="tel">
-                    <button type="button" class="btn-register btn-certify" id="send-sms">인증번호 발송</button>
-                </div>
-              </td>
-            </tr>
-            <tr class="field-row">
-              <td style="margin-bottom: 19px;">
-                <div class="phone-certify-row" style="max-width: 522px;">
-                    <input type="text" name="sms_code" placeholder="인증번호 입력" autocomplete="one-time-code">
-                    <button type="button" class="btn-register" id="check-sms">확인</button>
-                </div>
-              </td>
+                <td style="margin-bottom: 19px;">
+                    <div style="display: flex; align-items: center; gap: 12px; max-width: 522px">
+                        <input type="text" name="member_phone"
+                               placeholder="010-0000-0000" autocomplete="tel"
+                               style="width: 200px; height: 40px; border:1px solid #bbb; border-radius:10px; padding:0 10px;">
+                        <button type="button" class="btn-register btn-certify" id="send-sms"
+                                style="height: 40px;">인증요청</button>
+                        <input type="text" name="sms_code"
+                               placeholder="인증번호 입력" autocomplete="one-time-code"
+                               style="width: 100px; height: 40px; border:1px solid #bbb; border-radius:10px; padding:0 10px;">
+                        <button type="button" class="btn-register" id="check-sms"
+                                style="height: 40px;">확인</button>
+                    </div>
+                </td>
             </tr>
           </tbody>
 
-          <!-- ✅ 이메일 인증 패널 -->
+          <!-- 이메일 인증 패널 -->
           <tbody id="panel-email" class="method-panel hidden" role="tabpanel" aria-labelledby="tab-email" aria-hidden="true">
             <tr class="field-row">
               <td class="field-label">아이디</td>
@@ -89,20 +89,20 @@
               <td class="field-label">이메일 주소</td>
             </tr>
             <tr class="field-row">
-              <td style="margin-bottom: 19px;">
-                <div class="phone-certify-row" style="max-width: 522px;">
-                    <input type="text" name="member_email" placeholder="example@email.com" autocomplete="email">
-                    <button type="button" class="btn-register btn-certify" id="send-mail">인증번호 발송</button>
-                </div>
-              </td>
-            </tr>
-            <tr class="field-row">
-              <td style="margin-bottom: 19px;">
-                <div class="phone-certify-row" style="max-width: 522px;">
-                    <input type="text" name="mail_code" placeholder="인증번호 입력" autocomplete="one-time-code">
-                    <button type="button" class="btn-register" id="check-mail">확인</button>
-                </div>
-              </td>
+                <td style="margin-bottom: 19px;">
+                    <div style="display: flex; align-items: center; gap: 12px; max-width: 522px">
+                        <input type="text" name="member_email"
+                               placeholder="example@email.com" autocomplete="email"
+                               style="width: 230px; height: 40px; border:1px solid #bbb; border-radius:10px; padding:0 10px;">
+                        <button type="button" class="btn-register btn-certify" id="send-mail"
+                                style="height: 40px;">인증요청</button>
+                        <input type="text" name="mail_code"
+                               placeholder="인증번호 입력" autocomplete="one-time-code"
+                               style="width: 80px; height: 40px; border:1px solid #bbb; border-radius:10px; padding:0 10px;">
+                        <button type="button" class="btn-register" id="check-mail"
+                                style="height: 40px;">확인</button>
+                    </div>
+                </td>
             </tr>
           </tbody>
 
@@ -125,7 +125,7 @@
   </div>
 </main>
 
-<!-- ✅ 모달: 비밀번호 결과 -->
+<!-- 모달: 비밀번호 결과 -->
 <div id="pw-result-modal" class="id-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="pw-modal-title">
   <div class="id-modal-backdrop" data-dismiss="modal"></div>
   <div class="id-modal-dialog" role="document">
@@ -269,11 +269,6 @@
   .field-td input {
     width: 400px; height: 44px; border: 1px solid #e5e7eb; border-radius: 10px; box-sizing: border-box; padding: 0 12px; outline: none;
   }
-  .sep-dot{ margin: 0 8px; }
-
-  .notice {
-    margin-top: 15px; background: #eef4ff; border: 1px solid #c7d7ff; color: #1f3b8f; border-radius: 12px; padding: 20px 30px; display: flex; gap: 8px;
-  }
 
   .field-row { display: flex; }
   .field-row input { width: 500px; height: 25px; border: 1px solid #bbb; padding: 10px; border-radius: 10px; }
@@ -287,7 +282,7 @@
   .phone-certify-row { display: flex; align-items: center; gap: 10px; }
   .btn-certify { width: 100px; height: 44px; font-size: 14px; flex-shrink: 0; }
 
-  /* ✅ 방식 스위치 */
+  /*  방식 스위치 */
   .method-switch {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -314,7 +309,7 @@
   /* 패널 토글 */
   .method-panel.hidden { display: none; }
 
-  /* ✅ 모달 스타일 (아이디/비번 공통) */
+  /* 모달 스타일 (아이디/비번 공통) */
   .id-modal { position: fixed; inset: 0; display: none; z-index: 10000; }
   .id-modal.open { display: block; }
   .id-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.35); }
@@ -327,5 +322,11 @@
   .id-modal-close { appearance: none; background: transparent; border: none; font-size: 20px; line-height: 1; cursor: pointer; }
   .id-modal-body { padding: 18px; color: #374151; }
   .id-modal-footer { padding: 14px 18px 20px; display: flex; justify-content: center; }
+
+  .form-card input:focus {
+      outline: none;
+      border-color: #d1d5db;
+      box-shadow: 0 0 0 3px rgba(214, 0, 28, .12);
+  }
 </style>
 </html>
