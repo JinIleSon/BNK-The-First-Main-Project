@@ -12,7 +12,7 @@
     <header>
         <div id="header" th:replace="~{layouts/header.html}"></div>
     </header>
-    <main>
+    <main id="wizard" th:attr="data-has-info=${hasInsertInfo}">
         <!-- 1) 스텝퍼 -->
         <ol class="stepper" id="wizardSteps" aria-label="신청 진행 단계">
             <li class="step active" aria-current="step"><span class="dot">1</span> 본인확인서 등록</li>
@@ -54,7 +54,7 @@
                     <form id="customerForm" class="form-grid">
                         <div class="form-group">
                             <label for="name">성명<span class="req">*</span></label>
-                            <input id="name" type="text" placeholder="홍길동">
+                            <input id="name" name="name" type="text" placeholder="홍길동">
                         </div>
 
                         <div class="form-group">
@@ -67,22 +67,38 @@
 
                         <div class="form-group">
                             <label for="birth">생년월일<span class="req">*</span></label>
-                            <input id="birth" type="date" placeholder="YYYY-MM-DD">
+                            <input id="birth" name="brthdt" type="date" placeholder="YYYY-MM-DD">
                         </div>
 
                         <div class="form-group">
                             <label for="nation">국적<span class="req">*</span></label>
-                            <select id="nation">
-                                <option>선택해 주세요</option>
-                                <option>대한민국</option>
-                                <option>미국</option>
-                                <option>일본</option>
+                            <select id="nation" name="natcd">
+                                <option value="">-- 선택하세요 --</option>
+                                <option value="KR">대한민국</option>
+                                <option value="US">미국</option>
+                                <option value="JP">일본</option>
+                                <option value="CN">중국</option>
+                                <option value="GB">영국</option>
+                                <option value="FR">프랑스</option>
+                                <option value="DE">독일</option>
+                                <option value="CA">캐나다</option>
+                                <option value="AU">호주</option>
+                                <option value="SG">싱가포르</option>
+                                <option value="VN">베트남</option>
+                                <option value="TH">태국</option>
+                                <option value="PH">필리핀</option>
+                                <option value="IN">인도</option>
+                                <option value="ID">인도네시아</option>
+                                <option value="MY">말레이시아</option>
+                                <option value="RU">러시아</option>
+                                <option value="BR">브라질</option>
+                                <option value="ZA">남아프리카공화국</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="residence">귀속연도<span class="req">*</span></label>
-                            <select id="residence">
+                            <label for="taxyr">귀속연도<span class="req">*</span></label>
+                            <select id="taxyr">
                                 <option>선택해 주세요</option>
                                 <option>2025</option>
                                 <option>2024</option>
@@ -98,20 +114,20 @@
                         <div class="form-group">
                             <label for="engLastName">영문성명<span class="req">*</span></label>
                             <div style="display: flex; gap: 10px;">
-                                <input id="engLastName" class="engName" type="text" placeholder="HONG">
-                                <input id="engFirstName" class="engName" type="text" placeholder="GIL DONG">
+                                <input id="engLastName" class="engName" name="enlnm" type="text" placeholder="HONG">
+                                <input id="engFirstName" class="engName" name="enfnm" type="text" placeholder="GIL DONG">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="phone">휴대전화번호<span class="req">*</span></label>
-                            <input id="phone" type="tel" placeholder="010-1234-5678">
+                            <input id="phone" name="phone" type="tel" placeholder="010-1234-5678">
                         </div>
 
                         <div class="form-group full">
                             <label>주소<span class="req">*</span></label>
                             <div class="addr-row">
-                                <input name="zipcode" type="text" placeholder="우편번호" style="flex:none">
+                                <input name="zipcd" type="text" placeholder="우편번호" style="flex:none">
                                 <button type="button" class="btn-white small">주소검색</button>
                             </div>
                             <input name="addr1" type="text" placeholder="도로명 주소">
@@ -126,12 +142,12 @@
                     확인사항(해당하는 항복에 모두 체크)
                 </h2>
                 <label class="confirm-item" for="isKorean">
-                    <input type="checkbox" name="nation" id="isKorean">
+                    <input type="checkbox" name="krres" id="isKorean">
                     조세목적상 한국 거주자에 해당합니다.
                     <img th:src="@{/images/product/detail-grey.png}" alt="세부정보">
                 </label>
                 <label class="confirm-item" for="isForeign">
-                    <input type="checkbox" name="nation" id="isForeign">
+                    <input type="checkbox" name="others" id="isForeign">
                     한국 외에 조세목적상 거주지국이 있습니다.
                 </label>
             </article>
