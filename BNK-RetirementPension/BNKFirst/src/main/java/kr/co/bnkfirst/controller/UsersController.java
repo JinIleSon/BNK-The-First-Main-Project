@@ -9,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @RequiredArgsConstructor
 @Controller
@@ -27,9 +30,11 @@ public class UsersController {
             return "redirect:/member/main";
         }
 
-        // 로그인 성공 시 세션 저장 + 30분 유지
+        // 로그인 성공 시 세션 저장 + 20분 유지
         session.setAttribute("loginUser", foundUser);
-        session.setMaxInactiveInterval(1800);
+        session.setMaxInactiveInterval(1200);
+        session.setAttribute("sessionStart", System.currentTimeMillis());
+
         log.info("로그인 성공: {}", foundUser.getMid());
 
         return "redirect:/main/main";
@@ -54,6 +59,14 @@ public class UsersController {
     @GetMapping("/logout")
     @ResponseBody
     public void logout(HttpSession session) {
+        UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            log.info("비로그인 상태에서 로그아웃 접근 발생");
+            return;
+        }
+        log.info("로그아웃 성공 : {}", loginUser.getMid());
+
         session.invalidate();
     }
 
@@ -126,8 +139,8 @@ public class UsersController {
                         "   <joinDate>SYSDATE</joinDate>" +
                         "</extra>";
 
-        model.addAttribute("member", newUser);  // DTO 그대로 전달
-        model.addAttribute("xml", xml);         // XML 별도 전달
+        model.addAttribute("member", newUser);
+        model.addAttribute("xml", xml);
 
         return "member/member_active";
     }
@@ -140,6 +153,48 @@ public class UsersController {
     @GetMapping("/findpw")
     public String memberFindpw() {
         return "member/member_findpw";
+    }
+
+    // 현재 세션 남은 시간 조회
+    // 현재 세션 남은 시간 조회
+    @GetMapping("/session/remaining")
+    @ResponseBody
+    public Map<String, Object> getRemaining(HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+
+        Object loginUser = session.getAttribute("loginUser");
+        if (loginUser == null) {
+            result.put("remainSeconds", 0);
+            return result;
+        }
+        Long startTime = (Long) session.getAttribute("sessionStart");
+        if (startTime == null) {
+            // 혹시 null이면 다시 저장 (예외 처리용)
+            startTime = System.currentTimeMillis();
+            session.setAttribute("sessionStart", startTime);
+        }
+        long now = System.currentTimeMillis();
+        long passed = (now - startTime) / 1000;
+        long remain = 1200 - passed;
+        if (remain < 0) remain = 0;
+
+        result.put("remainSeconds", remain);
+        return result;
+    }
+
+    // 세션 연장 (다시 20분으로 리셋)
+    @PostMapping("/session/extend")
+    @ResponseBody
+    public Map<String, Object> extend(HttpSession session) {
+
+        Object loginUser = session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return Map.of("remainSeconds", 0);
+        }
+        session.setAttribute("sessionStart", System.currentTimeMillis());
+        session.setMaxInactiveInterval(1200);
+
+        return getRemaining(session);
     }
 
 }
