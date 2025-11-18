@@ -67,7 +67,9 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME}
+#    username: ${MAIL_USERNAME}
+    # 오류 방지를 위한 더미 이메일 주소 : 추후 수정 필요
+    username: dummy@email.com
     password: ${MAIL_PASSWORD}
     properties:
       mail:
