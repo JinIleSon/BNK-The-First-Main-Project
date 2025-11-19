@@ -173,7 +173,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // 본인확인서 미등록시 step1에서 제출 동작
         if (!getHasInfo() && currentStep === 1) {
             // 서버 제출 동작(fetch)
+            const fd = new FormData(form1);
+            await fetch('/BNK/product/slfcert', {
+                    method: 'POST',
+                    body: fd
+                }).then(res => {
+                console.log(res.body);
             alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
+            }).catch(e => {
+                console.error(e.messages);
+            });
         }
         showStep(currentStep + 1);
     });
