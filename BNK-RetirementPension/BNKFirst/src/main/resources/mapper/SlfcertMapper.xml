@@ -6,7 +6,7 @@
 <mapper namespace="kr.co.bnkfirst.mapper.SlfcertMapper">
     <sql id="expdtValue">
         <choose>
-            <when test="#{slfcertDTO.ftype} == 'W8'">
+            <when test="#{SlfcertDTO.ftype} == 'W8'">
                 REPLACE(TO_CHAR(SYSDATE), SUBSTR(TO_CHAR(SYSDATE),1,4), TO_CHAR(SUBSTR(TO_CHAR(SYSDATE), 1, 4)+3)),
             </when>
             <otherwise>NULL,</otherwise>
@@ -14,7 +14,7 @@
     </sql>
     <sql id="krresValue">
         <choose>
-            <when test="#{slfcertDTO.krres} == 'on'">
+            <when test="#{SlfcertDTO.krres} == 'on'">
                 'Y',
             </when>
             <otherwise>
@@ -24,7 +24,7 @@
     </sql>
     <sql id="othersValue">
         <choose>
-            <when test="#{slfcertDTO.others} == 'on'">
+            <when test="#{SlfcertDTO.others} == 'on'">
                 'Y',
             </when>
             <otherwise>
@@ -36,24 +36,24 @@
         INSERT INTO SLFCERT (cusid, ftype, signdt, expdt, sts, taxyr, krres, "OTHERS",
                              natcd, name, gender, brthdt, zipcd, addr1, addr2, enlnm, enfnm,
                              phone, crtdt, uptdt)
-        VALUES (#{slfcertDTO.cusid},
-        VALUES (#{slfcertDTO.ftype},
+        VALUES (#{SlfcertDTO.cusid},
+        VALUES (#{SlfcertDTO.ftype},
                 SYSDATE,
                 <include refid="expdtValue"/>
                 'VALID',
-                #{slfcertDTO.taxyr}
+                #{SlfcertDTO.taxyr}
                 <include refid="krresValue"/>
                 <include refid="othersValue"/>
-                #{slfcertDTO.natcd},
-                #{slfcertDTO.name},
-                #{slfcertDTO.gender},
-                DATE #{slfcertDTO.brthdt},
-                #{slfcertDTO.zipcd},
-                #{slfcertDTO.addr1},
-                #{slfcertDTO.addr2},
-                #{slfcertDTO.enlnm},
-                #{slfcertDTO.enfnm},
-                #{slfcertDTO.phone},
+                #{SlfcertDTO.natcd},
+                #{SlfcertDTO.name},
+                #{SlfcertDTO.gender},
+                DATE #{SlfcertDTO.brthdt},
+                #{SlfcertDTO.zipcd},
+                #{SlfcertDTO.addr1},
+                #{SlfcertDTO.addr2},
+                #{SlfcertDTO.enlnm},
+                #{SlfcertDTO.enfnm},
+                #{SlfcertDTO.phone},
                 SYSTIMESTAMP,
                 SYSTIMESTAMP)
     </insert>

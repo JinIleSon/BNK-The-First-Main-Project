@@ -13,7 +13,7 @@ public class SlfcertService {
     private final SlfcertMapper slfcertMapper;
 
     public Optional<SlfcertDTO> saveSlfcert(SlfcertDTO slfcertDTO){
-        if (slfcertDTO.getNatcd() == "US")
+        if (slfcertDTO.getNatcd().equals("US"))
             slfcertDTO.setFtype("W9");
         else {
             slfcertDTO.setFtype("W8");

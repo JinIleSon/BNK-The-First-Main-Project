@@ -5,6 +5,7 @@ import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.dto.product.SlfcertDTO;
 import kr.co.bnkfirst.service.ProductService;
+import kr.co.bnkfirst.service.SlfcertService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
+    private final SlfcertService slfcertService;
 
     @GetMapping("/product/main")
     public String mainPage() {
@@ -76,7 +78,11 @@ public class ProductController {
     @PostMapping("/product/slfcert")
     public ResponseEntity<SlfcertDTO> slfcertForm(SlfcertDTO slfcertDTO) {
         log.info("slfcert {}", slfcertDTO);
-        return ResponseEntity.ok(slfcertDTO);
+        Optional<SlfcertDTO> savedSlfcert = slfcertService.saveSlfcert(slfcertDTO);
+        if(savedSlfcert.isPresent()) {
+            return ResponseEntity.ok(savedSlfcert.get());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Bad Request : 400
     }
 
     @GetMapping("/product/subCmpl/list")
