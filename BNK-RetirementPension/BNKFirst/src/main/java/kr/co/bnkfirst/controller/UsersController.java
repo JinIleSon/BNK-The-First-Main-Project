@@ -145,6 +145,40 @@ public class UsersController {
         return "member/member_active";
     }
 
+    // findId
+    @PostMapping("/findid/phone")
+    @ResponseBody
+    public Map<String, Object> findIdByPhone(@RequestBody Map<String, String> request) {
+
+        String name = request.get("name");
+        String phone = request.get("phone");
+
+        String mid = usersService.findIdByPhone(name, phone);
+
+        if (mid == null) {
+            return Map.of("ok", false,"message", "해당 휴대폰 번호로 가입된 아이디가 없습니다.");
+        }
+
+        return Map.of("ok", true,"mid", mid);
+    }
+
+    @PostMapping("/findid/email")
+    @ResponseBody
+    public Map<String, Object> findIdByEmail(@RequestBody Map<String, String> request) {
+
+        String name = request.get("name");
+        String email = request.get("email");
+
+        String mid = usersService.findIdByEmail(name, email);
+
+        if (mid == null) {
+            return Map.of("ok", false, "message", "해당 정보와 일치하는 아이디가 없습니다.");
+        }
+
+        return Map.of("ok", true, "mid", mid);
+    }
+
+
     @GetMapping("/findid")
     public String memberFindid() {
         return "member/member_findid";
@@ -155,7 +189,6 @@ public class UsersController {
         return "member/member_findpw";
     }
 
-    // 현재 세션 남은 시간 조회
     // 현재 세션 남은 시간 조회
     @GetMapping("/session/remaining")
     @ResponseBody

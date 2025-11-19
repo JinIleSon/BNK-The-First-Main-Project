@@ -45,7 +45,7 @@ public class UsersService {
         return user;
     }
 
-    // 회원가입(member_info)
+    // 회원가입(info)
     public boolean register(UsersDTO dto) {
         log.info("회원가입 시도: {}", dto.getMid());
         try {
@@ -61,7 +61,7 @@ public class UsersService {
         }
     }
 
-    // 아이디 중복확인(member_info)
+    // 아이디 중복확인(info)
     public boolean existsByMid(String mid) {
         return usersMapper.existsByMid(mid) > 0;
     }
@@ -70,4 +70,13 @@ public class UsersService {
     public UsersDTO findByMid(String mid) {
         return usersMapper.findUserById(mid);  // mapper 이미 있으므로 그대로 사용
     }
+
+    // 아이디 찾기(findid)
+    public String findIdByPhone(String name, String phone) {
+        return usersMapper.findIdByPhone(name, phone);
+    }
+    public String findIdByEmail(String name, String email) {
+        return usersMapper.findIdByEmail(name, email);
+    }
+
 }
