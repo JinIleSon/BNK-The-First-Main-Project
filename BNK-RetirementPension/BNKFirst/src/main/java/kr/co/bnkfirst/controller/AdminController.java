@@ -221,6 +221,39 @@ public class AdminController {
         return "redirect:/admin/cs?group=" + group + "&type=" + type;
     }
 
+    // =========================
+    //  영업점(Branch) 수정
+    // =========================
+    @GetMapping("/admin/cs/branch/modify")
+    public String branchModifyForm(
+            @RequestParam int brid,
+            @RequestParam String group,
+            @RequestParam String type,
+            Model model
+    ) {
+        BranchDTO branch = branchService.getBranchById(brid);
+
+        model.addAttribute("group", group);
+        model.addAttribute("type", type);
+        model.addAttribute("branch", branch);
+
+        return "admin/admin_branchModify";
+    }
+
+    @PostMapping("/admin/cs/branch/modify")
+    public String branchModify(
+            BranchDTO branchDTO,
+            @RequestParam String group,
+            @RequestParam String type,
+            RedirectAttributes ra
+    ) {
+        branchService.updateBranch(branchDTO);
+        ra.addFlashAttribute("toastSuccess", "영업점 정보가 수정되었습니다.");
+
+        return "redirect:/admin/cs?group=" + group + "&type=" + type;
+    }
+
+
     //삭제하기
     @PostMapping("/admin/cs/delete")
     public String csDelete(
