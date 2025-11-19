@@ -1,5 +1,6 @@
 package kr.co.bnkfirst.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.service.UsersService;
@@ -84,21 +85,27 @@ public class UsersController {
         return "redirect:/member/info";
     }
 
-
     @GetMapping("/auth")
-    public String memberAuth() {
+    public String memberAuth(HttpSession session, HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+
+        if (referer == null || !referer.contains("/member/terms")) {
+
+            // terms 넘어온 게 아니면 차단
+            return "redirect:/member/terms";
+        }
         return "member/member_auth";
     }
 
     @GetMapping("/info")
     public String memberInfo(HttpSession session, Model model) {
-
+        // 인증 단계 건너뛰기 방지
         UsersDTO authData = (UsersDTO) session.getAttribute("authData");
-
-        if (authData != null) {
-            model.addAttribute("auth", authData);
+        if (authData == null) {
+            return "redirect:/member/auth";
         }
 
+        model.addAttribute("auth", authData);
         return "member/member_info";
     }
 
@@ -110,6 +117,9 @@ public class UsersController {
         if (result) {
             UsersDTO savedUser = usersService.findByMid(usersDTO.getMid());
             session.setAttribute("newUser", savedUser);
+
+            // 인증 정보 소멸
+            session.removeAttribute("authData");
 
             return "redirect:/member/active";
         } else {
@@ -131,7 +141,6 @@ public class UsersController {
         if (newUser == null) {
             return "redirect:/member/info";
         }
-
         // XML로 추가 정보만 전달 (SYSDATE, Family)
         String xml =
                 "<extra>" +
@@ -141,6 +150,9 @@ public class UsersController {
 
         model.addAttribute("member", newUser);
         model.addAttribute("xml", xml);
+
+        // 회원가입 완료 후 세션 초기화
+        session.removeAttribute("newUser");
 
         return "member/member_active";
     }
@@ -178,10 +190,40 @@ public class UsersController {
         return Map.of("ok", true, "mid", mid);
     }
 
-
     @GetMapping("/findid")
     public String memberFindid() {
         return "member/member_findid";
+    }
+
+    // findpw
+    @PostMapping("/findpw/phone")
+    @ResponseBody
+    public Map<String, Object> findPwByPhone(@RequestBody Map<String, String> request) {
+
+        String mid = request.get("mid");
+        String phone = request.get("phone");
+
+        String tempPw = usersService.resetPasswordByPhone(mid, phone);
+
+        if(tempPw == null) {
+            return Map.of("ok", false, "message", "일치하는 회원이 없습니다");
+        }
+        return Map.of("ok", true,"tempPw", tempPw);
+    }
+
+    @PostMapping("/findpw/email")
+    @ResponseBody
+    public Map<String, Object> findPwByEmail(@RequestBody Map<String, String> request) {
+
+        String mid = request.get("mid");
+        String email = request.get("email");
+
+        String tempPw = usersService.resetPasswordByEmail(mid, email);
+
+        if(tempPw == null) {
+            return Map.of("ok", false, "message", "일치하는 회원이 없습니다");
+        }
+        return Map.of("ok", true,"tempPw", tempPw);
     }
 
     @GetMapping("/findpw")

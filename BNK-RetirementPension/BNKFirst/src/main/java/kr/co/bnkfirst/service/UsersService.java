@@ -4,6 +4,7 @@ import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.mapper.UsersMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -79,4 +80,31 @@ public class UsersService {
         return usersMapper.findIdByEmail(name, email);
     }
 
+    // 비밀번호 찾기(findpw)
+    public String resetPasswordByPhone(String mid, String phone) {
+
+        UsersDTO user = usersMapper.findByMidAndPhone(mid, phone);
+        if (user == null) return null;
+
+        // 임시 비밀번호 생성
+        String tempPw = RandomStringUtils.randomAlphanumeric(10);
+
+        String hashed = passwordEncoder.encode(tempPw);
+        usersMapper.updatePassword(mid, hashed);
+
+        return tempPw;
+    }
+
+    public String resetPasswordByEmail(String mid, String email) {
+
+        UsersDTO user = usersMapper.findByMidAndEmail(mid, email);
+        if (user == null) return null;
+
+        String tempPw = RandomStringUtils.randomAlphanumeric(10);
+
+        String hashed = passwordEncoder.encode(tempPw);
+        usersMapper.updatePassword(mid, hashed);
+
+        return tempPw;
+    }
 }
