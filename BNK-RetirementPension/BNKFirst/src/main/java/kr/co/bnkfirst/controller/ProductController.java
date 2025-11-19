@@ -78,9 +78,12 @@ public class ProductController {
     @PostMapping("/product/slfcert")
     public ResponseEntity<SlfcertDTO> slfcertForm(SlfcertDTO slfcertDTO) {
         log.info("slfcert {}", slfcertDTO);
-        Optional<SlfcertDTO> savedSlfcert = slfcertService.saveSlfcert(slfcertDTO);
-        if(savedSlfcert.isPresent()) {
-            return ResponseEntity.ok(savedSlfcert.get());
+        // 로그인 기능 구현 전까지 임시 데이터 주입
+        String cusid = "a123";
+        slfcertDTO.setCusid(cusid);
+        boolean isSaved = slfcertService.saveSlfcert(slfcertDTO);
+        if(isSaved) {
+            return ResponseEntity.ok(slfcertDTO);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Bad Request : 400
     }
