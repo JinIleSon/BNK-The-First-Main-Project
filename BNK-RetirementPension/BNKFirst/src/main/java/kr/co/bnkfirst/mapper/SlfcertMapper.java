@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Mapper
 public interface SlfcertMapper {
-    public Optional<SlfcertDTO> saveSlfcert(SlfcertDTO slfcertDTO);
+    public int saveSlfcert(SlfcertDTO slfcertDTO);
 }

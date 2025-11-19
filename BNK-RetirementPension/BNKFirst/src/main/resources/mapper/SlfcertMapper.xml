@@ -4,17 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.bnkfirst.mapper.SlfcertMapper">
-    <sql id="expdtValue">
-        <choose>
-            <when test="#{SlfcertDTO.ftype} == 'W8'">
-                REPLACE(TO_CHAR(SYSDATE), SUBSTR(TO_CHAR(SYSDATE),1,4), TO_CHAR(SUBSTR(TO_CHAR(SYSDATE), 1, 4)+3)),
-            </when>
-            <otherwise>NULL,</otherwise>
-        </choose>
-    </sql>
     <sql id="krresValue">
         <choose>
-            <when test="#{SlfcertDTO.krres} == 'on'">
+            <when test="krres == 'on'">
                 'Y',
             </when>
             <otherwise>
@@ -24,7 +16,7 @@
     </sql>
     <sql id="othersValue">
         <choose>
-            <when test="#{SlfcertDTO.others} == 'on'">
+            <when test="others == 'on'">
                 'Y',
             </when>
             <otherwise>
@@ -32,28 +24,27 @@
             </otherwise>
         </choose>
     </sql>
-    <insert id="saveSlfcert">
-        INSERT INTO SLFCERT (cusid, ftype, signdt, expdt, sts, taxyr, krres, "OTHERS",
+    <insert id="saveSlfcert" parameterType="kr.co.bnkfirst.dto.product.SlfcertDTO">
+        INSERT INTO SLFCERT (cusid, ftype, signdt, sts, taxyr, krres, "OTHERS",
                              natcd, name, gender, brthdt, zipcd, addr1, addr2, enlnm, enfnm,
                              phone, crtdt, uptdt)
-        VALUES (#{SlfcertDTO.cusid},
-        VALUES (#{SlfcertDTO.ftype},
+        VALUES (#{cusid},
+                #{ftype},
                 SYSDATE,
-                <include refid="expdtValue"/>
                 'VALID',
-                #{SlfcertDTO.taxyr}
+                #{taxyr},
                 <include refid="krresValue"/>
                 <include refid="othersValue"/>
-                #{SlfcertDTO.natcd},
-                #{SlfcertDTO.name},
-                #{SlfcertDTO.gender},
-                DATE #{SlfcertDTO.brthdt},
-                #{SlfcertDTO.zipcd},
-                #{SlfcertDTO.addr1},
-                #{SlfcertDTO.addr2},
-                #{SlfcertDTO.enlnm},
-                #{SlfcertDTO.enfnm},
-                #{SlfcertDTO.phone},
+                #{natcd},
+                #{name},
+                #{gender},
+                TO_DATE(#{brthdt}, 'YYYY-MM-DD'),
+                #{zipcd},
+                #{addr1},
+                #{addr2},
+                #{enlnm},
+                #{enfnm},
+                #{phone},
                 SYSTIMESTAMP,
                 SYSTIMESTAMP)
     </insert>
