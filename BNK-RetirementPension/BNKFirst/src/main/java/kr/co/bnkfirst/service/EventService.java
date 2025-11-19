@@ -1,4 +1,4 @@
-package kr.co.bnkfirst.service.info;
+package kr.co.bnkfirst.service;
 
 import kr.co.bnkfirst.dto.info.EventDTO;
 import kr.co.bnkfirst.dto.info.PageRequestDTO;
