@@ -58,7 +58,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:oracle:thin:@//15.165.33.61:1522/XEPDB1   # Service name 방식
+    url: jdbc:oracle:thin:@//3.39.247.70:1522/XEPDB1   # Service name 방식
     username: BNK
     password: 1234         # 환경변수로 주입
   jpa:
@@ -107,7 +107,7 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
+    url: jdbc:h2:mem:testdb;MODE=Oracle;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=true
     driver-class-name: org.h2.Driver
     username: sa
     password:
