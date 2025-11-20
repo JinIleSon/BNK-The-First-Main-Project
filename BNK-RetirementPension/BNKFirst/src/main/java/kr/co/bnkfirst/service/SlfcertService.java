@@ -23,4 +23,9 @@ public class SlfcertService {
         log.info(savedSlfcert.toString());
         return savedSlfcert.toDTO();
     }
+
+    public boolean countSlfcertByMid(String mid){
+        int count = slfcertRepository.countSlfcertByCusid(mid);
+        return count > 0;
+    }
 }

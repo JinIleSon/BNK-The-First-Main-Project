@@ -1,3 +1,8 @@
+/*
+    날짜 : 2025.11.20.
+    이름 : 강민철
+    내용 : product_insert_info.html JS 작성
+ */
 document.addEventListener('DOMContentLoaded', function () {
     /*======== 스탭퍼 스크립트 ========*/
     let currentStep = 1;                 // 1~5
@@ -95,9 +100,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* ============== step1 본인확인서 존재 여부 확인 ============== */
     (async function chkFATCAExist() {
-        const mid = document.getElementById('wizard').dataset.mid;
+        const wizard = document.getElementById('wizard');
+        const mid = wizard.dataset.mid;
         const res = await fetch(`/BNK/api/slfcert/${mid}`);
         let data = null;
+        switch (res.status) {
+            case 200:
+                wizard.setAttribute('data-has-info', 'true');
+                break;
+            case 404:
+                wizard.setAttribute('data-has-info', 'true');
+                break;
+        }
         if (res.status !== 200)
             throw new Error(res.status + ' ' + res.statusText);
         else {

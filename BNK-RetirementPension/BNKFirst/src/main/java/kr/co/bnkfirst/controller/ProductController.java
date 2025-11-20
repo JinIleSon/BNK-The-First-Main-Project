@@ -95,8 +95,9 @@ public class ProductController {
 
     @GetMapping("/api/slfcert/{mid}")
     public ResponseEntity<Void> chkSlfcertExist(@PathVariable String mid) {
-        boolean exists = true;
-        return exists ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        // 로그인 기능 구현 전까지 임시 데이터 주입
+        boolean exists = slfcertService.countSlfcertByMid(mid);
+        return exists ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @GetMapping("/product/subCmpl/list")
