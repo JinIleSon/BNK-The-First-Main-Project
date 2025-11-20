@@ -71,14 +71,24 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/",
-                        "/index",
                         "/css/**", "/js/**", "/images/**",
                         "/components/**",
                         "/upload/**",
                         "/member/**",
                         "/main/**",
                         "/api/**",
-                        "/member/api/**"
+                        "/member/api/**",
+                        "/api/**",
+                        "/cs/**",
+                        "/info/**",
+                        "/board/**",
+                        "/kiwoom/**",
+                        "/docs/**",
+                        "/product/**",
+                        "/qna/**",
+                        "/stock/**",
+                        "/tologo/**",
+                        "/mypage/**"
                 ).permitAll()
 
                 .requestMatchers("/admin/**").hasRole("ADMIN")
