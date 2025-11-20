@@ -60,4 +60,11 @@ public interface BranchMapper {
     """)
     int updateBranch(BranchDTO dto);
 
+    @Insert("""
+    INSERT INTO BRANCH (BRID, BRNAME, BRADDR, BRTEL, BRFAX)
+    VALUES (BRANCH_SEQ.NEXTVAL, #{brname}, #{braddr}, #{brtel}, #{brfax})
+""")
+    int insertBranch(BranchDTO dto);
+
+
 }
