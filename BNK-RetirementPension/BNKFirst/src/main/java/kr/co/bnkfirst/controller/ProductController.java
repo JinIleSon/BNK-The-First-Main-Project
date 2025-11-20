@@ -74,7 +74,9 @@ public class ProductController {
     public String insertInfoPage(Model model) {
         // 임시 아이디 : 로그인 구현 후 삭제
         String mid = "a123";
+        boolean isExist = slfcertService.countSlfcertByMid(mid);
         model.addAttribute("mid", mid);
+        model.addAttribute("hasInfo", isExist ? "true" : "false");
         return "product/product_insert_info";
     }
 

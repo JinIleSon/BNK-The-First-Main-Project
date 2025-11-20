@@ -2,6 +2,7 @@ package kr.co.bnkfirst.controller;
 
 import kr.co.bnkfirst.dto.product.SlfcertDTO;
 import kr.co.bnkfirst.mapper.*;
+import kr.co.bnkfirst.repository.product.SlfcertRepository;
 import kr.co.bnkfirst.service.EmailService;
 import kr.co.bnkfirst.service.ProductService;
 import kr.co.bnkfirst.service.SlfcertService;
@@ -17,6 +18,8 @@ class ProductControllerTest {
 
     @Autowired
     ProductController productController;
+    @Autowired
+    SlfcertRepository slfcertRepository;
     @MockitoBean
     ProductService productService;
     @MockitoBean
