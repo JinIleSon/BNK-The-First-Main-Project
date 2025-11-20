@@ -1,4 +1,7 @@
 package kr.co.bnkfirst.repository.product;
 
-public class SlfcertRepository {
+import kr.co.bnkfirst.entity.product.Slfcert;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SlfcertRepository extends JpaRepository<Slfcert, Integer> {
 }

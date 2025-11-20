@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* 유효성 검사 정규표현식 */
     const reName = /^[가-힣]{2,10}$/;
-    const reHp = /^01(?:0|1|[6-9])(?:\d{4})\d{4}$/;
+    const reHp = /^01(?:0|1|[6-9])-(?:\d{4})-\d{4}$/;
 
     const pages = [...document.querySelectorAll('.step-page')];
     const steps = [...document.querySelectorAll('#wizardSteps .step')];
@@ -189,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const fd = new FormData(form1);
             fd.set('krres', form1.krres.checked ? 'Y' : 'N');
             fd.set('others', form1.others.checked ? 'Y' : 'N');
+            fd.set('ftype', form1.natcd.value === 'US' ? 'W9' : 'W8');
+            fd.set('sts', 'VALID');
             fetch('/BNK/api/slfcert', {
                 method: 'POST',
                 body: fd

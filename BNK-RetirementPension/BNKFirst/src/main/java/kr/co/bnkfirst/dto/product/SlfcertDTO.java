@@ -1,9 +1,9 @@
 package kr.co.bnkfirst.dto.product;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import kr.co.bnkfirst.entity.product.Slfcert;
 import lombok.*;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -11,8 +11,6 @@ import lombok.*;
 @Builder
 @ToString
 public class SlfcertDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String cusid;
     private String ftype;
@@ -35,25 +33,25 @@ public class SlfcertDTO {
     private String crtdt;
     private String uptdt;
 
-//    public Slfcert toEntity() {
-//        return Slfcert.builder()
-//                .id(id)
-//                .cusid(cusid)
-//                .ftype(ftype)
-//                .sts(sts)
-//                .taxyr(taxyr)
-//                .krres(krres)
-//                .others(others)
-//                .natcd(natcd)
-//                .name(name)
-//                .gender(gender)
-//                .brthdt(brthdt)
-//                .zipcd(zipcd)
-//                .addr1(addr1)
-//                .addr2(addr2)
-//                .enlnm(enlnm)
-//                .enfnm(enfnm)
-//                .phone(phone)
-//                .build();
-//    }
+    public Slfcert toEntity() {
+        return Slfcert.builder()
+                .id(id)
+                .cusid(cusid)
+                .ftype(ftype)
+                .sts(sts)
+                .taxyr(taxyr)
+                .krres(krres)
+                .others(others)
+                .natcd(natcd)
+                .name(name)
+                .gender(gender)
+                .brthdt(LocalDate.parse(brthdt))
+                .zipcd(zipcd)
+                .addr1(addr1)
+                .addr2(addr2)
+                .enlnm(enlnm)
+                .enfnm(enfnm)
+                .phone(phone)
+                .build();
+    }
 }
