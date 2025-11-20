@@ -39,6 +39,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update            # 로컬 개발은 편하게 update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
     properties:
       hibernate.format_sql: true
@@ -64,6 +66,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none              # ★ 스키마 올리기 전엔 none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
     properties:
       hibernate.format_sql: true
