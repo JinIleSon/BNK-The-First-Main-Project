@@ -71,11 +71,14 @@ public class ProductController {
     }
 
     @GetMapping("/product/insertInfo")
-    public String insertInfoPage() {
+    public String insertInfoPage(Model model) {
+        // 임시 아이디 : 로그인 구현 후 삭제
+        String mid = "a123";
+        model.addAttribute("mid", mid);
         return "product/product_insert_info";
     }
 
-    @PostMapping("/product/slfcert")
+    @PostMapping("/api/slfcert")
     public ResponseEntity<SlfcertDTO> slfcertForm(SlfcertDTO slfcertDTO) {
         log.info("slfcert {}", slfcertDTO);
         // 로그인 기능 구현 전까지 임시 데이터 주입
@@ -86,6 +89,12 @@ public class ProductController {
             return ResponseEntity.ok(slfcertDTO);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Bad Request : 400
+    }
+
+    @GetMapping("/api/slfcert/{mid}")
+    public ResponseEntity<Void> chkSlfcertExist(@PathVariable String mid) {
+        boolean exists = true;
+        return exists ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @GetMapping("/product/subCmpl/list")

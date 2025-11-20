@@ -15,7 +15,7 @@
 <header>
     <div id="header" th:replace="~{layouts/header.html}"></div>
 </header>
-<main id="wizard" th:attr="data-has-info=${hasInsertInfo}">
+<main id="wizard" th:attr="data-mid=${mid}">
     <!--    <main id="wizard" th:attr="data-has-info=true">-->
     <!-- 1) 스텝퍼 -->
     <ol class="stepper" id="wizardSteps" aria-label="신청 진행 단계">

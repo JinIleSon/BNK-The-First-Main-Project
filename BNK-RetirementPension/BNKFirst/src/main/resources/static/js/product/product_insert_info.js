@@ -91,6 +91,19 @@ document.addEventListener('DOMContentLoaded', function () {
         } // 제출 단계라면 서버 전송 등 처리
     };
 
+    /* ============== step1 본인확인서 존재 여부 확인 ============== */
+    (async function chkFATCAExist() {
+        const mid = document.getElementById('wizard').dataset.mid;
+        const res = await fetch(`/BNK/api/slfcert/${mid}`);
+        let data = null;
+        if (res.status !== 200)
+            throw new Error(res.status + ' ' + res.statusText);
+        else {
+            data = await res.json();
+            console.log(data);
+        }
+    })();
+
     /* ============== step1 유효성 검사 ============== */
     const form1 = document.getElementById('customerForm');
     const name = form1.name;
@@ -174,12 +187,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!getHasInfo() && currentStep === 1) {
             // 서버 제출 동작(fetch)
             const fd = new FormData(form1);
-            fetch('/BNK/product/slfcert', {
+            fd.set('krres', form1.krres.checked ? 'Y' : 'N');
+            fd.set('others', form1.others.checked ? 'Y' : 'N');
+            fetch('/BNK/api/slfcert', {
                 method: 'POST',
                 body: fd
             }).then(res => {
                 if (res.ok)
                     return res.json();
+                else if (res.status === 204)
+                    return null;
                 else
                     throw new Error(`${res.status} ${res.statusText}`);
             })
@@ -189,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     root.dataset.hasInfo = 'true';
                 }).catch(e => {
                     console.error(e.message);
-                    alert('등록 중 오류가 발생했습니다.');
+                    alert('등록 중 오류가 발생했습니다.\n'+e.message);
                 });
         }
         showStep(currentStep + 1);
