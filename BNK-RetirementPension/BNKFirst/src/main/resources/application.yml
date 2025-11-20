@@ -39,6 +39,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update            # 로컬 개발은 편하게 update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
     properties:
       hibernate.format_sql: true
@@ -58,12 +60,14 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:oracle:thin:@//15.165.33.61:1522/XEPDB1   # Service name 방식
+    url: jdbc:oracle:thin:@//3.39.247.70:1522/XEPDB1   # Service name 방식
     username: BNK
     password: 1234         # 환경변수로 주입
   jpa:
     hibernate:
       ddl-auto: none              # ★ 스키마 올리기 전엔 none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     open-in-view: false
     properties:
       hibernate.format_sql: true
