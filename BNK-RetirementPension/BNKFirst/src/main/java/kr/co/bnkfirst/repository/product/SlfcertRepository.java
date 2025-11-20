@@ -4,5 +4,5 @@ import kr.co.bnkfirst.entity.product.Slfcert;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SlfcertRepository extends JpaRepository<Slfcert, Integer> {
-    int countSlfcertByCusid(String cusid);
+    long countByCusid(String cusid);
 }

@@ -78,7 +78,6 @@ public class SecurityConfig {
                         "/main/**",
                         "/api/**",
                         "/member/api/**",
-                        "/api/**",
                         "/cs/**",
                         "/info/**",
                         "/board/**",

@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     if (input.value.trim() === "") {
                         input.focus();
-                        span.innerText = comment;
+                        span.innerText = comment1;
                         checkValid[0] = false;
                         if (checkValid[1] === null)
                             checkValid[1] = input;
@@ -102,21 +102,14 @@ document.addEventListener('DOMContentLoaded', function () {
     (async function chkFATCAExist() {
         const wizard = document.getElementById('wizard');
         const mid = wizard.dataset.mid;
-        const res = await fetch(`/BNK/api/slfcert/${mid}`);
-        let data = null;
-        switch (res.status) {
-            case 200:
-                wizard.setAttribute('data-has-info', 'true');
-                break;
-            case 404:
-                wizard.setAttribute('data-has-info', 'true');
-                break;
+        const res = await fetch(`/BNK/api/slfcert/${mid}`, {method: 'HEAD'});
+        if (res.ok) {
+            wizard.setAttribute('data-has-info', 'true');
+            showStep(2)
         }
-        if (res.status !== 200)
-            throw new Error(res.status + ' ' + res.statusText);
         else {
-            data = await res.json();
-            console.log(data);
+            wizard.setAttribute('data-has-info', 'false');
+            showStep(1);
         }
     })();
 
@@ -276,13 +269,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return false;
     }
-
-    // 페이지 진입 시 화면 : 본인확인서가 존재하면 page2부터
-    (function () {
-        showStep(1);
-        if (getHasInfo()) showStep(2);
-    })();
-
 
     /*============== 약관 및 상품설명서 받기 스크립트 ================*/
     const radios = document.querySelectorAll('input[name="receive"]');
