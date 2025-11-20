@@ -35,7 +35,6 @@ public class SlfcertDTO {
 
     public Slfcert toEntity() {
         return Slfcert.builder()
-                .id(id)
                 .cusid(cusid)
                 .ftype(ftype)
                 .sts(sts)

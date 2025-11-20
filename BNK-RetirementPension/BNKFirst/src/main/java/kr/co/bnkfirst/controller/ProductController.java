@@ -85,7 +85,9 @@ public class ProductController {
         String cusid = "a123";
         slfcertDTO.setCusid(cusid);
         SlfcertDTO saved = slfcertService.saveSlfcert(slfcertDTO);
-        if(saved.getCusid().equals(cusid)) {
+        if(saved == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else if (saved.getCusid().equals(cusid)) {
             return ResponseEntity.ok(slfcertDTO);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // Bad Request : 400

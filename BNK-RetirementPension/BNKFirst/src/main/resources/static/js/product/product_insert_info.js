@@ -68,9 +68,11 @@ document.addEventListener('DOMContentLoaded', function () {
             checkNGo(phone, '전화번호를 입력해주세요.', 'phone-comment', reHp, '전화번호가 유효하지 않습니다.');
             checkNGo([zipcd, addr1], '우편번호와 주소를 입력해주세요.', 'addr-comment');
             if (checkValid[0])
-                return true;
-            else
+                submitSlfcert();
+            else {
                 checkValid[1].focus();
+                return false;
+            }
         },
         2() {
             // 예: 모든 약관 체크 확인
@@ -183,7 +185,12 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = "/BNK/product/subCmpl/list";
             return;
         }
-        // 본인확인서 미등록시 step1에서 제출 동작
+
+        showStep(currentStep + 1);
+    });
+
+    // 본인확인서 제출 함수
+    function submitSlfcert() {
         if (!getHasInfo() && currentStep === 1) {
             // 서버 제출 동작(fetch)
             const fd = new FormData(form1);
@@ -201,18 +208,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     return null;
                 else
                     throw new Error(`${res.status} ${res.statusText}`);
-            })
-                .then(data => {
-                    console.log(data);
-                    alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
-                    root.dataset.hasInfo = 'true';
-                }).catch(e => {
-                    console.error(e.message);
-                    alert('등록 중 오류가 발생했습니다.\n'+e.message);
-                });
+            }).then(data => {
+                console.log(data);
+                alert('본인확인서(FATCA/CRS)가 등록되었습니다!');
+                root.dataset.hasInfo = 'true';
+                return true;
+            }).catch(e => {
+                console.error(e.message);
+                alert('등록 중 오류가 발생했습니다.\n' + e.message);
+                return false;
+            });
         }
-        showStep(currentStep + 1);
-    });
+    }
 
     // 취소: 모든 단계에서 항상 동작
     document.getElementById('cancelBtn').addEventListener('click', () => {

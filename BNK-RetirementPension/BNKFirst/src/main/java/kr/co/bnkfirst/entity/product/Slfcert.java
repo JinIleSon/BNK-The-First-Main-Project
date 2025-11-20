@@ -27,6 +27,8 @@ public class Slfcert {
     private Integer id;
     private String cusid;
     private String ftype;
+
+    @CreationTimestamp
     private LocalDate signdt;
 
     @Column(insertable = false, updatable = false)
@@ -49,8 +51,7 @@ public class Slfcert {
 
     @CreationTimestamp
     private LocalDateTime crtdt;
-    @CreationTimestamp
-    @Column(updatable = false)
+    @Column(insertable = false, updatable = false)
     private LocalDateTime uptdt;
 
     public SlfcertDTO toDTO() {
@@ -73,7 +74,7 @@ public class Slfcert {
                 .enfnm(enfnm)
                 .phone(phone)
                 .crtdt(crtdt.toString())
-                .uptdt(uptdt.toString())
+                .uptdt(uptdt != null ? uptdt.toString() : "")
                 .build();
     }
 }
