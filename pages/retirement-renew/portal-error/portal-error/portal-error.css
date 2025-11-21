@@ -433,5 +433,83 @@ body {
 }
 
 .pyramid-wrap img {
-  width: 500px;
+  width: 600px;
 }
+
+/******************************************/
+/* 부산은행 퇴직연금, 지금 바로 시작하세요  */
+/******************************************/
+
+.bnk-cta-wrap {
+  width: 100%;
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ;
+}
+
+.bnk-cta-text {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+
+  /* 무지개 그라데이션 */
+  background: linear-gradient(
+    90deg,
+    #de0000,
+    #ff7a00,
+    #7e2020,
+    #eee,
+    #ff7a00,
+    #de0000,
+    #de0000
+  );
+  background-size: 300% 300%;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  /* 애니메이션 */
+  animation: rainbowFlow 6s ease-in-out infinite;
+}
+
+@keyframes rainbowFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+/******************************************/
+/* 사이드바 a 태그 기본 스타일 제거 */
+/******************************************/
+.sidebar-menu a {
+    display: block;
+    padding: 0px 0;
+    text-decoration: none;   /* 밑줄 제거 */
+    color: #222;             /* 파란색 제거 → 기본 텍스트 색 */
+}
+
+/* hover 효과 */
+.sidebar-menu a:hover {
+    color: #DE0000;          /* BNK 레드 */
+    text-decoration: underline;
+}
+
+/* active 스타일 (선택 페이지 강조) */
+.sidebar-menu .active a,
+.sidebar-menu li.active a {
+    font-weight: 600;
+    color: #DE0000;
+}
+
