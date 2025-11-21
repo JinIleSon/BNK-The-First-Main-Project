@@ -87,7 +87,8 @@ public class SecurityConfig {
                         "/qna/**",
                         "/stock/**",
                         "/tologo/**",
-                        "/mypage/**"
+                        "/mypage/**",
+                        "/ws/**"
                 ).permitAll()
 
                 .requestMatchers("/admin/**").hasRole("ADMIN")
