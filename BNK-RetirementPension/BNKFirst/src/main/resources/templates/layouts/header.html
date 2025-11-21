@@ -1,4 +1,4 @@
-<link rel="stylesheet" th:href="@{/components/button.css}">
+<link rel="stylesheet" th:href="@{/components/button.css}" xmlns:th="http://www.w3.org/1999/html">
 <div class="nav-root" style="">
     <div class="nav-wrap"
          style="display:flex; padding-top:20px; padding-bottom: 15px; padding-left: 30px; padding-right: 10px;">
@@ -86,9 +86,11 @@
                             <div>
                                 <h4 style="margin-bottom:27px; font-size: larger;">퇴직연금 소개</h4>
                                 <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">왜 퇴직연금인가?</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">퇴직연금이란?</a></li>
-                                    <li><a href= th:href="@{/retirement-renew/intro/why-pension}">퇴직연금 도입혜택</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">왜
+                                        퇴직연금인가?</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">퇴직연금이란?</a>
+                                    </li>
+                                    <li><a href=th:href="@{/retirement-renew/intro/why-pension}">퇴직연금 도입혜택</a></li>
                                 </ul>
                             </div>
                             <div>
@@ -103,16 +105,20 @@
                             <div>
                                 <h4 style="margin-bottom:27px; font-size: larger;">도입/운영안내</h4>
                                 <ul>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">도입과정 한눈에 보기</a></li>
-                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">운영과정 체크포인트</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">도입과정
+                                        한눈에 보기</a></li>
+                                    <li style="margin-bottom:15px;"><a th:href="@{/retirement-renew/intro/why-pension}">운영과정
+                                        체크포인트</a></li>
                                     <li><a th:href="@{/retirement-renew/intro/why-pension}">적립금 운용전략</a></li>
                                 </ul>
                             </div>
                             <div>
-                                <h4 style="margin-bottom:27px; font-size: larger;"><a th:href="@{/retirement-renew/intro/why-pension}">NPS 노후설계서비스</a></h4>
+                                <h4 style="margin-bottom:27px; font-size: larger;"><a
+                                        th:href="@{/retirement-renew/intro/why-pension}">NPS 노후설계서비스</a></h4>
                             </div>
                             <div>
-                                <h4 style="margin-bottom:27px; font-size: larger;"><a th:href="@{/retirement-renew/intro/why-pension}">통합연금포털 오류 신고</a></h4>
+                                <h4 style="margin-bottom:27px; font-size: larger;"><a
+                                        th:href="@{/retirement-renew/intro/why-pension}">통합연금포털 오류 신고</a></h4>
                                 <ul>
                                     <li style="margin-bottom:15px;"><a href="#">오류신고 접수</a></li>
                                     <li><a th:href="@{/retirement-renew/intro/why-pension}">오류신고 내역 및 결과조회</a></li>
@@ -198,10 +204,12 @@
                                 <img th:src="@{/images/magnifier.png}" alt="">
                             </a>
                         </div>
-                        <div style="width: 60px;">
-                            <a th:href="@{/admin/main}">
-                                <img th:src="@{/images/globe.png}" alt="">
-                            </a>
+                        <div th:if="${session.loginUser !=  null && session.loginUser.role == 'ADMIN'}">
+                            <div style="width: 60px;">
+                                <a th:href="@{/admin/main}">
+                                    <img th:src="@{/images/globe.png}" alt="">
+                                </a>
+                            </div>
                         </div>
                         <div style="width: 115px;">
                             <button class="auth-btn"
@@ -210,10 +218,19 @@
                                 영업점 찾기
                             </button>
                         </div>
-                        <div style="width: 60px;">
-                            <a th:href="@{/mypage/main}">
-                                <img th:src="@{/images/human.png}" alt="">
-                            </a>
+                        <div th:if="${session.loginUser != null && (session.loginUser.role == 'USER' || session.loginUser.role == 'ADMIN')}">
+                            <div style="width: 60px;">
+                                <a th:href="@{/mypage/main}">
+                                    <img th:src="@{/images/human.png}" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div th:if="${session.loginUser == null || (session.loginUser.role != 'USER' && session.loginUser.role != 'ADMIN')}">
+                            <div style="width: 60px;">
+                                <a th:href="@{/member/main}">
+                                    <img th:src="@{/images/human.png}" alt="">
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -668,7 +685,7 @@
         top: var(--nav-h); /* 기존 68px → 변수로 */
     }
 </style>
-<script>
+<script th:inline="javascript">
     (function () {
         const root = document.querySelector('.nav-root');
         const items = Array.from(document.querySelectorAll('.gnb .has-mega'));
@@ -823,10 +840,8 @@
 
         if (logoutBtn) {
             logoutBtn.addEventListener('click', function () {
-                fetch('/BNK/member/logout')
-                    .finally(() => {
-                        document.getElementById('session-box').style.display = 'none';
-                    });
+                document.getElementById('session-box').style.display = 'none';
+                window.location.href = '/BNK/member/logout';
             });
         }
     });

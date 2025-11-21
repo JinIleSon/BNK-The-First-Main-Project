@@ -44,6 +44,8 @@ public class Users {
 
     private String mci;
 
+    private String role;
+
     public UsersDTO toDTO(){
         return UsersDTO.builder()
                 .uid(uid)
@@ -66,6 +68,7 @@ public class Users {
                 .mtitle(mtitle)
                 .mcontent(mcontent)
                 .mci(mci)
+                .role(role)
                 .build();
     }
 }
