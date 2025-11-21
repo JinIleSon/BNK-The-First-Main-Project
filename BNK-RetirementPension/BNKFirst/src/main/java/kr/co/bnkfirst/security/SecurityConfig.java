@@ -78,7 +78,6 @@ public class SecurityConfig {
                         "/main/**",
                         "/api/**",
                         "/member/api/**",
-                        "/api/**",
                         "/cs/**",
                         "/info/**",
                         "/board/**",
@@ -87,9 +86,12 @@ public class SecurityConfig {
                         "/product/**",
                         "/qna/**",
                         "/stock/**",
-                        "/tologo/**"
+                        "/tologo/**",
 
                         // 작업할 때 해제,"/mypage/**"
+                        "/tologo/**",
+                        "/mypage/**",
+                        "/ws/**"
                 ).permitAll()
 
                 .requestMatchers("/admin/**").hasRole("ADMIN")
