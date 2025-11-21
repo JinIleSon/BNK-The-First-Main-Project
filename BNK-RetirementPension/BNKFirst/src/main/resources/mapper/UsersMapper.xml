@@ -23,14 +23,14 @@
         INSERT INTO USERS (
             "uId", MID, MPW, MNAME, MGENDER, MJUMIN,
             MPHONE, MCARRIER, MBIRTH, MEMAIL, MADDRESS,
-            MDATE, MGRADE, MCOND
+            MDATE, MGRADE, MCOND, ROLE
         )
         VALUES (
                    SEQ_USERS.NEXTVAL,
                    #{mid}, #{mpw}, #{mname}, #{mgender}, #{mjumin},
                    #{mphone}, #{mcarrier}, #{mbirth, jdbcType=DATE},
                    #{memail, jdbcType=VARCHAR}, #{maddress, jdbcType=VARCHAR},
-                   SYSDATE, 'Family', '활동중'
+                   SYSDATE, 'Family', '활동중', 'USER'
                )
     </insert>
 

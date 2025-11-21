@@ -23,9 +23,9 @@ import java.util.UUID;
 public class UsersController {
 
     /*
-        날짜 : 2025/11/20
+        날짜 : 2025/11/21
         이름 : 이준우
-        내용 : 로그인 security 방식으로 변경
+        내용 : 로그인 security 추가 수정
      */
 
     private final UsersService usersService;

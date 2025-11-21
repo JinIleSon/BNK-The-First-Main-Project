@@ -41,6 +41,7 @@ public class Users {
 
     private String mtitle;
     private String mcontent;
+    private String role;
 
     private String mci;
 
@@ -65,6 +66,7 @@ public class Users {
                 .mlimit(mlimit)
                 .mtitle(mtitle)
                 .mcontent(mcontent)
+                .role(role)
                 .mci(mci)
                 .build();
     }

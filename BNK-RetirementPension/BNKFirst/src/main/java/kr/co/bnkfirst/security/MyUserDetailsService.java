@@ -30,7 +30,7 @@ public class MyUserDetailsService implements UserDetailsService {
                     return new UsernameNotFoundException("User not found" + username);
         });
 
-        log.info("✅ 사용자 [{}] 조회 성공 (uid={})", username, user.getUid());
+        log.info("✅ 사용자 [{}] 로그인 성공 (uid={})", username, user.getUid());
 
         return MyUserDetails.builder()
                 .user(user)
