@@ -42,6 +42,8 @@ public class UsersDTO {
 
     private String mci;
 
+    private String role;
+
     public Users toEntity(){
         return Users.builder()
                 .uid(uid)
@@ -65,6 +67,7 @@ public class UsersDTO {
                 .mcontent(mcontent)
                 // CI 매핑
                 .mci(mci)
+                .role(role)
                 .build();
     }
 }
