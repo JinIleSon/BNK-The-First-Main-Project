@@ -10,4 +10,11 @@ public class RetirementInfoController {
     public String whyPension(){
         return "retirement-renew/intro/why-pension/why-pension";
     }
+
+    @GetMapping("/retirement-renew/system/db")
+    public String db(){
+        return "retirement-renew/system/db/db";
+    }
+
+
 }
