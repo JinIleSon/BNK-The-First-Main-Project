@@ -1,9 +1,11 @@
 package kr.co.bnkfirst.controller;
 
 import jakarta.annotation.security.PermitAll;
+import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.dto.product.SlfcertDTO;
+import kr.co.bnkfirst.service.MypageService;
 import kr.co.bnkfirst.service.ProductService;
 import kr.co.bnkfirst.service.SlfcertService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
     private final SlfcertService slfcertService;
+    private final MypageService mypageService;
 
     @GetMapping("/product/main")
     public String mainPage() {
@@ -82,9 +85,11 @@ public class ProductController {
         String mid = principal.getName();
         log.info("mid {}", mid);
         boolean isExist = slfcertService.countSlfcertByMid(mid);
+        UsersDTO userInfo = mypageService.findById(mid);
         model.addAttribute("mid", mid);
         model.addAttribute("pid", pid);
         model.addAttribute("hasInfo", isExist ? "true" : "false");
+        model.addAttribute("userInfo", userInfo);
         return "product/product_insert_info";
     }
 

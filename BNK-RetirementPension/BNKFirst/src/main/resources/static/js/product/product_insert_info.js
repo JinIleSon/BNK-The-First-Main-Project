@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } // 제출 단계라면 서버 전송 등 처리
     };
 
-    /* ============== step1 본인확인서 존재 여부 확인 ============== */
+    /* ============== step1 본인확인서 존재 여부 확인, 초기화면 설정 ============== */
     (async function chkFATCAExist() {
         const wizard = document.getElementById('wizard');
         const mid = wizard.dataset.mid;
@@ -255,8 +255,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // 완료했거나 바로 이전까지만 허용 등 정책 가능
             if (idx + 1 <= currentStep || idx + 1 === currentStep + 1) {
                 // 본인확인서 미등록시에만 step1 이동 가능
-                if (!(getHasInfo() && idx === 0))
-                    showStep(idx + 1);
+                if (!(idx === 0)) {
+                    if (currentStep === 0) {
+                        if (validators[currentStep])
+                            showStep(idx+1);
+                    } else
+                        showStep(idx+1);
+                }
             }
         });
     });
