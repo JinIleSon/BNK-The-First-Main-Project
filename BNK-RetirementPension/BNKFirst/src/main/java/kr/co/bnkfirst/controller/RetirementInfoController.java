@@ -36,8 +36,8 @@ public class RetirementInfoController {
         return "retirement-renew/nps-plan/nps-plan/nps-plan";
     }
 
-    @GetMapping("/retirement-renew/portal-error/error-submit")
-    public String errorSubmit(){
-        return "retirement-renew/portal-error/error-submit/error-submit";
+    @GetMapping("/retirement-renew/portal-error/portal-error")
+    public String portalError(){
+        return "retirement-renew/portal-error/portal-error/portal-error";
     }
 }
