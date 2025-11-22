@@ -12,4 +12,14 @@ public class FundController {
     public String fundList(){
         return "fund/fund_list";
     }
+
+    @GetMapping("/product/TDF/list")
+    public String TDFList(){
+        return "fund/TDF_list";
+    }
+
+    @GetMapping("/product/ETF/list")
+    public String ETFList(){
+        return "fund/ETF_list";
+    }
 }

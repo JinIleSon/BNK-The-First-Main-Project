@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>펀드</title>
     <link rel="stylesheet" th:href="@{/css/product/product_list_style.css}">
-    <script th:src="@{/js/fund/fund_list.js}"></script>
+    <script th:src="@{/js/fund/ETF_list.js}"></script>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
 </header>
 <main class="product-list-search">
     <section class="list-title">
-        <h1>펀드 상품</h1>
+        <h1>ETF</h1>
         <span>다양한 펀드 상품을 비교하고 나에게 맞는 상품을 찾아보세요</span>
     </section>
     <section class="main-container">
@@ -45,7 +45,7 @@
                             <select id="selectFund" aria-label="페이지 이동">
                                 <option value="fund">펀드</option>
                                 <option value="TDF">TDF</option>
-                                <option value="ETF">ETF</option>
+                                <option value="ETF" selected>ETF</option>
                             </select>
                         </div>
                     </div>
