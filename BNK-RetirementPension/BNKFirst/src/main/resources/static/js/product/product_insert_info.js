@@ -3,7 +3,7 @@
     이름 : 강민철
     내용 : product_insert_info.html JS 작성
  */
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     /*======== 스탭퍼 스크립트 ========*/
     let currentStep = 1;                 // 1~5
     const totalSteps = 5;
@@ -276,6 +276,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return false;
     }
+
+    /* ====================== 상품 정보 채우기 ====================== */
+    const {initProdInfo} = await import('/BNK/js/product/fill_prod_info.js');
+    (async () => {
+        const url = new URL(window.location.href);
+        const parts = url.pathname.split('/');
+        const pid = decodeURIComponent(parts[parts.length - 1]);
+        try {
+            const res = await fetch(`/BNK/product/details/${pid}`, {method: "GET"});
+            if (!res.ok) throw new Error('상품 정보를 가져오는 도중 문제 발생');
+            const productInfo = await res.json();
+            console.log(productInfo);
+            initProdInfo(productInfo);
+
+        } catch (e) {
+            console.error(e.message);
+        }
+
+    })();
+
 
     /*============== 약관 및 상품설명서 받기 스크립트 ================*/
     const radios = document.querySelectorAll('input[name="receive"]');
