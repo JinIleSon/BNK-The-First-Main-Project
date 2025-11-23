@@ -30,6 +30,11 @@ kiwoom:
   appkey: ${KIWOOM_APPKEY}
   secret: ${KIWOOM_SECRET}
   token-url: https://api.kiwoom.com/oauth2/token
+
+koreaexim:
+  base-url: https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON
+  auth-key: ${KOREAEXIM_API_KEY}
+
 # ===== local =====
 ---
 spring:
