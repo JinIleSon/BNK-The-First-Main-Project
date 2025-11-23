@@ -131,7 +131,7 @@
                               width:32px; height:32px; border:none; background:transparent; 
                               border-radius:6px; cursor:pointer;"
                         aria-label="회원 삭제"
-                        th:onclick="|location.href='@{/admin/prod/delete(pid=${product.pid})}'|">
+                        th:data-delete-url="@{/admin/prod/delete(pid=${product.pid})}">
                   <svg width="14" height="24" viewBox="0 0 14 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_191_278)">
                     <path d="M4.225 5.55313L4 6H1C0.446875 6 0 6.44687 0 7C0 7.55312 0.446875 8 1 8H13C13.5531 8 14 7.55312 14 7C14 6.44687 13.5531 6 13 6H10L9.775 5.55313C9.60625 5.2125 9.25938 5 8.88125 5H5.11875C4.74062 5 4.39375 5.2125 4.225 5.55313ZM13 9H1L1.6625 19.5938C1.7125 20.3844 2.36875 21 3.15937 21H10.8406C11.6312 21 12.2875 20.3844 12.3375 19.5938L13 9Z" fill="#D91A1A"/>
@@ -148,24 +148,31 @@
           </tr>
         </table>
         <script>
-          document.addEventListener('DOMContentLoaded', () => {
-          // 표 영역 하나에만 리스너 1개
-          const table = document.querySelector('table');
+            document.addEventListener('DOMContentLoaded', () => {
+                const table = document.querySelector('table');
+                if (!table) return;
 
-          table.addEventListener('click', (e) => {
-            const btn = e.target.closest('.btn-delete');
-            if (!btn) return; // 삭제 버튼이 아닌 클릭은 무시
+                table.addEventListener('click', (e) => {
+                    const btn = e.target.closest('.btn-delete');
+                    if (!btn) return; // 삭제 버튼이 아닌 클릭은 무시
 
-            // 행 정보가 필요하면 여기서 가져오기
-            const tr = btn.closest('tr');
-            const memberId = tr?.querySelector('td:nth-of-type(2)')?.textContent.trim(); // 예: 김철수
+                    const tr = btn.closest('tr');
+                    // 2번째 컬럼: 상품명이라고 가정
+                    const productName = tr?.querySelector('td:nth-of-type(2)')?.textContent.trim();
+                    const msg = (productName ? `${productName}을(를) ` : '') + '삭제하시겠습니까?';
 
-            if (confirm((memberId ? `${memberId}을(를) ` : '') + '삭제하시겠습니까?')) {
-              // TODO: 삭제 실행 (이동/비동기 등)
-              // location.href = `/members/${encodeURIComponent(memberId)}/delete`;
-            }
-          });
-        });
+                    // ❗ 취소 누르면 여기서 바로 종료 → 아무 동작도 안 함
+                    if (!confirm(msg)) {
+                        return;
+                    }
+
+                    // 확인 눌렀을 때만 삭제 URL로 이동
+                    const url = btn.dataset.deleteUrl;
+                    if (url) {
+                        location.href = url;
+                    }
+                });
+            });
         </script>
         <script>
           window.addEventListener('DOMContentLoaded', () => {
