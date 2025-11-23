@@ -49,6 +49,13 @@
     </insert>
     
 <!--    예적금 상품 추가-->
+<!--    펀드 상품 추가-->
+    <insert id="insertFund">
+        INSERT INTO
+        fund(fid, fname, famc, frlvl, ftype, frefpr, fsetdt, ftc, fm1pr, fm3pr, fm6pr, fm12pr, facmpr)
+        VALUES(#{fid}, #{fname}, #{famc}, #{frlvl}, #{ftype}, #{frefpr}, #{fsetdt}, #{ftc}, #{fm1pr}, #{fm3pr}, #{fm6pr}, #{fm12pr}, #{facmpr})
+    </insert>
+<!--    펀드 상품 추가-->
 <!--    상품 삭제-->
     <delete id="deleteByProduct">
         delete from product where pid = #{pid}

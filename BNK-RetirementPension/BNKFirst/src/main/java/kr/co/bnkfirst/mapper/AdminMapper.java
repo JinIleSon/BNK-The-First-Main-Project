@@ -15,6 +15,7 @@ public interface AdminMapper {
     public List<ProductDTO> selectAllProduct(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
     public int selectCountTotal(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
 
+    // 예적금 상품 등록
     public void insertDeposit(@Param("pid") String pid,
                               @Param("ptype") String ptype,
                               @Param("pname") String pname,
@@ -33,6 +34,23 @@ public interface AdminMapper {
                               @Param("psubtitle") String psubtitle,
                               @Param("pinfo") String pinfo
                               );
+
+    // 펀드 상품 등록
+    public void insertFund(@Param("fid") String fid,
+                           @Param("fname") String fname,
+                           @Param("famc") String famc,
+                           @Param("frlvl") int frlvl,
+                           @Param("ftype") String ftype,
+                           @Param("frefpr") float frefpr,
+                           @Param("fsetdt") String fsetdt,
+                           @Param("ftc") float ftc,
+                           @Param("fm1pr") float fm1pr,
+                           @Param("fm3pr") float fm3pr,
+                           @Param("fm6pr") float fm6pr,
+                           @Param("fm12pr") float fm12pr,
+                           @Param("facmpr") float facmpr
+                           );
+
 
     // 유저 목록 출력
     public List<UsersDTO> selectAllUsers(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);

@@ -65,6 +65,23 @@ public class AdminService {
                 prmthd, pprfcrt, pirinfo, pcond, pjnfee, pwtpi, pterms, pdirate, psubtitle, pinfo);
     }
 
+    // 펀드 상품 등록
+    public void insertFund(@Param("fid") String fid,
+                           @Param("fname") String fname,
+                           @Param("famc") String famc,
+                           @Param("frlvl") int frlvl,
+                           @Param("ftype") String ftype,
+                           @Param("frefpr") float frefpr,
+                           @Param("fsetdt") String fsetdt,
+                           @Param("ftc") float ftc,
+                           @Param("fm1pr") float fm1pr,
+                           @Param("fm3pr") float fm3pr,
+                           @Param("fm6pr") float fm6pr,
+                           @Param("fm12pr") float fm12pr,
+                           @Param("facmpr") float facmpr){
+        adminMapper.insertFund(fid, fname, famc, frlvl, ftype, frefpr, fsetdt, ftc, fm1pr, fm3pr, fm6pr, fm12pr, facmpr);
+    }
+
 
     // 상품 삭제
 
