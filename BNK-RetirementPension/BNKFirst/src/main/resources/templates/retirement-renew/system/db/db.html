@@ -10,60 +10,76 @@
 </head>
 
 <body>
-    <!--푸터-->
-    <header>
-        <div id="header" th:replace="~{layouts/header.html}"></div>
-    </header>
+<!--푸터-->
+<header>
+    <div id="header" th:replace="~{layouts/header.html}"></div>
+</header>
 
-    <div class="Pension-page">
-        <!--왼쪽 사이드바-->
-        <aside class="all-sidebar">
-            <ul class="sidebar-menu">
-                <h2>퇴직연금 알아보기</h2>
-                <li><a href="../../intro/why-pension/why-pension.html">퇴직연금소개</a></li>
-                <li class="active"><a href="../../system/db/db.html">퇴직연금 제도의 이해</a></li>
-                <li><a href="../../operation/intro-process/intro-process.html">도입/운영안내</a></li>
-                <li><a href="../../tax/tax-benefit/tax-benefit.html">관련세제</a></li>
-                <li><a href="../../why-bnk/bnk-strong/bnk-strong.html">왜 BNK인가</a></li>
-                <li><a href="../../nps-plan/nps-plan.html">NPS 노후설계서비스</a></li>
-                <li><a href="../../portal-error/portal-error.html">통합연금포털</a></li>
-            </ul>
+<div class="Pension-page">
+    <!--왼쪽 사이드바-->
+    <aside class="all-sidebar">
+        <ul class="sidebar-menu">
+            <h2>퇴직연금 알아보기</h2>
+            <li>
+                <a th:href="@{/retirement-renew/intro/why-pension}">퇴직연금소개</a>
+            </li>
+            <li class="active">
+                <a th:href="@{/retirement-renew/system/db}">퇴직연금 제도의 이해</a>
+            </li>
+            <li>
+                <a th:href="@{/retirement-renew/operation/intro-process}">도입/운영안내</a>
+            </li>
+            <li>
+                <a th:href="@{/retirement-renew/tax/tax-benefit}">관련세제</a>
+            </li>
+            <li>
+                <a th:href="@{/retirement-renew/why-bnk/bnk-strong}">왜 BNK인가</a>
+            </li>
+            <li>
+                <a th:href="@{/retirement-renew/nps-plan/nps-plan}">NPS 노후설계서비스</a>
+            </li>
+            <li>
+                <a th:href="@{/retirement-renew/portal-error/portal-error}">통합연금포털</a>
+            </li>
+        </ul>
 
-            <!--추가 도움 영역-->
-            <section class="all-help">
-                <div class="help-box">
-                    <h3>추가 도움이 필요하신가요?</h3>
-                    <p>전문 상담원이 친절하게 도와드리겠습니다.</p>
-                    <div class="help-buttons">
-                        <button class="btn-call">전화상담</button>
-                        <button class="btn-chat">Talk상담</button>
-                    </div>
+        <!--추가 도움 영역-->
+        <section class="all-help">
+            <div class="help-box">
+                <h3>추가 도움이 필요하신가요?</h3>
+                <p>전문 상담원이 친절하게 도와드리겠습니다.</p>
+                <div class="help-buttons">
+                    <button class="btn-call">전화상담</button>
+                    <button class="btn-chat">Talk상담</button>
                 </div>
-            </section>
-        </aside>
-
-
-        <!--메인 컨텐츠-->
-        <main class="Pension-content">
-            <div class="bnk-cta-wrap">
-                <p class="bnk-cta-text">"부산은행 퇴직연금, 지금 바로 시작하세요."</p>
             </div>
+        </section>
+    </aside>
 
-            <!-- 헤더 -->
-            <div class="Pension-header">
-                <h1>퇴직연금 제도의 이해</h1>
-                <p></p>
-            </div>
 
-            <!-- 탭 -->
-            <div class="pension-tab">
-                <button class="active">확정급여형(DB)</button>
-                <button>확정기여형(DB)</button>
-                <button>개인형퇴직연금제도(IRP)</button>
-                <button>제도 일반사항</button>
-            </div>
+    <!--메인 컨텐츠-->
+    <main class="Pension-content">
+        <div class="bnk-cta-wrap">
+            <p class="bnk-cta-text">"부산은행 퇴직연금, 지금 바로 시작하세요."</p>
+        </div>
 
-            <!-- 본문 -->
+        <!-- 헤더 -->
+        <div class="Pension-header">
+            <h1>퇴직연금 제도의 이해</h1>
+            <p></p>
+        </div>
+
+        <!-- 탭 -->
+        <div class="pension-tab">
+            <button class="active" data-tab="db1">확정급여형(DB)</button>
+            <button data-tab="db2">확정기여형(DC)</button>
+            <button data-tab="db3">개인형퇴직연금(IRP)</button>
+            <button data-tab="db4">제도 일반사항</button>
+        </div>
+
+        <!--===================== TAB 1 : 확정급여형(DB) =====================-->
+        <!-- 본문 -->
+        <div id="db1" class="tab-content active">
             <section class="pension-section">
                 <h2>확정급여형(DB)</h2>
 
@@ -108,17 +124,190 @@
                     <img th:src="@{/images/pension-004.png}" alt="3층 연금구조 도표">
                 </div>
             </section>
+        </div>
+
+        <!--===================== TAB 2 : 확정기여형(DC) =====================-->
+        <!-- 본문 -->
+        <div id="db2" class="tab-content">
+            <section class="pension-section">
+                <h2>확정기여형(DC)</h2>
+
+                <p class="pension-text">
+                    확정급여형(DB : Defined Benefit)
+                </p>
+            </section>
+
+            <!-- 확정급여형 이미지 -->
+            <section class="population-container">
+                <div class="pyramid-wrap">
+                    <img th:src="@{/images/pension-003.png}" alt="3층 연금구조 도표">
+                </div>
+            </section>
 
 
+            <!-- 제도 특징-->
+            <section class="pension-structure">
+                <h3>제도 특징</h3>
+                <p class="pension-text">
+                <ul class="li">- 회사는 퇴직급여를 금융회사에 사외 적립하여 책임지고 직접 운용</ul>
+                <ul class="li">- 근로자가 퇴직할 때 수령할 퇴직급여가 정해진 방법으로 계산되어 사전에 확정됨</ul>
+                <ul class="li">- DB형 가입자는 추가납입, 중도인출 불가</ul>
+                </p>
+            </section>
 
 
-        </main>
-    </div>
+            <!-- 퇴직급여 계산식-->
+            <section class="pension-structure">
+                <h3>퇴직급여 계산식</h3>
+                <p class="pension-text">
+                <ul class="li">퇴직 시 평균임금* × 근속년수</ul>
+                <ul class="li">* 퇴직 시 평균임금 : 계속근로기간 1년에 대하여 30일분의 평균임금</ul>
+                </p>
+            </section>
 
-    <!--푸터-->
-    <footer>
-        <div id="footer" th:replace="~{layouts/footer.html}"></div>
-    </footer>
+
+            <!-- 퇴직급여 계산법-->
+            <section class="pension-structure">
+                <h3>퇴직급여 계산법</h3>
+                <div class="pyramid-wrap">
+                    <img th:src="@{/images/pension-004.png}" alt="3층 연금구조 도표">
+                </div>
+            </section>
+        </div>
+
+        <!--===================== TAB 3 : 개인형퇴직연금제도(IRP) =====================-->
+        <!-- 본문 -->
+        <div id="db3" class="tab-content">
+            <section class="pension-section">
+                <h2>개인형퇴직연금제도(IRP)</h2>
+
+                <p class="pension-text">
+                    확정급여형(DB : Defined Benefit)
+                </p>
+            </section>
+
+            <!-- 확정급여형 이미지 -->
+            <section class="population-container">
+                <div class="pyramid-wrap">
+                    <img th:src="@{/images/pension-003.png}" alt="3층 연금구조 도표">
+                </div>
+            </section>
+
+
+            <!-- 제도 특징-->
+            <section class="pension-structure">
+                <h3>제도 특징</h3>
+                <p class="pension-text">
+                <ul class="li">- 회사는 퇴직급여를 금융회사에 사외 적립하여 책임지고 직접 운용</ul>
+                <ul class="li">- 근로자가 퇴직할 때 수령할 퇴직급여가 정해진 방법으로 계산되어 사전에 확정됨</ul>
+                <ul class="li">- DB형 가입자는 추가납입, 중도인출 불가</ul>
+                </p>
+            </section>
+
+
+            <!-- 퇴직급여 계산식-->
+            <section class="pension-structure">
+                <h3>퇴직급여 계산식</h3>
+                <p class="pension-text">
+                <ul class="li">퇴직 시 평균임금* × 근속년수</ul>
+                <ul class="li">* 퇴직 시 평균임금 : 계속근로기간 1년에 대하여 30일분의 평균임금</ul>
+                </p>
+            </section>
+
+
+            <!-- 퇴직급여 계산법-->
+            <section class="pension-structure">
+                <h3>퇴직급여 계산법</h3>
+                <div class="pyramid-wrap">
+                    <img th:src="@{/images/pension-004.png}" alt="3층 연금구조 도표">
+                </div>
+            </section>
+        </div>
+
+        <!--===================== TAB 4 : 제도 일반사항 =====================-->
+        <!-- 본문 -->
+        <div id="db4" class="tab-content">
+            <section class="pension-section">
+                <h2>제도 일반사항</h2>
+
+                <p class="pension-text">
+                    확정급여형(DB : Defined Benefit)
+                </p>
+            </section>
+
+            <!-- 확정급여형 이미지 -->
+            <section class="population-container">
+                <div class="pyramid-wrap">
+                    <img th:src="@{/images/pension-003.png}" alt="3층 연금구조 도표">
+                </div>
+            </section>
+
+
+            <!-- 제도 특징-->
+            <section class="pension-structure">
+                <h3>제도 특징</h3>
+                <p class="pension-text">
+                <ul class="li">- 회사는 퇴직급여를 금융회사에 사외 적립하여 책임지고 직접 운용</ul>
+                <ul class="li">- 근로자가 퇴직할 때 수령할 퇴직급여가 정해진 방법으로 계산되어 사전에 확정됨</ul>
+                <ul class="li">- DB형 가입자는 추가납입, 중도인출 불가</ul>
+                </p>
+            </section>
+
+
+            <!-- 퇴직급여 계산식-->
+            <section class="pension-structure">
+                <h3>퇴직급여 계산식</h3>
+                <p class="pension-text">
+                <ul class="li">퇴직 시 평균임금* × 근속년수</ul>
+                <ul class="li">* 퇴직 시 평균임금 : 계속근로기간 1년에 대하여 30일분의 평균임금</ul>
+                </p>
+            </section>
+
+
+            <!-- 퇴직급여 계산법-->
+            <section class="pension-structure">
+                <h3>퇴직급여 계산법</h3>
+                <div class="pyramid-wrap">
+                    <img th:src="@{/images/pension-004.png}" alt="3층 연금구조 도표">
+                </div>
+            </section>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const tabButtons = document.querySelectorAll(".pension-tab button");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        console.log("buttons:", tabButtons.length, "tabs:", tabContents.length);
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener("click", function () {
+
+                tabButtons.forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+
+                const targetId = this.dataset.tab;
+                tabContents.forEach(c => c.classList.remove("active"));
+
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.classList.add("active");
+                }
+            });
+        });
+
+    });
+</script>
+
+
+<!--푸터-->
+<footer>
+    <div id="footer" th:replace="~{layouts/footer.html}"></div>
+</footer>
 </body>
 <style>
     /*----------------------------------*/
@@ -133,9 +322,9 @@
     }
 
 
-    .Pension-page{
-        display:flex;
-        gap:40px;
+    .Pension-page {
+        display: flex;
+        gap: 40px;
         width: 1200px;
         margin: 60px auto;
         padding: 40px 20px;
@@ -145,43 +334,42 @@
     }
 
 
-
     /*----------------------------------*/
     /*--왼쪽 사이드바--*/
     /*----------------------------------*/
-    .all-sidebar{
+    .all-sidebar {
         width: 250px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
     }
 
-    .all-sidebar h2{
+    .all-sidebar h2 {
         font-size: 20px;
         margin-bottom: 20px;
         color: #333;
     }
 
     .sidebar-menu {
-        list-style:none;
+        list-style: none;
         padding: 20px;
         margin: 0 0 40px 0;
         border: 1px solid #eee;
         border-radius: 8px;
         background: #fff;
-        box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
     }
 
-    .sidebar-menu h2{
+    .sidebar-menu h2 {
         font-size: 17px;
         font-weight: 700;
         color: #333;
         margin-bottom: 16px;
     }
 
-    .sidebar-menu li{
+    .sidebar-menu li {
         padding: 12px 16px;
-        border-radius:  6px;
+        border-radius: 6px;
         color: #555;
         font-weight: 500;
         transition: all 0.2s ease;
@@ -194,47 +382,47 @@
         background: #f2f2f2;
     }
 
-    .sidebar-menu li.active{
+    .sidebar-menu li.active {
         background: #ffe6e6;
         border-left: 4px solid #d91a1a;
         color: #d91a1a;;
-        font-weight:  600;
+        font-weight: 600;
         padding-left: 12px;
     }
 
-    .sidebar-menu li:last-child{
+    .sidebar-menu li:last-child {
         border-bottom: none;
     }
 
     /*----------------------------------*/
     /*--추가 도움--*/
     /*----------------------------------*/
-    .all-help{
-        background: linear-gradient(135deg,#e62b2b, #7e2020);
+    .all-help {
+        background: linear-gradient(135deg, #e62b2b, #7e2020);
         color: #fff;
         border-radius: 12px;
         padding: 24px 20px;
         text-align: center;
-        box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
     }
 
-    .help-box h3{
+    .help-box h3 {
         font-size: 17px;
         margin-bottom: 6px;
     }
 
-    .help-box p{
+    .help-box p {
         font-size: 14px;
         margin-bottom: 16px;
     }
 
-    .help-buttons{
+    .help-buttons {
         display: flex;
         justify-content: center;
         gap: 10px;
     }
 
-    .btn-call, .btn-chat{
+    .btn-call, .btn-chat {
         padding: 8px 14px;
         border: none;
         border-radius: 6px;
@@ -242,13 +430,13 @@
         cursor: pointer;
     }
 
-    .btn-call{
+    .btn-call {
         background: #fff;
         color: #d91a1a;
     }
 
-    .btn-chat{
-        background:  transparent;
+    .btn-chat {
+        background: transparent;
         border: 1px solid #fff;
         color: #fff;
     }
@@ -257,18 +445,18 @@
     /*--메인 컨텐츠--*/
     /*----------------------------------*/
 
-    .Pension-content{
+    .Pension-content {
         flex: 1;
     }
 
-    .Pension-header h1{
+    .Pension-header h1 {
         font-size: 24px;
         margin-bottom: 8px;
     }
 
-    .Pension-header p{
+    .Pension-header p {
         color: #666;
-        margin-bottom:  20px;
+        margin-bottom: 20px;
     }
 
     .Pension-search {
@@ -289,16 +477,16 @@
         font-size: 18px;
     }
 
-    .Pension-search input{
-        border:none;
-        flex:1;
+    .Pension-search input {
+        border: none;
+        flex: 1;
         background: transparent;
         padding: 8px;
         outline: none;
         font-size: medium;
     }
 
-    .Pension-search button{
+    .Pension-search button {
         background: none;
         border: none;
         cursor: pointer;
@@ -326,7 +514,7 @@
     }
 
     /*리스트*/
-    .Pension-list details{
+    .Pension-list details {
         border: 1px soild #e6e6e6;
         border-radius: 8px;
         margin-bottom: 10px;
@@ -334,19 +522,19 @@
         background: #fff;
     }
 
-    .Pension-list summary{
+    .Pension-list summary {
         cursor: pointer;
         font-weight: 500;
     }
 
-    .Pension-list p{
+    .Pension-list p {
         margin-top: 10px;
         color: #555;
         font-size: 14px;
-        line-height:  1.6;
+        line-height: 1.6;
     }
 
-    .Pension-more{
+    .Pension-more {
         margin: 30px auto 0;
         display: block;
         padding: 10px 24px;
@@ -361,7 +549,7 @@
     /* 전체 페이지 */
     /******************************************/
     body {
-        font-family: 'Pretendard','Noto Sans KR',sans-serif;
+        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
         background: #F6F6F8;
         margin: 0;
         color: #222;
@@ -398,7 +586,7 @@
         background: #fff;
         border-radius: 8px;
         border: 1px solid #eee;
-        box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
     }
 
     .sidebar-menu li {
@@ -429,12 +617,12 @@
     /* 상담 박스 */
     /******************************************/
     .all-help {
-        background: linear-gradient(135deg,#e62b2b,#7e2020);
+        background: linear-gradient(135deg, #e62b2b, #7e2020);
         color: #fff;
         padding: 24px 20px;
         text-align: center;
         border-radius: 12px;
-        box-shadow: 0 4px 4px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.08);
     }
 
     .help-buttons {
@@ -620,13 +808,13 @@
     .sidebar-menu a {
         display: block;
         padding: 0px 0;
-        text-decoration: none;   /* 밑줄 제거 */
-        color: #222;             /* 파란색 제거 → 기본 텍스트 색 */
+        text-decoration: none; /* 밑줄 제거 */
+        color: #222; /* 파란색 제거 → 기본 텍스트 색 */
     }
 
     /* hover 효과 */
     .sidebar-menu a:hover {
-        color: #DE0000;          /* BNK 레드 */
+        color: #DE0000; /* BNK 레드 */
         text-decoration: underline;
     }
 
@@ -636,6 +824,15 @@
         font-weight: 600;
         color: #DE0000;
     }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
 
 </style>
 </html>
