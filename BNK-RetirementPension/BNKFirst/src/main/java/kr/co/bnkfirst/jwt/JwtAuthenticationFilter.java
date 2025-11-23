@@ -47,11 +47,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
 
-            filterChain.doFilter(request, response);
+
         } catch (Exception ex) {
             logger.error("JWT 필터 오류: "+ex.getMessage());
-            filterChain.doFilter(request, response);
         }
+
+        // 한 번만 호출하도록 해요 - 손진일
+        filterChain.doFilter(request, response);
     }
 
     private String resolveToken(HttpServletRequest request) {
