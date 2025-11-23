@@ -40,6 +40,15 @@
         <include refid="searchWhere"/>
     </select>
 <!--상품 목록 출력-->
+<!--    예적금 상품 추가-->
+    
+    <insert id="insertDeposit">
+        INSERT INTO
+        PRODUCT(pid, ptype, pname, PBIRATE, phirate, pcprd, pelgbl, prmthd, pprfcrt, pirinfo, pcond, pjnfee, pwtpi, pterms, pdirate, psubtitle, pinfo)
+        VALUES(#{pid},#{ptype},#{pname},#{pbirate},#{phirate},#{pcprd},#{pelgbl},#{prmthd},#{pprfcrt},#{pirinfo},#{pcond},#{pjnfee},#{pwtpi},#{pterms},#{pdirate},#{psubtitle},#{pinfo})
+    </insert>
+    
+<!--    예적금 상품 추가-->
 <!--    상품 삭제-->
     <delete id="deleteByProduct">
         delete from product where pid = #{pid}

@@ -9,6 +9,7 @@ import kr.co.bnkfirst.mapper.AdminMapper;
 import kr.co.bnkfirst.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,29 @@ public class AdminService {
     public int selectCountTotal(PageRequestDTO pageRequestDTO) {
         return adminMapper.selectCountTotal(pageRequestDTO);
     }
+
+    // 예적금 상품 추가
+    public void insertDeposit(@Param("pid") String pid,
+                              @Param("ptype") String ptype,
+                              @Param("pname") String pname,
+                              @Param("pbirate") float pbirate,
+                              @Param("phirate") float phirate,
+                              @Param("pcprd") String pcprd,
+                              @Param("pelgbl") String pelgbl,
+                              @Param("prmthd") String prmthd,
+                              @Param("pprfcrt") String pprfcrt,
+                              @Param("pirinfo") String pirinfo,
+                              @Param("pcond") String pcond,
+                              @Param("pjnfee") String pjnfee,
+                              @Param("pwtpi") String pwtpi,
+                              @Param("pterms") String pterms,
+                              @Param("pdirate") String pdirate,
+                              @Param("psubtitle") String psubtitle,
+                              @Param("pinfo") String pinfo) {
+        adminMapper.insertDeposit(pid, ptype, pname, pbirate, phirate, pcprd, pelgbl,
+                prmthd, pprfcrt, pirinfo, pcond, pjnfee, pwtpi, pterms, pdirate, psubtitle, pinfo);
+    }
+
 
     // 상품 삭제
 

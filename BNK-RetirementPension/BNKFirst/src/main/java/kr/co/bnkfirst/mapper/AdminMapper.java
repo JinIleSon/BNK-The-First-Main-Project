@@ -15,6 +15,24 @@ public interface AdminMapper {
     public List<ProductDTO> selectAllProduct(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
     public int selectCountTotal(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
 
+    public void insertDeposit(@Param("pid") String pid,
+                              @Param("ptype") String ptype,
+                              @Param("pname") String pname,
+                              @Param("pbirate") float pbirate,
+                              @Param("phirate") float phirate,
+                              @Param("pcprd") String pcprd,
+                              @Param("pelgbl") String pelgbl,
+                              @Param("prmthd") String prmthd,
+                              @Param("pprfcrt") String pprfcrt,
+                              @Param("pirinfo") String pirinfo,
+                              @Param("pcond") String pcond,
+                              @Param("pjnfee") String pjnfee,
+                              @Param("pwtpi") String pwtpi,
+                              @Param("pterms") String pterms,
+                              @Param("pdirate") String pdirate,
+                              @Param("psubtitle") String psubtitle,
+                              @Param("pinfo") String pinfo
+                              );
 
     // 유저 목록 출력
     public List<UsersDTO> selectAllUsers(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
