@@ -10,10 +10,11 @@
 </head>
 
 <body>
-    <!--푸터-->
-    <header>
-        <div id="header"></div>
-    </header>
+<!--헤더-->
+<header>
+    <div id="header" th:replace="~{layouts/header.html}"></div>
+</header>
+
 
     <div class="Pension-page">
         <!--왼쪽 사이드바-->
@@ -71,10 +72,11 @@
 
             <!-- 탭 -->
             <div class="pension-tab">
-                <button class="active">기업측면 세제혜택</button>
-                <button>근로자측면 세제혜택</button>
+                <button class="active" data-tab="corp">기업측면 세제혜택</button>
+                <button data-tab="worker">근로자측면 세제혜택</button>
             </div>
 
+            <div id="corp" class="tab-content active">
             <!-- 확정기여형(DC형) -->
             <section class="pension-section">
                 <h2>확정기여형(DC형) 퇴직연금 가입 시</h2>
@@ -115,11 +117,37 @@
         </main>
     </div>
 
-    <!--푸터-->
-    <footer>
-        <div id="footer"></div>
-    </footer>
-</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const tabButtons = document.querySelectorAll(".pension-tab button");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        console.log("buttons:", tabButtons.length, "tabs:", tabContents.length);
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener("click", function () {
+
+                tabButtons.forEach(b => b.classList.remove("active"));
+                this.classList.add("active");
+
+                const targetId = this.dataset.tab;
+                tabContents.forEach(c => c.classList.remove("active"));
+
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.classList.add("active");
+                }
+            });
+        });
+
+    });
+</script>
+
+<!--푸터-->
+<footer>
+    <div id="footer" th:replace="~{layouts/footer.html}"></div>
+</footer>
 
 <style>
     /*----------------------------------*/
