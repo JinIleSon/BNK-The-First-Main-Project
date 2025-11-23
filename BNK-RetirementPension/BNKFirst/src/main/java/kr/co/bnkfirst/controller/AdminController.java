@@ -6,6 +6,7 @@ import kr.co.bnkfirst.dto.PageRequestDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminDocumentDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminProductDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminUsersDTO;
+import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.service.AdminService;
 import kr.co.bnkfirst.service.BranchService;
 import kr.co.bnkfirst.service.DocumentService;
@@ -94,8 +95,40 @@ public class AdminController {
     }
 
     @GetMapping("/admin/prod/register")
-    public String prodregister(){
-        return "admin/admin_prodregister";
+    public String prodregisterGet(){
+        return "admin/admin_prodRegister";
+    }
+
+    @PostMapping("/admin/prod/register")
+    public String prodregisterPost(ProductDTO productDTO,
+                                   @RequestParam("pcprdstart") String pcrdstart,
+                                   @RequestParam("pcprdend") String pcprdend) {
+
+        String pcprd = pcrdstart + "~" + pcprdend + "개월";
+
+        productDTO.setPcprd(pcprd);
+
+//        pid, ptype, pname, pbirate, phirate, pcprd, pelgbl, 컬럼
+//                prmthd, pprfcrt, pirinfo, pcond, pjnfee, pwtpi, pterms, pdirate, psubtitle, pinfo 컬럼
+        adminService.insertDeposit(productDTO.getPid(),
+                productDTO.getPtype(),
+                productDTO.getPname(),
+                productDTO.getPbirate(),
+                productDTO.getPhirate(),
+                productDTO.getPcprd(),
+                productDTO.getPelgbl(),
+                productDTO.getPrmthd(),
+                productDTO.getPprfcrt(),
+                productDTO.getPirinfo(),
+                productDTO.getPcond(),
+                productDTO.getPjnfee(),
+                productDTO.getPwtpi(),
+                productDTO.getPterms(),
+                productDTO.getPdirate(),
+                productDTO.getPsubtitle(),
+                productDTO.getPinfo()
+                );
+        return "redirect:/admin/prod";
     }
 
     @GetMapping("/admin/prod/delete")
