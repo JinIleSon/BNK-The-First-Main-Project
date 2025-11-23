@@ -92,10 +92,12 @@ public class AdminController {
     public String prodmodify(){
         return "admin/admin_prodModify";
     }
+
     @GetMapping("/admin/prod/register")
     public String prodregister(){
         return "admin/admin_prodregister";
     }
+
     @GetMapping("/admin/prod/delete")
     public String proddelete(@RequestParam("pid") String pid, RedirectAttributes ra){
         log.info("pid={}", pid);
@@ -109,6 +111,17 @@ public class AdminController {
 
 
         return "redirect:/admin/prod";
+    }
+
+
+    @GetMapping("/admin/fund/register")
+    public String fundregister(){
+        return "admin/admin_fundRegister";
+    }
+
+    @GetMapping("/admin/fund/modify")
+    public String fundmodify(){
+        return "admin/admin_fundModify";
     }
 
 
