@@ -6,6 +6,7 @@ import kr.co.bnkfirst.dto.PageRequestDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminDocumentDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminProductDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminUsersDTO;
+import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.service.AdminService;
 import kr.co.bnkfirst.service.BranchService;
@@ -148,8 +149,30 @@ public class AdminController {
 
 
     @GetMapping("/admin/fund/register")
-    public String fundregister(){
+    public String fundregisterGet(){
         return "admin/admin_fundRegister";
+    }
+
+    @PostMapping("/admin/fund/register")
+    public String fundregisterPost(FundDTO fundDTO) {
+
+        adminService.insertFund(
+                fundDTO.getFid(),
+                fundDTO.getFname(),
+                fundDTO.getFamc(),
+                fundDTO.getFrlvl(),
+                fundDTO.getFtype(),
+                fundDTO.getFrefpr(),
+                fundDTO.getFsetdt(),
+                fundDTO.getFtc(),
+                fundDTO.getFm1pr(),
+                fundDTO.getFm3pr(),
+                fundDTO.getFm6pr(),
+                fundDTO.getFm12pr(),
+                fundDTO.getFacmpr()
+        );
+
+        return "redirect:/admin/prod";
     }
 
     @GetMapping("/admin/fund/modify")

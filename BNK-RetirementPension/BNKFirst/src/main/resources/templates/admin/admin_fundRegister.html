@@ -436,218 +436,219 @@
                 </div>
             </div>
         </div>
-        <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
-            <div style="font-size:20px; color:#2B2F36;">
-                기본 정보
-            </div>
-            <div>
-                <div style="display: flex; margin-top: 20px; gap: 25px;">
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">상품명</div><div style="color: red;">*</div></div>
-                        <div>
-                            <input name="fName" type="text" placeholder="상품명을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                        </div>
-                    </div>
-                    <div>
-                        <div>상품ID<span style="color: red;margin-left: 2px;">*</span></div>
-                        <div>
-                            <input name="fId" placeholder="BNK-TD-1" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                        </div>
-                    </div>
+        <form th:action="@{/admin/fund/register}" method="post">
+            <div style="padding: 25px; margin-top:25px; padding-bottom: 32px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+                <div style="font-size:20px; color:#2B2F36;">
+                    기본 정보
                 </div>
-                <div style="display: flex; margin-top: 20px; gap: 25px;">
-                    <div>
-                        <div>위험등급<span style="color: red;margin-left: 2px;">*</span></div>
-                        <div>
-                            <input name="fRlvl" placeholder="1~6 입력" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex; margin-top: 20px; gap: 25px;">
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">운용사</div><div style="color: red;">*</div></div>
-                        <div>
-                            <select name="fAmc" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                                <option value="수협은행">수협은행</option>
-                                <option value="하나증권">하나증권</option>
-                                <option value="수협은행(연금저축)">수협은행(연금저축)</option>
-                                <option value="하이자산운용">하이자산운용</option>
-                                <option value="KCGI자산운용">KCGI자산운용</option>
-                                <option value="BNK자산운용">BNK자산운용</option>
-                                <option value="한국투신운용">한국투신운용</option>
-                                <option value="푸르덴셜자산운용">푸르덴셜자산운용</option>
-                                <option value="삼성자산운용">삼성자산운용</option>
-                                <option value="우리자산운용">우리자산운용</option>
-                                <option value="교보악사자산운용">교보악사자산운용</option>
-                                <option value="신영자산운용">신영자산운용</option>
-                                <option value="신한자산운용">신한자산운용</option>
-                                <option value="맥쿼리투자신탁운용">맥쿼리투자신탁운용</option>
-                                <option value="한화자산운용">한화자산운용</option>
-                                <option value="DB자산운용">DB자산운용</option>
-                                <option value="프랭클린템플턴투신">프랭클린템플턴투신</option>
-                                <option value="유진자산운용">유진자산운용</option>
-                                <option value="KB자산운용">KB자산운용</option>
-                                <option value="맵스자산운용">맵스자산운용</option>
-                                <option value="HDC자산운용">HDC자산운용</option>
-                                <option value="이스트스프링자산운용">이스트스프링자산운용</option>
-                                <option value="슈로더투자신탁운용">슈로더투자신탁운용</option>
-                                <option value="도이치자산운용">도이치자산운용</option>
-                                <option value="NH-Amundi자산운용">NH-Amundi자산운용</option>
-                                <option value="피델리티자산운용">피델리티자산운용</option>
-                                <option value="미래에셋자산운용">미래에셋자산운용</option>
-                                <option value="키움투자자산운용">키움투자자산운용</option>
-                                <option value="IBK자산운용">IBK자산운용</option>
-                                <option value="베어링자산운용">베어링자산운용</option>
-                                <option value="마이다스에셋자산운용">마이다스에셋자산운용</option>
-                                <option value="다올자산운용">다올자산운용</option>
-                                <option value="유리자산운용">유리자산운용</option>
-                                <option value="타임폴리오자산운용">타임폴리오자산운용</option>
-                                <option value="트러스톤자산운용">트러스톤자산운용</option>
-                                <option value="VIP자산운용">VIP자산운용</option>
-                                <option value="한국투자벨류자산운용">한국투자벨류자산운용</option>
-                                <option value="AB자산운용">AB자산운용</option>
-                                <option value="에셋플러스자산운용(주)">에셋플러스자산운용(주)</option>
-                                <option value="한국투자증권(사모운용)">한국투자증권(사모운용)</option>
-                                <option value="하나금융투자(연금저축)">하나금융투자(연금저축)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">펀드유형</div><div style="color: red;">*</div></div>
-                        <div>
-                            <select name="fType" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
-                                <option value="MMF">MMF</option>
-                                <option value="채권형">채권형</option>
-                                <option value="채권혼합형">채권혼합형</option>
-                                <option value="주식혼합형">주식혼합형</option>
-                                <option value="주식형">주식형</option>
-                                <option value="파생상품형">파생상품형</option>
-                                <option value="재간접">재간접</option>
-                                <option value="혼합형">혼합형</option>
-                                <option value="원자재">원자재</option>
-                                <option value="부동산">부동산</option>
-                                <option value="기타">기타</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex; margin-top: 20px; gap: 25px;">
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">기준가</div><div style="color: red;">*</div></div>
-                        <div>
-                            <div class="input-suffix" style="margin-top:13px;">
-                                <input type="number" name="fRefpr" step="0.01" placeholder="0.00">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">설정일</div><div style="color: red;">*</div></div>
-                        <div style="margin-top:13px;">
-                            <input type="date" name="fSetdt" id="startDate" class="date-input" placeholder="설정일" aria-label="시작일">
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex; margin-top: 20px; gap: 25px;">
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">총 보수</div><div style="color: red;">*</div></div>
-                        <div>
-                            <div class="input-suffix" style="margin-top:13px;">
-                                <input type="number" name="fTc" step="0.0001" placeholder="0.0000">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">1개월 수익률</div><div style="color: red;">*</div></div>
-                        <div>
-                            <div class="input-suffix" style="margin-top:13px;">
-                                <input type="number" name="fM1pr" step="0.01" placeholder="0.00">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex; margin-top: 20px; gap: 25px;">
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">3개월 수익률</div><div style="color: red;">*</div></div>
-                        <div>
-                            <div class="input-suffix" style="margin-top:13px;">
-                                <input type="number" name="fM3pr" step="0.01" placeholder="0.00">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">6개월 수익률</div><div style="color: red;">*</div></div>
-                        <div>
-                            <div class="input-suffix" style="margin-top:13px;">
-                                <input type="number" name="fM6pr" step="0.01" placeholder="0.00">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="display: flex; margin-top: 20px; gap: 25px;">
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">12개월 수익률</div><div style="color: red;">*</div></div>
-                        <div>
-                            <div class="input-suffix" style="margin-top:13px;">
-                                <input type="number" name="fM12pr" step="0.01" placeholder="0.00">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="display: flex;"><div style="margin-right: 2px;">누적 수익률</div><div style="color: red;">*</div></div>
-                        <div>
-                            <div class="input-suffix" style="margin-top:13px;">
-                                <input type="number" name="fAcmpr" step="0.01" placeholder="0.00">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
-            <div style="display: flex; gap: 10px; justify-content: space-between;">
                 <div>
-                    <button class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
-                        <div style="display: flex; gap: 8px; justify-content: center;">
+                    <div style="display: flex; margin-top: 20px; gap: 25px;">
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">상품명</div><div style="color: red;">*</div></div>
                             <div>
-                                <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 18C5.45 18 4.97933 17.8043 4.588 17.413C4.19667 17.0217 4.00067 16.5507 4 16V14H2C1.45 14 0.979333 13.8043 0.588 13.413C0.196667 13.0217 0.000666667 12.5507 0 12V8C0 7.15 0.291667 6.43767 0.875 5.863C1.45833 5.28833 2.16667 5.00067 3 5H17C17.85 5 18.5627 5.28767 19.138 5.863C19.7133 6.43833 20.0007 7.15067 20 8V12C20 12.55 19.8043 13.021 19.413 13.413C19.0217 13.805 18.5507 14.0007 18 14H16V16C16 16.55 15.8043 17.021 15.413 17.413C15.0217 17.805 14.5507 18.0007 14 18H6ZM16 4H4V2C4 1.45 4.196 0.979333 4.588 0.588C4.98 0.196667 5.45067 0.000666667 6 0H14C14.55 0 15.021 0.196 15.413 0.588C15.805 0.98 16.0007 1.45067 16 2V4ZM16 9.5C16.2833 9.5 16.521 9.404 16.713 9.212C16.905 9.02 17.0007 8.78267 17 8.5C16.9993 8.21733 16.9033 7.98 16.712 7.788C16.5207 7.596 16.2833 7.5 16 7.5C15.7167 7.5 15.4793 7.596 15.288 7.788C15.0967 7.98 15.0007 8.21733 15 8.5C14.9993 8.78267 15.0953 9.02033 15.288 9.213C15.4807 9.40567 15.718 9.50133 16 9.5ZM6 16H14V12H6V16Z" fill="#374151"/>
-                                </svg>
-                            </div>
-                            <div>
-                                인쇄하기
+                                <input name="fname" type="text" placeholder="상품명을 입력하세요" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
                             </div>
                         </div>
-                    </button>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <div>
-                        <button type="button"
-                                th:onclick="|location.href='@{/admin/prod}'|"
-                                class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
+                        <div>
+                            <div>상품ID<span style="color: red;margin-left: 2px;">*</span></div>
+                            <div>
+                                <input name="fid" placeholder="BNK-FD-1" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                            </div>
+                        </div>
                     </div>
+                    <div style="display: flex; margin-top: 20px; gap: 25px;">
+                        <div>
+                            <div>위험등급<span style="color: red;margin-left: 2px;">*</span></div>
+                            <div>
+                                <input name="frlvl" placeholder="1~6 입력" type="text" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:15px; font-size: 16px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-top: 20px; gap: 25px;">
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">운용사</div><div style="color: red;">*</div></div>
+                            <div>
+                                <select name="famc" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                                    <option value="수협은행">수협은행</option>
+                                    <option value="하나증권">하나증권</option>
+                                    <option value="수협은행(연금저축)">수협은행(연금저축)</option>
+                                    <option value="하이자산운용">하이자산운용</option>
+                                    <option value="KCGI자산운용">KCGI자산운용</option>
+                                    <option value="BNK자산운용">BNK자산운용</option>
+                                    <option value="한국투신운용">한국투신운용</option>
+                                    <option value="푸르덴셜자산운용">푸르덴셜자산운용</option>
+                                    <option value="삼성자산운용">삼성자산운용</option>
+                                    <option value="우리자산운용">우리자산운용</option>
+                                    <option value="교보악사자산운용">교보악사자산운용</option>
+                                    <option value="신영자산운용">신영자산운용</option>
+                                    <option value="신한자산운용">신한자산운용</option>
+                                    <option value="맥쿼리투자신탁운용">맥쿼리투자신탁운용</option>
+                                    <option value="한화자산운용">한화자산운용</option>
+                                    <option value="DB자산운용">DB자산운용</option>
+                                    <option value="프랭클린템플턴투신">프랭클린템플턴투신</option>
+                                    <option value="유진자산운용">유진자산운용</option>
+                                    <option value="KB자산운용">KB자산운용</option>
+                                    <option value="맵스자산운용">맵스자산운용</option>
+                                    <option value="HDC자산운용">HDC자산운용</option>
+                                    <option value="이스트스프링자산운용">이스트스프링자산운용</option>
+                                    <option value="슈로더투자신탁운용">슈로더투자신탁운용</option>
+                                    <option value="도이치자산운용">도이치자산운용</option>
+                                    <option value="NH-Amundi자산운용">NH-Amundi자산운용</option>
+                                    <option value="피델리티자산운용">피델리티자산운용</option>
+                                    <option value="미래에셋자산운용">미래에셋자산운용</option>
+                                    <option value="키움투자자산운용">키움투자자산운용</option>
+                                    <option value="IBK자산운용">IBK자산운용</option>
+                                    <option value="베어링자산운용">베어링자산운용</option>
+                                    <option value="마이다스에셋자산운용">마이다스에셋자산운용</option>
+                                    <option value="다올자산운용">다올자산운용</option>
+                                    <option value="유리자산운용">유리자산운용</option>
+                                    <option value="타임폴리오자산운용">타임폴리오자산운용</option>
+                                    <option value="트러스톤자산운용">트러스톤자산운용</option>
+                                    <option value="VIP자산운용">VIP자산운용</option>
+                                    <option value="한국투자벨류자산운용">한국투자벨류자산운용</option>
+                                    <option value="AB자산운용">AB자산운용</option>
+                                    <option value="에셋플러스자산운용(주)">에셋플러스자산운용(주)</option>
+                                    <option value="한국투자증권(사모운용)">한국투자증권(사모운용)</option>
+                                    <option value="하나금융투자(연금저축)">하나금융투자(연금저축)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">펀드유형</div><div style="color: red;">*</div></div>
+                            <div>
+                                <select name="ftype" id="" style="margin-top: 13px; box-sizing: border-box; outline:none; padding-left:10px; font-size: 14px; width: 557px; height: 42px; border:1px solid #D1D5DB; border-radius: 6px;">
+                                    <option value="MMF">MMF</option>
+                                    <option value="채권형">채권형</option>
+                                    <option value="채권혼합형">채권혼합형</option>
+                                    <option value="주식혼합형">주식혼합형</option>
+                                    <option value="주식형">주식형</option>
+                                    <option value="파생상품형">파생상품형</option>
+                                    <option value="재간접">재간접</option>
+                                    <option value="혼합형">혼합형</option>
+                                    <option value="원자재">원자재</option>
+                                    <option value="부동산">부동산</option>
+                                    <option value="기타">기타</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-top: 20px; gap: 25px;">
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">기준가</div><div style="color: red;">*</div></div>
+                            <div>
+                                <div class="input-suffix" style="margin-top:13px;">
+                                    <input type="number" name="frefpr" step="0.01" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">설정일</div><div style="color: red;">*</div></div>
+                            <div style="margin-top:13px;">
+                                <input type="date" name="fsetdt" id="startDate" class="date-input" placeholder="설정일" aria-label="시작일">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-top: 20px; gap: 25px;">
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">총 보수</div><div style="color: red;">*</div></div>
+                            <div>
+                                <div class="input-suffix" style="margin-top:13px;">
+                                    <input type="number" name="ftc" step="0.0001" placeholder="0.0000">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">1개월 수익률</div><div style="color: red;">*</div></div>
+                            <div>
+                                <div class="input-suffix" style="margin-top:13px;">
+                                    <input type="number" name="fm1pr" step="0.01" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-top: 20px; gap: 25px;">
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">3개월 수익률</div><div style="color: red;">*</div></div>
+                            <div>
+                                <div class="input-suffix" style="margin-top:13px;">
+                                    <input type="number" name="fm3pr" step="0.01" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">6개월 수익률</div><div style="color: red;">*</div></div>
+                            <div>
+                                <div class="input-suffix" style="margin-top:13px;">
+                                    <input type="number" name="fm6pr" step="0.01" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; margin-top: 20px; gap: 25px;">
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">12개월 수익률</div><div style="color: red;">*</div></div>
+                            <div>
+                                <div class="input-suffix" style="margin-top:13px;">
+                                    <input type="number" name="fm12pr" step="0.01" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div style="display: flex;"><div style="margin-right: 2px;">누적 수익률</div><div style="color: red;">*</div></div>
+                            <div>
+                                <div class="input-suffix" style="margin-top:13px;">
+                                    <input type="number" name="facmpr" step="0.01" placeholder="0.00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 25px; margin-top:25px; background-color: white; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden;">
+                <div style="display: flex; gap: 10px; justify-content: space-between;">
                     <div>
-                        <button class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
-                            <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_454_136)">
-                                        <path d="M2 1C0.896875 1 0 1.89688 0 3V13C0 14.1031 0.896875 15 2 15H12C13.1031 15 14 14.1031 14 13V5.41563C14 4.88438 13.7906 4.375 13.4156 4L11 1.58438C10.625 1.20938 10.1156 1 9.58438 1H2ZM2 4C2 3.44688 2.44688 3 3 3H9C9.55313 3 10 3.44688 10 4V6C10 6.55312 9.55313 7 9 7H3C2.44688 7 2 6.55312 2 6V4ZM7 9C7.53043 9 8.03914 9.21071 8.41421 9.58579C8.78929 9.96086 9 10.4696 9 11C9 11.5304 8.78929 12.0391 8.41421 12.4142C8.03914 12.7893 7.53043 13 7 13C6.46957 13 5.96086 12.7893 5.58579 12.4142C5.21071 12.0391 5 11.5304 5 11C5 10.4696 5.21071 9.96086 5.58579 9.58579C5.96086 9.21071 6.46957 9 7 9Z" fill="white"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_454_136">
-                                            <path d="M0 0H14V16H0V0Z" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
+                        <button type="button" class="btn-pressable btn-sheen" id="btnPrint" style="box-sizing: border-box; width: 120px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">
+                            <div style="display: flex; gap: 8px; justify-content: center;">
                                 <div>
-                                    상품 등록
+                                    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 18C5.45 18 4.97933 17.8043 4.588 17.413C4.19667 17.0217 4.00067 16.5507 4 16V14H2C1.45 14 0.979333 13.8043 0.588 13.413C0.196667 13.0217 0.000666667 12.5507 0 12V8C0 7.15 0.291667 6.43767 0.875 5.863C1.45833 5.28833 2.16667 5.00067 3 5H17C17.85 5 18.5627 5.28767 19.138 5.863C19.7133 6.43833 20.0007 7.15067 20 8V12C20 12.55 19.8043 13.021 19.413 13.413C19.0217 13.805 18.5507 14.0007 18 14H16V16C16 16.55 15.8043 17.021 15.413 17.413C15.0217 17.805 14.5507 18.0007 14 18H6ZM16 4H4V2C4 1.45 4.196 0.979333 4.588 0.588C4.98 0.196667 5.45067 0.000666667 6 0H14C14.55 0 15.021 0.196 15.413 0.588C15.805 0.98 16.0007 1.45067 16 2V4ZM16 9.5C16.2833 9.5 16.521 9.404 16.713 9.212C16.905 9.02 17.0007 8.78267 17 8.5C16.9993 8.21733 16.9033 7.98 16.712 7.788C16.5207 7.596 16.2833 7.5 16 7.5C15.7167 7.5 15.4793 7.596 15.288 7.788C15.0967 7.98 15.0007 8.21733 15 8.5C14.9993 8.78267 15.0953 9.02033 15.288 9.213C15.4807 9.40567 15.718 9.50133 16 9.5ZM6 16H14V12H6V16Z" fill="#374151"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    인쇄하기
                                 </div>
                             </div>
                         </button>
                     </div>
+                    <div style="display: flex; gap: 10px;">
+                        <div>
+                            <button type="button"
+                                    th:onclick="|location.href='@{/admin/prod}'|"
+                                    class="btn-pressable btn-sheen" style="box-sizing: border-box; width: 65px; height: 42px; border:none; border-radius: 8px; cursor: pointer; border:1px solid #D1D5DB; background-color: white;">취소</button>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn-register" style="gap:6px; box-sizing: border-box; width: 120px; height: 42px; background-color: #D91A1A; color: white; border:none; border-radius: 8px; cursor: pointer;">
+                                <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+                                    <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_454_136)">
+                                            <path d="M2 1C0.896875 1 0 1.89688 0 3V13C0 14.1031 0.896875 15 2 15H12C13.1031 15 14 14.1031 14 13V5.41563C14 4.88438 13.7906 4.375 13.4156 4L11 1.58438C10.625 1.20938 10.1156 1 9.58438 1H2ZM2 4C2 3.44688 2.44688 3 3 3H9C9.55313 3 10 3.44688 10 4V6C10 6.55312 9.55313 7 9 7H3C2.44688 7 2 6.55312 2 6V4ZM7 9C7.53043 9 8.03914 9.21071 8.41421 9.58579C8.78929 9.96086 9 10.4696 9 11C9 11.5304 8.78929 12.0391 8.41421 12.4142C8.03914 12.7893 7.53043 13 7 13C6.46957 13 5.96086 12.7893 5.58579 12.4142C5.21071 12.0391 5 11.5304 5 11C5 10.4696 5.21071 9.96086 5.58579 9.58579C5.96086 9.21071 6.46957 9 7 9Z" fill="white"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0_454_136">
+                                                <path d="M0 0H14V16H0V0Z" fill="white"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <div>
+                                        상품 등록
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
+        </form>
     </div>
 </main>
 
