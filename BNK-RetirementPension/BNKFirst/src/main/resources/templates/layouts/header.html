@@ -199,19 +199,25 @@
                                 연장
                             </button>
                         </div>
-                        <div style=" width: 60px;">
+                        <div style=" width: 60px;text-align: center;">
                             <a th:href="@{/info/guide}">
-                                <img th:src="@{/images/magnifier.png}" alt="">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.5 6.5L5.5 10V22" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.5 2L15.5 5.5V12L19 14.5V22H10.5V2Z" fill="#4B5563" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M2 22H22" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
                             </a>
                         </div>
                         <div th:if="${session.loginUser !=  null && session.loginUser.role == 'ADMIN'}">
-                            <div style="width: 60px;">
+                            <div style="width: 60px; padding-top: 1px;text-align: center;">
                                 <a th:href="@{/admin/main}">
-                                    <img th:src="@{/images/globe.png}" alt="">
+                                    <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.6825 7.75014C14.048 8.38653 13.239 8.82031 12.3578 8.99654C11.4766 9.17278 10.5629 9.08355 9.7325 8.74014L4.3225 15.2601C3.3325 16.2501 1.7325 16.2501 0.7425 15.2601C-0.2475 14.2701 -0.2475 12.6701 0.7425 11.6901L7.2625 6.27014C6.5825 4.62014 6.9125 2.66014 8.2525 1.32014C9.5325 0.0401411 11.3725 -0.299859 12.9725 0.260141L10.0825 3.15014L12.9025 5.97014L15.7625 3.10014C16.2925 4.68014 15.9425 6.49014 14.6825 7.75014ZM1.8125 14.1901C2.2125 14.5801 2.8525 14.5801 3.2425 14.1901C3.6425 13.7901 3.6425 13.1501 3.2425 12.7601C2.8525 12.3601 2.2125 12.3601 1.8125 12.7601C1.62501 12.9509 1.51994 13.2077 1.51994 13.4751C1.51994 13.7426 1.62501 13.9994 1.8125 14.1901Z" fill="#4B5563"/>
+                                    </svg>
                                 </a>
                             </div>
                         </div>
-                        <div style="width: 115px;">
+                        <div style="width: 115px;text-align: center;">
                             <button class="auth-btn"
                                     th:onclick="|location.href='@{/cs/consultation/findStore}'|"
                                     style="cursor: pointer;border-radius: 6px; border:1px solid #E5E7EB; width:85px; height:38px;">
@@ -219,14 +225,14 @@
                             </button>
                         </div>
                         <div th:if="${session.loginUser != null && (session.loginUser.role == 'USER' || session.loginUser.role == 'ADMIN')}">
-                            <div style="width: 60px;">
+                            <div style="width: 60px;text-align: center;">
                                 <a th:href="@{/mypage/main}">
                                     <img th:src="@{/images/human.png}" alt="">
                                 </a>
                             </div>
                         </div>
                         <div th:if="${session.loginUser == null || (session.loginUser.role != 'USER' && session.loginUser.role != 'ADMIN')}">
-                            <div style="width: 60px;">
+                            <div style="width: 60px;text-align: center;">
                                 <a th:href="@{/member/main}">
                                     <img th:src="@{/images/human.png}" alt="">
                                 </a>
