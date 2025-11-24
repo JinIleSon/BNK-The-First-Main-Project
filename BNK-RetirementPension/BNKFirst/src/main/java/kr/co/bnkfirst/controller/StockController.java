@@ -24,6 +24,16 @@ public class StockController {
         return "stock/stock_main";
     }
 
+    @GetMapping("/stock/mainAbroad")
+    public String mainAbroadPage(Model model) {
+
+        var ranks = rankingService.getTopByTradingValueAbroad(100);
+        model.addAttribute("ranks", ranks);
+        log.info("overseas ranks size = {}", ranks.size());
+
+        return "stock/stock_mainAbroad";
+    }
+
     @GetMapping("/stock/order")
     public String stockOrder(@RequestParam("code") String code,
                              @RequestParam(value = "name", required = false) String name,

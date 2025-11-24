@@ -64,4 +64,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+
+        // /BNK/api/** 는 인증 없이 접근 허용
+        return path.startsWith("/BNK/api/");
+    }
 }

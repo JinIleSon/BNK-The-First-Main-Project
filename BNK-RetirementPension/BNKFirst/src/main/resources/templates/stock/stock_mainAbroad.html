@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>stock_main</title>
+    <title>stock_mainAbroad</title>
     <style>
         main {
             background-color: #F6F6F8;
@@ -239,10 +239,10 @@
         <div style="">
             <ul class="tab-list" id="marketTabs" style="list-style: none; display: flex;">
                 <li style=" margin-right: 20px;">
-                    <a href="#" class="tab-link active" style="text-decoration: none;color: black;">국내 정규장</a>
+                    <a th:href="@{/stock/main}" class="tab-link" style="text-decoration: none;color: black;">국내 정규장</a>
                 </li>
                 <li>
-                    <a th:href="@{/stock/mainAbroad}" class="tab-link" style=" text-decoration: none; color: black;">해외 데이마켓</a>
+                    <a href="#" class="tab-link active" style=" text-decoration: none; color: black;">해외 데이마켓</a>
                 </li>
             </ul>
         </div>
@@ -290,7 +290,7 @@
                         <div style="text-align:end;">
                     <span th:text="${#numbers.formatInteger(item.price,0,'COMMA')}">
                         152000
-                    </span>원
+                    </span> 달러
                         </div>
 
                         <!-- 등락률: 색상 class 부여 -->
@@ -308,7 +308,7 @@
 
                         <!-- 거래대금: 단위는 문서 기준으로 조정 (예: 억 단위로 보고 싶으면 /10000 등) -->
                         <div style="text-align:end; padding-right:10px;">
-                    <span th:text="${#numbers.formatInteger(item.amount, 0, 'COMMA')} + ' 만원'">
+                    <span th:text="${#numbers.formatInteger(item.amount, 0, 'COMMA')} + ' 달러'">
                         5,308,092
                     </span>
                         </div>
@@ -345,7 +345,7 @@
                     item.changeRate > 0 ? 'ticker-rate-up' :
                     (item.changeRate < 0 ? 'ticker-rate-down' : 'ticker-rate-zero')
                 }">
-                    <span th:text="${#numbers.formatInteger(item.price,0,'COMMA')}">72,300</span>원
+                    <span th:text="${#numbers.formatInteger(item.price,0,'COMMA')}">72,300</span> 달러
                     (
                     <span th:text="${
                         (item.changeRate > 0 ? '+' : (item.changeRate < 0 ? '-' : '')) +
@@ -506,7 +506,7 @@
             try {
                 console.log('[fetchRanks] 호출');
 
-                const res = await fetch('/BNK/api/ranks', {
+                const res = await fetch('/BNK/api/overseas-ranks', {
                     method: 'GET',
                     cache: 'no-store'
                 });
@@ -567,7 +567,7 @@
                 const absRate  = Math.abs(rate).toFixed(2);
                 const rateText = `${sign}${absRate}%`;
                 const priceText  = price.toLocaleString('ko-KR');
-                const amountText = amount.toLocaleString('ko-KR') + ' 만원';
+                const amountText = amount.toLocaleString('ko-KR') + ' 달러';
 
                 const url = `/BNK/stock/order?code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
 
@@ -585,7 +585,7 @@
                             </div>
                         </div>
                         <div style="text-align:end;">
-                            <span>${priceText}</span>원
+                            <span>${priceText}</span> 달러
                         </div>
                         <div style="text-align:end;" class="${rateClass}">
                             <span class="rate-span ${rateChangeClass}">${rateText}</span>
@@ -669,7 +669,7 @@
             <span style="margin-right:40px;">
                 ${r.name}
                 <span class="${rateClass}">
-                    ${priceText}원 (${sign}${absRate}%)
+                    ${priceText} 달러 (${sign}${absRate}%)
                 </span>
             </span>
         `;
