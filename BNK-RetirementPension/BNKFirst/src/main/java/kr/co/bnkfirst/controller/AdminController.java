@@ -2,6 +2,7 @@ package kr.co.bnkfirst.controller;
 
 import kr.co.bnkfirst.dto.BranchDTO;
 import kr.co.bnkfirst.dto.DocumentDTO;
+import kr.co.bnkfirst.dto.PFundPageRequestDTO;
 import kr.co.bnkfirst.dto.PageRequestDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminDocumentDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminProductDTO;
@@ -13,6 +14,7 @@ import kr.co.bnkfirst.service.BranchService;
 import kr.co.bnkfirst.service.DocumentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,17 +84,13 @@ public class AdminController {
         return "admin/admin_env";
     }
     @GetMapping("/admin/prod")
-    public String prod(Model model, PageRequestDTO pageRequestDTO){
+    public String prod(Model model, PFundPageRequestDTO pageRequestDTO){
 
         log.info("pageRequestDTO={}", pageRequestDTO);
         PageResponseAdminProductDTO pageResponseDTO = adminService.selectAllProduct(pageRequestDTO);
 
         model.addAttribute("pageResponseDTO", pageResponseDTO);
         return "admin/admin_prod";
-    }
-    @GetMapping("/admin/prod/modify")
-    public String prodmodify(){
-        return "admin/admin_prodModify";
     }
 
     @GetMapping("/admin/prod/register")
@@ -129,6 +127,38 @@ public class AdminController {
                 productDTO.getPsubtitle(),
                 productDTO.getPinfo()
                 );
+        return "redirect:/admin/prod";
+    }
+
+    @GetMapping("/admin/prod/modify")
+    public String prodmodify(Model model, @RequestParam("pid") String pid){
+
+        model.addAttribute("dto", adminService.selectByProduct(pid));
+
+        return "admin/admin_prodModify";
+    }
+
+    @PostMapping("/admin/prod/modify")
+    public String prodmodifyComplete( @Param("pid") String pid,
+                                      @Param("ptype") String ptype,
+                                      @Param("pname") String pname,
+                                      @Param("pbirate") String pbirate,
+                                      @Param("phirate") String phirate,
+                                      @Param("pcprd") String pcprd,
+                                      @Param("pelgbl") String pelgbl,
+                                      @Param("prmthd") String prmthd,
+                                      @Param("pprfcrt") String pprfcrt,
+                                      @Param("pirinfo") String pirinfo,
+                                      @Param("pcond") String pcond,
+                                      @Param("pjnfee") String pjnfee,
+                                      @Param("pwtpi") String pwtpi,
+                                      @Param("pterms") String pterms,
+                                      @Param("pdirate") String pdirate,
+                                      @Param("psubtitle") String psubtitle,
+                                      @Param("pinfo") String pinfo){
+
+        adminService.updateProduct(pid,ptype,pname,pbirate,phirate,pcprd,pelgbl,prmthd,pprfcrt,pirinfo,pcond,pjnfee,pwtpi,pterms,pdirate,psubtitle,pinfo);
+
         return "redirect:/admin/prod";
     }
 
@@ -176,10 +206,49 @@ public class AdminController {
     }
 
     @GetMapping("/admin/fund/modify")
-    public String fundmodify(){
+    public String fundmodify(Model model, @RequestParam("fid") String fid){
+
+        model.addAttribute("dto", adminService.selectByFund(fid));
+
         return "admin/admin_fundModify";
     }
 
+    @PostMapping("/admin/fund/modify")
+    public String fundmodifycomplete(@RequestParam("fid") String fid,
+                                     @RequestParam("fname") String fname,
+                                     @RequestParam("famc") String famc,
+                                     @RequestParam("frlvl") String frlvl,
+                                     @RequestParam("ftype") String ftype,
+                                     @RequestParam("frefpr") String frefpr,
+                                     @RequestParam("fsetdt") String fsetdt,
+                                     @RequestParam("ftc") String ftc,
+                                     @RequestParam("fm1pr") String fm1pr,
+                                     @RequestParam("fm3pr") String fm3pr,
+                                     @RequestParam("fm6pr") String fm6pr,
+                                     @RequestParam("fm12pr") String fm12pr,
+                                     @RequestParam("facmpr") String facmpr
+                                     ){
+
+        adminService.updateFund(fid, fname, famc, frlvl, ftype, frefpr, fsetdt, ftc, fm1pr, fm3pr, fm6pr, fm12pr, facmpr);
+
+        return "redirect:/admin/prod";
+    }
+
+
+    @GetMapping("/admin/fund/delete")
+    public String funddelete(@RequestParam("fid") String fid, RedirectAttributes ra){
+        log.info("fid={}", fid);
+
+        try {
+            adminService.deleteByFund(fid);
+            ra.addFlashAttribute("toastSuccess", "상품이 삭제되었습니다.");
+        } catch (Exception e) {
+            ra.addFlashAttribute("toastError", "해당 상품에 가입한 회원이 있어 삭제할 수 없습니다.");
+        }
+
+
+        return "redirect:/admin/prod";
+    }
 
     /* ///////////////////////////
      * 고객센터 관리 (전세현)
