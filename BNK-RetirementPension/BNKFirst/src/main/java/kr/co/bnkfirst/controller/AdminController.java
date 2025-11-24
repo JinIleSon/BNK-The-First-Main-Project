@@ -2,6 +2,7 @@ package kr.co.bnkfirst.controller;
 
 import kr.co.bnkfirst.dto.BranchDTO;
 import kr.co.bnkfirst.dto.DocumentDTO;
+import kr.co.bnkfirst.dto.PFundPageRequestDTO;
 import kr.co.bnkfirst.dto.PageRequestDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminDocumentDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminProductDTO;
@@ -82,7 +83,7 @@ public class AdminController {
         return "admin/admin_env";
     }
     @GetMapping("/admin/prod")
-    public String prod(Model model, PageRequestDTO pageRequestDTO){
+    public String prod(Model model, PFundPageRequestDTO pageRequestDTO){
 
         log.info("pageRequestDTO={}", pageRequestDTO);
         PageResponseAdminProductDTO pageResponseDTO = adminService.selectAllProduct(pageRequestDTO);

@@ -1,7 +1,9 @@
 package kr.co.bnkfirst.mapper;
 
+import kr.co.bnkfirst.dto.PFundPageRequestDTO;
 import kr.co.bnkfirst.dto.PageRequestDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -11,9 +13,19 @@ import java.util.List;
 @Mapper
 public interface AdminMapper {
 
-    // 상품 목록 출력
-    public List<ProductDTO> selectAllProduct(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
-    public int selectCountTotal(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
+    // ========= 예적금(상품) =========
+    List<ProductDTO> selectProductPage(@Param("offset") int offset,
+                                       @Param("limit") int limit,
+                                       @Param("req") PFundPageRequestDTO req);
+
+    int selectProductTotal(@Param("req") PFundPageRequestDTO req);
+
+    // ========= 펀드 =========
+    List<FundDTO> selectFundPage(@Param("offset") int offset,
+                                 @Param("limit") int limit,
+                                 @Param("req") PFundPageRequestDTO req);
+
+    int selectFundTotal(@Param("req") PFundPageRequestDTO req);
 
     // 예적금 상품 등록
     public void insertDeposit(@Param("pid") String pid,

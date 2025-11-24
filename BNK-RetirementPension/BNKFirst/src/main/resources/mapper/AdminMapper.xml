@@ -6,38 +6,38 @@
 <mapper namespace="kr.co.bnkfirst.mapper.AdminMapper">
 
 <!--상품 목록 출력-->
-    <sql id="searchWhere">
-        <where>
-            <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != ''">
-                <choose>
-                    <when test="pageRequestDTO.searchType == 'title'">
-                        AND A.TITLE LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                    <when test="pageRequestDTO.searchType == 'content'">
-                        AND A.CONTENT LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                    <when test="pageRequestDTO.searchType == 'writer'">
-                        AND U.NICK LIKE '%' || #{pageRequestDTO.keyword} || '%'
-                    </when>
-                </choose>
-            </if>
-        </where>
-    </sql>
-
-    <select id="selectAllProduct" resultType="kr.co.bnkfirst.dto.product.ProductDTO">
+    <!-- 예적금 상품 목록 (페이지 단위) -->
+    <select id="selectProductPage"
+            resultType="kr.co.bnkfirst.dto.product.ProductDTO">
         SELECT
         *
         FROM product
-        <include refid="searchWhere"/>
         ORDER BY pupdate DESC
-        OFFSET #{pageRequestDTO.offset} ROWS
-        FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
+        OFFSET #{offset} ROWS
+        FETCH NEXT #{limit} ROWS ONLY
     </select>
 
+    <!-- 예적금 상품 총 개수 -->
+    <select id="selectProductTotal" resultType="int">
+        SELECT COUNT(*)
+        FROM product
+    </select>
 
-    <select id="selectCountTotal" resultType="int">
-        SELECT COUNT(*) FROM product
-        <include refid="searchWhere"/>
+    <!-- 펀드 목록 (페이지 단위) -->
+    <select id="selectFundPage"
+            resultType="kr.co.bnkfirst.dto.product.FundDTO">
+        SELECT
+        *
+        FROM fund
+        ORDER BY fsetdt DESC NULLS LAST
+        OFFSET #{offset} ROWS
+        FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
+    <!-- 펀드 총 개수 -->
+    <select id="selectFundTotal" resultType="int">
+        SELECT COUNT(*)
+        FROM fund
     </select>
 <!--상품 목록 출력-->
 <!--    예적금 상품 추가-->

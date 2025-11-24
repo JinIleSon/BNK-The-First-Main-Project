@@ -1,9 +1,12 @@
 package kr.co.bnkfirst.service;
 
+import kr.co.bnkfirst.dto.PFundPageRequestDTO;
 import kr.co.bnkfirst.dto.PageRequestDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.dto.admin.AdminProductRowDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminProductDTO;
 import kr.co.bnkfirst.dto.admin.PageResponseAdminUsersDTO;
+import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.mapper.AdminMapper;
 import kr.co.bnkfirst.repository.product.ProductRepository;
@@ -13,6 +16,7 @@ import org.apache.ibatis.annotations.Param;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,23 +30,48 @@ public class AdminService {
     private final AdminMapper adminMapper;
 
     // 상품 목록 페이지네이션
-    public PageResponseAdminProductDTO selectAllProduct(PageRequestDTO pageRequestDTO) {
-        // MyBatis 처리
-        List<ProductDTO> dtoList = adminMapper.selectAllProduct(pageRequestDTO);
+    public PageResponseAdminProductDTO selectAllProduct(PFundPageRequestDTO pageRequestDTO) {
 
-        int total = adminMapper.selectCountTotal(pageRequestDTO);
+        int pageSize   = pageRequestDTO.getSize(); // 화면에 뿌릴 전체 행 수 (예: 10)
+        int perType    = pageSize / 2;             // 예적금 5개 + 펀드 5개
+        int page       = pageRequestDTO.getPg();
+
+        // 타입별 오프셋은 perType 기준!
+        int productOffset = (page - 1) * perType;
+        int fundOffset    = (page - 1) * perType;
+
+        // 1) 예적금
+        List<ProductDTO> productList =
+                adminMapper.selectProductPage(productOffset, perType, pageRequestDTO);
+        int productTotal =
+                adminMapper.selectProductTotal(pageRequestDTO);
+
+        // 2) 펀드
+        List<FundDTO> fundList =
+                adminMapper.selectFundPage(fundOffset, perType, pageRequestDTO);
+        int fundTotal =
+                adminMapper.selectFundTotal(pageRequestDTO);
+
+        // 3) 화면용 Row로 합치기
+        List<AdminProductRowDTO> rows = new ArrayList<>();
+        productList.forEach(p -> rows.add(AdminProductRowDTO.from(p)));
+        fundList.forEach(f -> rows.add(AdminProductRowDTO.from(f)));
+
+        // 4) 전체 페이지 수 계산(예적금/펀드 각각 필요 페이지 중 더 큰 값)
+        int productPages = (int) Math.ceil(productTotal / (double) perType);
+        int fundPages    = (int) Math.ceil(fundTotal    / (double) perType);
+        int totalPages   = Math.max(productPages, fundPages);
+
+        // PageResponseAdminProductDTO는 total/size로 last를 계산하니까,
+        // last가 totalPages가 되도록 "가상의 total"을 만들어서 넘겨줌
+        int virtualTotal = totalPages * pageSize;
 
         return PageResponseAdminProductDTO.builder()
                 .pageRequestDTO(pageRequestDTO)
-                .dtoList(dtoList)
-                .total(total)
+                .dtoList(rows)
+                .total(virtualTotal)   // 진짜 개수(12)가 아니라 페이징용 가상 값
                 .build();
     }
-
-    public int selectCountTotal(PageRequestDTO pageRequestDTO) {
-        return adminMapper.selectCountTotal(pageRequestDTO);
-    }
-
     // 예적금 상품 추가
     public void insertDeposit(@Param("pid") String pid,
                               @Param("ptype") String ptype,
