@@ -182,6 +182,21 @@ public class AdminController {
     }
 
 
+    @GetMapping("/admin/fund/delete")
+    public String funddelete(@RequestParam("fid") String fid, RedirectAttributes ra){
+        log.info("fid={}", fid);
+
+        try {
+            adminService.deleteByFund(fid);
+            ra.addFlashAttribute("toastSuccess", "상품이 삭제되었습니다.");
+        } catch (Exception e) {
+            ra.addFlashAttribute("toastError", "해당 상품에 가입한 회원이 있어 삭제할 수 없습니다.");
+        }
+
+
+        return "redirect:/admin/prod";
+    }
+
     /* ///////////////////////////
      * 고객센터 관리 (전세현)
      * /////////////////////////// */
