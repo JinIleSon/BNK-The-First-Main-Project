@@ -56,9 +56,15 @@
         VALUES(#{fid}, #{fname}, #{famc}, #{frlvl}, #{ftype}, #{frefpr}, #{fsetdt}, #{ftc}, #{fm1pr}, #{fm3pr}, #{fm6pr}, #{fm12pr}, #{facmpr})
     </insert>
 <!--    펀드 상품 추가-->
-<!--    상품 삭제-->
+<!--    예적금 상품 삭제-->
     <delete id="deleteByProduct">
         delete from product where pid = #{pid}
+    </delete>
+
+    <!--    예적금 상품 삭제-->
+    <!--    펀드 상품 삭제-->
+    <delete id="deleteByFund">
+        delete from fund where fid = #{fid}
     </delete>
 
 <!--유저 목록 출력-->

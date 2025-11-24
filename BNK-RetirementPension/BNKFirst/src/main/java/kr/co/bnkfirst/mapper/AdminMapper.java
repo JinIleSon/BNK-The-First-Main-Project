@@ -63,6 +63,12 @@ public interface AdminMapper {
                            @Param("facmpr") float facmpr
                            );
 
+    // 예적금 상품 삭제
+    public void deleteByProduct(String pid);
+
+    // 펀드 상품 삭제
+    public void deleteByFund(String fid);
+
 
     // 유저 목록 출력
     public List<UsersDTO> selectAllUsers(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
@@ -76,9 +82,6 @@ public interface AdminMapper {
     public int countWait();
     // 상태가 탈퇴인 회원 수 출력
     public int countWithdrawal();
-
-    // 상품 삭제
-    public void deleteByProduct(String pid);
 
 
 

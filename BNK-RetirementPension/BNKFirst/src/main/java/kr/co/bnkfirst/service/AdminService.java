@@ -112,10 +112,14 @@ public class AdminService {
     }
 
 
-    // 상품 삭제
-
+    // 예적금 상품 삭제
     public void deleteByProduct(String pid) {
         adminMapper.deleteByProduct(pid);
+    }
+
+    // 펀드 상품 삭제
+    public void deleteByFund(String fid) {
+        adminMapper.deleteByFund(fid);
     }
 
     // 유저 목록 페이지네이션
