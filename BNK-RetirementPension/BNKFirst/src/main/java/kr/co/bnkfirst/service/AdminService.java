@@ -111,6 +111,53 @@ public class AdminService {
         adminMapper.insertFund(fid, fname, famc, frlvl, ftype, frefpr, fsetdt, ftc, fm1pr, fm3pr, fm6pr, fm12pr, facmpr);
     }
 
+    // 예적금 상품 조회(수정용)
+    public ProductDTO selectByProduct(@Param("pid") String pid){
+        return adminMapper.selectByProduct(pid);
+    }
+
+    // 예적금 상품 수정
+    public void updateProduct(@Param("pid") String pid,
+                              @Param("ptype") String ptype,
+                              @Param("pname") String pname,
+                              @Param("pbirate") String pbirate,
+                              @Param("phirate") String phirate,
+                              @Param("pcprd") String pcprd,
+                              @Param("pelgbl") String pelgbl,
+                              @Param("prmthd") String prmthd,
+                              @Param("pprfcrt") String pprfcrt,
+                              @Param("pirinfo") String pirinfo,
+                              @Param("pcond") String pcond,
+                              @Param("pjnfee") String pjnfee,
+                              @Param("pwtpi") String pwtpi,
+                              @Param("pterms") String pterms,
+                              @Param("pdirate") String pdirate,
+                              @Param("psubtitle") String psubtitle,
+                              @Param("pinfo") String pinfo){
+        adminMapper.updateProduct(pid, ptype, pname, pbirate, phirate, pcprd, pelgbl, prmthd, pprfcrt, pirinfo, pcond, pjnfee, pwtpi, pterms, pdirate, psubtitle, pinfo);
+    }
+
+    // 펀드 상품 조회(수정용)
+    public FundDTO selectByFund(@Param("fid") String fid){
+        return adminMapper.selectByFund(fid);
+    }
+
+    // 펀드 상품 수정
+    public void updateFund(@Param("fid") String fid,
+                           @Param("fname") String fname,
+                           @Param("famc") String famc,
+                           @Param("frlvl") String frlvl,
+                           @Param("ftype") String ftype,
+                           @Param("frefpr") String frefpr,
+                           @Param("fsetdt") String fsetdt,
+                           @Param("ftc") String ftc,
+                           @Param("fm1pr") String fm1pr,
+                           @Param("fm3pr") String fm3pr,
+                           @Param("fm6pr") String fm6pr,
+                           @Param("fm12pr") String fm12pr,
+                           @Param("facmpr") String facmpr){
+        adminMapper.updateFund(fid, fname, famc, frlvl, ftype, frefpr, fsetdt, ftc, fm1pr, fm3pr, fm6pr, fm12pr, facmpr);
+    }
 
     // 예적금 상품 삭제
     public void deleteByProduct(String pid) {
