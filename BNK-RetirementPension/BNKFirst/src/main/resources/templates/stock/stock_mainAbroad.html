@@ -405,8 +405,8 @@
             <!-- 🔥 ka10032 상위 10개 루프 -->
             <div id="stockRows">
                 <th:block th:each="item : ${ranks}">
-                <!-- 링크: /stock/order?code=005930 이런 식 -->
-                <a th:href="@{/stock/order(code=${item.code}, name=${item.name})}">
+                <!-- 링크: /stock/orderAbroad?code=005930 이런 식 -->
+                <a th:href="@{/stock/orderAbroad(code=${item.code}, name=${item.name})}">
                     <div class="stock-row">
                         <!-- 순위 + 종목명 -->
                         <div style="display:flex; padding-left:14px;">
@@ -721,7 +721,7 @@
                     amountUnit = ' $';
                 }
 
-                const url = `/BNK/stock/order?code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
+                const url = `/BNK/stock/orderAbroad?code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}`;
 
                 html += `
                 <a href="${url}">
