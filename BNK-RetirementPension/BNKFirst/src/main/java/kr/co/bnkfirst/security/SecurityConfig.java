@@ -38,7 +38,7 @@ public class SecurityConfig {
                         "/", "/css/**", "/js/**", "/images/**",
                         "/components/**", "/upload/**",
                         "/member/**", "/main/**",
-                        "/api/**", "/cs/**", "/info/**", "/board/**",
+                        "/api/**",  "/cs/**", "/info/**", "/board/**",
                         "/kiwoom/**", "/docs/**", "/product/**",
                         "/qna/**", "/stock/**", "/tologo/**",
                         "/ws/**", "/retirement-renew/**", "/mypage/calc/**"

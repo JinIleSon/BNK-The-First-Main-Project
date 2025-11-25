@@ -17,4 +17,9 @@ public class DbOverseasPriceDto {
     private double price;       // Prpr
     private double changeRate; // PrdyCtr(t)
     private long amount;      // 거래대금 필드 (예: AcmlTrPbmn)
+
+    // 새로 추가
+    private double bid;  // bidp1
+    private double ask;  // askp1
+
 }

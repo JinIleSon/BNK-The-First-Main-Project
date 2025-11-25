@@ -15,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -216,5 +217,34 @@ public class DbApiClient {
         String cleaned = s.trim().replace(",", "");
         if (cleaned.isEmpty()) return 0.0;
         return Double.parseDouble(cleaned);
+    }
+
+    // 공통 post 코드
+    public JsonNode post(String url, Map<String, Object> body) throws Exception {
+        try {
+            String token = authService.getAccessToken();
+            String bodyJson = objectMapper.writeValueAsString(body);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("https://openapi.dbsec.co.kr:8443" + url))
+                    .header("content-type", "application/json;charset=utf-8")
+                    .header("authorization", "Bearer " + token)
+                    .header("cont_yn", "N")
+                    .POST(HttpRequest.BodyPublishers.ofString(bodyJson))
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("DB API Error: " + response.body());
+            }
+
+            return objectMapper.readTree(response.body());
+
+        } catch (Exception e) {
+            // 여기서 한 번에 런타임 예외로 감싸서 던지기
+            throw new RuntimeException("DB API 통신 실패", e);
+        }
     }
 }

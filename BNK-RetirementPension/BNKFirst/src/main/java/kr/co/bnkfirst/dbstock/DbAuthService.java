@@ -64,10 +64,6 @@ public class DbAuthService {
             // 실패했다면 기존 토큰 유지하도록 함
             if (response.statusCode() != 200) {
                 System.err.println("❌ 토큰 발급 실패 (기존 토큰 유지): " + response.body());
-                if (accessToken == null) {
-                    // 첫 발급부터 실패한 경우 → 치명적 오류
-                    throw new RuntimeException("초기 토큰 발급 실패: " + response.body());
-                }
                 return;
             }
 
@@ -83,14 +79,6 @@ public class DbAuthService {
         } catch (Exception ex) {
             System.err.println("❌ DBSEC Token Refresh Error: " + ex.getMessage());
 
-            // 기존 토큰이 있으면 그대로 사용
-            if (accessToken != null) {
-                System.err.println("⚠️ 기존 토큰 유지하고 진행함");
-                return;
-            }
-
-            // 기존 토큰도 없으면 더 이상 진행 불가 → 예외 던짐
-            throw new RuntimeException("DBSEC Token 초기화 실패 (토큰 없음)", ex);
         }
     }
 }
