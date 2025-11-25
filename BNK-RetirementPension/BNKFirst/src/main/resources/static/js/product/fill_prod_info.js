@@ -1,4 +1,4 @@
-import {applyFirstAmtRule} from "/BNK/js/product/init_pjnfee";
+import {applyFirstAmtRule} from "/BNK/js/product/init_pjnfee.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => root.querySelectorAll(sel);

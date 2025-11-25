@@ -3,6 +3,8 @@
     이름 : 강민철
     내용 : product_insert_info.html JS 작성
  */
+import {validateFirstAmt} from "/BNK/js/product/init_pjnfee.js";
+
 document.addEventListener('DOMContentLoaded', async function () {
     /*======== 스탭퍼 스크립트 ========*/
     let currentStep = 1;                 // 1~5
@@ -128,7 +130,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             return true;
         },
         4() {
-            return true;
+            const validCheck = validateIdFormat();
+            return validCheck;
         },
         5() {
             return true;

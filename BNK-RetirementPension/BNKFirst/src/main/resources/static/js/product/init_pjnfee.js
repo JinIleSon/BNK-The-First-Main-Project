@@ -1,5 +1,12 @@
 /*================== 4단계 최초불입금액 규칙 파싱 =====================*/
 
+// 숫자 포맷
+function formatNumber(v) {
+    const n = String(v).replace(/[^\d]/g, '');
+    if (!n) return '';
+    return n.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 // 현재 적용 중인 최초불입 규칙
 let firstAmtRule = null;
 
