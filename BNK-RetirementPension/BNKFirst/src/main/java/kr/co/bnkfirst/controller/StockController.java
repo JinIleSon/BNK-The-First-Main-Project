@@ -1,12 +1,16 @@
 package kr.co.bnkfirst.controller;
 
+import kr.co.bnkfirst.fx.FxService;
 import kr.co.bnkfirst.kiwoomRank.StockRankingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
 
 @Controller
 @RequiredArgsConstructor
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class StockController {
 
     private final StockRankingService rankingService;
+    private final FxService fxService;//세현
 
     @GetMapping("/stock/main")
     public String mainPage(Model model) {
@@ -21,6 +26,10 @@ public class StockController {
         model.addAttribute("ranks",
                 rankingService.getTopByTradingValue(100));
         log.info("rank = {}", rankingService.getTopByTradingValue(100));
+
+        double usdKrw = fxService.getUsdKrwRate(LocalDate.now());//세현
+        model.addAttribute("usdKrw", usdKrw);//세현
+
         return "stock/stock_main";
     }
 
@@ -30,6 +39,15 @@ public class StockController {
         var ranks = rankingService.getTopByTradingValueAbroad(100);
         model.addAttribute("ranks", ranks);
         log.info("overseas ranks size = {}", ranks.size());
+
+        /*
+        날짜: 2025-11-25
+        작업자: 전세현
+        내용: 오늘 기준 USD/KRW 환율
+         */
+        double usdKrw = fxService.getUsdKrwRate(LocalDate.now());
+        model.addAttribute("usdKrw", usdKrw);
+        log.info("usdKrw (abroad) = {}", usdKrw);
 
         return "stock/stock_mainAbroad";
     }

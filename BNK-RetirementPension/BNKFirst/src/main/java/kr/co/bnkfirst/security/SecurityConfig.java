@@ -34,19 +34,30 @@ public class SecurityConfig {
                 );
 
         http.authorizeHttpRequests(auth -> auth
+                // KFTC API 완전허용 (중요)
+                .requestMatchers("/BNK/**").permitAll()
+                .requestMatchers("/api/kftc/**").permitAll()
+
                 .requestMatchers(
                         "/", "/css/**", "/js/**", "/images/**",
                         "/components/**", "/upload/**",
                         "/member/**", "/main/**",
+<<<<<<< HEAD
                         "/api/**",  "/cs/**", "/info/**", "/board/**",
+=======
+                        "/api/kftc/**",    // ⭐ 수정 포인트
+                        "/api/**", "/cs/**", "/info/**", "/board/**",
+>>>>>>> 6916958f469617ae886a9f288565f0f7d9b55e6e
                         "/kiwoom/**", "/docs/**", "/product/**",
                         "/qna/**", "/stock/**", "/tologo/**",
-                        "/ws/**", "/retirement-renew/**", "/mypage/calc/**"
+                        "/ws/**", "/retirement-renew/**", "/mypage/calc/**",
+                        "/corporate/**"
                 ).permitAll()
                 .requestMatchers("/mypage/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         );
+
 
         http.addFilterBefore(
                 new JwtAuthenticationFilter(jwtProvider, myUserDetailsService),
