@@ -42,12 +42,8 @@ public class SecurityConfig {
                         "/", "/css/**", "/js/**", "/images/**",
                         "/components/**", "/upload/**",
                         "/member/**", "/main/**",
-<<<<<<< HEAD
-                        "/api/**",  "/cs/**", "/info/**", "/board/**",
-=======
                         "/api/kftc/**",    // ⭐ 수정 포인트
                         "/api/**", "/cs/**", "/info/**", "/board/**",
->>>>>>> 6916958f469617ae886a9f288565f0f7d9b55e6e
                         "/kiwoom/**", "/docs/**", "/product/**",
                         "/qna/**", "/stock/**", "/tologo/**",
                         "/ws/**", "/retirement-renew/**", "/mypage/calc/**",
