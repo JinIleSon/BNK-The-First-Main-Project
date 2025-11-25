@@ -40,6 +40,15 @@ public class StockController {
         model.addAttribute("ranks", ranks);
         log.info("overseas ranks size = {}", ranks.size());
 
+        /*
+        날짜: 2025-11-25
+        작업자: 전세현
+        내용: 오늘 기준 USD/KRW 환율
+         */
+        double usdKrw = fxService.getUsdKrwRate(LocalDate.now());
+        model.addAttribute("usdKrw", usdKrw);
+        log.info("usdKrw (abroad) = {}", usdKrw);
+
         return "stock/stock_mainAbroad";
     }
 
