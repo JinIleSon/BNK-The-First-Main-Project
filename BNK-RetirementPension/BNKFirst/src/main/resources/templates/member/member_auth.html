@@ -7,7 +7,7 @@
 <!--
     날짜 : 2025/11/24
     이름 : 이준우
-    내용 : 공동 인증서 모의 추가 작업
+    내용 : 공동인증서 모의 추가 작업
 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
@@ -55,7 +55,7 @@
                     <div class="m-title">
                         <span class="m-badge1">✷</span>
                         <div>
-                            <div class="m-name">공동 인증서</div>
+                            <div class="m-name">공동인증서</div>
                             <div class="m-sub">저장된 인증서로 이용</div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                 </div>
             </section>
 
-            <!-- 공동 인증서(테이블 레이아웃) -->
+            <!-- 공동인증서(테이블 레이아웃) -->
             <section id="panel-cert" class="auth-panel" role="tabpanel" aria-labelledby="method-cert" aria-hidden="true" >
                 <div class="form-card">
                     <table class="auth-table">
@@ -176,7 +176,7 @@
                             <td colspan="4">
                                 <div class="btns">
                                     <button type="button" class="btn-register" id="btnFinanceCert" style="width:720px;">
-                                        공동 인증서 선택
+                                        공동인증서 선택
                                     </button>
                                 </div>
                             </td>
@@ -184,7 +184,7 @@
                         <tr>
                             <td colspan="4">
                                 <div id="jointStatus" class="joint-status" style="display:none;">
-                                    공동 인증서 인증이 완료되었습니다. 아래의 정보를 입력한 후 다음 단계를 진행해 주세요.
+                                    공동인증서 인증이 완료되었습니다. 아래의 정보를 입력한 후 다음 단계를 진행해 주세요.
                                 </div>
                             </td>
                         </tr>
@@ -275,22 +275,22 @@
     </form>
 </main>
 
-<!-- 공동 인증서 모달 -->
+<!-- 공동인증서 모달 -->
 <div id="certModal" aria-hidden="true">
     <div class="modal-backdrop" data-close-modal></div>
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
         <div class="modal-header">
-            <h3 id="certModalTitle" style="margin:0;">공동 인증서 로그인</h3>
+            <h3 id="certModalTitle" style="margin:0;">공동인증서 로그인</h3>
             <button type="button" class="modal-close" title="닫기" data-close-modal>&times;</button>
         </div>
         <div class="modal-body">
-            <!-- 공동 인증서 파일 선택 추가 -->
+            <!-- 공동인증서 파일 선택 추가 -->
             <div class="field" style="margin-bottom:10px;">
                 <label class="field-name" style="display:block; margin-bottom:6px;">인증서 파일</label>
                 <!-- 원래 실제 구현은 .pfx,.p12 파일  첨부 -->
-                <input type="file" class="input" id="jointCertFile" accept=".jpg,.jpeg,.png">
+                <input type="file" class="input btn-pressable" id="jointCertFile" accept=".jpg,.jpeg,.png">
                 <p style="margin:4px 0 0; font-size:12px; color:#6b7280;">
-                    * 하드디스크에 저장된 공동 인증서(.png.jpg) 파일을 선택해주세요.
+                    * 하드디스크에 저장된 공동인증서(.png.jpg) 파일을 선택해주세요.
                 </p>
             </div>
 
@@ -316,7 +316,7 @@
     document.getElementById("authForm").addEventListener("submit", (e) => {
         if (!verifyState.phone && !verifyState.joint) {
             e.preventDefault();
-            alert("휴대폰 인증 또는 공동 인증서 인증을 완료해야 다음 단계로 이동할 수 있습니다.");
+            alert("휴대폰 인증 또는 공동인증서 인증을 완료해야 다음 단계로 이동할 수 있습니다.");
             return;
         }
 
@@ -338,16 +338,10 @@
 <script>
     function syncInputNames(useJoint) {
 
-        // 휴대폰 인증 영역 name 제거 (공동 인증일 때 필요)
-        document.querySelectorAll('#panel-phone [name]').forEach(el => {
-            el.dataset.origName = el.name;
-            el.removeAttribute('name');
-        });
-
-        // 공동 인증서 hidden 필드 name 관리
+        // 공동인증서 hidden 필드 name 관리
         document.querySelectorAll('#panel-cert input[type="hidden"]').forEach(el => {
             if (useJoint) {
-                el.name = el.id.replace('h_', '');   // h_mname → mname
+                el.name = el.id.replace('h_', '');
             } else {
                 el.removeAttribute('name');
             }
@@ -493,9 +487,9 @@
         dateFormat: "Y-m-d"
     });
 </script>
-<!-- 공동 인증서 모달 -->
+<!-- 공동인증서 모달 -->
 <script>
-    // 공동 인증서 모달 + 검증 연동
+    // 공동인증서 모달 + 검증 연동
     (function () {
         const btnOpen  = document.getElementById("btnFinanceCert");
         const modal    = document.getElementById("certModal");
@@ -524,7 +518,7 @@
             const pw   = pwInput.value.trim();
 
             if (!file) {
-                alert("공동 인증서 파일을 선택해 주세요.");
+                alert("공동인증서 파일을 선택해 주세요.");
                 return;
             }
 
@@ -554,11 +548,11 @@
                 const data = await res.json();
 
                 if (!data.ok) {
-                    alert(data.message || "공동 인증서 검증에 실패했습니다.");
+                    alert(data.message || "공동인증서 검증에 실패했습니다.");
                     verifyState.joint = false;
                     return;
                 }
-                // 공동 인증서 선택 버튼 숨기기
+                // 공동인증서 선택 버튼 숨기기
                 const btnFinance = document.getElementById("btnFinanceCert");
                 if (btnFinance) {
                     const row = btnFinance.closest("tr");
@@ -581,7 +575,7 @@
                 // 모달 닫기
                 modal.setAttribute("aria-hidden", "true");
 
-                alert("공동 인증서 인증이 완료되었습니다.");
+                alert("공동인증서 인증이 완료되었습니다.");
 
                 // 이름 입력칸에 포커스
                 const nameInput = document.querySelector("#panel-cert .joint-extra input[name='mname']");
@@ -589,7 +583,7 @@
 
             } catch (e) {
                 console.error(e);
-                alert("공동 인증서 처리 중 오류가 발생했습니다.");
+                alert("공동인증서 처리 중 오류가 발생했습니다.");
             }
         });
     })();
@@ -759,6 +753,18 @@
   }
   #certModal .modal-body{ padding: 6px 2px; }
   #certModal .modal-footer{ display:flex; gap:10px; margin-top:14px; }
-  .joint-status { margin-bottom: 8px; padding: 10px 12px; border-radius: 10px; border: 1px solid #BBF7D0; background: #ECFDF3; font-size: 13px; }
+  input[type="file"]::-webkit-file-upload-button { display: none; }
+  .joint-status { margin-bottom: 8px; border-radius: 10px; border: 1px solid #BBF7D0;
+      background: #ECFDF3; font-size: 13px; padding: 10px 0 10px 34px; position: relative; }
+  .joint-status::before {
+      content: "✔";
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #16a34a;
+      font-size: 16px;
+      font-weight: 700;
+  }
 </style>
 </html>
