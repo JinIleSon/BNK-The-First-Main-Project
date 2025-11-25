@@ -557,36 +557,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
     });
 
-    // 계약기간 칩 동작
-    const months = document.getElementById('termMonths');
-    const termDate = document.getElementById('termDate');
-    document.getElementById('termChips').addEventListener('click', (e) => {
-        const chip = e.target.closest('.Chip');
-        if (!chip) return;
-        [...e.currentTarget.querySelectorAll('.Chip')].forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        const m = chip.dataset.month;
-        const isDate = chip.dataset.type === 'date';
-        if (isDate) {
-            months.style.display = 'none';
-            termDate.style.display = 'block';
-            termDate.focus();
-        } else {
-            months.style.display = 'block';
-            termDate.style.display = 'none';
-            months.value = m || months.value;
-            months.focus();
-        }
-    });
-
-    // 개월 범위 보정
-    months.addEventListener('change', () => {
-        let v = parseInt(months.value || 0, 10);
-        if (isNaN(v)) v = 6;
-        v = Math.max(6, Math.min(36, v));
-        months.value = v;
-    });
-
 
     /*================== 5단계 pin 입력 스크립트 ==================*/
 
