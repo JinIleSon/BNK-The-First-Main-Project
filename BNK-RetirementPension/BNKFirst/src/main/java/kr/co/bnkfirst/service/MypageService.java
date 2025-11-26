@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import kr.co.bnkfirst.dto.DocumentDTO;
 import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.mapper.MypageMapper;
 import kr.co.bnkfirst.repository.UsersRepository;
@@ -29,6 +30,8 @@ public class MypageService{
     public DealDTO findByDeal(String mid) {
         return mypageMapper.findByDeal(mid);
     }
+
+    public FundDTO findByFund(String mid) { return mypageMapper.findByFund(mid); }
 
     public List<PcontractDTO> findByContract(String mid) {
         return mypageMapper.findByContract(mid);
