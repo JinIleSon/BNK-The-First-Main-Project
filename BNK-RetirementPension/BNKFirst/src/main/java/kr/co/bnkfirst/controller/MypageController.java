@@ -35,7 +35,7 @@ public class MypageController {
         model.addAttribute("usersList", mypageService.findById(principal.getName()));
         model.addAttribute("dealList", mypageService.findByDeal(principal.getName()));
         model.addAttribute("fundList", mypageService.findByFund(principal.getName()));
-        model.addAttribute("balance", mypageService.findByBalance(principal.getName()));
+        model.addAttribute("balance", mypageService.findByBalance(principal.getName()) + mypageService.findByFundBalance(principal.getName()));
         model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
         model.addAttribute("documentList", mypageService.findByDocumentList(principal.getName()));
         return "mypage/mypage_main";
@@ -47,7 +47,7 @@ public class MypageController {
         model.addAttribute("dealList",mypageService.findByDealList(principal.getName()));
         model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
         log.info(mypageService.findByContract(principal.getName()).toString());
-        model.addAttribute("balance", mypageService.findByBalance(principal.getName()));
+        model.addAttribute("balance", mypageService.findByBalance(principal.getName()) + mypageService.findByFundBalance(principal.getName()));
 
         return "mypage/mypage_prod";
     }
