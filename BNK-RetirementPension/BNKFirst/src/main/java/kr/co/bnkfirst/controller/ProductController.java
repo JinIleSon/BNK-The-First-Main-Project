@@ -51,16 +51,14 @@ public class ProductController {
     @PermitAll
     @ResponseBody
     @GetMapping("/product/items")
-    public ResponseEntity<Page<ProductDTO>> getItems(@RequestParam String sort,
-                                                     @RequestParam(defaultValue = "1") int page,
+    public ResponseEntity<Page<ProductDTO>> getItems(@RequestParam(defaultValue = "1") int page,
                                                      @RequestParam(defaultValue = "6") int pageSize,
                                                      @RequestParam(required = false) String target,
                                                      @RequestParam(required = false) String join,
-                                                     @RequestParam(required = false) String tax,
                                                      @RequestParam(required = false) String keyword) {
 //        log.info("args = {}, {}, {}, {}, {}, {}. {}", sort, page, pageSize,target, join, tax, keyword);
-        Pageable pageable = PageRequest.of(page-1,pageSize, Sort.by(sort).descending());
-        Page<ProductDTO> products = productService.findProducts(sort, page, pageSize,target, join, tax, keyword);
+        Pageable pageable = PageRequest.of(page-1,pageSize, Sort.by("pbirate").descending());
+        Page<ProductDTO> products = productService.findProducts(pageable,target, join, keyword);
         log.info("products total {}", products.getTotalElements());
         return ResponseEntity.ok(products);
     }

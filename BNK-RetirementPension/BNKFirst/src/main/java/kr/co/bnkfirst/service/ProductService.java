@@ -42,41 +42,14 @@ public class ProductService {
                 .collect(Collectors.joining(","));
     }
 
-    public Page<ProductDTO> findProducts(String sort,
-                                         int page,
-                                         int pageSize,
+    public Page<ProductDTO> findProducts(Pageable pageable,
                                          String target,
                                          String join,
-                                         String tax,
                                          String keyword) {
         Page<Product> products = null;
-        Pageable pageable = null;
-        String normTarget = normalizeMulti(target, ORDER_TARGET, ALLOWED_TARGET);
-        String normJoin = normalizeMulti(join, ORDER_JOIN, ALLOWED_JOIN);
-        String normTax = normalizeMulti(tax, ORDER_TAX, ALLOWED_TAX);
-        switch (sort) {
-            case "join_internet" -> {
-                pageable = PageRequest.of(page - 1, pageSize);
-                products = productRepository.findPrefSorted(keyword, "인터넷", normTarget, normJoin, normTax, pageable);
-                log.info("products = {}", products);
-                return products.map(Product::toDTO);
-            }
-            case "rate_desc" -> {
-                pageable = PageRequest.of(page - 1, pageSize, Sort.by("phirate").descending());
-                products = productRepository.findDynamicProducts(normTarget, normJoin, normTax, pageable);
-                log.info("products = {}", products);
-                return products.map(Product::toDTO);
-            }
-            case "release_desc" -> {
-                pageable = PageRequest.of(page - 1, pageSize, Sort.by("pupdate").descending());
-                products = productRepository.findDynamicProducts(normTarget, normJoin, normTax, pageable);
-                log.info("products = {}", products);
-                return products.map(Product::toDTO);
-            }
-            default -> {
-                return null;
-            }
-        }
+        products = productRepository.findPrefSorted(keyword, target, join, pageable);
+        log.info("products = {}", products);
+        return products.map(Product::toDTO);
     }
 
     @Transactional(readOnly = true) // 조회 전용이라는 힌트를 DB/JPA/Spring에게 주는 어노테이션
