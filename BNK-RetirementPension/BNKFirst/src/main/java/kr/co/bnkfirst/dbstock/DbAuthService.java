@@ -68,18 +68,8 @@ public class DbAuthService {
 
             // HTTP 오류 처리
             if (response.statusCode() != 200) {
-<<<<<<< HEAD
-                System.err.println("❌ 토큰 발급 실패: " + response.body());
-
-                if (accessToken == null) {
-                    // ==== 임시 토큰 fallback ====
-                    activateTemporaryToken("서버 응답 코드가 200이 아님");
-                }
-                return; // 기존 토큰 유지
-=======
                 System.err.println("❌ 토큰 발급 실패 (기존 토큰 유지): " + response.body());
                 return;
->>>>>>> 77dd539a4b250bdb873b34d3e336779c1642a756
             }
 
             JsonNode json = objectMapper.readTree(response.body());
@@ -93,13 +83,6 @@ public class DbAuthService {
         } catch (Exception ex) {
             System.err.println("❌ DBSEC Token Refresh Error: " + ex.getMessage());
 
-<<<<<<< HEAD
-            if (accessToken == null) {
-                // ==== 임시 토큰 fallback ====
-                activateTemporaryToken(ex.getMessage());
-            }
-=======
->>>>>>> 77dd539a4b250bdb873b34d3e336779c1642a756
         }
     }
 
