@@ -31,14 +31,23 @@ public class MypageService{
         return mypageMapper.findByDeal(mid);
     }
 
-    public FundDTO findByFund(String mid) { return mypageMapper.findByFund(mid); }
+    public List<FundDTO> findByFund(String mid) { return mypageMapper.findByFund(mid); }
 
     public List<PcontractDTO> findByContract(String mid) {
         return mypageMapper.findByContract(mid);
     }
 
+    public List<PcontractDTO> findByFundContract(String mid) {
+        return mypageMapper.findByFundContract(mid);
+    }
+
     public int findByBalance(String mid) {
         Integer sum = mypageMapper.findByBalance(mid);
+        return (sum != null) ? sum : 0;
+    }
+
+    public int findByFundBalance(String mid) {
+        Integer sum = mypageMapper.findByFundBalance(mid);
         return (sum != null) ? sum : 0;
     }
 
