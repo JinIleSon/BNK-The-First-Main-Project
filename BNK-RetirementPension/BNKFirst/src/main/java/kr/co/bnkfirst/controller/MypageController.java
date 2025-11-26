@@ -2,6 +2,7 @@ package kr.co.bnkfirst.controller;
 
 import kr.co.bnkfirst.dto.MydataAccountDTO;
 import kr.co.bnkfirst.dto.mypage.DealDTO;
+import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.service.MydataAccountService;
 import kr.co.bnkfirst.service.MypageService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -35,7 +37,7 @@ public class MypageController {
         model.addAttribute("usersList", mypageService.findById(principal.getName()));
         model.addAttribute("dealList", mypageService.findByDeal(principal.getName()));
         model.addAttribute("fundList", mypageService.findByFund(principal.getName()));
-        model.addAttribute("balance", mypageService.findByBalance(principal.getName()));
+        model.addAttribute("balance", mypageService.findByBalance(principal.getName()) + mypageService.findByFundBalance(principal.getName()));
         model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
         model.addAttribute("documentList", mypageService.findByDocumentList(principal.getName()));
         return "mypage/mypage_main";
@@ -45,9 +47,14 @@ public class MypageController {
         model.addAttribute("plus",mypageService.findBySumPlusDbalance(principal.getName()));
         model.addAttribute("minus",mypageService.findBySumMinusDbalance(principal.getName()));
         model.addAttribute("dealList",mypageService.findByDealList(principal.getName()));
-        model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
+
+        List<PcontractDTO> totalList = new ArrayList<>();
+        totalList.addAll(mypageService.findByContract(principal.getName()));
+        totalList.addAll(mypageService.findByFundContract(principal.getName()));
+
+        model.addAttribute("contractList", totalList);
         log.info(mypageService.findByContract(principal.getName()).toString());
-        model.addAttribute("balance", mypageService.findByBalance(principal.getName()));
+        model.addAttribute("balance", mypageService.findByBalance(principal.getName()) + mypageService.findByFundBalance(principal.getName()));
 
         return "mypage/mypage_prod";
     }
