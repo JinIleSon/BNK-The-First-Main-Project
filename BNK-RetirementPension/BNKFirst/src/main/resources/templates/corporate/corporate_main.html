@@ -44,26 +44,29 @@
 <h2>기업 메인 대시보드</h2>
 <p style="color:#666;">퇴직연금 기업 계정 요약 정보를 제공합니다.</p>
 
+<div class="dashboard-grid">
 
-<!-- 요약 카드 3개 -->
-<div class="summary-wrapper">
-
-    <div class="summary-card">
-        <div class="summary-title">전체 직원 수</div>
-        <div class="summary-icon">👥</div>
-        <div class="summary-value">128 명</div>
+    <!-- 🔸 왼쪽 영역: 배너 -->
+    <div class="corporate-banner">
+        <img th:src="@{/images/corporate_main_banner.png}" alt="기업 배너">
     </div>
 
-    <div class="summary-card">
-        <div class="summary-title">전체 적립금 총액</div>
-        <div class="summary-icon">💰</div>
-        <div class="summary-value">₩ 1,024,000,000</div>
-    </div>
+    <!-- 🔸 오른쪽 영역: 요약 카드 -->
+    <div class="summary-wrapper">
+        <div class="summary-card">
+            <div class="summary-title">전체 직원 수</div>
+            <div class="summary-value">128 명</div>
+        </div>
 
-    <div class="summary-card">
-        <div class="summary-title">이번 달 납입 예정</div>
-        <div class="summary-icon">📅</div>
-        <div class="summary-value">₩ 42,800,000</div>
+        <div class="summary-card">
+            <div class="summary-title">전체 적립금 총액</div>
+            <div class="summary-value">₩ 1,024,000,000</div>
+        </div>
+
+        <div class="summary-card">
+            <div class="summary-title">이번 달 납입 예정</div>
+            <div class="summary-value">₩ 42,800,000</div>
+        </div>
     </div>
 
 </div>
@@ -96,6 +99,13 @@
             <div class="news-item">
                 <div><span class="tag-notice">공지</span> 보안프로그램 오류 해결 (142버전)</div>
                 <div class="news-item-date">2025-10-31</div>
+            </div>
+
+            <hr>
+
+            <div class="news-item">
+                <div>[일시중단] 지방세 입금 업무 중단 안내</div>
+                <div class="news-item-date">2025-11-21</div>
             </div>
 
             <hr>
