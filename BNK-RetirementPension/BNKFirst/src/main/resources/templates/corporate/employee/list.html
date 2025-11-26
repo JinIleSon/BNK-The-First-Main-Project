@@ -1,0 +1,81 @@
+<!-- templates/corporate/employee/list.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>직원 목록</title>
+    <link rel="stylesheet" href="/corporate/components/button.css">
+    <style>
+        body { font-family: 'Noto Sans KR'; background:#f4f5f9; margin:40px; }
+        .container { max-width:1100px; margin:auto; }
+        .card { background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.06); }
+        .toolbar { display:flex; gap:12px; margin-bottom:16px; }
+        .toolbar input, .toolbar select { padding:8px 10px; border:1px solid #ccc; border-radius:6px; }
+        table { width:100%; border-collapse:collapse; font-size:14px; }
+        th, td { padding:10px; border-bottom:1px solid #eee; white-space:nowrap; }
+        tr:hover { background:#f9f1f1; cursor:pointer; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>퇴직연금 직원 목록</h1>
+
+    <div class="toolbar">
+        <input type="text" id="searchInput" placeholder="직원 이름 또는 계좌번호 검색">
+        <select id="planFilter">
+            <option value="">전체 제도</option>
+            <option value="DB">DB</option>
+            <option value="DC">DC</option>
+        </select>
+        <button id="resetBtn" class="bnk-btn-red">초기화</button>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>이름</th>
+                <th>제도</th>
+                <th>계좌번호</th>
+                <th>상태</th>
+            </tr>
+            </thead>
+            <tbody id="employeeTbody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    localStorage.setItem("employeesData", JSON.stringify(employees));
+
+    const employees = [
+        {empId:1, name:"김하늘", planType:"DB", accountNo:"123-456-789012", status:"ACTIVE"},
+        {empId:2, name:"이준호", planType:"DC", accountNo:"987-654-321098", status:"ACTIVE"},
+        {empId:3, name:"박민지", planType:"DB", accountNo:"110-220-330044", status:"RETIRED"}
+    ];
+
+    function renderTable(list){
+        const tbody = document.getElementById("employeeTbody");
+        tbody.innerHTML = "";
+
+        list.forEach(emp => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+            <td>${emp.empId}</td>
+            <td>${emp.name}</td>
+            <td>${emp.planType}</td>
+            <td>${emp.accountNo}</td>
+            <td>${emp.status === "ACTIVE" ? "재직" : "퇴사"}</td>
+        `;
+            tr.onclick = () => {
+                window.location.href = `/corporate/employee/detail.html?empId=${emp.empId}`;
+            };
+            tbody.appendChild(tr);
+        });
+    }
+
+    renderTable(employees);
+</script>
+</body>
+</html>
