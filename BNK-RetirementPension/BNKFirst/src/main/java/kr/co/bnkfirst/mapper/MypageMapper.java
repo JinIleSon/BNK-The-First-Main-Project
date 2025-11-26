@@ -3,6 +3,7 @@ package kr.co.bnkfirst.mapper;
 import kr.co.bnkfirst.dto.DocumentDTO;
 import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +14,7 @@ import java.util.List;
 public interface MypageMapper {
     UsersDTO findById(String mid);
     DealDTO findByDeal(String mid);
+    FundDTO findByFund(String mid);
     Integer findByBalance(String mid);
     List<PcontractDTO> findByContract(String mid);
     List<DocumentDTO> findByDocumentList(String mid);

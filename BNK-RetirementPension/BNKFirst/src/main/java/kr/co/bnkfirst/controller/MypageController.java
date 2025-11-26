@@ -34,6 +34,7 @@ public class MypageController {
         // a123은 나중에 로그인할 때 바꾸기
         model.addAttribute("usersList", mypageService.findById(principal.getName()));
         model.addAttribute("dealList", mypageService.findByDeal(principal.getName()));
+        model.addAttribute("fundList", mypageService.findByFund(principal.getName()));
         model.addAttribute("balance", mypageService.findByBalance(principal.getName()));
         model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
         model.addAttribute("documentList", mypageService.findByDocumentList(principal.getName()));
