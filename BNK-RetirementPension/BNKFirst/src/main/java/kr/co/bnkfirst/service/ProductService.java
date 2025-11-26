@@ -1,5 +1,6 @@
 package kr.co.bnkfirst.service;
 
+import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.entity.product.Product;
@@ -7,10 +8,7 @@ import kr.co.bnkfirst.mapper.ProductMapper;
 import kr.co.bnkfirst.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,5 +105,96 @@ public class ProductService {
         return list.stream()
                 .map(Product::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<FundDTO> selectFund(){
+        return productMapper.selectFund();
+    }
+
+    // 펀드 목록 + 페이징
+    @Transactional(readOnly = true)
+    public Page<FundDTO> findFunds(Pageable pageable,
+                                   String operator,
+                                   String grade,
+                                   String type,
+                                   String channel,
+                                   String keyword) {
+
+        // 1) 전체 펀드 가져오기 (MyBatis)
+        List<FundDTO> list = productMapper.selectFund();
+
+        // 2) 키워드(상품명) 필터
+        if (keyword != null && !keyword.isBlank()) {
+            String kw = keyword.trim().toLowerCase();
+            list = list.stream()
+                    .filter(f -> f.getFname() != null &&
+                            f.getFname().toLowerCase().contains(kw))
+                    .toList();
+        }
+
+        // 3) 운용사 필터 : famc 기준
+        if (operator != null && !operator.isBlank()) {
+            Set<String> ops = Arrays.stream(operator.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.toSet());
+
+            list = list.stream()
+                    .filter(f -> f.getFamc() != null && ops.contains(f.getFamc()))
+                    .toList();
+        }
+
+        // 4) 위험등급 필터 (grade=1,2,...)
+// frlvl 이 int 라는 가정 (FundDTO의 frlvl 타입이 int 맞음)
+        if (grade != null && !grade.isBlank()) {
+            Set<Integer> grades = Arrays.stream(grade.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toSet());
+
+            list = list.stream()
+                    .filter(f -> grades.contains(f.getFrlvl()))
+                    .toList();
+        }
+
+        // 5) 펀드유형 필터 (type=채권형,주식형,...)
+        if (type != null && !type.isBlank()) {
+            Set<String> types = Arrays.stream(type.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.toSet());
+
+            list = list.stream()
+                    .filter(f -> f.getFtype() != null && types.contains(f.getFtype()))
+                    .toList();
+        }
+
+        // 6) 채널구분 필터 (channel=온라인전용 ...)
+        // FundDTO 에 대응 필드가 있으면 거기에 맞춰서 바꿔줘.
+        // 예: evaltype 이 채널이라면 이렇게:
+        if (channel != null && !channel.isBlank()) {
+            Set<String> chs = Arrays.stream(channel.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.toSet());
+
+            list = list.stream()
+                    .filter(f -> f.getEvaltype() != null && chs.contains(f.getEvaltype()))
+                    .toList();
+        }
+
+        // 7) 페이징 적용
+        int start = (int) pageable.getOffset();
+        int end   = Math.min(start + pageable.getPageSize(), list.size());
+
+        List<FundDTO> content =
+                (start >= list.size()) ? Collections.emptyList() : list.subList(start, end);
+
+        return new PageImpl<>(content, pageable, list.size());
+    }
+
+    public FundDTO getFundDetail(String fid) {
+        return productMapper.selectFundDetail(fid);
     }
 }

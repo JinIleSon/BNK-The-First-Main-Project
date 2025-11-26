@@ -33,4 +33,25 @@ public class FundDTO {
     private LocalDateTime pend;
     private int pbalance;
 
+    // fund_list - 모달 페이지용 필드 추가(손진일)
+    private String basedt;
+    private String evaltype;
+    private String mgmtcomp;
+    private String grade3y;
+    private String grade5y;
+    private String relatedfund;
+    private String investregion;
+    private String past2023;
+    private String past2024;
+    private String fee1y;
+    private String fee3y;
+    private String startinfo;
+    private String salesfee;
+    private String familysize;
+    private String trustfee;
+    private String aum;
+    private String redeemfee;
+    private String chart1;
+    private String chart2;
+
 }
