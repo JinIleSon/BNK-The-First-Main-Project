@@ -37,6 +37,10 @@ public class MypageService{
         return mypageMapper.findByContract(mid);
     }
 
+    public List<PcontractDTO> findByFundContract(String mid) {
+        return mypageMapper.findByFundContract(mid);
+    }
+
     public int findByBalance(String mid) {
         Integer sum = mypageMapper.findByBalance(mid);
         return (sum != null) ? sum : 0;
