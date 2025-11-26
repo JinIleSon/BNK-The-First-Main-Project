@@ -8,8 +8,24 @@
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <link rel="stylesheet" th:href="@{/css/corporate/corporate_main.css}">
 </head>
-
 <body>
+<div class="page-container">
+    <!-- 1. 페이지 제목 영역 -->
+    <h1>퇴직연금 직원 조회</h1>
+    <div class="subtitle">
+        EMPLOYEE 테이블 기반으로 직원별 제도 유형, 계좌번호, 현재 적립금을 조회하는 화면입니다.
+    </div>
+
+    <!-- 2. 검색/필터 영역 -->
+    <div class="toolbar">
+        <input type="text" id="searchInput" placeholder="직원 이름 또는 계좌번호 검색">
+        <select id="planFilter">
+            <option value="">전체 제도</option>
+            <option value="DB">DB 제도만</option>
+            <option value="DC">DC 제도만</option>
+        </select>
+        <button id="resetBtn">초기화</button>
+    </div>
 
 <!-- ==================== -->
 <!--      SIDEBAR         -->
