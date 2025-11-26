@@ -2,197 +2,11 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>퇴직연금 기업뱅킹 - 직원 조회</title>
-    <style>
-        /* ---------------------- 공통 레이아웃 ---------------------- */
-        * {
-            box-sizing: border-box;
-        }
+    <title>기업뱅킹 메인</title>
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
-            background-color: #f4f5f9;
-            color: #222;
-        }
-
-        .page-container {
-            max-width: 1100px;
-            margin: 40px auto;
-            padding: 24px;
-        }
-
-        h1 {
-            margin: 0 0 16px;
-            font-size: 24px;
-        }
-
-        .subtitle {
-            font-size: 13px;
-            color: #777;
-            margin-bottom: 24px;
-        }
-
-        /* ---------------------- 검색/필터 영역 ---------------------- */
-        .toolbar {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .toolbar input[type="text"],
-        .toolbar select {
-            padding: 8px 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-
-        .toolbar input[type="text"] {
-            flex: 1;
-        }
-
-        .toolbar button {
-            padding: 8px 14px;
-            border-radius: 6px;
-            border: none;
-            font-size: 14px;
-            cursor: pointer;
-            background-color: #d91a1a;
-            color: white;
-        }
-
-        .toolbar button:hover {
-            opacity: 0.9;
-        }
-
-        /* ---------------------- 메인 영역(목록+상세) ---------------------- */
-        .content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 16px;
-        }
-
-        /* ---------------------- 직원 목록 테이블 ---------------------- */
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 16px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        thead {
-            background-color: #fafafa;
-        }
-
-        th, td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #eee;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        th {
-            font-weight: 600;
-            color: #555;
-        }
-
-        tbody tr {
-            cursor: pointer;
-        }
-
-        tbody tr:hover {
-            background-color: #f9f1f1;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 999px;
-            font-size: 11px;
-        }
-
-        .tag-db {
-            background-color: #ffe4e4;
-            color: #b01010;
-        }
-
-        .tag-dc {
-            background-color: #e5f2ff;
-            color: #0b5ebf;
-        }
-
-        .status-active {
-            color: #0c8a3f;
-            font-weight: 600;
-        }
-
-        .status-retired {
-            color: #999;
-            font-weight: 600;
-        }
-
-        /* ---------------------- 직원 상세 카드 ---------------------- */
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-
-        .detail-label {
-            color: #777;
-        }
-
-        .detail-value {
-            font-weight: 500;
-        }
-
-        .balance-box {
-            margin-top: 16px;
-            padding: 12px;
-            background: linear-gradient(135deg, #d91a1a, #ff7b6e);
-            border-radius: 8px;
-            color: white;
-        }
-
-        .balance-label {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-bottom: 4px;
-        }
-
-        .balance-value {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .empty-text {
-            font-size: 13px;
-            color: #888;
-        }
-
-        /* ---------------------- 반응형 (좁은 화면) ---------------------- */
-        @media (max-width: 900px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" th:href="@{/css/corporate/corporate_main.css}">
 </head>
 <body>
 <div class="page-container">
@@ -213,183 +27,156 @@
         <button id="resetBtn">초기화</button>
     </div>
 
-    <!-- 3. 메인 콘텐츠: 직원 목록 + 상세 정보 -->
-    <div class="content">
-        <!-- 3-1. 직원 목록 카드 -->
-        <div class="card">
-            <div class="card-title">직원 목록</div>
-            <table>
-                <thead>
-                <tr>
-                    <th>직원ID</th>
-                    <th>이름</th>
-                    <th>제도</th>
-                    <th>계좌번호</th>
-                    <th>재직 상태</th>
-                </tr>
-                </thead>
-                <tbody id="employeeTbody">
-                <!-- JS로 렌더링 -->
-                </tbody>
-            </table>
-        </div>
+<!-- ==================== -->
+<!--      SIDEBAR         -->
+<!-- ==================== -->
 
-        <!-- 3-2. 직원 상세 카드 -->
-        <div class="card">
-            <div class="card-title">직원 상세정보</div>
-            <div id="detailArea">
-                <p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>
+<button class="hamburger" aria-label="메뉴 열기">
+    <span></span><span></span><span></span>
+</button>
+
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-title">
+            <img src="/images/BNK_english.png" alt="">
+            <p>부산은행 기업뱅킹</p>
+        </div>
+    </div>
+
+    <ul class="sidebar-menu">
+        <li data-key="home" class="selected">🏠 기업 메인</li>
+        <li data-key="emp">👥 직원 관리</li>
+        <li data-key="detail">📑 직원 상세</li>
+        <li data-key="cs">❓ 고객센터</li>
+    </ul>
+</aside>
+
+
+
+<!-- ==================== -->
+<!--      CONTENT         -->
+<!-- ==================== -->
+
+<h2>기업 메인 대시보드</h2>
+<p style="color:#666;">퇴직연금 기업 계정 요약 정보를 제공합니다.</p>
+
+
+<!-- 요약 카드 3개 -->
+<div class="summary-wrapper">
+
+    <div class="summary-card">
+        <div class="summary-title">전체 직원 수</div>
+        <div class="summary-icon">👥</div>
+        <div class="summary-value">128 명</div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-title">전체 적립금 총액</div>
+        <div class="summary-icon">💰</div>
+        <div class="summary-value">₩ 1,024,000,000</div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-title">이번 달 납입 예정</div>
+        <div class="summary-icon">📅</div>
+        <div class="summary-value">₩ 42,800,000</div>
+    </div>
+
+</div>
+
+
+
+<!-- 새소식 + 고객지원 -->
+<div class="section-row">
+
+    <!-- 새소식 -->
+    <div style="flex:2; display:flex; flex-direction:column;">
+        <h3>새소식</h3>
+
+        <div class="card-box" style="flex:1;">
+
+            <div class="news-item">
+                <div><span class="tag-notice">공지</span> 장기 미사용계좌 기한통지 안내</div>
+                <div class="news-item-date">2025-11-20</div>
+            </div>
+
+            <hr>
+
+            <div class="news-item">
+                <div><span class="tag-notice">공지</span> 전자어음 수수료 변경 안내</div>
+                <div class="news-item-date">2025-11-03</div>
+            </div>
+
+            <hr>
+
+            <div class="news-item">
+                <div><span class="tag-notice">공지</span> 보안프로그램 오류 해결 (142버전)</div>
+                <div class="news-item-date">2025-10-31</div>
+            </div>
+
+            <hr>
+
+            <div class="news-item">
+                <div>[일시중단] 지방세 입금 업무 중단 안내</div>
+                <div class="news-item-date">2025-11-21</div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- 고객지원 -->
+    <div style="flex:1; display:flex; flex-direction:column;">
+        <h3>고객지원</h3>
+
+        <div class="card-box" style="flex:1;">
+            <div class="support-grid">
+                <div>기업뱅킹 이용가이드</div>
+                <div>자주하는 질문</div>
+                <div>퇴직연금 공시</div>
+                <div>수수료 안내</div>
+                <div>서식자료실</div>
+                <div>약관자료실</div>
             </div>
         </div>
     </div>
+
 </div>
 
-<script>
-    /* ============================================================
-       1. 더미 데이터 (실제 서비스에서는 서버/DB에서 내려주는 값)
-       EMPLOYEE 테이블 컬럼과 맞추어 구성:
-       - empId   -> EMPID
-       - name    -> NAME
-       - planType-> PLANTYPE
-       - accountNo -> ACCOUNTNO
-       - status  -> STATUS
-       + balance (현재 적립금, 화면 표시용)
-    ============================================================ */
-    const employees = [
-        {empId: 1, name: "김하늘", planType: "DB", accountNo: "123-456-789012", status: "ACTIVE",  balance: 12800000},
-        {empId: 2, name: "이준호", planType: "DC", accountNo: "987-654-321098", status: "ACTIVE",  balance: 8200000},
-        {empId: 3, name: "박민지", planType: "DB", accountNo: "110-220-330044", status: "RETIRED", balance: 27600000},
-        {empId: 4, name: "정소윤", planType: "DC", accountNo: "222-333-444555", status: "ACTIVE",  balance: 5600000},
-        {empId: 5, name: "최유진", planType: "DB", accountNo: "333-444-555666", status: "ACTIVE",  balance: 19300000}
-    ];
 
-    /* ============================================================
-       2. 유틸: 숫자를 원화 형식으로 변환 (예: 12,800,000원)
-    ============================================================ */
-    function formatMoney(amount) {
-        return amount.toLocaleString("ko-KR") + "원";
-    }
 
-    /* ============================================================
-       3. 직원 목록 테이블 렌더링
-    ============================================================ */
-    const tbody = document.getElementById("employeeTbody");
-    const detailArea = document.getElementById("detailArea");
-    const searchInput = document.getElementById("searchInput");
-    const planFilter = document.getElementById("planFilter");
-    const resetBtn = document.getElementById("resetBtn");
+<!-- 고객센터 -->
+<h3 style="margin-top:60px;">고객센터</h3>
 
-    function renderTable(list) {
-        tbody.innerHTML = "";
+<div class="contact-box">
 
-        if (list.length === 0) {
-            const tr = document.createElement("tr");
-            const td = document.createElement("td");
-            td.colSpan = 5;
-            td.className = "empty-text";
-            td.textContent = "조건에 맞는 직원이 없습니다.";
-            tr.appendChild(td);
-            tbody.appendChild(tr);
-            return;
-        }
+    <div class="contact-col">
+        <div class="contact-title">국내</div>
+        <div class="contact-number">1599-1111 / 1588-1111</div>
+        <div style="color:#666;">평일 09:00 ~ 18:00</div>
+    </div>
 
-        list.forEach(emp => {
-            const tr = document.createElement("tr");
+    <div class="contact-col">
+        <div class="contact-title">해외</div>
+        <div class="contact-number">+82-42-520-2500</div>
+        <div style="color:#666;">해외 발신</div>
+    </div>
 
-            tr.innerHTML = `
-                <td>${emp.empId}</td>
-                <td>${emp.name}</td>
-                <td>
-                    <span class="tag ${emp.planType === "DB" ? "tag-db" : "tag-dc"}">
-                        ${emp.planType}
-                    </span>
-                </td>
-                <td>${emp.accountNo}</td>
-                <td class="${emp.status === "ACTIVE" ? "status-active" : "status-retired"}">
-                    ${emp.status === "ACTIVE" ? "재직" : "퇴사"}
-                </td>
-            `;
+    <div class="contact-col">
+        <div class="contact-title">원격지원상담</div>
+        <div style="color:#666;">평일 09:00 ~ 18:00</div>
+    </div>
 
-            // 행 클릭 시 상세 정보 출력
-            tr.addEventListener("click", () => {
-                renderDetail(emp);
-            });
+    <div class="contact-col" style="border-right:none;">
+        <div class="contact-title">이메일 상담</div>
+        <div style="color:#666;">365일 24시간</div>
+    </div>
 
-            tbody.appendChild(tr);
-        });
-    }
+</div>
 
-    /* ============================================================
-       4. 상세 정보 카드 렌더링
-    ============================================================ */
-    function renderDetail(emp) {
-        detailArea.innerHTML = `
-            <div class="detail-row">
-                <div class="detail-label">직원 ID</div>
-                <div class="detail-value">${emp.empId}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">직원 이름</div>
-                <div class="detail-value">${emp.name}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">제도 유형</div>
-                <div class="detail-value">${emp.planType}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">계좌번호</div>
-                <div class="detail-value">${emp.accountNo}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">재직 상태</div>
-                <div class="detail-value">${emp.status === "ACTIVE" ? "재직" : "퇴사"}</div>
-            </div>
 
-            <div class="balance-box">
-                <div class="balance-label">현재 적립금</div>
-                <div class="balance-value">${formatMoney(emp.balance)}</div>
-            </div>
-        `;
-    }
+<script th:src="@{/js/corporate/corporate_main.js}"></script>
 
-    /* ============================================================
-       5. 검색/필터 기능
-       - 이름 또는 계좌번호 텍스트 검색
-       - 제도(DB/DC) 필터
-    ============================================================ */
-    function applyFilter() {
-        const keyword = searchInput.value.trim();
-        const plan = planFilter.value;
 
-        const filtered = employees.filter(emp => {
-            const matchPlan = plan ? emp.planType === plan : true;
-            const matchKeyword = keyword
-                ? (emp.name.includes(keyword) || emp.accountNo.includes(keyword))
-                : true;
-
-            return matchPlan && matchKeyword;
-        });
-
-        renderTable(filtered);
-
-        // 필터 후 상세 영역 초기화
-        detailArea.innerHTML = `<p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>`;
-    }
-
-    searchInput.addEventListener("input", applyFilter);
-    planFilter.addEventListener("change", applyFilter);
-
-    resetBtn.addEventListener("click", () => {
-        searchInput.value = "";
-        planFilter.value = "";
-        renderTable(employees);
-        detailArea.innerHTML = `<p class="empty-text">왼쪽 목록에서 직원을 선택하면 상세정보와 현재 적립금이 표시됩니다.</p>`;
-    });
-
-    /* ============================================================
-       6. 초기 렌더링
-    ============================================================ */
-    renderTable(employees);
-</script>
 </body>
 </html>
