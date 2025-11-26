@@ -1,288 +1,128 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>퇴직연금 기업뱅킹 - 직원 월별 납입 내역</title>
+    <title>직원 상세 정보</title>
+
     <style>
-        /* 전체 레이아웃 */
+        /* 필요한 경우 CSS 추가 */
         body {
             margin: 0;
-            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-            background: #F6F6F8;
-            color: #222;
+            font-family: "Noto Sans KR", sans-serif;
+            background: #f4f5f9;
         }
 
         .page-wrapper {
-            max-width: 1200px;
-            margin: 40px auto 80px;
-            padding: 20px;
+            display: flex;
         }
 
-        .page-header {
-            margin-bottom: 20px;
+        .content-wrapper {
+            flex: 1;
+            padding: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
-        .page-header h1 {
-            margin: 0;
+        h1 {
             font-size: 24px;
-            font-weight: 700;
+            margin-bottom: 10px;
         }
 
-        .page-header .subtitle {
-            margin-top: 6px;
-            font-size: 13px;
-            color: #777;
-        }
-
-        /* 직원 요약 영역 */
-        .employee-summary {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 18px 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-
-        .employee-info {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+        .subtitle {
             font-size: 14px;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
         .info-row {
             display: flex;
-            gap: 8px;
+            margin-bottom: 10px;
         }
 
-        .label {
-            min-width: 70px;
-            font-weight: 600;
+        .info-row .label {
+            width: 150px;
+            font-weight: bold;
             color: #555;
         }
 
-        .value {
-            color: #222;
+        .btn-area {
+            margin-top: 30px;
         }
 
-        .total-box {
-            text-align: right;
-        }
-
-        .total-box .label {
-            font-size: 13px;
-            color: #777;
-        }
-
-        .total-box .amount {
-            display: block;
-            margin-top: 4px;
-            font-size: 20px;
-            font-weight: 700;
-            color: #d91a1a;
-        }
-
-        /* 테이블 영역 */
-        .table-card {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 18px 20px 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-
-        .table-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .btn-view {
+            padding: 10px 16px;
+            background: #005BAC;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
             font-size: 14px;
         }
 
-        table thead {
-            background: #f4f4f6;
-        }
-
-        th, td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #eee;
-        }
-
-        th {
-            text-align: left;
-            font-weight: 600;
-            color: #555;
-        }
-
-        td {
-            color: #333;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .ym-col {
-            width: 120px;
-        }
-
-        .amount-col {
-            width: 160px;
-        }
-
-        .total-col {
-            width: 180px;
-        }
-
-        .table-footer {
-            padding: 10px 0 0;
-            font-size: 13px;
-            color: #777;
+        .btn-view:hover {
+            background: #004a8e;
         }
     </style>
 </head>
-<body>
-<div class="page-wrapper">
-    <!-- 상단 제목 -->
-    <header class="page-header">
-        <h1>직원 월별 납입 내역</h1>
-        <p class="subtitle">CONTRIBUTION 테이블 데이터를 기반으로 월별 납입액과 누적 적립금을 보여주는 화면 예시</p>
-    </header>
 
-    <!-- 직원 요약 정보 -->
-    <section class="employee-summary">
-        <div class="employee-info">
+<body>
+
+<div class="page-wrapper">
+
+    <!-- ⭐ 공통 사이드바 include -->
+    <div th:replace="~{layouts/corporate/_aside :: sidebar}"></div>
+    <!-- ========================= -->
+
+    <!-- 메인 콘텐츠 -->
+    <div class="content-wrapper">
+
+        <h1>직원 상세 정보</h1>
+        <p class="subtitle">EMPLOYEE 테이블 기반 정보</p>
+
+        <section class="info-box">
+
             <div class="info-row">
                 <span class="label">직원명</span>
-                <span class="value" id="empName">-</span>
+                <span th:text="${employee.name}">-</span>
             </div>
+
             <div class="info-row">
                 <span class="label">직원 ID</span>
-                <span class="value" id="empId">-</span>
+                <span th:text="${employee.empId}">-</span>
             </div>
+
+            <div class="info-row">
+                <span class="label">제도</span>
+                <span th:text="${employee.planType}">-</span>
+            </div>
+
             <div class="info-row">
                 <span class="label">계좌번호</span>
-                <span class="value" id="accountNo">-</span>
+                <span th:text="${employee.accountNo}">-</span>
             </div>
-        </div>
-        <div class="total-box">
-            <span class="label">현재 적립금</span>
-            <span class="amount" id="currentBalance">0원</span>
-        </div>
-    </section>
 
-    <!-- 월별 납입 내역 테이블 -->
-    <section class="table-card">
-        <div class="table-title">월별 납입 내역</div>
-        <table id="contribTable">
-            <thead>
-            <tr>
-                <th class="ym-col">납입 년월</th>
-                <th class="amount-col text-right">월별 납입액</th>
-                <th class="total-col text-right">누적 적립금</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- JS로 행 채움 -->
-            </tbody>
-        </table>
-        <div class="table-footer">
-            ※ 누적 적립금은 월별 납입액을 순서대로 더한 값입니다.
+            <div class="info-row">
+                <span class="label">재직 상태</span>
+                <span th:text="${employee.status}">-</span>
+            </div>
+
+        </section>
+
+        <div class="btn-area">
+            <a th:href="@{'/corporate/employee/contribution/' + ${employee.empId}}"
+               class="btn-view">
+                월별 납입 내역 보기
+            </a>
         </div>
-    </section>
+
+    </div>
 </div>
 
-<script>
-    // -----------------------------
-    // 1) 더미 직원 데이터 (실제 서비스에서는 서버에서 내려줌)
-    // -----------------------------
-    const employee = {
-        empId: 1001,
-        name: '홍길동',
-        accountNo: '123-456-789012'
-    };
-
-    // -----------------------------
-    // 2) 더미 월별 납입 데이터 (CONTRIBUTION 테이블 역할)
-    //    - 실제로는 EMPID로 필터링된 데이터라고 보면 됨
-    // -----------------------------
-    const contributions = [
-        { contriId: 1, empId: 1001, yearMonth: '202501', amount: 200000 },
-        { contriId: 2, empId: 1001, yearMonth: '202502', amount: 200000 },
-        { contriId: 3, empId: 1001, yearMonth: '202503', amount: 220000 },
-        { contriId: 4, empId: 1001, yearMonth: '202504', amount: 220000 },
-        { contriId: 5, empId: 1001, yearMonth: '202505', amount: 230000 }
-    ];
-
-    // -----------------------------
-    // 3) 년월 포맷 변경: "202501" → "2025-01"
-    // -----------------------------
-    function formatYearMonth(ym) {
-        if (!ym || ym.length !== 6) return ym;
-        const year = ym.substring(0, 4);
-        const month = ym.substring(4, 6);
-        return `${year}-${month}`;
-    }
-
-    // -----------------------------
-    // 4) 금액 포맷: 200000 → "200,000원"
-    // -----------------------------
-    function formatCurrency(num) {
-        return num.toLocaleString('ko-KR') + '원';
-    }
-
-    // -----------------------------
-    // 5) 테이블 렌더링 + 누적 적립금 계산
-    // -----------------------------
-    function renderContributionTable() {
-        // 5-1. 직원 정보 세팅
-        document.getElementById('empName').textContent = employee.name;
-        document.getElementById('empId').textContent = employee.empId;
-        document.getElementById('accountNo').textContent = employee.accountNo;
-
-        // 5-2. 납입 데이터 YEARMONTH 기준 오름차순 정렬
-        contributions.sort((a, b) => a.yearMonth.localeCompare(b.yearMonth));
-
-        const tbody = document.querySelector('#contribTable tbody');
-        tbody.innerHTML = '';
-
-        let runningTotal = 0;
-
-        // 5-3. 한 줄씩 추가하면서 누적합 계산
-        contributions.forEach(row => {
-            runningTotal += row.amount;   // 누적 적립금 = 이전까지 합 + 이번 달 금액
-
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${formatYearMonth(row.yearMonth)}</td>
-                <td class="text-right">${formatCurrency(row.amount)}</td>
-                <td class="text-right">${formatCurrency(runningTotal)}</td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        // 5-4. 화면 상단 "현재 적립금" 표시 = 마지막 누적 값
-        document.getElementById('currentBalance').textContent = formatCurrency(runningTotal);
-    }
-
-    // -----------------------------
-    // 6) 페이지 로드 시 실행
-    // -----------------------------
-    document.addEventListener('DOMContentLoaded', renderContributionTable);
-
-    // ----------------------------------------------------
-    // (참고) 실제 연동 시에는 다음과 같이 교체 가능
-    //
-    // fetch('/api/employee/1001/contributions')
-    //   .then(res => res.json())
-    //   .then(data => { contributions = data; renderContributionTable(); });
-    // ----------------------------------------------------
-</script>
 </body>
 </html>

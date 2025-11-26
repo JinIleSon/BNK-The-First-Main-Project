@@ -193,8 +193,15 @@
             }
         }
     </style>
+    <link rel="stylesheet" th:href="@{/css/corporate/corporate_main.css}">
+
 </head>
 <body>
+
+
+<!-- 🌟 사이드바(햄버거) 삽입 -->
+<div th:replace="layouts/corporate/_aside :: sidebar"></div>
+
 <div class="page-container">
     <!-- 1. 페이지 제목 영역 -->
     <h1>퇴직연금 직원 조회</h1>
@@ -315,6 +322,7 @@
                 renderDetail(emp);
             });
 
+
             tbody.appendChild(tr);
         });
     }
@@ -391,5 +399,7 @@
     ============================================================ */
     renderTable(employees);
 </script>
+<script th:src="@{/js/corporate/corporate_main.js}"></script>
+
 </body>
 </html>
