@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>직원 월별 납입 내역</title>
+    <style>
+        body { font-family:'Noto Sans KR'; background:#f4f5f9; margin:40px; }
+        .container { max-width:1100px; margin:auto; }
+
+        .card {
+            background:white; padding:24px; border-radius:8px;
+            box-shadow:0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width:100%; border-collapse:collapse; font-size:14px;
+        }
+
+        th, td {
+            padding:10px; border-bottom:1px solid #eee; white-space:nowrap;
+        }
+
+        thead { background:#fafafa; }
+
+        h1 { margin-bottom:8px; }
+        .subtitle { font-size:14px; color:#777; margin-bottom:20px; }
+
+        .back-btn {
+            padding:8px 14px; background:#555; color:white;
+            border-radius:6px; text-decoration:none; font-size:13px;
+        }
+
+        .label-row {
+            margin-bottom:20px;
+            background:#fff3f3;
+            padding:12px;
+            border-left:4px solid #d91a1a;
+        }
+
+        .label-row div { margin:4px 0; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <a href="/corporate/employee/list.html" class="back-btn">← 직원 목록으로 돌아가기</a>
+
+    <h1>월별 납입 내역</h1>
+    <div class="subtitle">CONTRIBUTION 테이블 기반으로 직원의 월별 납입금과 누적 적립금을 조회합니다.</div>
+
+    <!-- 직원 정보 -->
+    <div class="label-row" id="employeeInfo"></div>
+
+    <!-- 월별 테이블 -->
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>납입 년월</th>
+                <th>월 납입액</th>
+                <th>누적 적립금</th>
+            </tr>
+            </thead>
+            <tbody id="contributionTbody"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    /* =====================================================================
+       1. 직원 & 납입 더미 데이터 (DB 연동 전 임시)
+    ===================================================================== */
+    const employees = [
+        {empId: 1, name: "김하늘", planType: "DB", accountNo: "123-456-789012"},
+        {empId: 2, name: "이준호", planType: "DC", accountNo: "987-654-321098"},
+    ];
+
+    const contributions = [
+        {empId: 1, yearMonth: "202401", amount: 150000},
+        {empId: 1, yearMonth: "202402", amount: 200000},
+        {empId: 1, yearMonth: "202403", amount: 180000},
+
+        {empId: 2, yearMonth: "202401", amount: 130000},
+        {empId: 2, yearMonth: "202402", amount: 160000},
+    ];
+
+    /* =====================================================================
+       2. URL 파라미터에서 직원 선택
+    ===================================================================== */
+    const empId = new URLSearchParams(window.location.search).get("empId");
+    const employee = employees.find(e => e.empId == empId);
+
+    /* =====================================================================
+       3. 직원 상단 정보 표시
+    ===================================================================== */
+    document.getElementById("employeeInfo").innerHTML = `
+    <div><strong>직원 ID:</strong> ${employee.empId}</div>
+    <div><strong>이름:</strong> ${employee.name}</div>
+    <div><strong>제도:</strong> ${employee.planType}</div>
+    <div><strong>계좌번호:</strong> ${employee.accountNo}</div>
+`;
+
+    /* =====================================================================
+       4. 직원의 납입 내역 필터링 후 누적 계산
+    ===================================================================== */
+    const empContribs = contributions
+        .filter(c => c.empId == empId)
+        .sort((a, b) => a.yearMonth.localeCompare(b.yearMonth));
+
+    let cumulative = 0;
+
+    /* =====================================================================
+       5. 테이블 렌더링
+    ===================================================================== */
+    const tbody = document.getElementById("contributionTbody");
+
+    empContribs.forEach(c => {
+        cumulative += c.amount;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+        <td>${c.yearMonth}</td>
+        <td>${c.amount.toLocaleString("ko-KR")}원</td>
+        <td>${cumulative.toLocaleString("ko-KR")}원</td>
+    `;
+        tbody.appendChild(tr);
+    });
+</script>
+
+</body>
+</html>
