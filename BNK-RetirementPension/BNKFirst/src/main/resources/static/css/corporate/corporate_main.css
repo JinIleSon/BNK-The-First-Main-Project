@@ -125,6 +125,21 @@ h3 {
     color: white;
 }
 
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 0;   /* li에서 이미 패딩 처리 */
+    text-decoration: none;
+    color: inherit;
+}
+
+.sidebar-menu li.selected a {
+    font-weight: bold;
+}
+
+
 /* ============================== */
 /*        요약정보 스타일           */
 /* ============================== */

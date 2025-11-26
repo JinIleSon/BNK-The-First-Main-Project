@@ -12,4 +12,11 @@ public class CorporateController {
     public String corporateMain(){
         return "corporate/corporate_main";
     }
+
+    @GetMapping("/corporate/employee/list")
+    public String employeeList(){
+        return "corporate/employee/list";
+    }
+
+
 }
