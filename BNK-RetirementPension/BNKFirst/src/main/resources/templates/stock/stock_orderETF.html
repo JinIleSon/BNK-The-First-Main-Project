@@ -549,8 +549,65 @@
             color: #555;    /* 보합 */
         }
     </style>
+    <style>
+        .order-card {
+            position: relative;
+        }
+
+        /* 기본: 오버레이는 숨겨두기 */
+        .order-card .order-login-overlay {
+            display: none;
+        }
+
+        /* 비로그인 상태에서 쓸 클래스 */
+        .order-card.not-logged-in .order-card-body {
+            filter: blur(2px);
+            opacity: 0.4;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .order-card.not-logged-in .order-login-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0.80);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .order-login-box {
+            text-align: center;
+            padding: 16px 20px;
+        }
+
+        .order-login-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .order-login-desc {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .order-login-btn {
+            padding: 8px 18px;
+            border-radius: 999px;
+            border: none;
+            background: #e6424f;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
 </head>
-<body th:attr="data-stock-code=${code}, data-stock-name=${stockName}">
+<body th:attr="data-stock-code=${code}, data-stock-name=${stockName}, data-logged-in=${session.loginUser != null}">
 <header>
     <div th:replace="~{layouts/header.html}"></div>
 </header>
@@ -624,10 +681,38 @@
                     </div>
                 </div>
             </div>
-            <div style="box-sizing: border-box;margin-top:25px; margin-left:10px; border-radius: 16px;background-color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB; overflow: hidden; width: 20%; height: 610px;">
+            <div id="orderCard" class="order-card"
+                 style="position:relative; box-sizing: border-box;margin-top:25px; margin-left:10px;
+            border-radius: 16px;background-color: white; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E5E7EB; overflow: hidden; width: 20%; height: 610px;">
+            <!-- 비로그인 시에만 보여줄 오버레이 -->
+            <div class="order-login-overlay">
+                <div class="order-login-box">
+                    <div class="order-login-title">로그인을 진행해주세요</div>
+                    <div class="order-login-desc">
+                        주식 주문은 로그인 후 이용하실 수 있습니다.
+                    </div>
+                    <button type="button" class="order-login-btn"
+                            th:onclick="|location.href='@{/member/main}'|">
+                        로그인 하러가기
+                    </button>
+                </div>
+            </div>
+            <!-- 로그인 시 보임 -->
                 <div>
                     <div style="color: #13263A; margin-bottom: 20px; padding: 15px;">
-                        <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">주문하기</div>
+                        <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px; display: flex;">
+                            <div style="flex: 1; margin-top: 4px;">주문하기</div>
+                            <div style="font-weight: 500; font-size: 14px; width: 81%;">
+                                <select style="outline: none; border:1px solid #e5e8eb; width: 100%; border-radius: 8px; padding-left: 8px; height: 30px;">
+                                    <option th:if="${#lists.isEmpty(accountList)}" disabled selected>계좌가 없어요</option>
+                                    <option th:each="acc : ${accountList}"
+                                    th:value = "${acc.pacc}"
+                                    th:text="${acc.pacc} + ' ' + ${acc.pname}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="order-tabs" id="orderTabs">
                             <div class="order-tabs-active" id="orderTabsActive"></div>
 
@@ -1992,6 +2077,19 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         fetchEtfLoop();   // 페이지 들어오면 ETF ticker 시작
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const loggedIn = document.body.dataset.loggedIn === 'true';
+        const card = document.getElementById('orderCard');
+        if (!card) return;
+
+        // 🔹 로그인 안된 경우 → 카드 흐리게 + 오버레이 표시
+        if (!loggedIn) {
+            card.classList.add('not-logged-in');
+        }
+        // 🔹 로그인된 경우 → 아무것도 안 함 (그냥 정상 UI)
     });
 </script>
 </body>
