@@ -166,7 +166,20 @@
                         <h4 th:text="${p.name}"></h4>
                     <div class="item-header">
                         <p>기본 금리: <span th:text="${p.rate}"></span> %</p>
-                        <button class="btn">가입하기</button>
+
+                        <!-- 이동 경로 분기 -->
+                        <button class="btn"
+                                th:if="${p.type == 'PRODUCT'}"
+                                th:onclick="|location.href='@{/product/view/{pid}(pid=${p.id})}'|">
+                            가입하기
+                        </button>
+
+                        <button class="btn"
+                                th:if="${p.type == 'FUND'}" th:onclick="|location.href='@{/product/fund/list}'|">
+                            상품보기
+                        </button>
+
+
                     </div>
                 </div>
             </div>
@@ -177,6 +190,14 @@
 
         </div>
     </main>
+
+    <script>
+        function goToFundPage(btn) {
+            const name = btn.dataset.name;
+            const encoded = encodeURIComponent(name);
+            location.href = `/BNK/product/fund/list?keyword=${encoded}`;
+        }
+    </script>
 
     <footer><div th:replace="~{layouts/footer.html}"></div></footer>
 
