@@ -22,6 +22,7 @@ import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 
 /*
@@ -131,6 +132,33 @@ public class ProductController {
         log.info("getACC uid {}", uid);
         PcontractDTO acc = productService.getAccount(uid, type);
         return ResponseEntity.ok(acc);
+    }
+
+    @PostMapping("/api/account/verify-pin")
+    public ResponseEntity<Boolean> checkAccPass(Principal principal, @RequestBody Map<String, String> body) {
+        if (principal == null) {
+            throw new ErrorResponseException(HttpStatus.FORBIDDEN);
+        }
+        String uid = principal.getName();
+        String accountNo = body.get("pacc");
+        String pin =  body.get("pin");
+        log.info("pacc: {}, pin: {}", accountNo, pin);
+        Boolean valid = productService.checkAccPin(accountNo, pin, uid);
+        log.info("valid: {}", valid);
+        return ResponseEntity.ok(valid);
+    }
+
+    @PostMapping("/api/product/buy")
+    public ResponseEntity<Boolean> buyProduct(Principal principal, @RequestBody PcontractDTO pcontractDTO) {
+        if (principal == null) {
+            throw new ErrorResponseException(HttpStatus.FORBIDDEN);
+        }
+        String uid = principal.getName();
+        log.info("buyProduct uid {}", uid);
+        log.info("buyProduct PcontractDTO: {}", pcontractDTO);
+        boolean checkSaved = productService.buyProduct(uid, pcontractDTO);
+        log.info("checkSaved: {}", checkSaved);
+        return ResponseEntity.ok(checkSaved);
     }
 
     @GetMapping("/product/subCmpl/list")
