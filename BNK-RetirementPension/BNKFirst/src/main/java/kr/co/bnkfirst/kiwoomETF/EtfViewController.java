@@ -1,6 +1,7 @@
 package kr.co.bnkfirst.kiwoomETF;
 
 import kr.co.bnkfirst.fx.FxService;
+import kr.co.bnkfirst.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -16,6 +19,7 @@ public class EtfViewController {
 
     private final EtfService etfService;
     private final FxService fxService;   // 이미 usdKrw 내려주는 서비스 있다고 가정
+    private final StockService stockService;
 
     @GetMapping("/stock/mainEtf")
     public String etfMain(Model model) {
@@ -34,7 +38,18 @@ public class EtfViewController {
     @GetMapping("/stock/orderEtf")
     public String stockOrder(@RequestParam("code") String code,
                              @RequestParam(value = "name", required = false) String name,
+                             Principal principal,
                              Model model) {
+
+        // 🔥 principal이 null이어도 안전하게 처리
+        String principalName = (principal != null) ? principal.getName() : null;
+
+        // 🔥 계좌 목록: principalName이 null이면 빈 리스트 넣기
+        if (principalName != null) {
+            model.addAttribute("accountList", stockService.findByContract(principalName));
+        } else {
+            model.addAttribute("accountList", Collections.emptyList());
+        }
 
         // name을 안 넘겨줬으면 code를 그냥 이름처럼 보여주도록 임시 처리
         String stockName = (name != null && !name.isBlank()) ? name : code;
