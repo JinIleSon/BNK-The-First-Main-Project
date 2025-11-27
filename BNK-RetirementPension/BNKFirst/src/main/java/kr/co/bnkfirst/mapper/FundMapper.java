@@ -11,7 +11,7 @@ public interface FundMapper {
     @Select("""
         SELECT
             FID,
-            FAMC,
+            FNAME,
             FRLVL,
             FM1PR,
             FM3PR,

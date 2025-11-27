@@ -195,7 +195,7 @@ public class ProductService {
                 if(avg > foreignRate){
                     Map<String,Object> m = new HashMap<>();
                     m.put("type","FUND");
-                    m.put("name",f.getFamc());
+                    m.put("name",f.getFname());
                     m.put("rate",avg.doubleValue()); //Double 통일
                     m.put("id",f.getFid());
 
