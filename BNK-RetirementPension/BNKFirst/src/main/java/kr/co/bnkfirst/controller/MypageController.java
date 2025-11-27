@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -114,16 +115,22 @@ public class MypageController {
     }
 
     @GetMapping("/mypage/compare")
-    public String compare(@RequestParam("myaccid") Long myaccid, Model model){
+    public String compare(@RequestParam("myaccid") Long myaccid,
+                          @RequestParam(value = "risk", required = false) String risk,
+                          Model model){
         //선택된 타행 계좌 불러오기
         MydataAccountDTO foreign = mydataAccountService.findByAccid(myaccid);
-        //BNK 퇴직연금 상품 목록 불러오기
-        List<ProductDTO> productList = productService.findRetireProducts();
+        Double foreignRate = foreign.getYieldrate();
+
+        List<Map<String, Object>> productList =
+                productService.findBetterProducts(foreignRate,risk);
 
         //타행계좌
         model.addAttribute("foreign", foreign);
         //BNK 상품
         model.addAttribute("productList", productList);
+        //필터링
+        model.addAttribute("riskFilter", risk);
 
         return "mypage/mypage_compare";
     }

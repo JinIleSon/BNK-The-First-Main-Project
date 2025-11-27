@@ -14,7 +14,6 @@
 
         <ul class="sidebar-menu">
 
-            <!-- 기업 메인 -->
             <li data-key="home">
                 <a th:href="@{/corporate/main}">
                     <span class="icon">🏠</span>
@@ -22,7 +21,6 @@
                 </a>
             </li>
 
-            <!-- 직원 관리 -->
             <li data-key="emp">
                 <a th:href="@{/corporate/employee/list}">
                     <span class="icon">👥</span>
@@ -30,7 +28,6 @@
                 </a>
             </li>
 
-            <!-- 직원 상세 (empId 예시 1) -->
             <li data-key="detail">
                 <a th:href="@{/corporate/employee/detail/1}">
                     <span class="icon">📑</span>
@@ -38,14 +35,12 @@
                 </a>
             </li>
 
-            <!-- 고객센터 -->
             <li data-key="cs">
                 <a th:href="@{/corporate/cs}">
                     <span class="icon">❓</span>
                     <span>고객센터</span>
                 </a>
             </li>
-
 
         </ul>
     </aside>
