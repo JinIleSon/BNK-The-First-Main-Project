@@ -3,6 +3,7 @@ package kr.co.bnkfirst.service;
 import jakarta.transaction.Transactional;
 import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
+import kr.co.bnkfirst.kiwoomETF.EtfDTO;
 import kr.co.bnkfirst.mapper.MypageMapper;
 import kr.co.bnkfirst.mapper.StockMapper;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class StockService {
         return mypageMapper.findByContract(mid);
     }
 
+    // 주식 구매 프로세스
     public void buyStock(@RequestParam("pcuid") String pcuid,
                          @RequestParam("pstock") Integer pstock,
                          @RequestParam("pprice") Integer pprice,
@@ -42,7 +44,6 @@ public class StockService {
 
     public void downBalance(@RequestParam("psum") Integer psum,
                             @RequestParam("pacc") String pacc){
-        stockMapper.downBalance(psum,pacc);
 
         if (psum == null || psum <= 0) {
             throw new IllegalArgumentException("총합(psum)은 1 이상이어야 합니다.");
@@ -70,7 +71,44 @@ public class StockService {
             psum = pstock * pprice;
         }
 
-        stockMapper.buyStock(pcuid,pstock,pprice,psum,pname,pacc);
-        stockMapper.downBalance(psum,pacc);
+        buyStock(pcuid,pstock,pprice,psum,pname,pacc);
+        downBalance(psum,pacc);
+    }
+
+    // 판매할 주식이 있는지 찾음
+    public EtfDTO findByStock(@RequestParam("pacc") String pacc,
+                                    @RequestParam("pname") String pname){
+        if (pacc == null || pacc.isBlank()) {
+            pacc = "계좌없음";
+        }
+        if (pname == null || pname.isBlank()) {
+            pname = "종목명없음";
+        }
+        return stockMapper.findByStock(pacc, pname);
+    }
+
+    // 주식 판매 프로세스
+    public void upBalance(@RequestParam("psum") Integer psum,
+                          @RequestParam("pacc") String pacc){
+        if (pacc == null || pacc.isBlank()) {
+            throw new IllegalArgumentException("계좌번호(pacc)는 필수입니다.");
+        }
+        stockMapper.upBalance(psum,pacc);
+    }
+
+    public void sellStock(@RequestParam("pname") String pname,
+                          @RequestParam("pcuid") String pcuid){
+        stockMapper.sellStock(pname,pcuid);
+    }
+
+    @Transactional
+    public void sellProcess(@RequestParam("psum") Integer psum,
+                           @RequestParam("pacc") String pacc,
+                           @RequestParam("pname") String pname,
+                           @RequestParam("pcuid") String pcuid){
+
+
+        upBalance(psum,pacc);
+        sellStock(pname,pcuid);
     }
 }

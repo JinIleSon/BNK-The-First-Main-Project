@@ -191,6 +191,39 @@
 
         .sidebar a:hover { color: #d91a1a; }
 
+        /* 검색 박스 */
+        .search-box {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .search-box form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 220px;
+        }
+
+        .search-btn {
+            padding: 8px 16px;
+            background: #d91a1a;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .search-btn:hover {
+            background: #b81414;
+        }
+
     </style>
 </head>
 
@@ -225,6 +258,14 @@
         <h1>직원 월별 납입 내역</h1>
         <p class="subtitle">CONTRIBUTION 테이블 기반 납입액/누적 적립금 조회</p>
     </header>
+
+    <!-- ⭐ 직원 검색 박스 (오른쪽 상단) -->
+    <div class="search-box">
+        <form action="/BNK/corporate/employee/list" method="get">
+            <input type="text" name="keyword" class="search-input" placeholder="직원명 또는 계좌번호 검색">
+            <button type="submit" class="search-btn">검색</button>
+        </form>
+    </div>
 
     <section class="employee-summary">
         <div class="employee-info">
@@ -315,6 +356,15 @@
 
     document.addEventListener("DOMContentLoaded", renderContributionTable);
 </script>
+<script>
+    /* 햄버거 & 사이드바 */
+    const hamburgerBtn = document.getElementById("hamburgerBtn");
+    const sidebar = document.getElementById("sidebar");
 
+    hamburgerBtn.onclick = () => {
+        sidebar.classList.toggle("active");
+        hamburgerBtn.classList.toggle("open");
+    };
+</script>
 </body>
 </html>

@@ -46,3 +46,148 @@
     </aside>
 
 </div>
+
+
+<style>
+    /* ============================= */
+    /*        기본 전역 설정         */
+    /* ============================= */
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        overflow-x: hidden;
+        font-size: 15px;
+    }
+
+    /* ============================= */
+    /*       🔹 햄버거 버튼 스타일    */
+    /* ============================= */
+    .hamburger {
+        position: fixed;
+        top: 25px;
+        left: 15px;
+        width: 35px;
+        height: 25px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+        z-index: 1001;
+    }
+
+    .hamburger span {
+        display: block;
+        height: 4px;
+        width: 100%;
+        background: #333;
+        border-radius: 2px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* 🔹 햄버거 → X 변환 */
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6.5px, 8px);
+    }
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -8px);
+    }
+
+    /* ============================= */
+    /*       🔹 사이드바 레이아웃    */
+    /* ============================= */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100vh;
+        background-color: #fff;
+        box-shadow: 3px 0 15px rgba(0,0,0,0.2);
+        transition: left 0.5s ease-in-out;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* ============================= */
+    /*       🔹 헤더 타이틀 영역      */
+    /* ============================= */
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .sidebar-title img {
+        width: 85px;
+        height: 28px;
+    }
+
+    .sidebar-title p {
+        margin: 5px 0 0 0;
+        font-size: 13px;
+        color: #666;
+    }
+
+    /* ============================= */
+    /*       🔹 메뉴 리스트 영역      */
+    /* ============================= */
+    .sidebar-menu {
+        list-style: none;
+        margin: 0;
+        padding: 15px 20px;
+        font-size: 15px;
+    }
+
+    .sidebar-menu li {
+        padding: 12px 10px;
+        margin: 10px 0;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: #5B6270;
+        transition: background 0.2s;
+    }
+
+    .sidebar-menu li a {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        gap: 10px;
+        font-size: 15px;
+    }
+
+    /* 아이콘 영역 */
+    .sidebar-menu li .icon {
+        font-size: 17px;
+        width: 20px;
+        text-align: center;
+    }
+
+    /* hover */
+    .sidebar-menu li:hover {
+        background-color: #D81921;
+        color: #fff;
+    }
+
+    /* 선택된 메뉴 강조 */
+    .sidebar-menu li.selected {
+        background-color: #D81921;
+        color: #fff;
+    }
+
+</style>
