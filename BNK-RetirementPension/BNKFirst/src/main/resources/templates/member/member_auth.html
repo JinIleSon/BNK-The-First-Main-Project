@@ -18,7 +18,7 @@
 <div id="bnk-chatbot-slot"></div>
 </div>
 <main>
-    <h1 style="text-align: center;">회원가입</h1>
+    <h1 style="text-align: center;">신규가입</h1>
     <div class="stepper">
         <div class="step"><span class="dot">1</span>약관동의</div>
         <div class="sep"></div>
@@ -75,8 +75,9 @@
                         <!-- 이름 / 생년월일 -->
                         <tr class="field">
                             <th scope="row" class="field-name">이름</th>
-                            <td><input type="text" name="mname" class="input" placeholder="이름 입력"
-                                       th:value="${auth?.mname}"></td>
+                            <td><input type="text" id="p_mname" name="mname" class="input" placeholder="이름 입력"
+                                       th:value="${auth?.mname}">
+                            </td>
                             <th scope="row"><label for="birthInput" class="field-label">생년월일</label></th>
                             <td style="display:flex; align-items:center; gap:12px;">
                                 <input id="birthInput" name="mbirth" type="text" class="input"
@@ -88,8 +89,8 @@
                         <tr class="field">
                             <th scope="row" class="field-name">성별</th>
                             <td>
-                                <select name="mgender" class="input" required>
-                                    <option>선택</option>
+                                <select id="p_mgender" name="mgender" class="input" required>
+                                <option>선택</option>
                                     <option value="M" th:selected="${auth?.mgender == 'M'}">남성</option>
                                     <option value="F" th:selected="${auth?.mgender == 'F'}">여성</option>
                                 </select>
@@ -97,8 +98,8 @@
 
                             <th scope="row" class="field-name">통신사</th>
                             <td>
-                                <select name="mcarrier" class="input" required>
-                                    <option>선택</option>
+                                <select id="p_mcarrier" name="mcarrier" class="input" required>
+                                <option>선택</option>
                                     <option value="SKT" th:selected="${auth?.mcarrier == 'SKT'}">SKT</option>
                                     <option value="KT" th:selected="${auth?.mcarrier == 'KT'}">KT</option>
                                     <option value="LG" th:selected="${auth?.mcarrier == 'LG'}">LG</option>
@@ -111,11 +112,10 @@
                             <th scope="row"><label class="field-label">휴대폰번호</label></th>
                             <td>
                                 <div class="field-row" style="display:flex; gap:8px;">
-                                    <input type="text" name="mphone" class="input" placeholder="010-1234-5678">
+                                    <input type="text" id="p_mphone" name="mphone" class="input" placeholder="010-1234-5678">
                                     <button type="button" class="btn-register" id="btnPhoneReq" style="width:90px;">인증요청</button>
                                 </div>
                             </td>
-
                             <th scope="row"><label class="field-label">인증번호</label></th>
                             <td>
                                 <div class="field-row" style="display:flex; gap:8px;">
@@ -194,14 +194,14 @@
                             <td>
                                 <input type="text" class="input joint-visible" placeholder="이름 입력"
                                        oninput="document.getElementById('h_mname').value = this.value;">
-                                <input type="hidden" id="h_mname" name="mname">
+                                <input type="hidden" id="h_mname">
                             </td>
 
                             <th scope="row" class="field-name">생년월일</th>
                             <td style="display:flex; align-items:center; gap:12px;">
                                 <input id="jointBirthInput" class="input joint-visible" placeholder="YYYY-MM-DD"
                                        oninput="document.getElementById('h_mbirth').value = this.value;">
-                                <input type="hidden" id="h_mbirth" name="mbirth">
+                                <input type="hidden" id="h_mbirth">
                             </td>
                         </tr>
                         <tr class="joint-extra" style="display:none;">
@@ -213,7 +213,7 @@
                                     <option value="M">남성</option>
                                     <option value="F">여성</option>
                                 </select>
-                                <input type="hidden" id="h_mgender" name="mgender">
+                                <input type="hidden" id="h_mgender">
                             </td>
 
                             <th scope="row" class="field-name">통신사</th>
@@ -225,7 +225,7 @@
                                     <option value="KT">KT</option>
                                     <option value="LG">LG</option>
                                 </select>
-                                <input type="hidden" id="h_mcarrier" name="mcarrier">
+                                <input type="hidden" id="h_mcarrier">
                             </td>
                         </tr>
                         <tr class="joint-extra" style="display:none; width: 254px">
@@ -233,7 +233,7 @@
                             <td>
                                 <input type="text" class="input joint-visible" placeholder="010-1234-5678"
                                        oninput="document.getElementById('h_mphone').value = this.value;">
-                                <input type="hidden" id="h_mphone" name="mphone">
+                                <input type="hidden" id="h_mphone">
                             </td>
                         </tr>
                         <tr>
@@ -338,14 +338,36 @@
 <script>
     function syncInputNames(useJoint) {
 
-        // 공동인증서 hidden 필드 name 관리
-        document.querySelectorAll('#panel-cert input[type="hidden"]').forEach(el => {
-            if (useJoint) {
+        const phoneFields = [
+            { id: 'p_mname',   name: 'mname'   },
+            { id: 'birthInput',name: 'mbirth'  },
+            { id: 'p_mgender', name: 'mgender' },
+            { id: 'p_mcarrier',name: 'mcarrier'},
+            { id: 'p_mphone',  name: 'mphone'  }
+        ];
+
+        const jointHidden = document.querySelectorAll('#panel-cert input[type="hidden"]');
+
+        if (useJoint) {
+            phoneFields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el) el.removeAttribute('name');
+            });
+
+            jointHidden.forEach(el => {
                 el.name = el.id.replace('h_', '');
-            } else {
+            });
+
+        } else {
+            phoneFields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el) el.name = f.name;
+            });
+
+            jointHidden.forEach(el => {
                 el.removeAttribute('name');
-            }
-        });
+            });
+        }
     }
 
     // 인증 탭 스위치
@@ -574,8 +596,6 @@
 
                 // 모달 닫기
                 modal.setAttribute("aria-hidden", "true");
-
-                alert("공동인증서 인증이 완료되었습니다.");
 
                 // 이름 입력칸에 포커스
                 const nameInput = document.querySelector("#panel-cert .joint-extra input[name='mname']");

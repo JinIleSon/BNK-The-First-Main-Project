@@ -24,14 +24,14 @@
         INSERT INTO USERS (
             "uId", MID, MPW, MNAME, MGENDER, MJUMIN,
             MPHONE, MCARRIER, MBIRTH, MEMAIL, MADDRESS,
-            MDATE, MGRADE, MCOND
+            MDATE, MGRADE, MCOND, "ROLE"
         )
         VALUES (
                    SEQ_USERS.NEXTVAL,
                    #{mid}, #{mpw}, #{mname}, #{mgender}, #{mjumin},
                    #{mphone}, #{mcarrier}, #{mbirth, jdbcType=DATE},
                    #{memail, jdbcType=VARCHAR}, #{maddress, jdbcType=VARCHAR},
-                   SYSDATE, 'Family', '활동중'
+                   SYSDATE, 'Family', '활동중', 'USER'
                )
     </insert>
 
@@ -100,5 +100,23 @@
         SET MPW = #{mpw}
         WHERE MID = #{mid}
     </update>
+
+    <!-- 회원가입 완료 시 기본 계좌도 개설 -->
+    <insert id="insertDefaultAccount"
+            parameterType="kr.co.bnkfirst.dto.product.PcontractDTO">
+
+        <selectKey keyProperty="pacc"
+                   resultType="string"
+                   order="BEFORE">
+            SELECT '321-654-' || LPAD(PACC_SEQ.NEXTVAL, 5, '0')
+            FROM DUAL
+        </selectKey>
+
+        INSERT INTO PCONTRACT (
+            PCUID, PCPID, PACC, PCNAPW, PBALANCE, TYPE
+        ) VALUES (
+            #{pcuid}, 'BNK-TD-1', #{pacc}, #{pcnapw}, 0, 'IRP'
+        )
+    </insert>
 
 </mapper>

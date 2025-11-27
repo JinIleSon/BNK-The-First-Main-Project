@@ -80,8 +80,7 @@ public class UsersController {
             log.info("로그아웃 요청: 로그인된 사용자 없음");
         }
 
-        session.invalidate(); // 세션 삭제
-//        log.info("세션 체크: {}", session.getAttribute("loginUser"));
+        session.invalidate();
         return "redirect:/member/main";
     }
 
@@ -146,7 +145,9 @@ public class UsersController {
             UsersDTO savedUser = usersService.findByMid(usersDTO.getMid());
             session.setAttribute("newUser", savedUser);
 
-            // 인증 정보 소멸
+            String accountNo = usersService.openDefaultAccount(savedUser.getMid());
+            session.setAttribute("newAccountNo", accountNo);
+
             session.removeAttribute("authData");
 
             return "redirect:/member/active";
@@ -165,11 +166,11 @@ public class UsersController {
     public String memberActive(HttpSession session, Model model) {
 
         UsersDTO newUser = (UsersDTO) session.getAttribute("newUser");
+        String newAccountNo = (String) session.getAttribute("newAccountNo");
 
-        if (newUser == null) {
+        if (newUser == null || newAccountNo == null) {
             return "redirect:/member/info";
         }
-        // XML로 추가 정보만 전달 (SYSDATE, Family)
         String xml =
                 "<extra>" +
                         "   <grade>Family</grade>" +
@@ -178,6 +179,10 @@ public class UsersController {
 
         model.addAttribute("member", newUser);
         model.addAttribute("xml", xml);
+
+        // 계좌 및 비밀번호 추가 (2025.11.27 이준우)
+        model.addAttribute("accountNo", newAccountNo);
+        model.addAttribute("initAccountPw", "1234");
 
         // 회원가입 완료 후 세션 초기화
         session.removeAttribute("newUser");
