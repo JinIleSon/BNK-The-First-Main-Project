@@ -523,8 +523,10 @@
                 </div>
 
                 <!-- 최초불입금액 -->
+                <!-- 최초불입금액 -->
                 <div class="form-row">
                     <label class="label">최초불입금액 <span class="req">*</span></label>
+
                     <div class="Chips" id="firstAmtChips">
                         <button type="button" class="Chip" data-won="10000">1만원</button>
                         <button type="button" class="Chip" data-won="100000">10만원</button>
@@ -532,12 +534,32 @@
                         <button type="button" class="Chip" data-won="1000000">100만원</button>
                         <button type="button" class="Chip" data-won="">직접입력</button>
                     </div>
+
                     <div class="unit-wrap" style="margin-top:8px">
-                        <input id="firstAmt" class="input unit-padding" placeholder="1만원 - 1천만원"
-                               inputmode="numeric">
+                        <!-- ⚠ name 속성은 실제 DB에 저장될 필드명으로 맞춰줘 -->
+                        <input id="firstAmt" name="firstAmt" class="input unit-padding"
+                               placeholder="1만원 - 1천만원" inputmode="numeric">
                         <span class="unit">원</span>
                     </div>
+
+                    <!-- 선택한 계좌 잔액 안내 -->
+                    <div class="small" id="firstAmtBalanceHelp" style="margin-top:4px">
+                        출금계좌를 선택하면 잔액이 표시됩니다.
+                    </div>
+
+                    <!-- 잔액 기준 비율(%) 입력 -->
+                    <div class="unit-wrap" style="margin-top:4px">
+                        <input id="firstAmtPercent" class="input unit-padding"
+                               placeholder="잔액에서 사용할 비율(%)" inputmode="numeric">
+                        <span class="unit">%</span>
+                    </div>
+
+                    <!-- ✅ 비율로 계산된 금액 표시 -->
+                    <div class="small" id="firstAmtPercentHelp" style="margin-top:4px; color:#80868B;">
+                        비율을 입력하면 사용할 금액이 표시됩니다.
+                    </div>
                 </div>
+
 
                 <!-- 목표금액 -->
 

@@ -319,59 +319,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         return false;
     }
 
-    /* ====================== 상품 정보 채우기 ====================== */
-    const {initProdInfo} = await import('/BNK/js/product/init_prod_info.js');
-    await (async () => {
-        const url = new URL(window.location.href);
-        const parts = url.pathname.split('/');
-        const pid = decodeURIComponent(parts[parts.length - 1]);
-        try {
-            const res = await fetch(`/BNK/product/details/${pid}`, {method: "GET"});
-            if (!res.ok) throw new Error('상품 정보를 가져오는 도중 문제 발생');
-            const productInfo = await res.json();
-            console.log(productInfo);
-            initProdInfo(productInfo);
-            const type = productInfo.pelgbl;
-            const response = await fetch(`/BNK/api/account/${type}`, {method: "GET"})
-            if (!response.ok) throw new Error('계좌 정보를 가져오는 도중 문제 발생');
-            const accObject = await response.json();
-            console.log(accObject);
-
-            const select = document.querySelector('select[aria-label="출금계좌번호"]');
-            if (!select) return;
-
-            // 기존 옵션 제거
-            select.innerHTML = '';
-
-            // placeholder 옵션
-            const placeholder = document.createElement('option');
-            placeholder.textContent = '계좌를 선택해 주세요';
-            placeholder.selected = true;
-            placeholder.disabled = true;
-            select.appendChild(placeholder);
-
-            // accObject가 배열인지 / 단일 객체인지 둘 다 처리
-            const accList = Array.isArray(accObject) ? accObject : [accObject];
-
-            accList.forEach(acc => {
-                if (!acc || !acc.pacc) return;  // pacc 없으면 스킵
-
-                const opt = document.createElement('option');
-                opt.value = acc.pacc;                         // 실제 전송 값
-                opt.textContent = `부산은행 ${acc.pacc}`;     // 화면에 보이는 값
-                select.appendChild(opt);
-            });
-        } catch (e) {
-            console.error(e.message);
-        }
-
-    })();
-
-    /* ======================= 가입자 정보 채우기 ======================== */
-    await (async () => {
-        const mid = $('#wizard').dataset.mid;
-        const res = await fetch('', {method: "GET"})
-    })();
 
 
     /*============== 약관 및 상품설명서 받기 스크립트 ================*/
@@ -555,45 +502,314 @@ document.addEventListener('DOMContentLoaded', async function () {
     })();
 
 
-    /*================== 4단계 정보입력 스크립트 =====================*/
+    /* ====================== 상품 정보 채우기 ====================== */
+    const {initProdInfo} = await import('/BNK/js/product/init_prod_info.js');
 
-    // 숫자 포맷
+    await (async () => {
+        const url = new URL(window.location.href);
+        const parts = url.pathname.split('/');
+        const pid = decodeURIComponent(parts[parts.length - 1]);
+
+        try {
+            const res = await fetch(`/BNK/product/details/${pid}`, {method: "GET"});
+            if (!res.ok) throw new Error('상품 정보를 가져오는 도중 문제 발생');
+
+            const productInfo = await res.json();
+            console.log(productInfo);
+            initProdInfo(productInfo);
+
+            // 상품 유형으로 계좌 목록 조회
+            const type = productInfo.pelgbl;
+            const response = await fetch(`/BNK/api/account/${type}`, {method: "GET"});
+            if (!response.ok) throw new Error('계좌 정보를 가져오는 도중 문제 발생');
+            const accObject = await response.json();
+            console.log(accObject);
+
+            // 🔗 출금계좌 select + 잔액 + 최초불입금액 연동
+            initAccountAndFirstAmt(accObject);
+        } catch (e) {
+            console.error(e.message);
+        }
+    })();
+
+    /* ====================== 4단계 최초불입금액 UI + 계좌/비율 세팅 ====================== */
+
+    /* 공통 숫자 포맷 */
     function formatNumber(v) {
-        const n = String(v).replace(/[^\d]/g, '');
+        const n = String(v ?? '').replace(/[^\d]/g, '');
         if (!n) return '';
         return n.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
     function setCurrencyInput(el) {
+        if (!el) return;
         el.addEventListener('input', () => {
-            const pos = el.selectionStart;
+            const pos = el.selectionStart ?? el.value.length;
             const beforeLen = el.value.length;
             el.value = formatNumber(el.value);
-            // best-effort caret keep
             const afterLen = el.value.length;
-            el.selectionEnd = el.selectionStart = pos + (afterLen - beforeLen);
+            const diff = afterLen - beforeLen;
+            const newPos = pos + diff;
+            el.selectionStart = el.selectionEnd = newPos < 0 ? 0 : newPos;
         });
     }
 
-    setCurrencyInput(document.getElementById('firstAmt'));
-    setCurrencyInput(document.getElementById('goal'));
+    /* ---------- (1) 금액/목표금액 포맷 ---------- */
+    const firstAmtInput = document.getElementById('firstAmt');   // 금액 직접 입력
+    const goalInput     = document.getElementById('goal');       // 목표금액(있으면)
 
-    // 최초불입금액 칩 동작
-    const amtInput = document.getElementById('firstAmt');
-    document.getElementById('firstAmtChips').addEventListener('click', (e) => {
-        const btn = e.target.closest('.Chip');
-        if (!btn) return;
-        [...e.currentTarget.querySelectorAll('.Chip')].forEach(c => c.classList.remove('active'));
-        btn.classList.add('active');
-        const won = btn.getAttribute('data-won');
-        if (won) {
-            amtInput.value = formatNumber(won);
-            amtInput.blur();
+    setCurrencyInput(firstAmtInput);
+    setCurrencyInput(goalInput);
+
+    /* ---------- (2) 최초불입금액 모드 전환(직접입력 / 비율입력) + 토글 버튼 ---------- */
+    const firstAmtWrap = firstAmtInput ? firstAmtInput.closest('.unit-wrap') : null;
+    const percentInput = document.getElementById('firstAmtPercent');
+    const percentWrap  = percentInput ? percentInput.closest('.unit-wrap') : null;
+    const percentHelp  = document.getElementById('firstAmtPercentHelp');
+
+    // 🔐 비율 입력창 기본 설정 & 기존 제약 제거
+    if (percentInput) {
+        // 혹시 HTML에 maxlength="1" 같은 거 달려 있으면 제거
+        percentInput.removeAttribute('maxlength');
+
+        // 인라인 oninput="..." 같은 거 달려 있으면 제거
+        percentInput.removeAttribute('oninput');
+        percentInput.oninput = null;
+
+        // 우리가 원하는 설정으로 다시 세팅
+        percentInput.type = 'text';
+        percentInput.inputMode = 'numeric';
+        percentInput.pattern = '\\d*';  // 숫자만
+        // 길이는 JS에서 0~100으로 클램프하니까 따로 maxLength 안 줘도 됨
+    }
+
+    let firstAmtMode = 'direct';  // 'direct' | 'percent'
+
+// 토글 버튼 (직접입력 <-> 비율입력 전환용)
+    const modeToggleBtn = document.createElement('button');
+    modeToggleBtn.type = 'button';
+    modeToggleBtn.style.marginTop   = '4px';
+    modeToggleBtn.style.background  = 'none';
+    modeToggleBtn.style.border      = 'none';
+    modeToggleBtn.style.padding     = '0';
+    modeToggleBtn.style.color       = '#467abd';
+    modeToggleBtn.style.cursor      = 'pointer';
+    modeToggleBtn.style.fontSize    = '12px';
+
+    function renderModeToggleText() {
+        modeToggleBtn.textContent =
+            firstAmtMode === 'direct'
+                ? '잔액 비율(%)로 입력하기'
+                : '금액으로 직접 입력하기';
+    }
+
+    function setFirstAmtMode(mode) {
+        if (!firstAmtWrap || !percentWrap || !percentHelp) return;
+
+        firstAmtMode = (mode === 'percent') ? 'percent' : 'direct';
+
+        if (firstAmtMode === 'direct') {
+            // 금액 입력만 보이기
+            firstAmtWrap.style.display    = '';
+            percentWrap.style.display     = 'none';
+            percentHelp.style.display     = 'none';
+
+            // 비율 값/텍스트 초기화
+            if (percentInput) percentInput.value = '';
+            percentHelp.textContent = '비율을 입력하면 사용할 금액이 표시됩니다.';
+
+            // 토글 버튼을 금액 입력 아래로
+            firstAmtWrap.after(modeToggleBtn);
         } else {
-            amtInput.focus();
-            amtInput.select();
+            // 비율 입력만 보이기
+            firstAmtWrap.style.display    = 'none';
+            percentWrap.style.display     = '';
+            percentHelp.style.display     = '';
+
+            // 토글 버튼을 비율 입력 아래로
+            percentWrap.after(modeToggleBtn);
         }
-    });
+
+        renderModeToggleText();
+    }
+
+// 초기 상태: 직접입력 모드
+    if (firstAmtWrap && percentWrap && percentHelp) {
+        setFirstAmtMode('direct');
+
+        modeToggleBtn.addEventListener('click', () => {
+            setFirstAmtMode(firstAmtMode === 'direct' ? 'percent' : 'direct');
+        });
+    }
+
+    /* ---------- (3) 최초불입금액 칩 동작 ---------- */
+    const chipsWrap = document.getElementById('firstAmtChips');
+
+    if (chipsWrap && firstAmtInput) {
+        chipsWrap.addEventListener('click', (e) => {
+            const btn = e.target.closest('.Chip');
+            if (!btn) return;
+
+            // 칩 활성화 표시
+            [...chipsWrap.querySelectorAll('.Chip')].forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+
+            const won = btn.getAttribute('data-won');
+
+            // 칩을 누르면 무조건 "직접입력" 모드로 전환
+            setFirstAmtMode('direct');
+
+            if (won) {
+                // 정해진 금액 칩
+                firstAmtInput.value = formatNumber(won);
+                firstAmtInput.blur();
+            } else {
+                // "직접입력" 칩
+                firstAmtInput.value = '';
+                firstAmtInput.focus();
+                firstAmtInput.select();
+            }
+        });
+    }
+
+    /* ---------- (4) 입력 포커스로도 모드 전환 ---------- */
+    if (percentInput) {
+        percentInput.addEventListener('focus', () => {
+            setFirstAmtMode('percent');
+        });
+    }
+
+    if (firstAmtInput) {
+        firstAmtInput.addEventListener('focus', () => {
+            setFirstAmtMode('direct');
+        });
+    }
+
+    /* ---------- (5) 계좌/비율 세팅 + 금액 계산 (비율로 입력 시 사용할 금액 표시) ---------- */
+    function initAccountAndFirstAmt(accData) {
+        const select          = document.querySelector('select[aria-label="출금계좌번호"]');
+        const balanceHelp     = document.getElementById('firstAmtBalanceHelp');
+        const firstAmtInput   = document.getElementById('firstAmt');
+        const percentInput    = document.getElementById('firstAmtPercent');
+        const percentHelpText = document.getElementById('firstAmtPercentHelp');
+
+        if (!select || !firstAmtInput) return;
+
+        const accounts = Array.isArray(accData) ? accData : [accData];
+        let currentBalance = 0;   // 선택된 계좌 잔액 (pbalance)
+
+        const formatWon = (n) =>
+            isNaN(n) ? '-' : Number(n).toLocaleString('ko-KR') + '원';
+
+        // 1) 출금계좌 select 옵션 세팅
+        select.innerHTML = '';
+        const placeholder = document.createElement('option');
+        placeholder.textContent = '계좌를 선택해 주세요';
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        accounts.forEach(acc => {
+            if (!acc || !acc.pacc) return;
+            const opt = document.createElement('option');
+            opt.value = acc.pacc;
+            opt.textContent = `부산은행 ${acc.pacc}`;
+            select.appendChild(opt);
+        });
+
+        // 2) 비율을 기반으로 실제 사용할 금액 계산
+        // 2) 비율을 기반으로 실제 사용할 금액 계산
+        function applyPercent() {
+            if (!percentInput) return;
+
+            // 1) 입력값에서 숫자만 남기기
+            let raw = (percentInput.value || '').replace(/[^\d]/g, '');
+
+            // 아무 것도 없으면 초기화
+            if (!raw) {
+                firstAmtInput.value = '';
+                if (percentHelpText) {
+                    percentHelpText.textContent = '비율을 입력하면 사용할 금액이 표시됩니다.';
+                }
+                return;
+            }
+
+            // 2) 최대 3자리까지만 허용
+            if (raw.length > 3) raw = raw.slice(0, 3);
+
+            // 숫자로 변환
+            let pct = Number(raw);
+
+            // 3) 0 ~ 100 사이로 클램프
+            if (pct > 100) pct = 100;
+            if (pct < 0) pct = 0;
+
+            // 🔁 입력창에 실제 보여줄 값 (여기서 한 번 더 세팅해 줘야 "안 보이는" 문제 방지)
+            percentInput.value = pct ? String(pct) : '';
+
+            // 계좌 잔액이 없거나, 비율이 0이면 금액 초기화
+            if (!currentBalance || !pct) {
+                firstAmtInput.value = '';
+                if (percentHelpText) {
+                    percentHelpText.textContent = '비율을 입력하면 사용할 금액이 표시됩니다.';
+                }
+                return;
+            }
+
+            // 4) 실제 사용할 금액 (원) 계산
+            const amount = Math.floor(currentBalance * pct / 100);
+
+            // 금액 input에 실제 금액 세팅 + 포맷 적용
+            firstAmtInput.value = String(amount);
+            firstAmtInput.dispatchEvent(new Event('input')); // setCurrencyInput로 3자리 콤마 적용
+
+            // 안내 문구 갱신
+            if (percentHelpText) {
+                percentHelpText.textContent =
+                    `잔액의 ${pct}% = ${formatWon(amount)} (최초불입금액에 자동 반영)`;
+                percentHelpText.style.display = '';
+            }
+        }
+
+        // 3) 계좌 선택 시 잔액 표시 + 비율 재계산
+        select.addEventListener('change', () => {
+            const pacc = select.value;
+            const acc = accounts.find(a => a && a.pacc === pacc);
+            currentBalance = acc ? Number(acc.pbalance || 0) : 0;
+
+            if (balanceHelp) {
+                if (currentBalance) {
+                    balanceHelp.textContent =
+                        `선택한 계좌 잔액: ${formatWon(currentBalance)}`;
+                } else {
+                    balanceHelp.textContent = '잔액 정보를 가져올 수 없습니다.';
+                }
+            }
+
+            // 이미 비율이 입력돼 있으면, 계좌 바꾸자마자 다시 계산
+            if (percentInput && percentInput.value) {
+                applyPercent();
+            }
+        });
+
+        // 4) 비율 입력 시마다 금액 계산
+        if (percentInput) {
+            percentInput.addEventListener('input', applyPercent);
+            percentInput.addEventListener('change', applyPercent);
+        }
+
+        // 5) 사용자가 금액을 직접 바꾸면 비율 안내 초기화
+        if (firstAmtInput && percentInput && percentHelpText) {
+            firstAmtInput.addEventListener('input', () => {
+                // applyPercent()에서 발생시킨 인위적인 input 이벤트는 무시
+                if (!e.isTrusted) return;
+
+                percentInput.value = '';
+                percentHelpText.textContent = '비율을 입력하면 사용할 금액이 표시됩니다.';
+            });
+        }
+    }
+
 
 
     /*================== 5단계 pin 입력 스크립트 ==================*/
