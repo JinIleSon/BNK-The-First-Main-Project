@@ -122,6 +122,17 @@ public class ProductController {
         return exists ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    @GetMapping("/api/account/{type}")
+    public ResponseEntity<PcontractDTO> getAcc(@PathVariable String type, Principal principal) {
+        if (principal == null) {
+            throw new ErrorResponseException(HttpStatus.FORBIDDEN); // 비로그인시 403
+        }
+        String uid = principal.getName();
+        log.info("getACC uid {}", uid);
+        PcontractDTO acc = productService.getAccount(uid, type);
+        return ResponseEntity.ok(acc);
+    }
+
     @GetMapping("/product/subCmpl/list")
     public String subCmplPage(Model model) {
         model.addAttribute("mid", "a123");

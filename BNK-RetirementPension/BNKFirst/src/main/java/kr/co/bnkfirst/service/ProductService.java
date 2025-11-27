@@ -22,26 +22,29 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private static final List<String> ORDER_JOIN   = List.of("인터넷", "영업점", "스마트폰");
-    private static final Set<String>  ALLOWED_JOIN = Set.copyOf(ORDER_JOIN);
+//    private static final List<String> ORDER_JOIN   = List.of("인터넷", "영업점", "스마트폰");
+//    private static final Set<String>  ALLOWED_JOIN = Set.copyOf(ORDER_JOIN);
+//
+//    private static final List<String> ORDER_TARGET   = List.of("개인", "기업", "개인사업자");  // 예시
+//    private static final Set<String>  ALLOWED_TARGET = Set.copyOf(ORDER_TARGET);
+//
+//    private static final List<String> ORDER_TAX   = List.of("비과세", "세금우대", "소득공제"); // 예시
+//    private static final Set<String>  ALLOWED_TAX = Set.copyOf(ORDER_TAX);
 
-    private static final List<String> ORDER_TARGET   = List.of("개인", "기업", "개인사업자");  // 예시
-    private static final Set<String>  ALLOWED_TARGET = Set.copyOf(ORDER_TARGET);
-
-    private static final List<String> ORDER_TAX   = List.of("비과세", "세금우대", "소득공제"); // 예시
-    private static final Set<String>  ALLOWED_TAX = Set.copyOf(ORDER_TAX);
+//    private static final List<String> ORDER_TAX   = List.of("비과세", "세금우대", "소득공제"); // 예시
+//    private static final Set<String>  ALLOWED_TAX = Set.copyOf(ORDER_TAX);
 
     private final FundMapper fundMapper;
 
-    public static String normalizeMulti(String raw, List<String> order, Set<String> allowed) {
-        if (raw == null || raw.isBlank()) return null; // 필터 미적용
-        return Arrays.stream(raw.split("\\s*,\\s*"))     // 쉼표 기준, 양옆 공백 무시
-                .map(String::trim)
-                .filter(s -> !s.isBlank() && allowed.contains(s)) // 허용값만
-                .distinct()                                      // 중복 제거
-                .sorted(Comparator.comparingInt(order::indexOf)) // 고정 순서
-                .collect(Collectors.joining(","));
-    }
+//    public static String normalizeMulti(String raw, List<String> order, Set<String> allowed) {
+//        if (raw == null || raw.isBlank()) return null; // 필터 미적용
+//        return Arrays.stream(raw.split("\\s*,\\s*"))     // 쉼표 기준, 양옆 공백 무시
+//                .map(String::trim)
+//                .filter(s -> !s.isBlank() && allowed.contains(s)) // 허용값만
+//                .distinct()                                      // 중복 제거
+//                .sorted(Comparator.comparingInt(order::indexOf)) // 고정 순서
+//                .collect(Collectors.joining(","));
+//    }
 
     public Page<ProductDTO> findProducts(Pageable pageable,
                                          String target,
@@ -257,5 +260,11 @@ public class ProductService {
 
     public FundDTO getFundDetail(String fid) {
         return productMapper.selectFundDetail(fid);
+    }
+
+
+    // 계좌 가져오기
+    public PcontractDTO getAccount(String pcuid, String type) {
+        return productMapper.selectAllByUidAndType(pcuid, type);
     }
 }
