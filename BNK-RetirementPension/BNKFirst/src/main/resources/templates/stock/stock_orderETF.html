@@ -856,12 +856,13 @@
 <!-- 주문 확인 모달 -->
 <div id="orderConfirmModal" class="modal-overlay">
     <div class="order-modal" onclick="event.stopPropagation();">
-        <div class="order-modal-title"
+        <div class="order-modal-title" id="modalTitle"
              th:text="${stockName} + ' 구매 1주'">오라클 구매 1주</div>
 
         <div class="order-modal-row">
             <div class="order-modal-label">1주 희망가격</div>
-            <div class="order-modal-value">10,005원</div>
+            <!-- 단가가 들어갈 곳 -->
+            <div class="order-modal-value" id="modalUnitPrice">10,005원</div>
         </div>
 
         <div class="order-modal-row">
@@ -874,7 +875,8 @@
 
         <div class="order-modal-row">
             <div class="order-modal-label">총 주문 금액</div>
-            <div class="order-modal-value">10,005원</div>
+            <!-- 총 주문 금액이 들어갈 곳 -->
+            <div class="order-modal-value" id="modalTotalAmount">10,005원</div>
         </div>
 
         <div class="order-modal-divider"></div>
@@ -1280,17 +1282,64 @@
         const cancelBtn  = document.getElementById('modalCancelBtn');
         const confirmBtn = document.getElementById('modalConfirmBtn');
 
+        const priceInput   = document.getElementById('buyPriceInput');
+        const qtyInput     = document.getElementById('buyQtyInput');
+        const titleEl      = document.getElementById('modalTitle');
+        const unitPriceEl  = document.getElementById('modalUnitPrice');
+        const totalEl      = document.getElementById('modalTotalAmount');
+        const balanceEl    = document.getElementById('accountBalance');
+
         if (openBtn && modal) {
             openBtn.addEventListener('click', function () {
-                modal.classList.add('show');       // 서서히 나타남
+                const price = parseInputNumber(priceInput.value);
+                const qty   = parseInputNumber(qtyInput.value);
+
+                if (!price || !qty) {
+                    alert('구매 가격과 수량을 입력해 주세요.');
+                    return;
+                }
+
+                const total   = price * qty;
+                const balance = balanceEl
+                    ? parseInputNumber(balanceEl.textContent)
+                    : 0;
+
+                // 🔴 잔액 부족 시: 모달 띄우지 말고 토스트만
+                if (total > balance) {
+                    showErrorToast('구매가능 금액이 부족합니다.');
+                    return;
+                }
+
+                const stockName = window.STOCK_NAME || '';
+
+                // 제목: "PLUS 글로벌휴먼… 구매 4주"
+                if (titleEl) {
+                    titleEl.textContent =
+                        `${stockName} 구매 ${qty.toLocaleString('ko-KR')}주`;
+                }
+
+                // 단가
+                if (unitPriceEl) {
+                    unitPriceEl.textContent = formatWon(price);
+                }
+
+                // 총 주문 금액 = 단가 × 수량
+                if (totalEl) {
+                    totalEl.textContent = formatWon(price * qty);
+                }
+
+                // 필요하면 나중에 주문 요청 보낼 때 쓰려고 저장
+                modal.dataset.price = price;
+                modal.dataset.qty   = qty;
+
+                modal.classList.add('show');   // 모달 띄우기
             });
 
             // 오버레이 클릭 시 닫기
             modal.addEventListener('click', function () {
-                modal.classList.remove('show');    // 서서히 사라짐
+                modal.classList.remove('show');
             });
         }
-
 
         if (cancelBtn && modal) {
             cancelBtn.addEventListener('click', function (e) {
@@ -1302,9 +1351,9 @@
         if (confirmBtn && modal) {
             confirmBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                // TODO: 실제 구매 주문 로직
+                // TODO: modal.dataset.price, modal.dataset.qty 로 주문 요청 보내기
                 modal.classList.remove('show');
-                showOrderToast('구매');   // ✅ 종목명은 SHOW 함수가 붙여줌
+                showOrderToast('구매');
             });
         }
 
@@ -1353,6 +1402,20 @@
 
         toast.classList.add('show');
 
+        clearTimeout(window._orderToastTimer);
+        window._orderToastTimer = setTimeout(function () {
+            toast.classList.remove('show');
+        }, 1300);
+    }
+
+    function showErrorToast(message) {
+        const toast = document.getElementById('orderToast');
+        const text  = document.getElementById('orderToastText');
+        if (!toast || !text) return;
+
+        text.textContent = message;
+
+        toast.classList.add('show');
         clearTimeout(window._orderToastTimer);
         window._orderToastTimer = setTimeout(function () {
             toast.classList.remove('show');
@@ -2038,9 +2101,12 @@
     // 문자열(콤마 포함) → 숫자, 빈 문자열이면 0
     function parseInputNumber(str) {
         if (!str) return 0;
-        const cleaned = String(str).replace(/[^0-9]/g, ''); // 숫자만 남기기
+        const cleaned = String(str).replace(/[^0-9]/g, '');
         if (cleaned === '') return 0;
         return Number(cleaned);
+    }
+    function formatWon(n) {
+        return n.toLocaleString('ko-KR') + '원';
     }
 
     // 구매가격 × 수량 → 총 주문 금액 갱신
