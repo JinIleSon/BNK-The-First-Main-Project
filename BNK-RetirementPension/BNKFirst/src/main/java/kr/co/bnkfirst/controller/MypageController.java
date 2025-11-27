@@ -1,5 +1,6 @@
 package kr.co.bnkfirst.controller;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.MydataAccountDTO;
 import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
@@ -8,13 +9,15 @@ import kr.co.bnkfirst.service.MydataAccountService;
 import kr.co.bnkfirst.service.MypageService;
 import kr.co.bnkfirst.service.ProductService;
 import kr.co.bnkfirst.service.UsersService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ public class MypageController {
     private final MypageService mypageService;
     private final MydataAccountService mydataAccountService;
     private final ProductService productService;
+    private final UsersService usersService;
 
 
     @GetMapping("/mypage/main")
@@ -128,5 +132,60 @@ public class MypageController {
     public String pwResetPage() {
 
         return "mypage/mypage_pwreset";
+    }
+    // 비밀번호 변경 관련 내용 추가 (이준우 2025.11.25)
+    @Getter
+    @Setter
+    public static class PwChangeRequest{
+        private String currentPw;
+        private String newPw;
+    }
+    // 현재 비밀번호
+    @PostMapping("/pw/check-current")
+    @ResponseBody
+    public ResponseEntity<?> checkCurrentPw(@RequestBody java.util.Map<String, String> body,
+                                            HttpSession session) {
+
+        UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(java.util.Map.of("ok", false, "reason", "UNAUTHORIZED"));
+        }
+
+        String mid = loginUser.getMid();
+        String currentPw = body.get("currentPw");
+
+        boolean ok = usersService.checkCurrentPassword(mid, currentPw);
+
+        return ResponseEntity.ok(java.util.Map.of("ok", ok));
+    }
+    // 새 비밀번호
+    @PostMapping("/pw/change")
+    public ResponseEntity<?> changePassword(@RequestBody PwChangeRequest req, HttpSession session) {
+
+        UsersDTO loginUser = (UsersDTO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("로그인이 필요합니다.");
+        }
+        String mid = loginUser.getMid();
+
+        if (req.getNewPw() == null || req.getNewPw().isBlank()) {
+
+            return ResponseEntity.badRequest().body("새 비밀번호를 입력해주세요.");
+        }
+        boolean changed = usersService.changePassword(mid, req.getCurrentPw(), req.getNewPw());
+        if (!changed) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("현재 비밀번호가 올바르지 않습니다.");
+        }
+
+        log.info("비밀번호 변경 완료 mid={}", mid);
+
+        return ResponseEntity.ok().body(new Object(){
+            public final boolean success = true;
+        });
     }
  }
