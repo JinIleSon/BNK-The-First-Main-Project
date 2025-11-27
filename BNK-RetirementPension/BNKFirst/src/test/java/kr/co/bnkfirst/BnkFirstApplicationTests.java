@@ -25,10 +25,4 @@ class BnkFirstApplicationTests {
     SmsService smsService;
     @MockitoBean
     KoreaEximFxClient koreaEximFxClient;
-    @MockitoBean
-    AdminMapper adminMapper;
-    @MockitoBean
-    DocumentMapper documentMapper;
-    @MockitoBean
-    BranchMapper branchMapper;
 }
