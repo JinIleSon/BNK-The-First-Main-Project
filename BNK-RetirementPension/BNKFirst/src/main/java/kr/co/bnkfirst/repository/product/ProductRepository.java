@@ -32,6 +32,7 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
                or lower(p.pname) like lower(concat('%', :kw, '%')))
                and (:pelgbl is null or p.pelgbl = :pelgbl)
               and (:prmthd is null or p.prmthd = :prmthd)
+              and p.pid != "BNK-TD-1"
     """)
     Page<Product> findPrefSorted(
             @Param("kw") String kw,               // (선택) 일반 검색어

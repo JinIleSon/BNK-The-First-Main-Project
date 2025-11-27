@@ -13,4 +13,6 @@ public interface ProductMapper {
     public PcontractDTO resultPcontract(String mid, String pcpid);
     public List<FundDTO> selectFund();
     public FundDTO selectFundDetail(@Param("fid") String fid);
+
+    public PcontractDTO selectAllByUidAndType(@Param("pcuid") String pcuid, @Param("type") String type);
 }
