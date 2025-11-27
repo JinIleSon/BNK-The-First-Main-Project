@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>상품보기</title>
     <link rel="stylesheet" th:href="@{/css/product/product_view_style.css}">
-    <script id="script" th:attr="data-pid=${pid}" th:src="@{/js/product/product_view.js}"></script>
+    <script id="script" th:attr="data-pid=${pid}" type="module" th:src="@{/js/product/product_view.js}"></script>
 </head>
 
 <body>
@@ -37,35 +37,25 @@
                         <h3 class="small" style="font-weight:800;color:#111827;margin:0 0 10px">핵심 정보</h3>
                         <div class="kv" id="kv">
                             <div class="box">
-                                <div class="label">기본금리</div>
-                                <div class="value" id="baseRate">2.80%</div>
+                                <div class="label">자산관리기관</div>
+                                <div class="value" id="maxRate">부산은행</div>
                             </div>
                             <div class="box">
-                                <div class="label">최고금리</div>
-                                <div class="value red" id="maxRate">3.50%</div>
+                                <div class="label">상품제공기관</div>
+                                <div class="value" id="prprbank">부산은행</div>
+                            </div>
+                            <div class="box">
+                                <div class="label">금리</div>
+                                <div class="value red" id="baseRate">3.50%</div>
                             </div>
                             <div class="box">
                                 <div class="label">계약기간</div>
                                 <div class="value" id="contractPeriod">1~36개월</div>
                             </div>
-                            <div class="box">
-                                <div class="label">가입가격</div>
-                                <div class="value" id="joinFee">1만원</div>
-                            </div>
-                        </div>
-                        <div aria-label="가입방법" class="pills">
-                            <!--<span class="pill">인터넷뱅킹</span>-->
-                            <!--<span class="pill">모바일뱅킹</span>-->
                         </div>
                     </div>
                 </div>
 
-                <div class="card" id="diinfoCard">
-                    <div class="inner">
-                        <h3 id="diinfoHeader" style="margin:0 0 8px;font-weight:800">우대금리</h3>
-                        <ul id="prodDiinfo" style="margin-top: 10px"></ul>
-                    </div>
-                </div>
                 <!-- 탭 -->
                 <div class="tabs" role="tablist">
                     <button aria-selected="true" class="tab active" data-tab="guide" role="tab">상품안내</button>
@@ -139,42 +129,42 @@
                         </div>
                     </div>
 
-                    <div class="notice card">
-                        <div class="inner">
-                            <div aria-hidden="true" class="icon">⚠️</div>
-                            <div>
-                                <h4 class="title">유의사항</h4>
-                                <ul>
-                                    <li>중도해지 시 약정금리보다 낮은 금리가 적용됩니다.</li>
-                                    <li>우대금리는 조건 충족 시 제공됩니다.</li>
-                                    <li>예금자보호법에 따라 예금보험공사가 1인당 최고 5천만원까지 보호합니다.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="notice card">-->
+<!--                        <div class="inner">-->
+<!--                            <div aria-hidden="true" class="icon">⚠️</div>-->
+<!--                            <div>-->
+<!--                                <h4 class="title">유의사항</h4>-->
+<!--                                <ul>-->
+<!--                                    <li>중도해지 시 약정금리보다 낮은 금리가 적용됩니다.</li>-->
+<!--                                    <li>우대금리는 조건 충족 시 제공됩니다.</li>-->
+<!--                                    <li>예금자보호법에 따라 예금보험공사가 1인당 최고 5천만원까지 보호합니다.</li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    <div class="card">
-                        <div class="inner">
-                            <h3 style="margin:0 0 8px;font-weight:800">유사 상품</h3>
-                            <div class="reco">
-                                <div class="item">
-                                    <div class="name">BNK 자유적금</div>
-                                    <div class="small">매달 자유롭게 납입</div>
-                                    <div class="rate">2.50%</div>
-                                </div>
-                                <div class="item">
-                                    <div class="name">BNK 목표금리예금</div>
-                                    <div class="small">특판 예금상품</div>
-                                    <div class="rate">3.20%</div>
-                                </div>
-                                <div class="item">
-                                    <div class="name">BNK 청년희망적금</div>
-                                    <div class="small">청년 우대금리 적용</div>
-                                    <div class="rate">4.00%</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!--                    <div class="card">-->
+<!--                        <div class="inner">-->
+<!--                            <h3 style="margin:0 0 8px;font-weight:800">유사 상품</h3>-->
+<!--                            <div class="reco">-->
+<!--                                <div class="item">-->
+<!--                                    <div class="name">BNK 자유적금</div>-->
+<!--                                    <div class="small">매달 자유롭게 납입</div>-->
+<!--                                    <div class="rate">2.50%</div>-->
+<!--                                </div>-->
+<!--                                <div class="item">-->
+<!--                                    <div class="name">BNK 목표금리예금</div>-->
+<!--                                    <div class="small">특판 예금상품</div>-->
+<!--                                    <div class="rate">3.20%</div>-->
+<!--                                </div>-->
+<!--                                <div class="item">-->
+<!--                                    <div class="name">BNK 청년희망적금</div>-->
+<!--                                    <div class="small">청년 우대금리 적용</div>-->
+<!--                                    <div class="rate">4.00%</div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </section>
                 <!-- 금리우대 패널 (두 번째 이미지 내용) -->
                 <section aria-labelledby="tab-rate" class="panel" id="panel-rate" role="tabpanel">
@@ -188,9 +178,7 @@
                 <section aria-labelledby="tab-terms" class="panel" id="panel-terms" role="tabpanel">
                     <div class="card">
                         <div class="inner">
-                            <ul aria-label="상품 약관 목록" class="doc-list" id="termsList">
                                 <!-- JS로 렌더됩니다 -->
-                            </ul>
                         </div>
                     </div>
                 </section>
@@ -200,7 +188,7 @@
             <aside class="side">
                 <div class="card">
                     <div class="inner calc">
-                        <div class="title">최고금리</div>
+                        <div class="title">금리</div>
                         <div id="rateBig" style="font-size:28px;font-weight:900;color:var(--red);text-align:center;">
                             3.50%
                         </div>
@@ -217,9 +205,12 @@
 
                         <div class="row">
                             <label for="period">예치기간</label>
-                            <input aria-describedby="perHelp" class="input" id="period"
-                                   min="1" step="1" type="number" value="12">
-                            <div class="small" id="perHelp">단위: 개월</div>
+                            <div id="period"
+                                 data-months="12"
+                                 class="input"
+                                 style="background:#f5f5f5;pointer-events:none;">
+                                12개월
+                            </div>
                         </div>
 
                         <div class="row">
@@ -245,7 +236,7 @@
                                     th:onclick="'window.location.href=\''+@{/member/main}+'\';'">가입하기
                             </button>
                         </th:block>
-                        <button class="btn-ghost btn-white" style="margin-top:8px">상담예약</button>
+                        <button class="btn-ghost btn-white" onclick="window.location.href='/BNK/cs/consultation/Q&A'" style="margin-top:8px">상담하기</button>
                         <div class="helper">약관 동의 후 가입이 가능합니다</div>
                     </div>
                 </div>

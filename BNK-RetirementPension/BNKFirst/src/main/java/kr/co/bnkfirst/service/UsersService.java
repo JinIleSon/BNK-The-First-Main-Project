@@ -133,6 +133,7 @@ public class UsersService {
             log.warn("checkCurrentPassword 실패 - 저장된 비번 없음 mid={}", mid);
             return false;
         }
+<<<<<<< feature/junwoo
 
         boolean matches;
         if (storedPw.startsWith("$2a$") || storedPw.startsWith("$2b$")) {
@@ -142,6 +143,17 @@ public class UsersService {
             matches = rawPw.equals(storedPw);
         }
 
+=======
+
+        boolean matches;
+        if (storedPw.startsWith("$2a$") || storedPw.startsWith("$2b$")) {
+            matches = passwordEncoder.matches(rawPw, storedPw);
+        } else {
+            // 예전 평문 패스워드 호환
+            matches = rawPw.equals(storedPw);
+        }
+
+>>>>>>> test
         log.info("checkCurrentPassword mid={}, matches={}", mid, matches);
         return matches;
     }

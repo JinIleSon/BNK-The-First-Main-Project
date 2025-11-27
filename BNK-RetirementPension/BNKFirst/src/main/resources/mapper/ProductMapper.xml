@@ -58,4 +58,9 @@
         FROM FUND  <!-- 실제 펀드 테이블명으로 변경 -->
         WHERE FID = #{fid}
     </select>
+
+    <!-- 계좌번호 가져오기 -->
+    <select id="selectAllByUidAndType" parameterType="string" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        SELECT * FROM PCONTRACT WHERE PCUID=#{pcuid} AND "TYPE"=#{type}
+    </select>
 </mapper>

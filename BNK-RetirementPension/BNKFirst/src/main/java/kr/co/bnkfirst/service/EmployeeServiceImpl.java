@@ -1,9 +1,13 @@
 package kr.co.bnkfirst.service;
 
-import kr.co.bnkfirst.domain.Employee;
-import kr.co.bnkfirst.mapper.EmployeeMapper;   // ★ 반드시 있어야 한다
+import kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto;       // ⬅ 추가
+import kr.co.bnkfirst.dto.corporate.employee.EmployeeDetailDto;     // ⬅ 이미 있을 가능성
+import kr.co.bnkfirst.dto.corporate.employee.EmployeeContributionDto;  // ⬅ 이미 있을 가능성
+
+import kr.co.bnkfirst.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -13,12 +17,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
 
     @Override
-    public Employee getEmployeeById(Long empId) {
-        return employeeMapper.findById(empId);
+    public List<EmployeeListDto> getEmployeeList() {
+        return employeeMapper.findAllEmployees();
     }
 
     @Override
-    public List<Employee> getAllEmployees() {
-        return employeeMapper.findAll();
+    public EmployeeDetailDto getEmployeeDetail(Long empId) {
+        return employeeMapper.findEmployeeById(empId);
+    }
+
+    @Override
+    public List<EmployeeContributionDto> getEmployeeContributions(Long empId) {
+        return employeeMapper.findContributionsByEmpId(empId);
     }
 }
