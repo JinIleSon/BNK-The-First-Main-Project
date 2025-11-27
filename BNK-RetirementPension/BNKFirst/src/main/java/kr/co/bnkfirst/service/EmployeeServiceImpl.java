@@ -1,12 +1,14 @@
 package kr.co.bnkfirst.service;
 
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto;       // ⬅ 추가
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeDetailDto;     // ⬅ 이미 있을 가능성
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeContributionDto;  // ⬅ 이미 있을 가능성
-
+import kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto;
+import kr.co.bnkfirst.dto.corporate.employee.EmployeeDetailDto;
+import kr.co.bnkfirst.dto.corporate.employee.EmployeeContributionDto;
 import kr.co.bnkfirst.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import kr.co.bnkfirst.dto.corporate.employee.EmployeeUpdateDto;
+
 
 import java.util.List;
 
@@ -30,4 +32,40 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeContributionDto> getEmployeeContributions(Long empId) {
         return employeeMapper.findContributionsByEmpId(empId);
     }
+
+    @Override
+    public int getTotalEmployees() {
+        return employeeMapper.getTotalEmployees();
+    }
+
+    @Override
+    public List<EmployeeListDto> search(String keyword, String planType) {
+        if (planType == null || planType.isEmpty()) {
+            planType = "ALL";
+        }
+        return employeeMapper.search(keyword, planType);
+    }
+
+    @Transactional
+    @Override
+    public void updateEmployee(EmployeeUpdateDto dto) {
+        employeeMapper.updateEmployee(dto);
+    }
+
+    @Transactional
+    @Override
+    public void deleteEmployee(Long empId) {
+        employeeMapper.deleteEmployee(empId);
+    }
+
+    @Override
+    public Long getEmployeeCurrentBalance(Long empId) {
+        return employeeMapper.getCurrentBalance(empId);
+    }
+
+    @Override
+    public List<EmployeeListDto> autocomplete(String keyword) {
+        return employeeMapper.autocomplete(keyword);
+    }
+
 }

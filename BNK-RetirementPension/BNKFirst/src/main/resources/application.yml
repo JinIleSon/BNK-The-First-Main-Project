@@ -1,5 +1,4 @@
 # ===== common (local/prod 공통) =====
-# ===== common =====
 spring:
   application:
     name: BUSANBANK
