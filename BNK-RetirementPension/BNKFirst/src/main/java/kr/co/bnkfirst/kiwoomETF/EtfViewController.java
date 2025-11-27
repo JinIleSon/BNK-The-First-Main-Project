@@ -1,5 +1,6 @@
 package kr.co.bnkfirst.kiwoomETF;
 
+import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.fx.FxService;
 import kr.co.bnkfirst.service.StockService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Collections;
@@ -39,19 +41,34 @@ public class EtfViewController {
     @GetMapping("/stock/orderEtf")
     public String stockOrder(@RequestParam("code") String code,
                              @RequestParam(value = "name", required = false) String name,
+                             @RequestParam(value = "result", required = false) String result,
                              Principal principal,
                              Model model) {
 
         // 🔥 principal이 null이어도 안전하게 처리
         String principalName = (principal != null) ? principal.getName() : null;
 
-        // 🔥 계좌 목록: principalName이 null이면 빈 리스트 넣기
+        // 🔥 계좌 목록 조회
+        List<PcontractDTO> accountList;
         if (principalName != null) {
-            model.addAttribute("accountList", stockService.findByContract(principalName));
+            accountList = stockService.findByContract(principalName);
         } else {
-            model.addAttribute("accountList", Collections.emptyList());
+            accountList = Collections.emptyList();
+        }
+        model.addAttribute("accountList", accountList);
+
+        // 🔥 첫 번째 계좌의 pacc 가져오기
+        String pacc = null;
+        if (!accountList.isEmpty()) {
+            pacc = accountList.get(0).getPacc();   // ← 여기서 pacc 꺼냄
         }
 
+        // 🔥 pacc 와 name 으로 보유 종목 조회 (필요하다면)
+        if (pacc != null && name != null && !name.isBlank()) {
+            // 예: 해당 계좌에서 이 종목을 이미 보유중인지 체크
+            EtfDTO stock = stockService.findByStock(pacc, name);
+            model.addAttribute("stock", stock);  // 템플릿에서 쓰고 싶으면
+        }
         // name을 안 넘겨줬으면 code를 그냥 이름처럼 보여주도록 임시 처리
         String stockName = (name != null && !name.isBlank()) ? name : code;
 
@@ -64,9 +81,13 @@ public class EtfViewController {
 
         model.addAttribute("pcuid", principalName);
 
+        // 토스트용 플래그
+        model.addAttribute("toastResult", result);
+
         return "stock/stock_orderETF";   // 템플릿 경로에 맞게
     }
 
+    // 주식 구매 프로세스
     @PostMapping("/stock/buyEtf")
     public String stockOrderBuy(@RequestParam("pcuid") String pcuid,
                                 @RequestParam("pstock") Integer pstock,
@@ -75,9 +96,38 @@ public class EtfViewController {
                                 @RequestParam("pname") String pname,
                                 @RequestParam("pacc") String pacc,
                                 @RequestParam("name") String name,
-                                @RequestParam("code") String code){
+                                @RequestParam("code") String code,
+                                RedirectAttributes redirectAttributes){
 
         stockService.buyProcess(pcuid,pstock,pprice,psum,pname,pacc);
+
+        // ✅ 구매 완료 표시
+        redirectAttributes.addAttribute("result", "buy");
+
+        // 이름도 같이 다시 넘겨주고 싶으면:
+        if (name != null && !name.isBlank()) {
+            // 한글이름이면 encode 해주는게 안전 (Spring Utils 사용 예시)
+            String encodedName = org.springframework.web.util.UriUtils.encode(name, java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/stock/orderEtf?code=" + code + "&name=" + encodedName;
+        }
+
+        // 이름 필요 없으면 code만
+        return "redirect:/stock/orderEtf?code=" + code;
+    }
+
+    // 주식 판매 프로세스
+    @PostMapping("/stock/sellEtf")
+    public String stockOrderSell(@RequestParam("psum") Integer psum,
+                                 @RequestParam("pacc") String pacc,
+                                 @RequestParam("pname") String pname,
+                                 @RequestParam("pcuid") String pcuid,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("code") String code,
+                                 RedirectAttributes redirectAttributes){
+
+        stockService.sellProcess(psum,pacc,pname,pcuid);
+
+        redirectAttributes.addAttribute("result", "sell");
 
         // 이름도 같이 다시 넘겨주고 싶으면:
         if (name != null && !name.isBlank()) {
