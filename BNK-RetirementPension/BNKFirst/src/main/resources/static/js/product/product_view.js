@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             // console.log(JSON.parse(data.pterms));
             if (data.pterms !== null)
-                renderTerms(JSON.parse(data.pterms));
+                renderTerms(data.pterms);
             // console.log('check3');
             if (data.pirinfo !== null)
                 renderIRInfo(JSON.parse(data.pirinfo));
@@ -95,31 +95,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderProduct(productInfo) {
         const title = document.getElementsByClassName('h-title')[0];
-        const subtitle = document.getElementsByClassName('subtitle')[0];
+        // const subtitle = document.getElementsByClassName('subtitle')[0];
         const pbirate = document.getElementById('baseRate');
-        const phirate = document.getElementById('maxRate');
+        // const phirate = document.getElementById('maxRate');
         const pcprd = document.getElementById('contractPeriod');
         const pjnfee = document.getElementById('joinFee');
-        const prmthd = document.querySelector('div[aria-label="가입방법"]');
-        const prmthdValues = (productInfo.prmthd ?? '').split(',')
-            .map(s => s.trim()).filter(Boolean);
+        // const prmthd = document.querySelector('div[aria-label="가입방법"]');
+        // const prmthdValues = (productInfo.prmthd ?? '').split(',')
+        //     .map(s => s.trim()).filter(Boolean);
 
         title.innerText = productInfo.pname;
-        subtitle.innerText = productInfo.psubtitle;
+        // subtitle.innerText = productInfo.psubtitle;
         pbirate.innerText = productInfo.pbirate.toFixed(2) + '%';
-        phirate.innerText = productInfo.phirate.toFixed(2) + '%';
-        pcprd.innerText = productInfo.pcprd;
-        pjnfee.innerText = productInfo.pjnfee;
+        // phirate.innerText = productInfo.phirate.toFixed(2) + '%';
+        // pcprd.innerText = productInfo.pcprd;
+        // pjnfee.innerText = productInfo.pjnfee;
 
-        if (prmthdValues.length) {
-            prmthd.style.display = "flex";
-            for (const prmthdValue of prmthdValues) {
-                const pill = `<span class="pill">${prmthdValue}</span>`
-                prmthd.insertAdjacentHTML("beforeend", pill);
-            }
-        } else {
-            prmthd.style.display = "none";
-        }
+        // if (prmthdValues.length) {
+        //     prmthd.style.display = "flex";
+        //     for (const prmthdValue of prmthdValues) {
+        //         const pill = `<span class="pill">${prmthdValue}</span>`
+        //         prmthd.insertAdjacentHTML("beforeend", pill);
+        //     }
+        // } else {
+        //     prmthd.style.display = "none";
+        // }
     }
 
     // 약관 데이터 (원하면 URL을 실제 파일로 교체)
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ];
 
     function renderTerms(terms) {
-        const ul = document.getElementById('termsList');
+        const ul = document.querySelector('#panel-rate')
         if (!ul) return;
         ul.innerHTML = terms.map(t => `
       <li class="doc-item" tabindex="0" data-link="${t.link}">
@@ -369,7 +369,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // console.log(htmls);
     }
 
-    renderInfo(JSON.stringify(DUMMY_PINFO));
+    // renderInfo(JSON.stringify(DUMMY_PINFO));
 
     const DUMMY_IRINFO = [
         [
