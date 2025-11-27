@@ -704,7 +704,7 @@
                         <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px; display: flex;">
                             <div style="flex: 1; margin-top: 4px;">주문하기</div>
                             <div style="font-weight: 500; font-size: 14px; width: 81%;">
-                                <select style="outline: none; border:1px solid #e5e8eb; width: 100%; border-radius: 8px; padding-left: 8px; height: 30px;">
+                                <select id="accountSelect" style="outline: none; border:1px solid #e5e8eb; width: 100%; border-radius: 8px; padding-left: 8px; height: 30px;">
                                     <option th:if="${#lists.isEmpty(accountList)}" disabled selected>계좌가 없어요</option>
                                     <option th:each="acc : ${accountList}"
                                     th:value = "${acc.pacc}"
@@ -722,6 +722,27 @@
                             <div class="order-tab" data-type="wait">대기</div>
                         </div>
                         <div id="orderContents" style="margin-top: 16px;">
+                            <form id="buyForm" th:action="@{/stock/buyEtf}" method="post">
+                                <!-- 종목 코드/이름 넘기기 -->
+                                <input type="hidden" name="code" th:value="${code}">
+                                <input type="hidden" name="name" th:value="${stockName}">
+                                <!-- 로그인 사용자 아이디 -->
+                                <input type="hidden" name="pcuid"
+                                       th:value="${session.loginUser != null ? pcuid : ''}">
+
+                                <!-- 종목명 -->
+                                <input type="hidden" name="pname" th:value="${stockName}"/>
+
+                                <!-- 출금 계좌 (pacc) -->
+                                <input type="hidden" name="pacc" id="buyPaccHidden">
+
+                                <!-- 서버로 보낼 실제 값 (숫자만) -->
+                                <input type="hidden" name="pprice" id="buyPriceHidden">
+                                <input type="hidden" name="pstock" id="buyStockHidden">
+                                <input type="hidden" name="psum" id="buyPsumHidden">
+
+                                <!-- 여기부터는 기존 구매 섹션 (대부분 그대로 사용) -->
+                                <section class="order-section" data-section="buy">
                             <section class="order-section" data-section="buy">
                                         <div style="display: flex; margin-top: 14px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
                                             <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">주문 유형</div>
@@ -1299,10 +1320,11 @@
                     return;
                 }
 
-                const total   = price * qty;
                 const balance = balanceEl
                     ? parseInputNumber(balanceEl.textContent)
                     : 0;
+
+                const total = price * qty;
 
                 // 🔴 잔액 부족 시: 모달 띄우지 말고 토스트만
                 if (total > balance) {
@@ -1351,9 +1373,32 @@
         if (confirmBtn && modal) {
             confirmBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                // TODO: modal.dataset.price, modal.dataset.qty 로 주문 요청 보내기
+                const price = parseInputNumber(priceInput.value);
+                const qty   = parseInputNumber(qtyInput.value);
+                if (!price || !qty) {
+                    alert('구매 가격과 수량을 다시 확인해 주세요.');
+                    return;
+                }
+
+                const accountSelect = document.getElementById('accountSelect');
+                if (!accountSelect || !accountSelect.value) {
+                    alert('출금 계좌를 선택해 주세요.');
+                    return;
+                }
+
+                const total = price * qty;
+
+                // hidden input에 실제 숫자 채우기
+                document.getElementById('buyPriceHidden').value = price;
+                document.getElementById('buyStockHidden').value = qty;
+                document.getElementById('buyPsumHidden').value  = total;
+
+                document.getElementById('buyPaccHidden').value = accountSelect.value;
+
                 modal.classList.remove('show');
-                showOrderToast('구매');
+
+                document.getElementById('buyForm').submit();
+
             });
         }
 

@@ -5,9 +5,13 @@
 
 <mapper namespace="kr.co.bnkfirst.mapper.StockMapper">
 
+    <insert id="buyStock">
+        INSERT INTO ETF (pcuid, pstock, pprice, psum, pname, pacc)
+        VALUES (#{pcuid}, #{pstock}, #{pprice}, #{psum}, #{pname}, #{pacc})
+    </insert>
 
-
-
-
+    <update id="downBalance">
+        update pcontract set pbalance = pbalance - (#{psum}) where pacc = #{pacc}
+    </update>
 
 </mapper>
