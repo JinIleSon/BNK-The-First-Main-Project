@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -61,6 +62,31 @@ public class EtfViewController {
         model.addAttribute("code", code);
         model.addAttribute("stockName", stockName);
 
+        model.addAttribute("pcuid", principalName);
+
         return "stock/stock_orderETF";   // 템플릿 경로에 맞게
+    }
+
+    @PostMapping("/stock/buyEtf")
+    public String stockOrderBuy(@RequestParam("pcuid") String pcuid,
+                                @RequestParam("pstock") Integer pstock,
+                                @RequestParam("pprice") Integer pprice,
+                                @RequestParam("psum") Integer psum,
+                                @RequestParam("pname") String pname,
+                                @RequestParam("pacc") String pacc,
+                                @RequestParam("name") String name,
+                                @RequestParam("code") String code){
+
+        stockService.buyProcess(pcuid,pstock,pprice,psum,pname,pacc);
+
+        // 이름도 같이 다시 넘겨주고 싶으면:
+        if (name != null && !name.isBlank()) {
+            // 한글이름이면 encode 해주는게 안전 (Spring Utils 사용 예시)
+            String encodedName = org.springframework.web.util.UriUtils.encode(name, java.nio.charset.StandardCharsets.UTF_8);
+            return "redirect:/stock/orderEtf?code=" + code + "&name=" + encodedName;
+        }
+
+        // 이름 필요 없으면 code만
+        return "redirect:/stock/orderEtf?code=" + code;
     }
 }
