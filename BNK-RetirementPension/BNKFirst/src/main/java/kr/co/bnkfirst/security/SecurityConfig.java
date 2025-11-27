@@ -35,6 +35,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
                 // KFTC API 완전허용 (중요)
+                .requestMatchers("/corporate/**").permitAll()    // ★ 가장 위에 두기 (중요)
                 .requestMatchers("/BNK/**").permitAll()
                 .requestMatchers("/api/kftc/**").permitAll()
 
