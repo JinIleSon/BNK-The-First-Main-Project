@@ -4,6 +4,7 @@ import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.entity.product.Product;
+import kr.co.bnkfirst.mapper.FundMapper;
 import kr.co.bnkfirst.mapper.ProductMapper;
 import kr.co.bnkfirst.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class ProductService {
 
     private static final List<String> ORDER_TAX   = List.of("비과세", "세금우대", "소득공제"); // 예시
     private static final Set<String>  ALLOWED_TAX = Set.copyOf(ORDER_TAX);
+
+    private final FundMapper fundMapper;
 
     public static String normalizeMulti(String raw, List<String> order, Set<String> allowed) {
         if (raw == null || raw.isBlank()) return null; // 필터 미적용
@@ -166,6 +169,91 @@ public class ProductService {
 
         return new PageImpl<>(content, pageable, list.size());
     }
+
+    // 작업자: 전세현
+    // 내용 : 마이데이터 수익률 계산
+    public List<Map<String,Object>> findBetterProducts(Double foreignRate,String risk){
+
+        List<Map<String,Object>> result = new ArrayList<>();
+
+        /* ---------- FUND ---------- */
+        if (!"deposit".equals(risk)) {
+            /*fund 테이블 평균 수익률 계산*/
+            List<FundDTO> funds = fundMapper.findAllFunds();
+
+            for(FundDTO f : funds){
+
+                Double avg = avgFundRate(f);
+
+                if (avg == null) continue;
+
+                // 위험도 필터 적용
+                if(risk != null && avg > foreignRate){
+                    if(!matchRisk(f.getFrlvl(),risk)) continue;
+                }
+
+                if(avg > foreignRate){
+                    Map<String,Object> m = new HashMap<>();
+                    m.put("type","FUND");
+                    m.put("name",f.getFamc());
+                    m.put("rate",avg.doubleValue()); //Double 통일
+                    m.put("id",f.getFid());
+
+                    result.add(m);
+                }
+            }
+        }
+
+        /* ---------- PRODUCT(예금) ---------- */
+        if ("deposit".equals(risk)) {
+            /*product 테이블 pbirate 비교*/
+            List<Product> products = productRepository.findAll();
+
+            for(Product p: products){
+                if(p.getPbirate() > foreignRate){
+                    Map<String,Object> m = new HashMap<>();
+                    m.put("type","PRODUCT");
+                    m.put("name",p.getPname());
+                    m.put("rate",Double.valueOf(p.getPbirate())); // float -> Double 변환
+                    m.put("id",p.getPid());
+
+                    result.add(m);
+                }
+            }
+        }
+
+        /* ---------- 정렬 + 상위 3개 ---------- */
+        /*rate 기준 내림차순 정렬 후 상위 3개만 반환*/
+        return result.stream()
+                .sorted((a, b) -> Double.compare((Double)b.get("rate"), (Double)a.get("rate")))
+                .limit(3)
+                .toList();
+    }
+
+    /* ---------- 펀드 : 평균 금리 구하는 함수 ---------- */
+    private Double avgFundRate(FundDTO f){
+        List<Double> rates = new ArrayList<>();
+
+        if (f.getFm1pr() != 0) rates.add((double) f.getFm1pr());
+        if (f.getFm3pr() != 0) rates.add((double) f.getFm3pr());
+        if (f.getFm6pr() != 0) rates.add((double) f.getFm6pr());
+        if (f.getFm12pr() != 0) rates.add((double) f.getFm12pr());
+
+        if (rates.isEmpty()) return null;
+
+        return rates.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+    }
+
+    /* ---------- 위험도 필터링 함수 ---------- */
+    private boolean matchRisk(int frlvl, String risk) {
+        return switch (risk){
+            case "low"  -> frlvl == 5 || frlvl == 6;
+            case "mid"  -> frlvl == 3 || frlvl == 4;
+            case "high" -> frlvl == 1 || frlvl == 2;
+            default -> false;
+        };
+    }
+
 
     public FundDTO getFundDetail(String fid) {
         return productMapper.selectFundDetail(fid);
