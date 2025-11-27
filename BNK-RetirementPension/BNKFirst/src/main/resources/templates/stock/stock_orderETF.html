@@ -708,7 +708,8 @@
                                     <option th:if="${#lists.isEmpty(accountList)}" disabled selected>계좌가 없어요</option>
                                     <option th:each="acc : ${accountList}"
                                     th:value = "${acc.pacc}"
-                                    th:text="${acc.pacc} + ' ' + ${acc.pname}">
+                                    th:text="${acc.pacc} + ' ' + ${acc.pname}"
+                                            th:data-balance="${acc.pbalance}">
                                     </option>
                                 </select>
                             </div>
@@ -757,12 +758,17 @@
                                         </div>
                                         <div style="border-top:1px solid #f3f3f5; margin-top: 20px;"></div>
                                         <div style="display: flex; margin-top: 20px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
-                                        <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">구매가능 금액</div>
-                                        <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 70%;">
-                                            0원
+                                            <div style="font-weight: 500; font-size: 14px; margin-bottom: -1px;">
+                                                구매가능 금액
+                                            </div>
+                                            <div style="">
+                                                <span id="accountBalance" style="font-size: 14px;"
+                                                      th:text="${#lists.isEmpty(accountList) ? 0 : (accountList[0].pbalance != null ? #numbers.formatInteger(accountList[0].pbalance, 0, 'COMMA') : 0)}">
+                                                    0
+                                                </span><span style="font-size: 14px;">원</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                <div style="display: flex; margin-top: 14px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
+                                <div style="display: flex; margin-top: 28px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
                                     <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">총 주문 금액</div>
                                     <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
                                         <span id="buyTotalAmount">0원</span>
@@ -2090,6 +2096,36 @@
             card.classList.add('not-logged-in');
         }
         // 🔹 로그인된 경우 → 아무것도 안 함 (그냥 정상 UI)
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const select  = document.getElementById('accountSelect');
+        const balance = document.getElementById('accountBalance');
+
+        if (!select || !balance) return;
+
+        function updateBalanceFromSelect() {
+            const opt = select.options[select.selectedIndex];
+            if (!opt) return;
+
+            const raw = opt.dataset.balance;   // 문자열
+            const num = Number(raw || 0);
+
+            if (isNaN(num)) {
+                balance.textContent = '0';
+            } else {
+                balance.textContent = num.toLocaleString('ko-KR');
+            }
+        }
+
+        // 초기 1번 세팅 (첫 번째 계좌 기준)
+        if (select.options.length > 0 && !select.disabled) {
+            updateBalanceFromSelect();
+        }
+
+        // 계좌 변경 시마다 잔액 갱신
+        select.addEventListener('change', updateBalanceFromSelect);
     });
 </script>
 </body>
