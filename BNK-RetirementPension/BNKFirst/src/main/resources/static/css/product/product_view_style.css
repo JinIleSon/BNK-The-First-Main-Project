@@ -338,6 +338,10 @@ main {
     color: var(--red)
 }
 
+.pi-emph {
+    color: red;
+}
+
 /* 유의사항 박스 */
 .notice {
     background: var(--yellow);
