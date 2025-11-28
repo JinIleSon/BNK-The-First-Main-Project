@@ -196,7 +196,7 @@ public class UsersService {
 
         PcontractDTO p = PcontractDTO.builder()
                 .pcuid(mid)
-                .pcpid("BNK-TD-1")
+                .pcpid("BNK-TD-2")
                 .pcnapw("1234")
                 .pbalance(0)
                 .build();
@@ -210,5 +210,37 @@ public class UsersService {
 
     public void updateLastAccess(String mid) {
         usersMapper.updateLastAccess(mid);
+    }
+
+    @Transactional
+    public boolean withdrawUser(String mid, String mpw, String mphone) {
+
+        UsersDTO user = usersMapper.findByMid(mid);
+        if (user == null) {
+            log.warn("회원탈퇴 실패 - 사용자 없음: {}", mid);
+            return false;
+        }
+
+        if (!passwordEncoder.matches(mpw, user.getMpw())) {
+            log.warn("회원탈퇴 실패 - 비밀번호 불일치: {}", mid);
+            return false;
+        }
+
+        if (!mphone.equals(user.getMphone())) {
+            log.warn("회원탈퇴 실패 - 휴대폰 번호 불일치: {}", mid);
+            return false;
+        }
+
+        int delP = usersMapper.deletePcontractByMid(mid);
+        log.info("회원탈퇴: mid={} PCONTRACT 삭제 rows={}", mid, delP);
+
+        int delU = usersMapper.deleteUserByMid(mid);
+        log.info("회원탈퇴: mid={} USERS 삭제 rows={}", mid, delU);
+
+        if (delU == 0) {
+            throw new RuntimeException("회원 정보 삭제 실패 (해당 MID 없음): " + mid);
+        }
+
+        return true;
     }
 }
