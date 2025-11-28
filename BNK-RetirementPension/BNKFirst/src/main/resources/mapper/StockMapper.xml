@@ -8,12 +8,12 @@
 <!--    주식 구매 프로세스-->
 
     <insert id="buyStock">
-        INSERT INTO ETF (pcuid, pstock, pprice, psum, pname, pacc)
-        VALUES (#{pcuid}, #{pstock}, #{pprice}, #{psum}, #{pname}, #{pacc})
+        INSERT INTO ETF (pcuid, pstock, pprice, psum, pname, pacc, code)
+        VALUES (#{pcuid}, #{pstock}, #{pprice}, #{psum}, #{pname}, #{pacc}, #{code})
     </insert>
 
     <update id="downBalance">
-        update pcontract set pbalance = pbalance - (#{psum}) where pacc = #{pacc}
+        update pcontract set pbalance = pbalance - (#{psum}) where pacc = #{pacc} and type = 'IRP'
     </update>
 
 <!--    판매할 주식이 있는지 찾기(판매)-->
@@ -24,7 +24,7 @@
 <!--    주식 판매 프로세스-->
 
     <update id="upBalance">
-        UPDATE pcontract SET pbalance = pbalance + #{psum} WHERE pacc = #{pacc}
+        UPDATE pcontract SET pbalance = pbalance + #{psum} WHERE pacc = #{pacc} and type = 'IRP'
     </update>
 
     <delete id="sellStock">

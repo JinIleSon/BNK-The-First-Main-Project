@@ -32,4 +32,7 @@ public interface MypageMapper {
 
     // ETF 주식 불러오기
     List<PcontractDTO> selectEtf(@Param("pcuid") String pcuid);
+
+    // IRP 계좌만 불러오기
+    PcontractDTO findByIRP(@Param("pcuid") String pcuid);
 }

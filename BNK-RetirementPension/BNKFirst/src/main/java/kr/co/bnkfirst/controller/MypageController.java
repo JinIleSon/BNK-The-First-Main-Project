@@ -49,7 +49,6 @@ public class MypageController {
         model.addAttribute("dealList",mypageService.findByDealList(principal.getName()));
 
         List<PcontractDTO> totalList = new ArrayList<>();
-        totalList.addAll(mypageService.findByContract(principal.getName()));
         totalList.addAll(mypageService.findByFundContract(principal.getName()));
         totalList.addAll(mypageService.selectEtf(principal.getName()));
 
