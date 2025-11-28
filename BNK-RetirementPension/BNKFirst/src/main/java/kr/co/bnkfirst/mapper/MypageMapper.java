@@ -27,8 +27,10 @@ public interface MypageMapper {
     List<DealDTO> findByDealList(String mid);
     Integer findBySumPlusDbalance(String mid);
     Integer findBySumMinusDbalance(String mid);
-    void updateRecvContract(@Param("pbalance") int pbalance, @Param("pacc") String pacc);
-    void deleteContract(String pacc);
+    void updateRecvContract(@Param("pbalance") int pbalance,
+                            @Param("pacc") String pacc);
+    void deleteContract(@Param("pcuid") String pcuid,
+                        @Param("pcpid") String pcpid);
 
     // ETF 주식 불러오기
     List<PcontractDTO> selectEtf(@Param("pcuid") String pcuid);
