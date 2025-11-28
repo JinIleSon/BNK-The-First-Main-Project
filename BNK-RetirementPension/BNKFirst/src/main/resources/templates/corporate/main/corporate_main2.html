@@ -10,9 +10,7 @@
 
     <style>
         /* ---------------------- 공통 레이아웃 ---------------------- */
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -34,7 +32,7 @@
         }
 
         .subtitle {
-            font-size: 15px; /* 기존 13px → 15px */
+            font-size: 15px;   /* 기존 13px → 15px */
             color: #777;
             margin-bottom: 24px;
         }
@@ -52,7 +50,7 @@
             padding: 8px 10px;
             border-radius: 6px;
             border: 1px solid #ccc;
-            font-size: 15px; /* 기존 14px → 15px */
+            font-size: 15px;   /* 기존 14px → 15px */
         }
 
         .toolbar input[type="text"] {
@@ -63,22 +61,20 @@
             padding: 8px 14px;
             border-radius: 6px;
             border: none;
-            font-size: 15px; /* 기존 14px → 15px */
+            font-size: 15px;   /* 기존 14px → 15px */
             cursor: pointer;
             background-color: #d91a1a;
             color: white;
         }
 
-        .toolbar button:hover {
-            opacity: 0.9;
-        }
+        .toolbar button:hover { opacity: 0.9; }
 
         /* ---------------------- 카드 공통 ---------------------- */
         .card {
             background-color: white;
             border-radius: 8px;
             padding: 16px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
             margin-bottom: 20px;
         }
 
@@ -94,11 +90,11 @@
             padding: 16px;
             border-radius: 8px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
         }
 
         .summary-title {
-            font-size: 15px; /* 기존 14px → 15px */
+            font-size: 15px;   /* 기존 14px → 15px */
             color: #777;
             margin-bottom: 6px;
         }
@@ -124,19 +120,19 @@
             background: white;
             border-radius: 8px;
             padding: 16px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
         }
 
         .news-item {
             display: flex;
             justify-content: space-between;
-            font-size: 15px; /* 기존 13px → 15px */
+            font-size: 15px;   /* 기존 13px → 15px */
             padding: 6px 0;
         }
 
         .tag-notice {
             padding: 2px 8px;
-            font-size: 15px; /* 기존 11px → 15px */
+            font-size: 15px;   /* 기존 11px → 15px */
             border-radius: 999px;
             background: #ffe4e4;
             color: #d91a1a;
@@ -149,7 +145,7 @@
             background: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.06);
             margin-top: 16px;
             gap: 20px;
         }
@@ -160,7 +156,7 @@
         }
 
         .contact-title {
-            font-size: 15px; /* 기존 14px → 15px */
+            font-size: 15px;   /* 기존 14px → 15px */
             font-weight: 600;
             margin-bottom: 6px;
         }
@@ -178,10 +174,7 @@
             .contact-box {
                 flex-direction: column;
             }
-
-            .contact-col {
-                border-right: none !important;
-            }
+            .contact-col { border-right: none !important; }
         }
 
         /* ---------------------- 햄버거 / 사이드바 ---------------------- */
@@ -212,11 +205,7 @@
         .hamburger.open span:nth-child(1) {
             transform: rotate(45deg) translate(5px, 5px);
         }
-
-        .hamburger.open span:nth-child(2) {
-            opacity: 0;
-        }
-
+        .hamburger.open span:nth-child(2) { opacity: 0; }
         .hamburger.open span:nth-child(3) {
             transform: rotate(-45deg) translate(5px, -5px);
         }
@@ -229,14 +218,12 @@
             height: 100%;
             background: white;
             padding: 20px;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
             transition: 0.3s;
             z-index: 1500;
         }
 
-        .sidebar.active {
-            left: 0;
-        }
+        .sidebar.active { left: 0; }
 
         /* 기존 a 기본 스타일 (유지) */
         .sidebar a {
@@ -274,7 +261,7 @@
             text-decoration: none;
             border-radius: 10px;
             border: 1px solid #eee;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.07);
             font-size: 15px;
             transition: all .18s ease-in-out;
         }
@@ -283,8 +270,9 @@
             background: #fff5f5;
             color: #d91a1a;
             border-color: #ffd2d2;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
         }
+
 
 
         /* 고객지원 카드 6칸 */
@@ -293,7 +281,7 @@
             grid-template-columns: 1fr 1fr;
             background: #fff;
             border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
             overflow: hidden;
             border: 1px solid #eee;
         }
@@ -322,35 +310,8 @@
 
         /* hover 효과 */
         .support-item:hover {
-            background: #fff5f5; /* 연한 빨강 배경 */
-            color: #d91a1a; /* 빨간 글자 */
-        }
-
-        /* ================= 자동완성 박스 ================= */
-        .auto-box {
-            position: absolute;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            width: 100%; /* 🔥 input 너비 그대로 */
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 5000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-            font-size: 15px;
-            top: 42px; /* 🔥 input 바로 아래 */
-            left: 0; /* 🔥 input 기준으로 정렬 */
-        }
-
-
-        .auto-item {
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-
-        .auto-item:hover {
-            background: #fff5f5;
-            color: #d91a1a;
+            background: #fff5f5;       /* 연한 빨강 배경 */
+            color: #d91a1a;            /* 빨간 글자 */
         }
 
 
@@ -368,8 +329,8 @@
     <a th:href="@{/corporate/main}">
         <img th:src="@{/images/BNK_english.png}" alt="부산은행 로고" width="100px">
     </a>
-    <p>부산은행 기업뱅킹</p>
-    </div>
+            <p>부산은행 기업뱅킹</p>
+        </div>
 
     <ul style="list-style:none; padding:0; margin-top:20px;">
         <li style="margin-bottom:12px;"><a href="/BNK/corporate/main">🏠 기업 메인</a></li>
@@ -399,18 +360,8 @@
 
     <!-- 검색창 영역 -->
     <form method="get" th:action="@{/corporate/employee/list}">
-
-    <div class="toolbar" style="position:relative;">   <!-- 자동완성 Box 올리기 위해 relative -->
-
-            <!-- 🔍 검색창 -->
-            <input type="text"
-                   name="keyword"
-                   id="searchKeyword"
-                   th:value="${keyword}"
-                   placeholder="직원 이름 또는 계좌번호 검색">
-
-            <!-- 🔥 자동완성 박스 (여기 추가!) -->
-            <div id="autoBox" class="auto-box" style="display:none;"></div>
+        <div class="toolbar">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="직원 이름 또는 계좌번호 검색">
 
             <select name="planType">
                 <option value="" th:selected="${planType == ''}">전체 제도</option>
@@ -419,8 +370,7 @@
             </select>
 
             <button type="submit">검색</button>
-            <button type="button" onclick="location.href='/BNK/corporate/employee/list'">초기화</button>
-
+            <button type="button" onclick="location.href='/corporate/employee/list'">초기화</button>
         </div>
     </form>
 
@@ -545,73 +495,4 @@
 </div>
 
 </body>
-<script>
-    const searchInput = document.getElementById("searchKeyword");
-    const autoBox = document.getElementById("autoBox");
-    const form = document.querySelector("form");
-
-    let timer;
-
-    // 🔥 키 입력 시 자동완성 (디바운스 적용)
-    searchInput.addEventListener("keyup", function () {
-        clearTimeout(timer);
-        timer = setTimeout(fetchAuto, 150);
-    });
-
-    // 🔥 엔터 누르면 자동완성 첫 번째 선택
-    searchInput.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-            const firstItem = document.querySelector(".auto-item");
-            if (firstItem) {
-                e.preventDefault();  // 폼 기본 제출 막기
-                searchInput.value = firstItem.dataset.name;   // name만 추출
-                form.submit();       // 자동 검색
-            }
-        }
-    });
-
-    function fetchAuto() {
-        const keyword = searchInput.value.trim();
-
-        if (keyword.length === 0) {
-            autoBox.style.display = "none";
-            return;
-        }
-
-        fetch(`/BNK/corporate/employee/autocomplete?keyword=` + keyword)
-
-            .then(res => res.json())
-            .then(list => {
-
-                if (list.length === 0) {
-                    autoBox.style.display = "none";
-                    return;
-                }
-
-                autoBox.innerHTML = ""; // 초기화
-
-                list.forEach(item => {
-                    const div = document.createElement("div");
-                    div.classList.add("auto-item");
-                    div.dataset.name = item.name;  // 🔥 엔터 처리할 때 name만 쓰기
-                    div.innerHTML = `
-                    <strong>${item.name}</strong><br>
-                    <span style="font-size:13px;color:#666;">${item.accountNo}</span>
-                `;
-
-                    // 🔥 항목 클릭 시 즉시 검색 실행
-                    div.addEventListener("click", () => {
-                        searchInput.value = item.name;
-                        autoBox.style.display = "none";
-                        form.submit();
-                    });
-
-                    autoBox.appendChild(div);
-                });
-
-                autoBox.style.display = "block";
-            });
-    }
-
-</script>
 </html>
