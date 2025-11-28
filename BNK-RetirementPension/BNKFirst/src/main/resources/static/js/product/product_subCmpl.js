@@ -40,12 +40,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         mname.innerText = cmplInfo.mname;
 
-        const [p1, p2, p3] = cmplInfo.mphone.split('-');
-        const p2Masked = '*'.repeat(p2.length);
+        // const [p1, p2, p3] = cmplInfo.mphone.split('-');
+        // const p2Masked = '*'.repeat(p2.length);
 
-        const pMasked = `${p1}-${p2Masked}-${p3}`;
+        // const pMasked = `${p1}-${p2Masked}-${p3}`;
 
-        mphone.innerText = pMasked;
+        // mphone.innerText = pMasked;
 
         pname.innerText = cmplInfo.pname;
 

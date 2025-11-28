@@ -82,10 +82,10 @@
            #{pcuid},
            #{pcpid},
            #{pacc},
-           #{pnew},
-           #{pend},
+           #{pnew, jdbcType=TIMESTAMP},
+           #{pend, jdbcType=TIMESTAMP},
            #{pbalance},
            #{pcwtpi},
-           #{type});
+           #{type} || '-TD')
     </insert>
 </mapper>
