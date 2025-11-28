@@ -158,4 +158,23 @@
         FETCH FIRST 10 ROWS ONLY  <!-- 성능 최적화: 자동완성은 상위 10개만 -->
     </select>
 
+
+    <!-- ⭐⭐⭐ 여기에 아래 두 개 추가 ⭐⭐⭐ -->
+
+    <!-- 직원 상태 변경 -->
+    <update id="updateStatus">
+        UPDATE EMPLOYEE
+        SET STATUS = #{status}
+        WHERE EMPID = #{empId}
+    </update>
+
+    <!-- 직원 퇴사 처리 -->
+    <update id="updateRetire">
+        UPDATE EMPLOYEE
+        SET
+            STATUS = 'RETIRE',
+            RETIREDATE = #{retireDate}
+        WHERE EMPID = #{empId}
+    </update>
+
 </mapper>
