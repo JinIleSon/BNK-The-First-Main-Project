@@ -110,4 +110,13 @@ public class MypageService{
     public List<PcontractDTO> selectEtf(@Param("pcuid") String pcuid){
         return mypageMapper.selectEtf(pcuid);
     }
+
+    /*
+        날짜 : 2025.11.28.
+        이름 : 강민철
+        내용 : 변경 상품 목록 불러오기
+     */
+    public List<PcontractDTO> getProdEditList(@Param("pcuid") String pcuid) {
+
+    }
 }

@@ -112,4 +112,12 @@
             'ETF' AS ptype          -- DTO의 ptype 필드에 ETF 고정 주입
             from etf where pcuid = #{pcuid}
     </select>
+
+    <select id="findByUidAndType" parameterType="string">
+        SELECT * FROM PCONTRACT
+        WHERE PCUID = #{pcuid}
+          AND
+            ("TYPE" = 'FUND'
+                OR "TYPE" LIKE '%TD');
+    </select>
 </mapper>

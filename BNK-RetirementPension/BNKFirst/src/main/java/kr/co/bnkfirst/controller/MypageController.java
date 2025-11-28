@@ -199,8 +199,23 @@ public class MypageController {
         });
     }
 
+    /*
+        날짜 : 2025.11.28.
+        이름 : 강민철
+        내용 : 상품 변경 페이지 불러오기
+     */
     @GetMapping("mypage/prod/edit")
     public String prodEditPage() {
         return "mypage/mypage_prodEdit";
+    }
+
+    /*
+        날짜 : 2025.11.28.
+        이름 : 강민철
+        내용 : 변경 상품 목록 가져오기
+     */
+    @GetMapping("api/mypage/editList")
+    public ResponseEntity<PcontractDTO> editList() {
+        return null;
     }
  }
