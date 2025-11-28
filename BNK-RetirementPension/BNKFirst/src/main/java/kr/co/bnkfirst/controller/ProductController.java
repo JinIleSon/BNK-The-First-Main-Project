@@ -162,9 +162,14 @@ public class ProductController {
     }
 
     @GetMapping("/product/subCmpl/list")
-    public String subCmplPage(Model model) {
-        model.addAttribute("mid", "a123");
-        model.addAttribute("pcpid", "BNK-TD-1");
+    public String subCmplPage(Model model, @RequestParam String pid, Principal principal) {
+        if (principal == null) {
+            throw new ErrorResponseException(HttpStatus.FORBIDDEN);
+        }
+        String mid = principal.getName();
+        model.addAttribute("mid", mid);
+        model.addAttribute("pcpid", pid);
+        log.info("subCmplPage pid {}", pid);
         return "product/product_sub_cmpl";
     }
 
