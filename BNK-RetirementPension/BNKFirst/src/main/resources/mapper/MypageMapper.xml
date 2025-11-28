@@ -87,4 +87,16 @@
         delete from pcontract where pacc = #{pacc}
     </delete>
 
+<!--    ETF 상품 불러오기-->
+    <select id="selectEtf" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        select
+            pcuid,
+            pstock,
+            pprice,
+            psum,
+            pname,
+            pacc,
+            'ETF' AS ptype          -- DTO의 ptype 필드에 ETF 고정 주입
+            from etf where pcuid = #{pcuid}
+    </select>
 </mapper>
