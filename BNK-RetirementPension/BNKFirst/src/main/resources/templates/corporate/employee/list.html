@@ -169,6 +169,30 @@
 
         .sidebar a:hover { color:#d91a1a; }
 
+        .auto-box {
+            position: absolute;
+            top: 42px;
+            left: 0;
+            width: 300px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            display: none;
+            z-index: 2000;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .auto-item {
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+
+        .auto-item:hover {
+            background: #f1f1f1;
+        }
+
     </style>
 </head>
 
@@ -203,10 +227,21 @@
     <div class="subtitle">
         EMPLOYEE 테이블 기반 직원별 제도, 계좌번호, 적립금 등을 조회합니다.
     </div>
+
     <!-- 검색창 영역 -->
     <form method="get" th:action="@{/corporate/employee/list}">
-        <div class="toolbar">
-            <input type="text" name="keyword" th:value="${keyword}" placeholder="직원 이름 또는 계좌번호 검색">
+
+        <div class="toolbar" style="position:relative;">   <!-- 자동완성 Box 올리기 위해 relative -->
+
+            <!-- 🔍 검색창 -->
+            <input type="text"
+                   name="keyword"
+                   id="searchKeyword"
+                   th:value="${keyword}"
+                   placeholder="직원 이름 또는 계좌번호 검색">
+
+            <!-- 🔥 자동완성 박스 (여기 추가!) -->
+            <div id="autoBox" class="auto-box" style="display:none;"></div>
 
             <select name="planType">
                 <option value="" th:selected="${planType == ''}">전체 제도</option>
@@ -215,7 +250,8 @@
             </select>
 
             <button type="submit">검색</button>
-            <button type="button" onclick="location.href='/corporate/employee/list'">초기화</button>
+            <button type="button" onclick="location.href='/BNK/corporate/employee/list'">초기화</button>
+
         </div>
     </form>
 
@@ -265,6 +301,49 @@
         sidebar.classList.toggle("active");
         hamburgerBtn.classList.toggle("open");
     };
+</script>
+<script>
+    const input = document.getElementById("searchKeyword");
+    const autoBox = document.getElementById("autoBox");
+    let autoList = [];
+
+    async function loadAuto(keyword) {
+        if (!keyword || keyword.length < 1) {
+            autoBox.style.display = "none";
+            return;
+        }
+
+        const res = await fetch(`/BNK/corporate/employee/autocomplete?keyword=${keyword}`);
+
+        const list = await res.json();
+        autoList = list;
+
+        autoBox.innerHTML = list.map(emp =>
+            `<div class="auto-item" onclick="selectAuto(${emp.empId})">
+            ${emp.name} (${emp.accountNo})
+        </div>`
+        ).join("");
+
+        autoBox.style.display = list.length > 0 ? "block" : "none";
+    }
+
+    function selectAuto(empId) {
+        location.href = `/corporate/employee/detail/${empId}`;
+    }
+
+    let debounceTimer = null;
+    input.addEventListener("input", () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            loadAuto(input.value.trim());
+        }, 300);
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".auto-box") && e.target.id !== "searchKeyword") {
+            autoBox.style.display = "none";
+        }
+    });
 </script>
 
 </body>
