@@ -62,4 +62,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<EmployeeAutoDto> autocomplete(String keyword) {
         return employeeMapper.autocomplete(keyword);
     }
+
+
+    /*******************************************
+     * ⭐ 추가해야 하는 부분 (상태 변경 + 퇴사 처리)
+     *******************************************/
+
+    /** 직원 재직/휴직 상태 변경 */
+    @Transactional
+    @Override
+    public void updateStatus(Long empId, String status) {
+        employeeMapper.updateStatus(empId, status);
+    }
+
+    /** 직원 퇴사 처리 (퇴사일 포함) */
+    @Transactional
+    @Override
+    public void retire(Long empId, String retireDate) {
+        employeeMapper.updateRetire(empId, retireDate);
+    }
 }
