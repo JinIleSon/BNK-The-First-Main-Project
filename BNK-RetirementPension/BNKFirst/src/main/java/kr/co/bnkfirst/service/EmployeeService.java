@@ -23,4 +23,10 @@ public interface EmployeeService {
 
     // ⭐ 자동완성 (전용 DTO)
     List<EmployeeAutoDto> autocomplete(String keyword);
+
+    // ⭐ 직원 재직 상태 변경 (재직/휴직)
+    void updateStatus(Long empId, String status);
+
+    // ⭐ 퇴사 처리 (퇴사일 포함)
+    void retire(Long empId, String retireDate);
 }
