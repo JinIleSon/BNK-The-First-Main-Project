@@ -421,7 +421,7 @@
 
     /* 공통 AJAX */
     async function updateStatus(empId, status, selectObj) {
-        const res = await fetch(`/corporate/employee/status/${empId}`, {
+        const res = await fetch(`/BNK/corporate/employee/status/${empId}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status })

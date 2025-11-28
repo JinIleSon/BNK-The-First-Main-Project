@@ -28,5 +28,5 @@ public interface EmployeeService {
     void updateStatus(Long empId, String status);
 
     // ⭐ 퇴사 처리 (퇴사일 포함)
-    void retire(Long empId, String retireDate);
+    void retire(Long empId, String status, String retireDate);
 }

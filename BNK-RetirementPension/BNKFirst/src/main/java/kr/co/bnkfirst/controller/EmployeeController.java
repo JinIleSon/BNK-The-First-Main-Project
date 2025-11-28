@@ -172,9 +172,12 @@ public class EmployeeController {
             @PathVariable Long empId,
             @RequestBody Map<String, String> body
     ) {
+        String status = body.get("status");       // ⭐ 반드시 필요
         String retireDate = body.get("retireDate");
-        employeeService.retire(empId, retireDate);
+
+        employeeService.retire(empId, status, retireDate);   // ⭐ status 함께 전달
         return ResponseEntity.ok().build();
     }
+
 
 }
