@@ -5,7 +5,10 @@
     <title>퇴직연금 기업뱅킹 - 직원 월별 납입 내역</title>
 
     <style>
-        * { box-sizing: border-box; }
+        *:not(html) {
+            font-size: min(max(16px, 1em), 30px);
+        }
+
 
         body {
             margin: 0;
@@ -105,6 +108,10 @@
             margin-top: 4px;
         }
 
+        .employee-item .emp-info {
+            font-size: 12px;
+        }
+
         /* ================== 우측: 상세 정보 ================== */
         .detail-panel {
             background: #ffffff;
@@ -150,7 +157,6 @@
         .autocomplete-item:hover {
             background: #f4f4f4;
         }
-
 
         /* ---------------------- 햄버거 ---------------------- */
         .hamburger {
@@ -220,6 +226,63 @@
             transition: color 0.2s;
         }
 
+        /* 월별 납입 테이블 공통 */
+        .detail-panel table th,
+        .detail-panel table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .info-row {
+            padding: 6px 0;
+        }
+        .info-row .label {
+            padding-right: 10px;
+            font-weight: 600;
+            color: #555;
+        }
+        .info-row .value {
+            padding-left: 4px;
+        }
+
+        /* ================== 월별 납입 필터바 ================== */
+        .contrib-filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0;
+        }
+
+        .contrib-filter-bar .left {
+            display: flex;
+            gap: 8px;
+        }
+
+        .contrib-filter-bar select {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .sort-toggle-btn {
+            padding: 6px 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .sort-toggle-btn.active {
+            background: #D91A1A;
+            color: #fff;
+            border-color: #D91A1A;
+        }
+
     </style>
 </head>
 
@@ -235,8 +298,9 @@
 <!-- ⭐ 사이드바 -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">
-        <img src="/BNK/images/BNK_english.png" alt="">
-        <p>부산은행 기업뱅킹</p>
+        <a th:href="@{/corporate/main}">
+            <img th:src="@{/images/BNK_english.png}" alt="부산은행 로고" width="100px">
+        </a>
     </div>
 
     <ul style="list-style:none; padding:0;">
@@ -265,8 +329,6 @@
                 <button class="search-btn">검색</button>
             </form>
         </div>
-
-
     </header>
 
     <!-- ================== 2단 분할 ================== -->
@@ -280,8 +342,8 @@
 
             <section class="employee-summary">
                 <div>
-                    <div class="info-row"><span class="label">직원명</span><span class="value" id="empName"></span></div>
                     <div class="info-row"><span class="label">직원 ID</span><span class="value" id="empId"></span></div>
+                    <div class="info-row"><span class="label">직원명</span><span class="value" id="empName"></span></div>
                     <div class="info-row"><span class="label">계좌번호</span><span class="value" id="accountNo"></span></div>
                 </div>
 
@@ -292,6 +354,26 @@
             </section>
 
             <h3 style="margin-bottom:12px;">월별 납입 내역</h3>
+
+            <!-- 🔽 정렬/필터 바 추가 -->
+            <div class="contrib-filter-bar">
+                <div class="left">
+                    <select id="yearFilter" onchange="applyContributionFilters()">
+                        <option value="">전체 연도</option>
+                    </select>
+
+                    <select id="quarterFilter" onchange="applyContributionFilters()">
+                        <option value="">전체 분기</option>
+                        <option value="Q1">1분기</option>
+                        <option value="Q2">2분기</option>
+                        <option value="Q3">3분기</option>
+                        <option value="Q4">4분기</option>
+                    </select>
+                </div>
+
+                <button id="sortToggleBtn" class="sort-toggle-btn" onclick="toggleSortOrder()">최신순</button>
+            </div>
+            <!-- 🔼 여기까지 -->
 
             <table style="width:100%; border-collapse:collapse;">
                 <thead style="background:#f4f4f6;">
@@ -330,7 +412,8 @@
             listDom.innerHTML += `
             <div class="employee-item" onclick="location.href='/BNK/corporate/employee/detail/${emp.empId}'">
                 <div class="emp-name">${emp.name}</div>
-                <div class="emp-info">${emp.planType} · ${emp.accountNo}</div>
+                <div class="emp-info">직원 ID : ${emp.empId}</div>
+                <div class="emp-info">계좌번호 : ${emp.accountNo}</div>
             </div>
         `;
         });
@@ -339,56 +422,206 @@
     /* ==============================
        상세 정보 렌더링
     ============================== */
+    let isLatestFirst = true; // true: 최신순, false: 과거순
+
     function renderDetail() {
+        // 직원 기본 정보
         document.getElementById('empName').textContent = detailEmployee.name;
         document.getElementById('empId').textContent = detailEmployee.empId;
         document.getElementById('accountNo').textContent = detailEmployee.accountNo;
         document.getElementById('currentBalance').textContent = currentBalance.toLocaleString("ko-KR") + "원";
 
+        // 연도 옵션 셋업
+        fillYearOptions();
+
+        // 초기 필터 적용
+        applyContributionFilters();
+    }
+
+    // 연도 select 자동 생성
+    function fillYearOptions() {
+        const yearSel = document.getElementById("yearFilter");
+        // 기존 옵션(전체 연도) 유지한 채로 나머지 채우기 위해 한번 비우고 다시 넣어도 됨
+        const baseOption = `<option value="">전체 연도</option>`;
+        yearSel.innerHTML = baseOption;
+
+        const years = [...new Set(contributions.map(c => c.yearMonth.slice(0,4)))];
+        years.sort().reverse(); // 최신 연도 먼저
+
+        years.forEach(y => {
+            yearSel.innerHTML += `<option value="${y}">${y}년</option>`;
+        });
+    }
+
+    // 최신순/과거순 토글 버튼
+    function toggleSortOrder() {
+        isLatestFirst = !isLatestFirst;
+        const btn = document.getElementById("sortToggleBtn");
+        btn.textContent = isLatestFirst ? "최신순" : "과거순";
+        btn.classList.toggle("active", isLatestFirst);
+
+        applyContributionFilters();
+    }
+
+    // 연도/분기/정렬 모두 반영해서 테이블 렌더링
+    function applyContributionFilters() {
+        const year = document.getElementById("yearFilter").value;
+        const quarter = document.getElementById("quarterFilter").value;
+
+        let filtered = [...contributions];
+
+        // 연도 필터
+        if (year) {
+            filtered = filtered.filter(c => c.yearMonth.startsWith(year));
+        }
+
+        // 분기 필터
+        if (quarter) {
+            filtered = filtered.filter(c => {
+                const month = parseInt(c.yearMonth.slice(4,6));
+                if (quarter === "Q1") return month >= 1 && month <= 3;
+                if (quarter === "Q2") return month >= 4 && month <= 6;
+                if (quarter === "Q3") return month >= 7 && month <= 9;
+                if (quarter === "Q4") return month >= 10 && month <= 12;
+            });
+        }
+
+        // 정렬 (최신/과거)
+        filtered.sort((a, b) => {
+            return isLatestFirst
+                ? b.yearMonth.localeCompare(a.yearMonth)
+                : a.yearMonth.localeCompare(b.yearMonth);
+        });
+
         const body = document.getElementById("contribBody");
         body.innerHTML = "";
 
         let total = 0;
-        contributions
-            .sort((a,b)=>a.yearMonth.localeCompare(b.yearMonth))
-            .forEach(row => {
-                total += row.amount;
-                body.innerHTML += `
+        filtered.forEach(row => {
+            total += row.amount;
+            body.innerHTML += `
                 <tr>
                     <td>${row.yearMonth.slice(0,4)}-${row.yearMonth.slice(4,6)}</td>
                     <td style="text-align:right;">${row.amount.toLocaleString("ko-KR")}원</td>
                     <td style="text-align:right;">${total.toLocaleString("ko-KR")}원</td>
                 </tr>
             `;
-            });
+        });
     }
 
-    /* ==============================
-       검색 자동완성
-    ============================== */
-    document.getElementById("searchInput").addEventListener("input", async function () {
-        const keyword = this.value.trim();
+    /* ===========================
+       자동완성 기능 (기존 유지)
+    =========================== */
+    let autoIndex = -1;
+    let autoItems = [];
+
+    /* Debounce 함수 */
+    let debounceTimer = null;
+    function debounce(callback, delay = 300) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(callback, delay);
+    }
+
+    /* highlight 함수 (자동완성용) */
+    function highlight(text, keyword) {
+        if (!keyword) return text;
+        const reg = new RegExp(keyword, "gi");
+        return text.replace(reg, m => `<b style="color:#D91A1A;">${m}</b>`);
+    }
+
+    /* 자동완성 요청 */
+    async function loadAutocomplete(keyword) {
         const box = document.getElementById("autocompleteList");
 
-        if (keyword.length < 1) {
+        if (!keyword || keyword.length < 1) {
             box.style.display = "none";
             return;
         }
 
-        // Spring MVC API 예시: /corporate/employee/autocomplete?keyword=
         const res = await fetch(`/BNK/corporate/employee/autocomplete?keyword=${keyword}`);
-        const items = await res.json();
+        const list = await res.json();
 
-        box.innerHTML = "";
-        items.forEach(emp => {
-            box.innerHTML += `
-            <div class="autocomplete-item"
-                 onclick="location.href='/BNK/corporate/employee/detail/${emp.empId}'">
-                ${emp.name} (${emp.accountNo})
-            </div>`;
+        autoItems = list;
+        autoIndex = -1;
+
+        box.innerHTML = list
+            .map((emp, i) => `
+            <div class="autocomplete-item" data-index="${i}">
+                ${highlight(emp.name, keyword)} (${highlight(emp.accountNo, keyword)})
+            </div>
+        `)
+            .join("");
+
+        box.style.display = list.length > 0 ? "block" : "none";
+
+        // 마우스 클릭 이벤트
+        document.querySelectorAll(".autocomplete-item").forEach(el => {
+            el.addEventListener("click", () => {
+                const idx = el.dataset.index;
+                selectAutocomplete(idx);
+            });
         });
+    }
 
-        box.style.display = "block";
+    /* 자동완성 선택 */
+    function selectAutocomplete(index) {
+        const item = autoItems[index];
+        if (!item) return;
+
+        searchInput.value = item.name;
+        document.getElementById("autocompleteList").style.display = "none";
+
+        // 상세 페이지 이동
+        location.href = `/BNK/corporate/employee/detail/${item.empId}`;
+    }
+
+    /* 자동완성 active 스타일 업데이트 */
+    function updateActiveItem() {
+        const items = document.querySelectorAll(".autocomplete-item");
+        items.forEach((el, i) => {
+            el.classList.toggle("active", i === autoIndex);
+            if (i === autoIndex) el.scrollIntoView({ block: "nearest" });
+        });
+    }
+
+    /* === 이벤트: input 입력 시 debounce 적용 === */
+    document.getElementById("searchInput").addEventListener("input", function () {
+        const keyword = this.value.trim();
+        debounce(() => loadAutocomplete(keyword), 250);
+    });
+
+    /* === 이벤트: 방향키 처리 === */
+    document.getElementById("searchInput").addEventListener("keydown", function (e) {
+        const box = document.getElementById("autocompleteList");
+        if (box.style.display === "none") return;
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            autoIndex = (autoIndex + 1) % autoItems.length;
+            updateActiveItem();
+        }
+
+        if (e.key === "ArrowUp") {
+            e.preventDefault();
+            autoIndex = autoIndex <= 0 ? autoItems.length - 1 : autoIndex - 1;
+            updateActiveItem();
+        }
+
+        if (e.key === "Enter") {
+            e.preventDefault();
+            if (autoIndex >= 0) selectAutocomplete(autoIndex);
+        }
+
+        if (e.key === "Escape") {
+            box.style.display = "none";
+        }
+    });
+
+    /* === focus out 시 auto box 닫기 === */
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".autocomplete-box") && e.target.id !== "searchInput") {
+            document.getElementById("autocompleteList").style.display = "none";
+        }
     });
 
     /* ==============================
@@ -399,6 +632,7 @@
         renderDetail();
     });
 </script>
+
 <script>
     /* 햄버거 & 사이드바 */
     const hamburgerBtn = document.getElementById("hamburgerBtn");
@@ -409,5 +643,6 @@
         hamburgerBtn.classList.toggle("open");
     };
 </script>
+
 </body>
 </html>
