@@ -115,5 +115,4 @@
             #{pcuid}, #{pcpid}, #{pacc}, #{pcnapw}, #{pbalance}, 'IRP'
         )
     </insert>
-
 </mapper>
