@@ -24,16 +24,30 @@
         INSERT INTO USERS (
             "uId", MID, MPW, MNAME, MGENDER, MJUMIN,
             MPHONE, MCARRIER, MBIRTH, MEMAIL, MADDRESS,
-            MDATE, MGRADE, MCOND, "ROLE"
+            MDATE, MGRADE, MCOND,
+            MNUM, MACCESS, MLIMIT,
+            "ROLE"
         )
         VALUES (
                    SEQ_USERS.NEXTVAL,
                    #{mid}, #{mpw}, #{mname}, #{mgender}, #{mjumin},
                    #{mphone}, #{mcarrier}, #{mbirth, jdbcType=DATE},
                    #{memail, jdbcType=VARCHAR}, #{maddress, jdbcType=VARCHAR},
-                   SYSDATE, 'Family', '활동중', 'USER'
+                   SYSDATE, 'Family', '활동중',
+                   '1234-' || SUBSTR(LPAD(SEQ_MNUM.NEXTVAL, 8, '0'), 1, 4)
+                           || '-' || SUBSTR(LPAD(SEQ_MNUM.CURRVAL, 8, '0'), 5, 4),
+                   SYSDATE,
+                   1000000,
+                   'USER'
                )
     </insert>
+
+    <!-- 최근접속 일자 업데이트 -->
+    <update id="updateLastAccess" parameterType="string">
+        UPDATE USERS
+        SET MACCESS = SYSDATE
+        WHERE MID = #{mid}
+    </update>
 
     <!-- 아이디 중복확인(info) -->
     <select id="existsByMid" parameterType="string" resultType="int">
