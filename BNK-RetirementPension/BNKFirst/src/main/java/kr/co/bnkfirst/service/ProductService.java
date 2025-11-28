@@ -277,8 +277,8 @@ public class ProductService {
         이름 : 강민철
         내용 : 계좌 비밀번호 검증
      */
-    public boolean checkAccPin(String pacc, String pin, String mid) {
-        PcontractDTO acc = productMapper.selectByAccAndUid(pacc, mid);
+    public boolean checkAccPin(String pacc, String pin, String mid, String type) {
+        PcontractDTO acc = productMapper.selectByAccAndUidAndType(pacc, mid, type);
         log.info("accDTO: {}", acc);
         log.info("accPin: {}", acc.getPcnapw());
         log.info("pin: {}", pin);
@@ -291,10 +291,13 @@ public class ProductService {
         이름 : 강민철
         내용 : 원리금 보장상품(예적금) 매수 등록
      */
+    @Transactional
     public boolean buyProduct(String pcuid,PcontractDTO pc){
         pc.setPcuid(pcuid);
         int count = productMapper.savePcontract(pc);
         log.info("count: {}", count);
+        if (count > 0)
+            productMapper.drawPcontract(pc);
         return count > 0;
     }
 }

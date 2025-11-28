@@ -142,8 +142,9 @@ public class ProductController {
         String uid = principal.getName();
         String accountNo = body.get("pacc");
         String pin =  body.get("pin");
+        String type = body.get("type");
         log.info("pacc: {}, pin: {}", accountNo, pin);
-        Boolean valid = productService.checkAccPin(accountNo, pin, uid);
+        Boolean valid = productService.checkAccPin(accountNo, pin, uid, type);
         log.info("valid: {}", valid);
         return ResponseEntity.ok(valid);
     }
