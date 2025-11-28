@@ -1,10 +1,6 @@
 package kr.co.bnkfirst.service;
 
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeDetailDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeContributionDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeUpdateDto;
-
+import kr.co.bnkfirst.dto.corporate.employee.*;
 import java.util.List;
 
 public interface EmployeeService {
@@ -25,6 +21,6 @@ public interface EmployeeService {
 
     void deleteEmployee(Long empId);
 
-    // ⭐ 자동완성 기능 추가
-    List<EmployeeListDto> autocomplete(String keyword);
+    // ⭐ 자동완성 (전용 DTO)
+    List<EmployeeAutoDto> autocomplete(String keyword);
 }

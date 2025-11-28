@@ -182,8 +182,9 @@
 <!-- 사이드바 -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">
-        <img src="/BNK/images/BNK_english.png" alt="">
-        <p>부산은행 기업뱅킹</p>
+        <a th:href="@{/corporate/main}">
+            <img th:src="@{/images/BNK_english.png}" alt="부산은행 로고" width="100px">
+        </a>
     </div>
 
     <ul style="list-style:none; padding:0;">
@@ -202,18 +203,22 @@
     <div class="subtitle">
         EMPLOYEE 테이블 기반 직원별 제도, 계좌번호, 적립금 등을 조회합니다.
     </div>
+    <!-- 검색창 영역 -->
+    <form method="get" th:action="@{/corporate/employee/list}">
+        <div class="toolbar">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="직원 이름 또는 계좌번호 검색">
 
-    <!-- 검색 / 필터: 서버로 전송되는 Form -->
-    <form class="toolbar" method="get" action="/BNK/corporate/employee/list">
-        <input type="text" name="keyword" placeholder="직원 이름 또는 계좌번호 검색"
-               th:value="${keyword}">
-        <select name="planType">
-            <option value="ALL" th:selected="${planType == 'ALL'}">전체 제도</option>
-            <option value="DB" th:selected="${planType == 'DB'}">DB 제도만</option>
-            <option value="DC" th:selected="${planType == 'DC'}">DC 제도만</option>
-        </select>
-        <button type="submit">검색</button>
+            <select name="planType">
+                <option value="" th:selected="${planType == ''}">전체 제도</option>
+                <option value="DB" th:selected="${planType == 'DB'}">DB 제도만</option>
+                <option value="DC" th:selected="${planType == 'DC'}">DC 제도만</option>
+            </select>
+
+            <button type="submit">검색</button>
+            <button type="button" onclick="location.href='/corporate/employee/list'">초기화</button>
+        </div>
     </form>
+
 
     <div class="card">
         <div class="card-title">직원 목록</div>

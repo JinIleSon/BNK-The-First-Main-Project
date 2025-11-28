@@ -1,9 +1,6 @@
 package kr.co.bnkfirst.mapper;
 
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeDetailDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeContributionDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeUpdateDto;
+import kr.co.bnkfirst.dto.corporate.employee.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -28,6 +25,6 @@ public interface EmployeeMapper {
 
     Long getCurrentBalance(@Param("empId") Long empId);
 
-    // ⭐ 자동완성 기능 추가 (사번/이름/계좌번호)
-    List<EmployeeListDto> autocomplete(@Param("keyword") String keyword);
+    // ⭐ 자동완성 (EmployeeAutoDto로 타입 변경)
+    List<EmployeeAutoDto> autocomplete(@Param("keyword") String keyword);
 }
