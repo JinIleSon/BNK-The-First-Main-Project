@@ -93,10 +93,10 @@
 
 <!--    상품 해지 과정-->
     <update id="updateRecvContract">
-        update pcontract set pbalance=pbalance+#{pbalance} where pacc=#{pacc}
+        update pcontract set pbalance=pbalance+#{pbalance} where pacc=#{pacc} and type='IRP'
     </update>
     <delete id="deleteContract">
-        delete from pcontract where pacc = #{pacc}
+        delete from pcontract where pcuid = #{pcuid} and pcpid = #{pcpid}
     </delete>
 
 <!--    ETF 상품 불러오기-->

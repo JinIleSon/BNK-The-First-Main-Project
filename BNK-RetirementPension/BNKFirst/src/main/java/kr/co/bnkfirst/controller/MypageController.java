@@ -82,10 +82,10 @@ public class MypageController {
         return "mypage/mypage_prodCancel";
     }
     @PostMapping("/mypage/prod/cancel")
-    public String ProdCancel(String pacc, int pbalance, String recvAcc){
+    public String ProdCancel(String pacc, int pbalance, String recvAcc, Principal principal, String pcpid){
         log.info("pacc = "+pacc+"  pbalance="+pbalance+"  recvAcc="+recvAcc);
 
-        mypageService.deleteContractProcess(pbalance, pacc, recvAcc);
+        mypageService.deleteContractProcess(pbalance, recvAcc, principal.getName(), pcpid);
         return "redirect:/mypage/prod";
     }
     @GetMapping("/mypage/setup")
