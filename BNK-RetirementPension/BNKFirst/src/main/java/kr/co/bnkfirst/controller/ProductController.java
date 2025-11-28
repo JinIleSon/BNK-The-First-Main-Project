@@ -169,6 +169,7 @@ public class ProductController {
         String mid = principal.getName();
         model.addAttribute("mid", mid);
         model.addAttribute("pcpid", pid);
+        log.info("subCmplPage pid {}", pid);
         return "product/product_sub_cmpl";
     }
 
