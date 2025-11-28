@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,27 +32,25 @@ public class UsersController {
      */
 
     @PostMapping("/login")
-    public String login(
-            @RequestParam String mid,
-            @RequestParam String mpw,
-            HttpSession session
-    ) {
+    public String login(@RequestParam String mid,
+                        @RequestParam String mpw,
+                        HttpSession session, RedirectAttributes ra) {
 
         log.info("로그인 시도 ID: {}", mid);
 
         UsersDTO dto = usersService.login(mid, mpw);
-        log.info("비밀번호 암호화 체크 : "+mpw);
-        log.info("dto 체크 : "+dto);
 
         if (dto == null) {
-            log.warn("로그인 실패 - 존재하지 않거나 비밀번호 불일치: {}", mid);
+
             return "redirect:/member/main?error=fail";
         }
+
+        // 최근 접속일자
+        usersService.updateLastAccess(dto.getMid());
 
         // JWT 생성
         Users user = dto.toEntity();
         String role = dto.getRole();
-
         String token = jwtProvider.createToken(user, role);
         log.info("token: {}", token);
 
@@ -64,6 +63,8 @@ public class UsersController {
         session.setMaxInactiveInterval(1200);
 
         log.info("로그인 성공 - ID: {}, JWT 발급됨, 세션 시작시간: {}", mid, now);
+
+        ra.addFlashAttribute("loginSuccessMsg", dto.getMname() + "님 반갑습니다. 환영합니다");
 
         return "redirect:/main/main";
     }

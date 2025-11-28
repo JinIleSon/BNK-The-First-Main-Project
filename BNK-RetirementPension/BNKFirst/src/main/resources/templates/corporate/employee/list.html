@@ -5,6 +5,249 @@
     <title>퇴직연금 기업뱅킹 - 직원 조회</title>
 
     <style>
+        /* ---------------------- 공통 레이아웃 ---------------------- */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+            background-color: #f4f5f9;
+            color: #222;
+        }
+
+        .page-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 24px;
+        }
+
+        h1 {
+            margin: 0 0 16px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            font-size: 15px; /* 기존 13px → 15px */
+            color: #777;
+            margin-bottom: 24px;
+        }
+
+        /* ---------------------- 검색/필터 영역 ---------------------- */
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .toolbar input[type="text"],
+        .toolbar select {
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px; /* 기존 14px → 15px */
+        }
+
+        .toolbar input[type="text"] {
+            flex: 1;
+        }
+
+        .toolbar button {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            font-size: 15px; /* 기존 14px → 15px */
+            cursor: pointer;
+            background-color: #d91a1a;
+            color: white;
+        }
+
+        .toolbar button:hover {
+            opacity: 0.9;
+        }
+
+        /* ---------------------- 카드 공통 ---------------------- */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+
+        .summary-wrapper {
+            display: flex;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            flex: 1;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .summary-title {
+            font-size: 15px; /* 기존 14px → 15px */
+            color: #777;
+            margin-bottom: 6px;
+        }
+
+        .summary-icon {
+            font-size: 26px;
+            margin: 6px 0;
+        }
+
+        .summary-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* ---------------------- 2단 그리드 ---------------------- */
+        .section-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .card-box {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .news-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px; /* 기존 13px → 15px */
+            padding: 6px 0;
+        }
+
+        .tag-notice {
+            padding: 2px 8px;
+            font-size: 15px; /* 기존 11px → 15px */
+            border-radius: 999px;
+            background: #ffe4e4;
+            color: #d91a1a;
+            margin-right: 6px;
+        }
+
+        /* ---------------------- 고객센터 ---------------------- */
+        .contact-box {
+            display: flex;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+            margin-top: 16px;
+            gap: 20px;
+        }
+
+        .contact-col {
+            flex: 1;
+            border-right: 1px solid #eee;
+        }
+
+        .contact-title {
+            font-size: 15px; /* 기존 14px → 15px */
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .contact-number {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        /* ---------------------- 반응형 ---------------------- */
+        @media (max-width: 900px) {
+            .summary-wrapper,
+            .section-row,
+            .contact-box {
+                flex-direction: column;
+            }
+
+            .contact-col {
+                border-right: none !important;
+            }
+        }
+
+
+        /* 고객지원 카드 6칸 */
+        .support-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        /* 각 박스 */
+        .support-item {
+            padding: 26px 10px;
+            font-size: 15px; /* 최소 15px 유지 */
+            text-align: center;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            background: #fff;
+        }
+
+        /* 오른쪽 끝 border 제거 */
+        .support-item:nth-child(2n) {
+            border-right: none;
+        }
+
+        /* 마지막 두 칸 border 제거 (하단) */
+        .support-item:nth-last-child(-n + 2) {
+            border-bottom: none;
+        }
+
+        /* hover 효과 */
+        .support-item:hover {
+            background: #fff5f5; /* 연한 빨강 배경 */
+            color: #d91a1a; /* 빨간 글자 */
+        }
+
+        /* ================= 자동완성 박스 ================= */
+        .auto-box {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 100%; /* 🔥 input 너비 그대로 */
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 5000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            font-size: 15px;
+            top: 42px; /* 🔥 input 바로 아래 */
+            left: 0; /* 🔥 input 기준으로 정렬 */
+        }
+
+
+        .auto-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .auto-item:hover {
+            background: #fff5f5;
+            color: #d91a1a;
+        }
+
+
         /* ======================== 공통 레이아웃 ======================== */
         * { box-sizing: border-box; }
 
@@ -14,6 +257,7 @@
             font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
             background-color: #f4f5f9;
             color: #222;
+
             font-size: 15px;
         }
 
@@ -109,92 +353,41 @@
         .status-active { color: #0c8a3f; font-weight:600; }
         .status-retired { color: #999; font-weight:600; }
 
-        /* ======================== 햄버거 ======================== */
-        .hamburger {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 6px;
-            background: none;
-            border: none;
+        .auto-box {
+            position: absolute;
+            top: 42px;
+            left: 0;
+            width: 300px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            display: none;
             z-index: 2000;
+            max-height: 260px;
+            overflow-y: auto;
         }
 
-        .hamburger span {
-            width: 100%;
-            height: 4px;
-            background: #222;
-            border-radius: 4px;
-            transition: 0.3s;
+        .auto-item {
+            padding: 8px 10px;
+            cursor: pointer;
         }
 
-        .hamburger.open span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
+        .auto-item:hover {
+            background: #f1f1f1;
         }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        /* ======================== 사이드바 ======================== */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -260px;
-            width: 250px;
-            height: 100%;
-            background: white;
-            padding: 20px;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-            transition: 0.3s;
-            z-index: 1500;
-        }
-
-        .sidebar.active { left: 0; }
-        .sidebar-title img { width: 150px; margin-bottom: 10px; }
-        .sidebar-title p { font-size: 15px; margin: 5px 0 20px; }
-
-        .sidebar a {
-            color:#222; text-decoration:none;
-            font-size:15px; display:block;
-            padding:8px 0;
-            transition: color 0.2s;
-        }
-
-        .sidebar a:hover { color:#d91a1a; }
 
     </style>
 </head>
 
 <body>
 
-<!-- 햄버거 버튼 -->
-<button class="hamburger" id="hamburgerBtn">
-    <span></span><span></span><span></span>
-</button>
 
-<!-- 사이드바 -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-title">
-        <a th:href="@{/corporate/main}">
-            <img th:src="@{/images/BNK_english.png}" alt="부산은행 로고" width="100px">
-        </a>
-    </div>
+<div th:replace="~{layouts/corporate_header :: corpHeader}"></div>
 
-    <ul style="list-style:none; padding:0;">
-        <li><a href="/BNK/corporate/main">🏠 기업 메인</a></li>
-        <li><a href="/BNK/corporate/employee/list">👥 직원 관리</a></li>
-        <li><a href="/BNK/corporate/employee/detail/1">📑 직원 상세</a></li>
-        <li><a href="/BNK/corporate/cs">❓ 고객센터</a></li>
-    </ul>
-</aside>
-
+<script>
+    initCorporateHeader("employee");
+</script>
 
 <!-- 페이지 내용 -->
 <div class="page-container">
@@ -203,10 +396,21 @@
     <div class="subtitle">
         EMPLOYEE 테이블 기반 직원별 제도, 계좌번호, 적립금 등을 조회합니다.
     </div>
+
     <!-- 검색창 영역 -->
     <form method="get" th:action="@{/corporate/employee/list}">
-        <div class="toolbar">
-            <input type="text" name="keyword" th:value="${keyword}" placeholder="직원 이름 또는 계좌번호 검색">
+
+        <div class="toolbar" style="position:relative;">   <!-- 자동완성 Box 올리기 위해 relative -->
+
+            <!-- 🔍 검색창 -->
+            <input type="text"
+                   name="keyword"
+                   id="searchKeyword"
+                   th:value="${keyword}"
+                   placeholder="직원 이름 또는 계좌번호 검색">
+
+            <!-- 🔥 자동완성 박스 (여기 추가!) -->
+            <div id="autoBox" class="auto-box" style="display:none;"></div>
 
             <select name="planType">
                 <option value="" th:selected="${planType == ''}">전체 제도</option>
@@ -215,7 +419,8 @@
             </select>
 
             <button type="submit">검색</button>
-            <button type="button" onclick="location.href='/corporate/employee/list'">초기화</button>
+            <button type="button" onclick="location.href='/BNK/corporate/employee/list'">초기화</button>
+
         </div>
     </form>
 
@@ -256,15 +461,49 @@
 
 </div>
 
-<script>
-    /* 햄버거 & 사이드바 */
-    const hamburgerBtn = document.getElementById("hamburgerBtn");
-    const sidebar = document.getElementById("sidebar");
 
-    hamburgerBtn.onclick = () => {
-        sidebar.classList.toggle("active");
-        hamburgerBtn.classList.toggle("open");
-    };
+<script>
+    const input = document.getElementById("searchKeyword");
+    const autoBox = document.getElementById("autoBox");
+    let autoList = [];
+
+    async function loadAuto(keyword) {
+        if (!keyword || keyword.length < 1) {
+            autoBox.style.display = "none";
+            return;
+        }
+
+        const res = await fetch(`/BNK/corporate/employee/autocomplete?keyword=${keyword}`);
+
+        const list = await res.json();
+        autoList = list;
+
+        autoBox.innerHTML = list.map(emp =>
+            `<div class="auto-item" onclick="selectAuto(${emp.empId})">
+            ${emp.name} (${emp.accountNo})
+        </div>`
+        ).join("");
+
+        autoBox.style.display = list.length > 0 ? "block" : "none";
+    }
+
+    function selectAuto(empId) {
+        location.href = `/corporate/employee/detail/${empId}`;
+    }
+
+    let debounceTimer = null;
+    input.addEventListener("input", () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            loadAuto(input.value.trim());
+        }, 300);
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".auto-box") && e.target.id !== "searchKeyword") {
+            autoBox.style.display = "none";
+        }
+    });
 </script>
 
 </body>

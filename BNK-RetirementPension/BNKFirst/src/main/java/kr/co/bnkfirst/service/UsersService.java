@@ -207,4 +207,8 @@ public class UsersService {
 
         return p.getPacc();
     }
+
+    public void updateLastAccess(String mid) {
+        usersMapper.updateLastAccess(mid);
+    }
 }
