@@ -5,9 +5,11 @@ import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.entity.Users;
 import kr.co.bnkfirst.jwt.JwtProvider;
+import kr.co.bnkfirst.security.MyUserDetails;
 import kr.co.bnkfirst.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -346,5 +348,34 @@ public class UsersController {
         session.setAttribute("JOINT_CERT_AUTH", true);
 
         return Map.of("ok", true, "fileName", originalName);
+    }
+
+    // 회원 탈퇴 추가 (이준우 2025.11.28)
+    @PostMapping("/withdraw")
+    public String withdraw(@AuthenticationPrincipal MyUserDetails principal,
+                           @RequestParam("mpw")   String mpw,
+                           @RequestParam("mphone") String mphone,
+                           HttpSession session,
+                           RedirectAttributes rttr) {
+
+        String mid = principal.getUsername();
+
+        try {
+            boolean ok = usersService.withdrawUser(mid, mpw, mphone);
+
+            if (!ok) {
+                rttr.addFlashAttribute("msg", "탈퇴 조건이 맞지 않습니다. (비밀번호/휴대폰 번호 확인)");
+                return "redirect:/member/mypage";
+            }
+
+            session.invalidate();
+            rttr.addFlashAttribute("msg", "회원 탈퇴가 완료되었습니다.");
+            return "redirect:/member/main";
+
+        } catch (Exception e) {
+            log.error("회원 탈퇴 중 오류", e);
+            rttr.addFlashAttribute("msg", "탈퇴 처리 중 오류가 발생했습니다.");
+            return "redirect:/member/mypage";
+        }
     }
 }

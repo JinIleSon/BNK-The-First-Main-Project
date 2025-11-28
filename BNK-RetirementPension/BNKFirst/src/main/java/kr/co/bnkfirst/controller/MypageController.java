@@ -46,6 +46,7 @@ public class MypageController {
         model.addAttribute("balance", mypageService.findByBalance(principal.getName()) + mypageService.findByFundBalance(principal.getName()));
         model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
         model.addAttribute("documentList", mypageService.findByDocumentList(principal.getName()));
+        model.addAttribute("ETFList", mypageService.selectEtf(principal.getName()));
         return "mypage/mypage_main";
     }
     @GetMapping("/mypage/prod")
@@ -55,8 +56,8 @@ public class MypageController {
         model.addAttribute("dealList",mypageService.findByDealList(principal.getName()));
 
         List<PcontractDTO> totalList = new ArrayList<>();
-        totalList.addAll(mypageService.findByContract(principal.getName()));
         totalList.addAll(mypageService.findByFundContract(principal.getName()));
+        totalList.addAll(mypageService.selectEtf(principal.getName()));
 
         model.addAttribute("contractList", totalList);
         log.info(mypageService.findByContract(principal.getName()).toString());
@@ -76,14 +77,15 @@ public class MypageController {
 
     @GetMapping("/mypage/prod/cancel")
     public String ProdCancel(Model model, Principal principal) {
-        model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
+
+        model.addAttribute("contractList", mypageService.findByFundContract(principal.getName()));
         return "mypage/mypage_prodCancel";
     }
     @PostMapping("/mypage/prod/cancel")
-    public String ProdCancel(String pacc, int pbalance, String recvAcc){
+    public String ProdCancel(String pacc, int pbalance, String recvAcc, Principal principal, String pcpid){
         log.info("pacc = "+pacc+"  pbalance="+pbalance+"  recvAcc="+recvAcc);
 
-        mypageService.deleteContractProcess(pbalance, pacc, recvAcc);
+        mypageService.deleteContractProcess(pbalance, recvAcc, principal.getName(), pcpid);
         return "redirect:/mypage/prod";
     }
     @GetMapping("/mypage/setup")

@@ -8,8 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
+import java.util.Map;
 import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -144,5 +147,37 @@ public class EmployeeController {
     public List<EmployeeAutoDto> autocomplete(@RequestParam String keyword) {
         return employeeService.autocomplete(keyword);
     }
+
+    /** =====================================
+     *  ⭐ 직원 상태 변경 (재직/휴직 공통)
+     *  ===================================== */
+    @PostMapping("/status/{empId}")
+    @ResponseBody
+    public ResponseEntity<?> updateStatus(
+            @PathVariable Long empId,
+            @RequestBody Map<String, String> body
+    ) {
+        String status = body.get("status");
+        employeeService.updateStatus(empId, status);
+        return ResponseEntity.ok().build();
+    }
+
+
+    /** =====================================
+     *  ⭐ 직원 퇴사 처리 (퇴사일 포함)
+     *  ===================================== */
+    @PostMapping("/retire/{empId}")
+    @ResponseBody
+    public ResponseEntity<?> retireEmployee(
+            @PathVariable Long empId,
+            @RequestBody Map<String, String> body
+    ) {
+        String status = body.get("status");       // ⭐ 반드시 필요
+        String retireDate = body.get("retireDate");
+
+        employeeService.retire(empId, status, retireDate);   // ⭐ status 함께 전달
+        return ResponseEntity.ok().build();
+    }
+
 
 }

@@ -45,24 +45,24 @@ public class EtfViewController {
                              Principal principal,
                              Model model) {
 
-        // 🔥 principal이 null이어도 안전하게 처리
         String principalName = (principal != null) ? principal.getName() : null;
 
-        // 🔥 계좌 목록 조회
-        List<PcontractDTO> accountList;
+        // 🔥 DTO 하나를 List로 감싸서 넘기기
+        List<PcontractDTO> accountList = Collections.emptyList();
+
         if (principalName != null) {
-            accountList = stockService.findByContract(principalName);
-        } else {
-            accountList = Collections.emptyList();
+            PcontractDTO dto = stockService.findByIRP(principalName);
+            if (dto != null) {
+                accountList = List.of(dto);   // 또는 Collections.singletonList(dto)
+            }
         }
         model.addAttribute("accountList", accountList);
 
-        // 🔥 첫 번째 계좌의 pacc 가져오기
+        // 첫 번째 계좌 pacc
         String pacc = null;
         if (!accountList.isEmpty()) {
-            pacc = accountList.get(0).getPacc();   // ← 여기서 pacc 꺼냄
+            pacc = accountList.get(0).getPacc();
         }
-
         // 🔥 pacc 와 name 으로 보유 종목 조회 (필요하다면)
         if (pacc != null && name != null && !name.isBlank()) {
             // 예: 해당 계좌에서 이 종목을 이미 보유중인지 체크
@@ -99,7 +99,7 @@ public class EtfViewController {
                                 @RequestParam("code") String code,
                                 RedirectAttributes redirectAttributes){
 
-        stockService.buyProcess(pcuid,pstock,pprice,psum,pname,pacc);
+        stockService.buyProcess(pcuid,pstock,pprice,psum,pname,pacc,code);
 
         // ✅ 구매 완료 표시
         redirectAttributes.addAttribute("result", "buy");
