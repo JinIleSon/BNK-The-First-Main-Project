@@ -166,7 +166,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
                         pacc: select.value,   // 출금계좌번호
-                        pin: accPinValue      // 입력한 비밀번호 4자리
+                        pin: accPinValue,     // 입력한 비밀번호 4자리
+                        type: state.productInfo.pelgbl // 제도구분
                     })
                 });
                 console.log('pacc:', select.value, ' pin:', accPinValue);
@@ -344,13 +345,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             // 상품ID
             "pcpid": pid,
 
+            // 계좌 비밀번호
+            "pcnapw": accPinValue,
+
             // 계좌번호
             "pacc": pacc,
 
             // 제도구분
             "type": schemeType,
 
-            // 최초불입금액
+            // 매수금액
             "pbalance": firstAmt,
 
             // 계약일
@@ -893,7 +897,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             select.appendChild(opt);
         });
 
-        // 2) 비율을 기반으로 실제 사용할 금액 계산
         // 2) 비율을 기반으로 실제 사용할 금액 계산
         function applyPercent() {
             if (!percentInput) return;

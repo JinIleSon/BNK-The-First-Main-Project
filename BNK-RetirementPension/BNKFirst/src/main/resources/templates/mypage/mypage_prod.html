@@ -287,9 +287,9 @@
                     </div>
                 </div>
             </div>
-            <div id="summary-cards" style="display: flex; margin-top: 25px;">
+            <div id="summary-cards" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; margin-top: 25px;">
               <a href="#" id="transfer-card" style="text-decoration: none;">
-                <div class="menu-card" style="background-color: white; width: 380.5px; height: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                <div class="menu-card" style="background-color: white; height: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                   <div style="padding: 21px;">
                     <div>
                       <div style="display: flex;">
@@ -319,7 +319,7 @@
                 </div>
               </a>
               <a th:href="@{/product/main}" style="text-decoration: none;">
-                <div class="menu-card" style="margin-left:25px; background-color: white; width: 380.5px; height: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                <div class="menu-card" style="margin-left:25px; background-color: white; height: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                   <div style="padding: 21px;">
                     <div>
                       <div style="display: flex;">
@@ -349,7 +349,7 @@
                 </div>
               </a>
               <a th:href="@{/mypage/prod/cancel}" style="text-decoration: none;">
-                <div class="menu-card" style="margin-left:25px; background-color: white; width: 380.5px; height: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                <div class="menu-card" style="margin-left:25px; background-color: white; height: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
                   <div style="padding: 21px;">
                     <div>
                       <div style="display: flex;">
@@ -370,6 +370,46 @@
                             <div style="margin-left: 15px;">
                                 <div style="color: #2B2F36; font-size: 16px;">상품 해지</div>
                                 <div style="color: #6B7280; font-size: 14px;">계약 종료 신청</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+              <a th:href="@{/mypage/prod/edit}" style="text-decoration: none;">
+                <div class="menu-card" style="margin-left:25px; background-color: white; height: 90px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #E5E7EB;">
+                  <div style="padding: 21px;">
+                    <div>
+                      <div style="display: flex;">
+                        <div style="">
+                          <div style="display: flex; justify-content: center;">
+                            <div style="display: flex; justify-content: center; align-items: center; border-radius: 8px; background-color: #f8e6e6; width: 48px; height: 48px;">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <!-- 위 슬라이더 -->
+                                    <line x1="3" y1="7" x2="21" y2="7"
+                                          stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="9" cy="7" r="2.4"
+                                            fill="white" stroke="#EF4444" stroke-width="2"/>
+
+                                    <!-- 가운데 슬라이더 -->
+                                    <line x1="3" y1="12" x2="21" y2="12"
+                                          stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="16" cy="12" r="2.4"
+                                            fill="white" stroke="#EF4444" stroke-width="2"/>
+
+                                    <!-- 아래 슬라이더 -->
+                                    <line x1="3" y1="17" x2="21" y2="17"
+                                          stroke="#EF4444" stroke-width="2" stroke-linecap="round"/>
+                                    <circle cx="11" cy="17" r="2.4"
+                                            fill="white" stroke="#EF4444" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <div style="margin-left: 15px;">
+                                <div style="color: #2B2F36; font-size: 16px;">상품 변경</div>
+                                <div style="color: #6B7280; font-size: 14px;">매도/매수 신청 및 운용비율 조정</div>
                             </div>
                           </div>
                         </div>
