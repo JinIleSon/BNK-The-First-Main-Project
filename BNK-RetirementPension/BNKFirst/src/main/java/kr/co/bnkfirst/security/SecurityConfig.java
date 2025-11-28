@@ -48,7 +48,7 @@ public class SecurityConfig {
                         "/kiwoom/**", "/docs/**", "/product/**",
                         "/qna/**", "/stock/**", "/tologo/**",
                         "/ws/**", "/retirement-renew/**", "/mypage/calc/**",
-                        "/corporate/**"
+                        "/corporate/**","/irp/**","/auth/qr/**"
                 ).permitAll()
                 .requestMatchers("/mypage/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
