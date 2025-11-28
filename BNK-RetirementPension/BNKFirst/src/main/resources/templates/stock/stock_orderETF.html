@@ -606,6 +606,17 @@
             cursor: pointer;
         }
     </style>
+    <style>
+        .diff-up {
+            color: #d60000;  /* 상승 = 빨강 */
+        }
+        .diff-down {
+            color: #0051c7;  /* 하락 = 파랑 */
+        }
+        .diff-zero {
+            color: #555555;  /* 보합 */
+        }
+    </style>
 </head>
 <body th:attr="data-stock-code=${code}, data-stock-name=${stockName}, data-logged-in=${session.loginUser != null}, data-toast-result=${toastResult}">
 <header>
@@ -621,7 +632,8 @@
                          th:text="${stockName}">삼성전자</div>
                     <div style="display: flex; align-items: center;">
                         <div id="topCurrentPrice" style="font-size: 20px; font-weight: 500; ">-</div>
-                        <div style="margin-left: 10px;">지난 정규장보다<span id="topChangeInfo" style="color: #de0000; margin-left: 7px;">&nbsp;-원&nbsp;(-%)</span></div>
+                        <div id="lastDiffText" data-base-label="지난 정규장보다"
+                        style="margin-left: 10px;"></div>
                     </div>
                 </div>
             </div>
@@ -1749,49 +1761,27 @@
         const rateRaw     = values0D['6112'];   // 등락률 %
 
         const nowPriceEl = document.getElementById('topCurrentPrice');
-        const changeEl   = document.getElementById('topChangeInfo');
-
-        if (!nowPriceEl || !changeEl) return;
+        if (!nowPriceEl) return;
 
         // 현재가 표시
         const nowPrice = parseKiwoomAbs(nowPriceRaw);
         if (nowPrice != null) {
             nowPriceEl.textContent = formatNumber(nowPrice) + '원';
-
-            // // ✅ ALERT_PRICE 보다 저점(이하)일 때 한 번만 토스트
-            // if (!window.priceToastShown && typeof ALERT_PRICE !== 'undefined') {
-            //     if (nowPrice <= ALERT_PRICE) {
-            //         window.priceToastShown = true;
-            //         showPriceAlertToast({
-            //             type: 'alert',
-            //             currentPrice: nowPrice,
-            //             alertPrice : ALERT_PRICE
-            //         });
-            //     }
-            // }
             updateCurrentProfit(nowPrice);
         }
 
-        // 전일 대비 / 등락률 표시
-        if (diffRaw && rateRaw) {
+        // 전일 대비 / 등락률 표시 → 여기서만 renderLastDiff 사용
+        if (diffRaw != null && rateRaw != null) {
             const diff = Number(diffRaw);
             const rate = Number(rateRaw);
 
-            const sign = diff > 0 ? "+" : diff < 0 ? "-" : "";
-            const absDiff = Math.abs(diff);
-            const absRate = Math.abs(rate).toFixed(2);
+            // 화면 그리기
+            renderLastDiff({
+                diffPrice: diff,
+                diffRate : rate
+            });
 
-            // 컬러 설정
-            let color = "#555555"; // 보합
-            if (rate > 0) color = "#d60000";  // 빨강
-            else if (rate < 0) color = "#0051c7"; // 파랑
-
-            changeEl.style.color = color;
-
-            changeEl.innerHTML =
-                `${sign}${formatNumber(absDiff)}원 (${sign}${absRate}%)`;
-
-            // 저번 장보다 -7% 낮다면 토스트
+            // -7% 토스트 체크
             checkToastByChangeRate(rate);
         }
     }
@@ -2414,6 +2404,31 @@
             showOrderToast('판매');
         }
     });
+</script>
+<script>
+    function renderLastDiff({ diffPrice, diffRate }) {
+        const el = document.getElementById('lastDiffText');
+        if (!el) return;
+
+        const label = el.dataset.baseLabel || '지난 정규장보다';
+
+        const signPrice = diffPrice > 0 ? '+' : diffPrice < 0 ? '-' : '';
+        const signRate  = diffRate > 0 ? '+' : diffRate < 0 ? '-' : '';
+
+        const absPrice = Math.abs(diffPrice).toLocaleString('ko-KR');
+        const absRate  = Math.abs(diffRate).toFixed(2);
+
+        // 등락 방향에 따라 클래스 선택
+        let cls = 'diff-zero';
+        if (diffRate > 0) cls = 'diff-up';
+        else if (diffRate < 0) cls = 'diff-down';
+
+        // ⚠ textContent 대신 innerHTML 사용해서 숫자만 색칠
+        el.innerHTML =
+            `${label} ` +
+            `<span class="${cls}">${signPrice}${absPrice}원</span> ` +
+            `<span class="${cls}">(${signRate}${absRate}%)</span>`;
+    }
 </script>
 </body>
 </html>

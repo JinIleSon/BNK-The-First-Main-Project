@@ -142,8 +142,9 @@ public class ProductController {
         String uid = principal.getName();
         String accountNo = body.get("pacc");
         String pin =  body.get("pin");
+        String type = body.get("type");
         log.info("pacc: {}, pin: {}", accountNo, pin);
-        Boolean valid = productService.checkAccPin(accountNo, pin, uid);
+        Boolean valid = productService.checkAccPin(accountNo, pin, uid, type);
         log.info("valid: {}", valid);
         return ResponseEntity.ok(valid);
     }
@@ -162,9 +163,14 @@ public class ProductController {
     }
 
     @GetMapping("/product/subCmpl/list")
-    public String subCmplPage(Model model) {
-        model.addAttribute("mid", "a123");
-        model.addAttribute("pcpid", "BNK-TD-1");
+    public String subCmplPage(Model model, @RequestParam String pid, Principal principal) {
+        if (principal == null) {
+            throw new ErrorResponseException(HttpStatus.FORBIDDEN);
+        }
+        String mid = principal.getName();
+        model.addAttribute("mid", mid);
+        model.addAttribute("pcpid", pid);
+        log.info("subCmplPage pid {}", pid);
         return "product/product_sub_cmpl";
     }
 

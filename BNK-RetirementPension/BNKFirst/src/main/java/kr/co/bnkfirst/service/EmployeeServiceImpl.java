@@ -5,7 +5,6 @@ import kr.co.bnkfirst.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -59,9 +58,27 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.getCurrentBalance(empId);
     }
 
-    // ⭐ 자동완성 – EmployeeAutoDto 리턴
     @Override
     public List<EmployeeAutoDto> autocomplete(String keyword) {
         return employeeMapper.autocomplete(keyword);
+    }
+
+
+    /*******************************************
+     * ⭐ 추가해야 하는 부분 (상태 변경 + 퇴사 처리)
+     *******************************************/
+
+    /** 직원 재직/휴직 상태 변경 */
+    @Transactional
+    @Override
+    public void updateStatus(Long empId, String status) {
+        employeeMapper.updateStatus(empId, status);
+    }
+
+    /** 직원 퇴사 처리 (퇴사일 포함) */
+    @Transactional
+    @Override
+    public void retire(Long empId, String retireDate) {
+        employeeMapper.updateRetire(empId, retireDate);
     }
 }

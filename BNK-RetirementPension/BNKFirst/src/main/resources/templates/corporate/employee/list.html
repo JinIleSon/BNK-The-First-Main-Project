@@ -5,14 +5,16 @@
     <title>퇴직연금 기업뱅킹 - 직원 조회</title>
 
     <style>
-        /* ======================== 공통 레이아웃 ======================== */
+        /***********************************
+         * 공통 레이아웃
+         ***********************************/
         * { box-sizing: border-box; }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: "Noto Sans KR", system-ui, -apple-system, sans-serif;
-            background-color: #f4f5f9;
+            font-family: "Noto Sans KR", sans-serif;
+            background: #f4f5f9;
             color: #222;
             font-size: 15px;
         }
@@ -23,31 +25,25 @@
             padding: 24px;
         }
 
-        h1 {
-            margin: 0 0 16px;
-            font-size: 24px;
-        }
+        h1 { margin: 0 0 16px; font-size: 24px; }
+        .subtitle { font-size: 15px; color: #777; margin-bottom: 24px; }
 
-        .subtitle {
-            font-size: 15px;
-            color: #777;
-            margin-bottom: 24px;
-        }
-
-        /* ======================== 검색 / 필터 ======================== */
+        /***********************************
+         * 검색/필터
+         ***********************************/
         .toolbar {
             display: flex;
             gap: 12px;
             align-items: center;
             margin-bottom: 16px;
+            position: relative;
         }
 
-        .toolbar input,
-        .toolbar select {
-            font-size: 15px;
+        .toolbar input, .toolbar select {
             padding: 8px 10px;
             border-radius: 6px;
             border: 1px solid #ccc;
+            font-size: 15px;
         }
 
         .toolbar input { flex: 1; }
@@ -55,20 +51,40 @@
         .toolbar button {
             padding: 8px 14px;
             border-radius: 6px;
-            background-color: #d91a1a;
-            color: white;
+            background: #d91a1a;
+            color: #fff;
             border: none;
             cursor: pointer;
-            font-size: 15px;
         }
 
-        .toolbar button:hover { opacity: 0.9; }
+        .toolbar button:hover { opacity: .9; }
 
-        /* ======================== 카드 공통 ======================== */
+        /* 자동완성 */
+        .auto-box {
+            position: absolute;
+            top: 42px;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 5000;
+        }
+
+        .auto-item { padding: 8px 12px; cursor: pointer; }
+        .auto-item:hover { background: #fff5f5; color: #d91a1a; }
+
+        /***********************************
+         * 카드
+         ***********************************/
         .card {
             background: white;
-            padding: 16px;
             border-radius: 8px;
+            padding: 16px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.06);
             margin-bottom: 20px;
         }
@@ -79,7 +95,9 @@
             margin-bottom: 12px;
         }
 
-        /* ======================== 테이블 ======================== */
+        /***********************************
+         * 테이블
+         ***********************************/
         table {
             width: 100%;
             border-collapse: collapse;
@@ -93,133 +111,152 @@
         }
 
         thead { background: #fafafa; }
-
-        tbody tr { cursor: pointer; }
-        tbody tr:hover { background-color: #f9f1f1; }
+        tbody tr:hover { background: #f9f1f1; }
 
         .tag {
-            padding: 2px 8px;
+            padding: 3px 8px;
             border-radius: 999px;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        .tag-db { background:#ffe4e4; color:#b01010; }
-        .tag-dc { background:#e5f2ff; color:#0b5ebf; }
+        .tag-db { background: #ffe4e4; color: #b01010; }
+        .tag-dc { background: #e5f2ff; color: #0b5ebf; }
 
-        .status-active { color: #0c8a3f; font-weight:600; }
-        .status-retired { color: #999; font-weight:600; }
+        /* 상태 셀 */
+        .status-select {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            background: #fff;
+        }
 
-        /* ======================== 햄버거 ======================== */
-        .hamburger {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            cursor: pointer;
-            padding: 6px;
+        /***********************************
+         * 관리 버튼 (···)
+         ***********************************/
+        .manage-cell {
+            text-align: right;
+            width: 40px;
+            position: relative;
+        }
+
+        .more-btn {
             background: none;
             border: none;
-            z-index: 2000;
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+            padding: 4px;
         }
 
-        .hamburger span {
-            width: 100%;
-            height: 4px;
-            background: #222;
-            border-radius: 4px;
-            transition: 0.3s;
+        .more-btn:hover { color: #d91a1a; }
+
+        .more-menu-wrapper { position: relative; display: inline-block; }
+
+        .more-menu {
+            position: absolute;
+            top: 26px;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            min-width: 120px;
+            display: none;
+            z-index: 9999;
         }
 
-        .hamburger.open span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .hamburger.open span:nth-child(2) { opacity: 0; }
-        .hamburger.open span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
+        .more-menu a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #222;
         }
 
-        /* ======================== 사이드바 ======================== */
-        .sidebar {
+        .more-menu a:hover {
+            background: #fff5f5;
+            color: #d91a1a;
+        }
+
+        .more-menu a.delete { color: #d91a1a; }
+
+        /***********************************
+         * 모달 (퇴사일 입력)
+         ***********************************/
+        .modal-bg {
             position: fixed;
-            top: 0;
-            left: -260px;
-            width: 250px;
-            height: 100%;
-            background: white;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+
+        .modal-box {
+            background: #fff;
+            width: 330px;
             padding: 20px;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
-            transition: 0.3s;
-            z-index: 1500;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-align: center;
         }
 
-        .sidebar.active { left: 0; }
-        .sidebar-title img { width: 150px; margin-bottom: 10px; }
-        .sidebar-title p { font-size: 15px; margin: 5px 0 20px; }
-
-        .sidebar a {
-            color:#222; text-decoration:none;
-            font-size:15px; display:block;
-            padding:8px 0;
-            transition: color 0.2s;
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
         }
 
-        .sidebar a:hover { color:#d91a1a; }
+        .btn-cancel, .btn-save {
+            flex: 1;
+            padding: 8px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-cancel { background: #ddd; }
+        .btn-save { background: #d91a1a; color: #fff; }
 
     </style>
 </head>
 
 <body>
 
-<!-- 햄버거 버튼 -->
-<button class="hamburger" id="hamburgerBtn">
-    <span></span><span></span><span></span>
-</button>
+<div th:replace="~{layouts/corporate_header :: corpHeader}"></div>
+<script>initCorporateHeader("employee");</script>
 
-<!-- 사이드바 -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-title">
-        <a th:href="@{/corporate/main}">
-            <img th:src="@{/images/BNK_english.png}" alt="부산은행 로고" width="100px">
-        </a>
-    </div>
-
-    <ul style="list-style:none; padding:0;">
-        <li><a href="/BNK/corporate/main">🏠 기업 메인</a></li>
-        <li><a href="/BNK/corporate/employee/list">👥 직원 관리</a></li>
-        <li><a href="/BNK/corporate/employee/detail/1">📑 직원 상세</a></li>
-        <li><a href="/BNK/corporate/cs">❓ 고객센터</a></li>
-    </ul>
-</aside>
-
-
-<!-- 페이지 내용 -->
 <div class="page-container">
 
     <h1>퇴직연금 직원 조회</h1>
-    <div class="subtitle">
-        EMPLOYEE 테이블 기반 직원별 제도, 계좌번호, 적립금 등을 조회합니다.
-    </div>
-    <!-- 검색창 영역 -->
+    <div class="subtitle">EMPLOYEE 테이블 기반 직원별 제도, 계좌, 재직 상태를 조회·관리합니다.</div>
+
+    <!-- 검색 -->
     <form method="get" th:action="@{/corporate/employee/list}">
         <div class="toolbar">
-            <input type="text" name="keyword" th:value="${keyword}" placeholder="직원 이름 또는 계좌번호 검색">
+            <input type="text" id="searchKeyword" name="keyword"
+                   th:value="${keyword}" placeholder="직원 이름 또는 계좌번호 검색">
+
+            <div id="autoBox" class="auto-box"></div>
 
             <select name="planType">
                 <option value="" th:selected="${planType == ''}">전체 제도</option>
-                <option value="DB" th:selected="${planType == 'DB'}">DB 제도만</option>
-                <option value="DC" th:selected="${planType == 'DC'}">DC 제도만</option>
+                <option value="DB" th:selected="${planType == 'DB'}">DB 제도</option>
+                <option value="DC" th:selected="${planType == 'DC'}">DC 제도</option>
             </select>
 
             <button type="submit">검색</button>
-            <button type="button" onclick="location.href='/corporate/employee/list'">초기화</button>
+            <button type="button" onclick="location.href='/BNK/corporate/employee/list'">초기화</button>
         </div>
     </form>
 
-
+    <!-- 직원 목록 -->
     <div class="card">
         <div class="card-title">직원 목록</div>
 
@@ -231,40 +268,220 @@
                 <th>제도</th>
                 <th>계좌번호</th>
                 <th>재직 상태</th>
+                <th></th>
             </tr>
             </thead>
 
             <tbody>
-            <tr th:each="emp : ${employees}"
-                th:onclick="|location.href='/BNK/corporate/employee/detail/${emp.empId}'|"
-                style="cursor:pointer">
-
+            <tr th:each="emp : ${employees}">
                 <td th:text="${emp.empId}"></td>
-                <td th:text="${emp.name}"></td>
+
+                <!-- 이름 클릭 시 상세 이동 -->
+                <td>
+                    <a th:href="@{/BNK/corporate/employee/detail/{id}(id=${emp.empId})}"
+                       style="text-decoration:none; color:#222; font-weight:600;">
+                        <span th:text="${emp.name}"></span>
+                    </a>
+                </td>
+
                 <td>
                     <span th:class="'tag ' + (${emp.planType} == 'DB' ? 'tag-db' : 'tag-dc')"
                           th:text="${emp.planType}"></span>
                 </td>
+
                 <td th:text="${emp.accountNo}"></td>
-                <td th:class="${emp.status == 'ACTIVE'} ? 'status-active' : 'status-retired'"
-                    th:text="${emp.status == 'ACTIVE' ? '재직' : '퇴사'}"></td>
+
+                <!-- 상태 변경 -->
+                <td>
+                    <select class="status-select"
+                            th:data-id="${emp.empId}"
+                            th:data-old="${emp.status}">
+                        <option value="ACTIVE" th:selected="${emp.status=='ACTIVE'}">재직</option>
+                        <option value="LEAVE" th:selected="${emp.status=='LEAVE'}">휴직</option>
+                        <option value="RETIRE" th:selected="${emp.status=='RETIRE'}">퇴사</option>
+                    </select>
+                </td>
+
+                <!-- 관리 메뉴 -->
+                <td class="manage-cell">
+                    <div class="more-menu-wrapper">
+                        <button class="more-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                        <div class="more-menu">
+                            <a th:href="@{/corporate/employee/edit/{id}(id=${emp.empId})}">
+                                수정
+                            </a>
+                            <a class="delete" th:href="@{/corporate/employee/delete/{id}(id=${emp.empId})}">
+                                삭제
+                            </a>
+                        </div>
+                    </div>
+                </td>
+
             </tr>
             </tbody>
-
         </table>
     </div>
+</div>
 
+<!-- 퇴사일 모달 -->
+<div id="retireModal" class="modal-bg">
+    <div class="modal-box">
+        <h3>퇴사일 입력</h3>
+        <input type="date" id="retireDate" style="padding:8px; width:100%; margin-top:10px;">
+        <div class="modal-buttons">
+            <button class="btn-cancel" onclick="closeRetireModal()">취소</button>
+            <button class="btn-save" onclick="saveRetireDate()">저장</button>
+        </div>
+    </div>
 </div>
 
 <script>
-    /* 햄버거 & 사이드바 */
-    const hamburgerBtn = document.getElementById("hamburgerBtn");
-    const sidebar = document.getElementById("sidebar");
+    /***************************************************
+     * 자동완성
+     ***************************************************/
+    const input = document.getElementById("searchKeyword");
+    const autoBox = document.getElementById("autoBox");
+    let debounceTimer;
 
-    hamburgerBtn.onclick = () => {
-        sidebar.classList.toggle("active");
-        hamburgerBtn.classList.toggle("open");
-    };
+    async function loadAuto(keyword) {
+        if (!keyword) {
+            autoBox.style.display = "none";
+            return;
+        }
+
+        const res = await fetch(`/BNK/corporate/employee/autocomplete?keyword=${keyword}`);
+        const list = await res.json();
+
+        autoBox.innerHTML = list.map(emp =>
+            `<div class="auto-item" onclick="location.href='/corporate/employee/detail/${emp.empId}'">
+            ${emp.name} (${emp.accountNo})
+        </div>`
+        ).join("");
+
+        autoBox.style.display = list.length ? "block" : "none";
+    }
+
+    input.addEventListener("input", () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => loadAuto(input.value.trim()), 300);
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".auto-box") && e.target.id !== "searchKeyword") {
+            autoBox.style.display = "none";
+        }
+    });
+
+    /***************************************************
+     * 더보기 메뉴 (···)
+     ***************************************************/
+    document.addEventListener("click", e => {
+        const isBtn = e.target.closest(".more-btn");
+        const menus = document.querySelectorAll(".more-menu");
+        menus.forEach(m => m.style.display = "none");
+
+        if (isBtn) {
+            const menu = isBtn.closest(".more-menu-wrapper").querySelector(".more-menu");
+            menu.style.display = "block";
+            e.stopPropagation();
+        }
+    });
+
+    /***************************************************
+     * 상태 변경 + 확인 + 퇴사 모달
+     ***************************************************/
+    let retireEmpId = null;
+    let retireSelectObj = null;
+
+    document.querySelectorAll(".status-select").forEach(sel => {
+        sel.addEventListener("change", function () {
+
+            const empId = this.dataset.id;
+            const newStatus = this.value;
+            const oldStatus = this.dataset.old;
+
+            // confirm
+            if (!confirm(`상태를 '${oldStatus}' → '${newStatus}' 로 변경하시겠습니까?`)) {
+                this.value = oldStatus;
+                return;
+            }
+
+            // 퇴사 선택 시 모달
+            if (newStatus === "RETIRE") {
+                retireEmpId = empId;
+                retireSelectObj = this;
+                document.getElementById("retireModal").style.display = "flex";
+                return;
+            }
+
+            // 재직/휴직 → 즉시 업데이트
+            updateStatus(empId, newStatus, this);
+        });
+    });
+
+    /* 공통 AJAX */
+    async function updateStatus(empId, status, selectObj) {
+        const res = await fetch(`/corporate/employee/status/${empId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status })
+        });
+
+        if (res.ok) {
+            alert("상태 변경 완료");
+            selectObj.dataset.old = status;
+        } else {
+            alert("상태 변경 실패");
+            selectObj.value = selectObj.dataset.old;
+        }
+    }
+
+    /***************************************************
+     * 퇴사일 모달
+     ***************************************************/
+    function closeRetireModal() {
+        document.getElementById("retireModal").style.display = "none";
+        if (retireSelectObj)
+            retireSelectObj.value = retireSelectObj.dataset.old;
+    }
+
+    async function saveRetireDate() {
+        const date = document.getElementById("retireDate").value;
+        console.log("▶ saveRetireDate() 실행됨");
+        console.log("▶ 선택한 날짜:", date);
+        console.log("▶ retireEmpId:", retireEmpId);
+
+        if (!date) {
+            alert("퇴사일을 선택해주세요.");
+            return;
+        }
+
+        const url = `/BNK/corporate/employee/retire/${retireEmpId}`;
+        console.log("▶ 호출 URL:", url);
+
+        const bodyData = {
+            status: "RETIRE",
+            retireDate: date
+        };
+
+        console.log("▶ 요청 Body:", bodyData);
+
+        const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bodyData)
+        });
+
+        console.log("▶ 서버 응답 상태:", res.status);
+
+        if (res.ok) {
+            alert("퇴사 처리 완료");
+            retireSelectObj.dataset.old = "RETIRE";
+            document.getElementById("retireModal").style.display = "none";
+        } else {
+            alert("퇴사 처리 실패");
+        }
+    }
 </script>
 
 </body>
