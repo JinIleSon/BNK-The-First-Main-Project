@@ -172,9 +172,10 @@
     <update id="updateRetire">
         UPDATE EMPLOYEE
         SET
-            STATUS = 'RETIRE',
+            STATUS = #{status},
             RETIREDATE = #{retireDate}
         WHERE EMPID = #{empId}
     </update>
+
 
 </mapper>

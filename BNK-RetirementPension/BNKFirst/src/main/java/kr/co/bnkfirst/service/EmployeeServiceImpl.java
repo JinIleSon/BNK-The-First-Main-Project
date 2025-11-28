@@ -78,7 +78,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /** 직원 퇴사 처리 (퇴사일 포함) */
     @Transactional
     @Override
-    public void retire(Long empId, String retireDate) {
-        employeeMapper.updateRetire(empId, retireDate);
+    public void retire(Long empId, String status, String retireDate) {
+        employeeMapper.updateRetire(empId, status, retireDate);
     }
+
 }

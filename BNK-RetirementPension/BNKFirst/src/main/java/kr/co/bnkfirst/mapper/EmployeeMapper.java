@@ -37,7 +37,9 @@ public interface EmployeeMapper {
     void updateStatus(@Param("empId") Long empId,
                       @Param("status") String status);
 
-    /** 직원 퇴사 처리 (퇴사일 포함) */
+    /** 직원 퇴사 처리 (퇴사일 + 상태 변경 포함) */
     void updateRetire(@Param("empId") Long empId,
+                      @Param("status") String status,
                       @Param("retireDate") String retireDate);
+
 }
