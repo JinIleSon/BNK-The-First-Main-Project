@@ -607,7 +607,7 @@
         }
     </style>
 </head>
-<body th:attr="data-stock-code=${code}, data-stock-name=${stockName}, data-logged-in=${session.loginUser != null}">
+<body th:attr="data-stock-code=${code}, data-stock-name=${stockName}, data-logged-in=${session.loginUser != null}, data-toast-result=${toastResult}">
 <header>
     <div th:replace="~{layouts/header.html}"></div>
 </header>
@@ -722,28 +722,26 @@
                             <div class="order-tab" data-type="wait">대기</div>
                         </div>
                         <div id="orderContents" style="margin-top: 16px;">
-                            <form id="buyForm" th:action="@{/stock/buyEtf}" method="post">
-                                <!-- 종목 코드/이름 넘기기 -->
-                                <input type="hidden" name="code" th:value="${code}">
-                                <input type="hidden" name="name" th:value="${stockName}">
-                                <!-- 로그인 사용자 아이디 -->
-                                <input type="hidden" name="pcuid"
-                                       th:value="${session.loginUser != null ? pcuid : ''}">
-
-                                <!-- 종목명 -->
-                                <input type="hidden" name="pname" th:value="${stockName}"/>
-
-                                <!-- 출금 계좌 (pacc) -->
-                                <input type="hidden" name="pacc" id="buyPaccHidden">
-
-                                <!-- 서버로 보낼 실제 값 (숫자만) -->
-                                <input type="hidden" name="pprice" id="buyPriceHidden">
-                                <input type="hidden" name="pstock" id="buyStockHidden">
-                                <input type="hidden" name="psum" id="buyPsumHidden">
-
                                 <!-- 여기부터는 기존 구매 섹션 (대부분 그대로 사용) -->
                                 <section class="order-section" data-section="buy">
-                            <section class="order-section" data-section="buy">
+                                    <form id="buyForm" th:action="@{/stock/buyEtf}" method="post">
+                                        <!-- 종목 코드/이름 넘기기 -->
+                                        <input type="hidden" name="code" th:value="${code}">
+                                        <input type="hidden" name="name" th:value="${stockName}">
+                                        <!-- 로그인 사용자 아이디 -->
+                                        <input type="hidden" name="pcuid"
+                                               th:value="${session.loginUser != null ? pcuid : ''}">
+
+                                        <!-- 종목명 -->
+                                        <input type="hidden" name="pname" th:value="${stockName}"/>
+
+                                        <!-- 출금 계좌 (pacc) -->
+                                        <input type="hidden" name="pacc" id="buyPaccHidden">
+
+                                        <!-- 서버로 보낼 실제 값 (숫자만) -->
+                                        <input type="hidden" name="pprice" id="buyPriceHidden">
+                                        <input type="hidden" name="pstock" id="buyStockHidden">
+                                        <input type="hidden" name="psum" id="buyPsumHidden">
                                         <div style="display: flex; margin-top: 14px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
                                             <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">주문 유형</div>
                                             <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
@@ -789,66 +787,105 @@
                                                 </span><span style="font-size: 14px;">원</span>
                                             </div>
                                         </div>
-                                <div style="display: flex; margin-top: 28px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
-                                    <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">총 주문 금액</div>
-                                    <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
-                                        <span id="buyTotalAmount">0원</span>
+                                    <div style="display: flex; margin-top: 28px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
+                                        <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">총 주문 금액</div>
+                                        <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
+                                            <span id="buyTotalAmount">0원</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div style="margin-top: 10px;">
-                                    <button type="button" id="openOrderModal" style="cursor: pointer; background: #e6424f; border:none; border-radius: 8px; width: 100%; color: white; padding: 10px; font-size: 18px; font-weight: 700;">구매하기</button>
-                                </div>
+                                    <div style="margin-top: 10px;">
+                                        <button type="button" id="openOrderModal" style="cursor: pointer; background: #e6424f; border:none; border-radius: 8px; width: 100%; color: white; padding: 10px; font-size: 18px; font-weight: 700;">구매하기</button>
+                                    </div>
+                                </form>
                             </section>
                             <section class="order-section" data-section="sell" style="display: none;">
-                                        <div style="display: flex; margin-top: 14px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
-                                            <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">주문 유형</div>
-                                            <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
-                                                <select style="outline: none; border:1px solid #e5e8eb; width: 100%; border-radius: 8px;padding-left: 10px; height: 30px;">
-                                                    <option value="일반">일반 주문</option>
-                                                    <option value="정규장">정규장 주문 예약</option>
-                                                    <option value="조건">조건 주문</option>
-                                                </select>
+                                <!-- 🔸 1) 보유 수량이 없을 때: 대기 화면처럼 -->
+                                <th:block th:if="${stock == null or stock.pstock == 0}">
+                                    <div style="width: 100%; height: 440px; display: flex; justify-items: center; justify-content: center; align-items: center;">
+                                        <div style="">
+                                            <div style="text-align: center;">
+                                                <svg width="26" height="28" viewBox="0 0 20 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.65785 0.0418114C5.30216 -0.0209313 4.9376 -0.0129925 4.58498 0.0651743C4.23236 0.143341 3.89859 0.290205 3.60273 0.497378C3.30688 0.704551 3.05473 0.967976 2.86069 1.27261C2.66666 1.57724 2.53453 1.91711 2.47185 2.27281L0.0418532 16.0598C-0.0848826 16.778 0.0788577 17.5171 0.497057 18.1146C0.915257 18.7121 1.55366 19.119 2.27185 19.2458L14.0899 21.3298C14.8079 21.4563 15.5468 21.2924 16.144 20.8742C16.7413 20.456 17.148 19.8178 17.2749 19.0998L19.7069 5.31181C19.7696 4.95612 19.7617 4.59156 19.6835 4.23894C19.6053 3.88632 19.4585 3.55255 19.2513 3.25669C19.0441 2.96084 18.7807 2.70869 18.4761 2.51465C18.1714 2.32061 17.8316 2.18848 17.4759 2.12581L5.65785 0.0418114ZM6.93385 4.32881C6.83599 4.30959 6.73527 4.31008 6.6376 4.33026C6.53993 4.35043 6.44727 4.38989 6.36503 4.44631C6.28279 4.50273 6.21263 4.57499 6.15865 4.65885C6.10468 4.74272 6.06797 4.83651 6.05068 4.93473C6.03339 5.03295 6.03586 5.13364 6.05795 5.23089C6.08005 5.32815 6.12131 5.42002 6.17934 5.50113C6.23737 5.58225 6.311 5.65097 6.39591 5.70329C6.48082 5.7556 6.57531 5.79046 6.67385 5.80581L14.5519 7.19581C14.7478 7.23029 14.9495 7.1855 15.1125 7.07129C15.2755 6.95708 15.3864 6.78281 15.4209 6.58681C15.4553 6.39082 15.4105 6.18915 15.2963 6.02618C15.1821 5.86321 15.0078 5.75229 14.8119 5.71781L6.93385 4.32881ZM5.37085 8.87681C5.40548 8.68096 5.51648 8.50687 5.67945 8.39285C5.84241 8.27884 6.04399 8.23422 6.23985 8.26881L14.1179 9.65781C14.2164 9.67317 14.3109 9.70802 14.3958 9.76034C14.4807 9.81265 14.5543 9.88138 14.6124 9.96249C14.6704 10.0436 14.7117 10.1355 14.7338 10.2327C14.7558 10.33 14.7583 10.4307 14.741 10.5289C14.7237 10.6271 14.687 10.7209 14.6331 10.8048C14.5791 10.8886 14.5089 10.9609 14.4267 11.0173C14.3444 11.0737 14.2518 11.1132 14.1541 11.1334C14.0564 11.1535 13.9557 11.154 13.8579 11.1348L5.97885 9.74481C5.7832 9.71018 5.60929 9.59932 5.4953 9.43658C5.38131 9.27384 5.33655 9.07252 5.37085 8.87681ZM5.54485 12.2068C5.44699 12.1876 5.34628 12.1881 5.2486 12.2083C5.15093 12.2284 5.05827 12.2679 4.97603 12.3243C4.89379 12.3807 4.82363 12.453 4.76965 12.5369C4.71567 12.6207 4.67897 12.7145 4.66168 12.8127C4.64439 12.911 4.64686 13.0116 4.66895 13.1089C4.69105 13.2061 4.73231 13.298 4.79034 13.3791C4.84837 13.4602 4.922 13.529 5.00691 13.5813C5.09182 13.6336 5.18631 13.6685 5.28485 13.6838L10.2089 14.5528C10.4048 14.5873 10.6065 14.5425 10.7695 14.4283C10.9325 14.3141 11.0434 14.1398 11.0779 13.9438C11.1123 13.7478 11.0675 13.5462 10.9533 13.3832C10.8391 13.2202 10.6648 13.1093 10.4689 13.0748L5.54485 12.2068Z" fill="#999A9C"/>
+                                                </svg>
                                             </div>
-                                        </div>
-                                        <div style="display: flex; justify-content: space-between;padding-left: 10px; padding-right: 10px;margin-bottom: 6px;">
-                                            <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;padding-top: 5px;">판매 가격</div>
-                                            <div style="font-weight: 500; font-size: 14px; margin-bottom: 8px; width: 75%;">
-                                                <div class="sell-price-tabs" id="sellPriceTabs">
-                                                    <div class="sell-price-tabs-active" id="sellPriceTabsActive"></div>
-                                                    <div class="sell-price-tab active" data-type="limit">지정가</div>
-                                                    <div class="sell-price-tab" data-type="market">시장가</div>
-                                                </div>
-                                                <div style="position:relative;">
-                                                    <input type="text" style="width: 91%; outline: none; padding-left:10px; padding-right:10px; border:1px solid #e5e8eb;font-weight: 500; font-size: 14px; border-radius: 8px; height: 30px;">
-                                                    <span style="position: absolute; top:50%; right: 10px; transform: translateY(-50%); font-size: 14px; color:#999;">원</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div style="display: flex; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
-                                            <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;padding-top: 5px;">수량</div>
-                                            <div style="font-weight: 500; font-size: 14px; margin-bottom: 8px; width: 75%;">
-                                                <div style="position: relative;">
-                                                    <input type="text" style="width: 91%; outline: none; padding-left:10px; padding-right:10px; border:1px solid #e5e8eb;font-weight: 500; font-size: 14px; border-radius: 8px; height: 30px;">
-                                                    <span style="position: absolute; top:50%; right: 10px; transform: translateY(-50%); font-size: 14px; color:#999;">주</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div style="border-top:1px solid #f3f3f5; margin-top: 20px;"></div>
-                                        <div style="display: flex; margin-top: 20px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
-                                        <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">현재 수익</div>
-                                        <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 70%; color: #5184fc;">
-                                            -5,100원(-7.2%)
+                                            <div>판매할 수 있는 주식이 없어요</div>
                                         </div>
                                     </div>
-                                <div style="display: flex; margin-top: 14px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
-                                    <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">총 금액</div>
-                                    <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
-                                        598,000원
+                                </th:block>
+                                <th:block th:unless="${stock == null or stock.pstock == 0}">
+                                    <!-- 🔥 판매 요청을 보낼 form -->
+                                    <input type="hidden" id="holdPsum"
+                                           th:value="${stock != null ? stock.psum : 0}">
+                                    <input type="hidden" id="holdQty"
+                                           th:value="${stock != null ? stock.pstock : 0}">
+                                    <form id="sellForm" th:action="@{/stock/sellEtf}" method="post">
+                                    <!-- 종목 코드/이름 -->
+                                    <input type="hidden" name="code" th:value="${code}">
+                                    <input type="hidden" name="name" th:value="${stockName}">
+
+                                    <!-- 로그인 사용자 아이디 -->
+                                    <input type="hidden" name="pcuid" th:value="${session.loginUser != null ? pcuid : ''}">
+
+                                    <!-- 종목명 -->
+                                    <input type="hidden" name="pname" th:value="${stockName}">
+
+                                    <!-- 계좌 -->
+                                    <input type="hidden" name="pacc" id="sellPaccHidden">
+
+                                    <!-- 총 매도 금액 (가격 × 수량) -->
+                                    <input type="hidden" name="psum" id="sellPsumHidden">
+                                    <div style="display: flex; margin-top: 14px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
+                                                <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">주문 유형</div>
+                                                <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
+                                                    <select style="outline: none; border:1px solid #e5e8eb; width: 100%; border-radius: 8px;padding-left: 10px; height: 30px;">
+                                                        <option value="일반">일반 주문</option>
+                                                        <option value="정규장">정규장 주문 예약</option>
+                                                        <option value="조건">조건 주문</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between;padding-left: 10px; padding-right: 10px;margin-bottom: 6px;">
+                                                <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;padding-top: 5px;">판매 가격</div>
+                                                <div style="font-weight: 500; font-size: 14px; margin-bottom: 8px; width: 75%;">
+                                                    <div class="sell-price-tabs" id="sellPriceTabs">
+                                                        <div class="sell-price-tabs-active" id="sellPriceTabsActive"></div>
+                                                        <div class="sell-price-tab active" data-type="limit">지정가</div>
+                                                        <div class="sell-price-tab" data-type="market">시장가</div>
+                                                    </div>
+                                                    <div style="position:relative;">
+                                                        <input type="text" th:value="${stock != null ? stock.pprice : ''}" id="sellPriceInput" style="width: 91%; outline: none; padding-left:10px; padding-right:10px; border:1px solid #e5e8eb;font-weight: 500; font-size: 14px; border-radius: 8px; height: 30px;">
+                                                        <span style="position: absolute; top:50%; right: 10px; transform: translateY(-50%); font-size: 14px; color:#999;">원</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
+                                                <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;padding-top: 5px;">수량</div>
+                                                <div style="font-weight: 500; font-size: 14px; margin-bottom: 8px; width: 75%;">
+                                                    <div style="position: relative;">
+                                                        <input type="text" id="sellQtyInput" th:value="${stock != null ? stock.pstock : 0}" style="width: 91%; outline: none; padding-left:10px; padding-right:10px; border:1px solid #e5e8eb;font-weight: 500; font-size: 14px; border-radius: 8px; height: 30px;">
+                                                        <span style="position: absolute; top:50%; right: 10px; transform: translateY(-50%); font-size: 14px; color:#999;">주</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style="border-top:1px solid #f3f3f5; margin-top: 20px;"></div>
+                                            <div style="display: flex; margin-top: 24px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
+                                            <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">현재 수익</div>
+                                            <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 70%; color: #5184fc;"
+                                                 id="currentProfitBox">
+                                                -5,100원(-7.2%)
+                                            </div>
+                                        </div>
+                                    <div style="display: flex; margin-top: 14px; align-items: center; justify-content: space-between;padding-left: 10px; padding-right: 10px;">
+                                        <div style="font-weight: 500; font-size: 14px; margin-bottom: 14px;">총 금액</div>
+                                        <div style="text-align: end; font-weight: 500; font-size: 14px; margin-bottom: 14px; width: 75%;">
+                                            <span id="sellTotalAmount">0원</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div style="margin-top: 10px;">
-                                    <button id="openSellModal" type="button" style="cursor: pointer; background: #5184fc; border:none; border-radius: 8px; width: 100%; color: white; padding: 10px; font-size: 18px; font-weight: 700;">판매하기</button>
-                                </div>
+                                    <div style="margin-top: 10px;">
+                                        <button id="openSellModal" type="button" style="cursor: pointer; background: #5184fc; border:none; border-radius: 8px; width: 100%; color: white; padding: 10px; font-size: 18px; font-weight: 700;">판매하기</button>
+                                    </div>
+                                </form>
+                                </th:block>
                             </section>
                             <section class="order-section" data-section="wait" style="display: none;">
                                 <div style="width: 100%; height: 440px; display: flex; justify-items: center; align-items: center;">
@@ -925,11 +962,12 @@
 <div id="sellConfirmModal" class="modal-overlay">
     <div class="order-modal" onclick="event.stopPropagation();">
         <div class="order-modal-title"
+             id="sellModalTitle"
              th:text="${stockName} + ' 판매 1주'">오라클 판매 1주</div>
 
         <div class="order-modal-row">
             <div class="order-modal-label">1주 판매가격</div>
-            <div class="order-modal-value">10,005원</div>
+            <div class="order-modal-value" id="sellModalUnitPrice">10,005원</div>
         </div>
 
         <div class="order-modal-row">
@@ -942,7 +980,7 @@
 
         <div class="order-modal-row">
             <div class="order-modal-label">총 주문 금액</div>
-            <div class="order-modal-value">10,005원</div>
+            <div class="order-modal-value" id="sellModalTotalAmount">10,005원</div>
         </div>
 
         <div class="order-modal-divider"></div>
@@ -1134,30 +1172,42 @@
         if (!container || !activeBox) return;
 
         const tabs = container.querySelectorAll('.order-tab');
+        // 👉 주문 카드 안에 있는 섹션들만 대상으로
+        const sections = document.querySelectorAll('#orderContents .order-section');
 
         function moveBox(target) {
             activeBox.style.left = target.offsetLeft + 'px';
             activeBox.style.width = target.offsetWidth + 'px';
         }
 
-        // 초기 위치 (active 된 탭 기준)
-        const activeTab = container.querySelector('.order-tab.active') || tabs[0];
-        if (activeTab) moveBox(activeTab);
+        // 섹션 show/hide
+        function showSection(type) {
+            sections.forEach(sec => {
+                const secType = sec.dataset.section;   // buy / sell / wait
+                sec.style.display = (secType === type ? 'block' : 'none');
+            });
+        }
 
-        // 클릭 이벤트
+        // 초기 상태: active 탭 기준
+        const activeTab = container.querySelector('.order-tab.active') || tabs[0];
+        if (activeTab) {
+            moveBox(activeTab);
+            showSection(activeTab.dataset.type);
+        }
+
+        // 탭 클릭 시
         tabs.forEach(tab => {
             tab.addEventListener('click', function () {
                 tabs.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
                 moveBox(this);
 
-                // 여기서 this.dataset.type 으로
-                // 'buy' / 'sell' / 'wait' 구분해서
-                // 실제 주문 타입 로직 연동 가능
+                const type = this.dataset.type;  // 'buy' / 'sell' / 'wait'
+                showSection(type);
             });
         });
 
-        // 리사이즈 시 위치 재계산
+        // 리사이즈 시 underline 위치 재계산
         window.addEventListener('resize', () => {
             const current = container.querySelector('.order-tab.active') || tabs[0];
             if (current) moveBox(current);
@@ -1168,6 +1218,7 @@
         initOrderTabs('orderTabs', 'orderTabsActive');
     });
 </script>
+
 <script>
     function initPriceTabs(containerId, activeBoxId) {
         const container = document.getElementById(containerId);
@@ -1240,59 +1291,6 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         initSellPriceTabs('sellPriceTabs', 'sellPriceTabsActive');
-    });
-</script>
-<script>
-    function initOrderTabs(containerId, activeBoxId) {
-        const container = document.getElementById(containerId);
-        const activeBox = document.getElementById(activeBoxId);
-        if (!container || !activeBox) return;
-
-        const tabs = container.querySelectorAll('.order-tab');
-        const sections = document.querySelectorAll('.order-section');
-        const submitBtn = document.getElementById('orderSubmitBtn');
-
-        function moveBox(target) {
-            activeBox.style.left = target.offsetLeft + 'px';
-            activeBox.style.width = target.offsetWidth + 'px';
-        }
-
-        function showSection(type) {
-            sections.forEach(sec => {
-                const secType = sec.dataset.section; // buy/sell/wait
-                sec.style.display = (secType === type ? 'block' : 'none');
-            });
-
-            // 여기서 type별로 데이터 가져오기(API 연동)
-            // e.g. fetch(`/api/order/${type}`)
-        }
-
-        // 초기 상태
-        const activeTab = container.querySelector('.order-tab.active') || tabs[0];
-        if (activeTab) {
-            moveBox(activeTab);
-            showSection(activeTab.dataset.type);
-        }
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function () {
-                tabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                moveBox(this);
-
-                const type = this.dataset.type; // buy/sell/wait
-                showSection(type);
-            });
-        });
-
-        window.addEventListener('resize', () => {
-            const current = container.querySelector('.order-tab.active') || tabs[0];
-            if (current) moveBox(current);
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        initOrderTabs('orderTabs', 'orderTabsActive');
     });
 </script>
 <script>
@@ -1410,6 +1408,40 @@
 
         if (openSellBtn && sellModal) {
             openSellBtn.addEventListener('click', function () {
+                const price = parseInputNumber(document.getElementById('sellPriceInput').value);
+                const qty   = parseInputNumber(document.getElementById('sellQtyInput').value);
+
+                if (!price || !qty) {
+                    alert('판매 가격과 수량을 입력해 주세요.');
+                    return;
+                }
+
+                const stockName = window.STOCK_NAME || '';
+                const titleEl   = document.getElementById('sellModalTitle');
+                const unitEl    = document.getElementById('sellModalUnitPrice');
+                const totalEl   = document.getElementById('sellModalTotalAmount');
+
+                // 제목: "XXX 판매 3주"
+                if (titleEl) {
+                    titleEl.textContent =
+                        `${stockName} 판매 ${qty.toLocaleString('ko-KR')}주`;
+                }
+
+                // 1주 판매가격
+                if (unitEl) {
+                    unitEl.textContent = formatWon(price);
+                }
+
+                // 총 주문 금액 = 가격 × 수량
+                const total = price * qty;
+                if (totalEl) {
+                    totalEl.textContent = formatWon(total);
+                }
+
+                // 나중에 필요하면 쓰도록 저장
+                sellModal.dataset.price = price;
+                sellModal.dataset.qty   = qty;
+
                 sellModal.classList.add('show');
             });
 
@@ -1428,9 +1460,25 @@
         if (sellConfirmBtn && sellModal) {
             sellConfirmBtn.addEventListener('click', function (e) {
                 e.stopPropagation();
-                // TODO: 실제 판매 주문 로직
+
+                const price = parseInputNumber(document.getElementById('sellPriceInput').value);
+                const qty   = parseInputNumber(document.getElementById('sellQtyInput').value);
+
+                if (!price || !qty) {
+                    alert('판매 가격과 수량을 확인해 주세요.');
+                    return;
+                }
+
+                const accountSelect = document.getElementById('accountSelect');
+                document.getElementById('sellPaccHidden').value = accountSelect.value;
+
+                const total = price * qty;
+                document.getElementById('sellPsumHidden').value = total;
+
                 sellModal.classList.remove('show');
-                showOrderToast('판매');
+
+                // 폼 제출
+                document.getElementById('sellForm').submit();
             });
         }
     });
@@ -1721,6 +1769,7 @@
             //         });
             //     }
             // }
+            updateCurrentProfit(nowPrice);
         }
 
         // 전일 대비 / 등락률 표시
@@ -1934,6 +1983,8 @@
                 nowPriceEl.textContent = nowPrice.toLocaleString('ko-KR') + '원';
             }
 
+            updateCurrentProfit(nowPrice);
+
             const changeEl = document.getElementById('topChangeInfo');
             if (changeEl && item.changeRate != null) {
                 const rate = Number(item.changeRate);
@@ -2051,6 +2102,7 @@
 </script>
     <script>
         function updateTicker(list) {
+            let currentItem = null;
         const html = list.map(r => {
         const rate  = Number(r.changeRate);
         const price = Number(r.price);
@@ -2067,6 +2119,14 @@
         const absRate   = Math.abs(rate).toFixed(2);
         const priceText = price.toLocaleString('ko-KR');
 
+        // 👇 지금 보고 있는 종목인지 체크 (code가 있으면 code로, 없으면 name으로)
+        if (
+            (r.code && r.code === window.STOCK_CODE) ||
+            (!r.code && r.name === window.STOCK_NAME)
+        ) {
+            currentItem = r;
+        }
+
         return `
                 <span style="margin-right:40px;">
                     ${r.name}
@@ -2078,6 +2138,36 @@
     }).join('');
 
         document.getElementById('tickerContent').innerHTML = html + html;
+
+            // 👇 현재 화면 종목이 리스트에 있으면 상단 가격/수익률 갱신
+            if (currentItem) {
+                const nowPrice = Number(currentItem.price);
+                if (!isNaN(nowPrice)) {
+                    const nowPriceEl = document.getElementById('topCurrentPrice');
+                    if (nowPriceEl) {
+                        nowPriceEl.textContent = nowPrice.toLocaleString('ko-KR') + '원';
+                    }
+                    // ✅ 여기서 현재 수익 계산
+                    updateCurrentProfit(nowPrice);
+                }
+
+                const changeEl = document.getElementById('topChangeInfo');
+                if (changeEl && currentItem.changeRate != null) {
+                    const rate = Number(currentItem.changeRate);
+                    const sign = rate > 0 ? '+' : (rate < 0 ? '-' : '');
+                    const absRate = Math.abs(rate).toFixed(2);
+
+                    let color = '#555555';
+                    if (rate > 0) color = '#d60000';
+                    else if (rate < 0) color = '#0051c7';
+                    changeEl.style.color = color;
+
+                    changeEl.innerHTML = `${sign}${absRate}%`;
+
+                    // 필요하면 여기도 -7% 토스트 재사용 가능
+                    // checkToastByChangeRate(rate);
+                }
+            }
     }
 </script>
 
@@ -2173,6 +2263,38 @@
             totalEl.textContent = formatNumber(total) + '원';
         }
     }
+    function updateSellTotal() {
+        const priceInput = document.getElementById('sellPriceInput');
+        const qtyInput   = document.getElementById('sellQtyInput');
+        const totalEl    = document.getElementById('sellTotalAmount');
+
+        if (!priceInput || !qtyInput || !totalEl) return;
+
+        const price = parseInputNumber(priceInput.value);
+        const qty   = parseInputNumber(qtyInput.value);
+
+        const total = price * qty;   // 둘 중 하나라도 0이면 0
+
+        if (!total) {
+            totalEl.textContent = '0원';
+        } else {
+            totalEl.textContent = formatNumber(total) + '원';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const sellPriceInput = document.getElementById('sellPriceInput');
+        const sellQtyInput   = document.getElementById('sellQtyInput');
+
+        if (!sellPriceInput || !sellQtyInput) return;
+
+        ['input', 'change'].forEach(ev => {
+            sellPriceInput.addEventListener(ev, updateSellTotal);
+            sellQtyInput.addEventListener(ev, updateSellTotal);
+        });
+
+        // 초기 값(보유 수량)이 있을 때도 한 번 계산
+        updateSellTotal();
+    });
 </script>
 <script>
     // 🔥 ETF만 보는 루프
@@ -2237,6 +2359,60 @@
 
         // 계좌 변경 시마다 잔액 갱신
         select.addEventListener('change', updateBalanceFromSelect);
+    });
+</script>
+<script>
+    function updateCurrentProfit(nowPrice) {
+        const psumInput  = document.getElementById('holdPsum');
+        const qtyInput   = document.getElementById('holdQty');
+        const box        = document.getElementById('currentProfitBox');
+
+        if (!psumInput || !qtyInput || !box) return;
+
+        const psum = Number(psumInput.value || 0);   // 총 매수 금액
+        const qty  = Number(qtyInput.value || 0);    // 보유 수량
+
+        if (!psum || !qty || !nowPrice) {
+            box.textContent = '0원(0.0%)';
+            return;
+        }
+
+        // 현재 평가금액 = 현재가 × 수량
+        const currentAmount = nowPrice * qty;
+
+        // 평가손익 = 현재 평가금액 - 매수금액
+        const profit = currentAmount - psum;
+
+        // 수익률 = 평가손익 / 매수금액 × 100
+        const profitRate = (profit / psum) * 100;
+
+        const sign = profit > 0 ? '+' : (profit < 0 ? '-' : '');
+        const absProfit = Math.abs(profit);
+        const absRate   = Math.abs(profitRate).toFixed(1);
+
+        // formatNumber는 이미 위에 정의돼 있으니까 그대로 사용
+        box.textContent = `${sign}${formatNumber(absProfit)}원(${sign}${absRate}%)`;
+
+        // 원금 대비 손실이면 파란색, 이익이면 빨간색 같은 식으로 추가도 가능
+        if (profit > 0) {
+            box.style.color = '#d60000';
+        } else if (profit < 0) {
+            box.style.color = '#0051c7';
+        } else {
+            box.style.color = '#555555';
+        }
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const result = document.body.dataset.toastResult;
+
+        if (result === 'buy') {
+            // 👉 '구매' / '판매'는 토스트 문구에 들어갈 텍스트
+            showOrderToast('구매');
+        } else if (result === 'sell') {
+            showOrderToast('판매');
+        }
     });
 </script>
 </body>

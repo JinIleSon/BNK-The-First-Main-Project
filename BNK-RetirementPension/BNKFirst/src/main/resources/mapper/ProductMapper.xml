@@ -63,4 +63,29 @@
     <select id="selectAllByUidAndType" parameterType="string" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
         SELECT * FROM PCONTRACT WHERE PCUID=#{pcuid} AND "TYPE"=#{type}
     </select>
+
+    <select id="selectByAccAndUid" parameterType="string" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        SELECT * FROM PCONTRACT WHERE PCUID=#{pcuid} AND PACC=#{pacc}
+    </select>
+
+    <insert id="savePcontract" parameterType="kr.co.bnkfirst.dto.product.PcontractDTO">
+        INSERT INTO PCONTRACT (
+            pcuid,
+            pcpid,
+            pacc,
+            pnew,
+            pend,
+            pbalance,
+            pcwtpi,
+            "TYPE")
+        VALUES (
+           #{pcuid},
+           #{pcpid},
+           #{pacc},
+           #{pnew},
+           #{pend},
+           #{pbalance},
+           #{pcwtpi},
+           #{type});
+    </insert>
 </mapper>

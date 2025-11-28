@@ -1,7 +1,7 @@
 package kr.co.bnkfirst.service;
 
 import kr.co.bnkfirst.domain.Contribution;
-import kr.co.bnkfirst.mapper.ContributionMapper; // ★ 반드시 필요
+import kr.co.bnkfirst.mapper.ContributionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -20,5 +20,16 @@ public class ContributionServiceImpl implements ContributionService {
     @Override
     public Long getCurrentBalance(Long empId) {
         return contributionMapper.findCurrentBalance(empId);
+    }
+
+    @Override
+    public Long getTotalAccumulatedAmount() {
+        return contributionMapper.getTotalAccumulatedAmount();
+    }
+
+    // ⬇⬇⬇ 반드시 추가해야 하는 부분
+    @Override
+    public Long getExpectedContributionForMonth() {
+        return contributionMapper.getExpectedContributionForMonth();
     }
 }

@@ -263,8 +263,38 @@ public class ProductService {
     }
 
 
-    // 계좌 가져오기
+    /*
+        날짜 : 2025.11.27.
+        이름 : 강민철
+        내용 : 계좌 가져오기
+     */
     public PcontractDTO getAccount(String pcuid, String type) {
         return productMapper.selectAllByUidAndType(pcuid, type);
+    }
+
+    /*
+        날짜 : 2025.11.27.
+        이름 : 강민철
+        내용 : 계좌 비밀번호 검증
+     */
+    public boolean checkAccPin(String pacc, String pin, String mid) {
+        PcontractDTO acc = productMapper.selectByAccAndUid(pacc, mid);
+        log.info("accDTO: {}", acc);
+        log.info("accPin: {}", acc.getPcnapw());
+        log.info("pin: {}", pin);
+        log.info("check: {}", pin.equals(acc.getPcnapw()));
+        return pin.equals(acc.getPcnapw());
+    }
+
+    /*
+        날짜 : 2025.11.27.
+        이름 : 강민철
+        내용 : 원리금 보장상품(예적금) 매수 등록
+     */
+    public boolean buyProduct(String pcuid,PcontractDTO pc){
+        pc.setPcuid(pcuid);
+        int count = productMapper.savePcontract(pc);
+        log.info("count: {}", count);
+        return count > 0;
     }
 }
