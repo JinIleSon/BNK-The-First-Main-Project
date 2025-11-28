@@ -38,6 +38,7 @@ public class PcontractDTO {
     private String pname;
     private String ptype;
     private float phirate;
+    private float pbirate;
 
     // 추가 컬럼 - 손진일
     private String mname;

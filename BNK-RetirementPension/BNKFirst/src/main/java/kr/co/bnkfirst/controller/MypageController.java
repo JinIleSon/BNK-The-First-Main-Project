@@ -71,7 +71,8 @@ public class MypageController {
 
     @GetMapping("/mypage/prod/cancel")
     public String ProdCancel(Model model, Principal principal) {
-        model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
+
+        model.addAttribute("contractList", mypageService.findByFundContract(principal.getName()));
         return "mypage/mypage_prodCancel";
     }
     @PostMapping("/mypage/prod/cancel")
