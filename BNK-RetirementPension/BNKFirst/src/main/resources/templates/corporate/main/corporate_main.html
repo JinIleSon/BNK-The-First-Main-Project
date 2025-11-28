@@ -325,8 +325,10 @@
 
 <!-- ⭐ 사이드바 -->
 <aside class="sidebar" id="sidebar">
-        <div class="sidebar-title">
-            <img src="/BNK/images/BNK_english.png" alt="">
+    <!-- 로고 클릭 시 메인으로 이동 -->
+    <a th:href="@{/corporate/main}">
+        <img th:src="@{/images/BNK_english.png}" alt="부산은행 로고" width="100px">
+    </a>
             <p>부산은행 기업뱅킹</p>
         </div>
 

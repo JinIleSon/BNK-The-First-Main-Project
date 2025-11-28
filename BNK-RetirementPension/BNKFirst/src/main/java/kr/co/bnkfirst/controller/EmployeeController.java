@@ -1,11 +1,8 @@
 package kr.co.bnkfirst.controller;
 
 import jakarta.validation.Valid;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeDeleteDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeUpdateDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto;
+import kr.co.bnkfirst.dto.corporate.employee.*;
 import kr.co.bnkfirst.service.EmployeeService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +19,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     /** =====================================
-     *  직원 목록 + 검색
+     *  직원 목록 (전체 조회 + 검색)
      *  ===================================== */
     @GetMapping("/list")
     public String list(
@@ -32,8 +29,8 @@ public class EmployeeController {
     ) {
 
         boolean isSearch =
-                (keyword != null && !keyword.isEmpty()) ||
-                        (planType != null && !planType.equals("ALL"));
+                (keyword != null && !keyword.isEmpty())
+                        || (planType != null && !planType.equals("ALL"));
 
         if (isSearch) {
             model.addAttribute("employees", employeeService.search(keyword, planType));
@@ -49,27 +46,20 @@ public class EmployeeController {
 
 
     /** =====================================
-     *  직원 상세 (기존 detail 화면)
+     *  직원 상세
      *  ===================================== */
     @GetMapping("/detail/{empId}")
     public String detail(@PathVariable Long empId, Model model) {
 
-        model.addAttribute("employee",
-                employeeService.getEmployeeDetail(empId));
+        model.addAttribute("employee", employeeService.getEmployeeDetail(empId));
+        model.addAttribute("contributions", employeeService.getEmployeeContributions(empId));
+        model.addAttribute("currentBalance", employeeService.getEmployeeCurrentBalance(empId));
 
-        model.addAttribute("contributions",
-                employeeService.getEmployeeContributions(empId));
-
-        model.addAttribute("currentBalance",
-                employeeService.getEmployeeCurrentBalance(empId));
-
-        // 좌측 목록 (필수)
-        model.addAttribute("employees",
-                employeeService.getEmployeeList());
+        // 왼쪽 리스트
+        model.addAttribute("employees", employeeService.getEmployeeList());
 
         return "corporate/employee/detail";
     }
-
 
 
     /** =====================================
@@ -78,9 +68,7 @@ public class EmployeeController {
     @GetMapping("/edit/{empId}")
     public String edit(@PathVariable Long empId, Model model) {
 
-        model.addAttribute("employee",
-                employeeService.getEmployeeDetail(empId));
-
+        model.addAttribute("employee", employeeService.getEmployeeDetail(empId));
         model.addAttribute("employeeUpdateDto", new EmployeeUpdateDto());
 
         return "corporate/employee/edit";
@@ -97,6 +85,7 @@ public class EmployeeController {
             BindingResult bindingResult,
             Model model
     ) {
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("employee", employeeService.getEmployeeDetail(empId));
             return "corporate/employee/edit";
@@ -114,8 +103,7 @@ public class EmployeeController {
      *  ===================================== */
     @GetMapping("/delete/{empId}")
     public String deleteConfirm(@PathVariable Long empId, Model model) {
-        model.addAttribute("employee",
-                employeeService.getEmployeeDetail(empId));
+        model.addAttribute("employee", employeeService.getEmployeeDetail(empId));
         model.addAttribute("employeeDeleteDto", new EmployeeDeleteDto());
         return "corporate/employee/delete";
     }
@@ -135,36 +123,26 @@ public class EmployeeController {
 
 
     /** =====================================
-     *  직원 월별 납입 내역 (2단 구조 페이지)
+     *  직원 납입 내역
      *  ===================================== */
     @GetMapping("/contribution/{empId}")
     public String contribution(@PathVariable Long empId, Model model) {
 
-        // 오른쪽 상세 뷰 데이터
-        model.addAttribute("employee",
-                employeeService.getEmployeeDetail(empId));
+        model.addAttribute("employee", employeeService.getEmployeeDetail(empId));
+        model.addAttribute("contributions", employeeService.getEmployeeContributions(empId));
+        model.addAttribute("currentBalance", employeeService.getEmployeeCurrentBalance(empId));
 
-        model.addAttribute("contributions",
-                employeeService.getEmployeeContributions(empId));
-
-        model.addAttribute("currentBalance",
-                employeeService.getEmployeeCurrentBalance(empId));
-
-        // ⭐ 좌측 목록 패널용 (필수)
-        model.addAttribute("employees",
-                employeeService.getEmployeeList());
-
-        // ⭐ 새로 만든 2단 구조 화면 파일명
-        return "corporate/employee/contribution";
+        return "corporate/employee/contribution_list";
     }
 
 
     /** =====================================
-     *  자동완성 API
+     *  ⭐ 직원 자동완성 API (JSON)
      *  ===================================== */
     @GetMapping("/autocomplete")
     @ResponseBody
-    public List<EmployeeListDto> autocomplete(@RequestParam String keyword) {
+    public List<EmployeeAutoDto> autocomplete(@RequestParam String keyword) {
         return employeeService.autocomplete(keyword);
     }
+
 }

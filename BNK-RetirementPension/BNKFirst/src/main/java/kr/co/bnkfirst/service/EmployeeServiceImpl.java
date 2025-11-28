@@ -1,14 +1,10 @@
 package kr.co.bnkfirst.service;
 
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeListDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeDetailDto;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeContributionDto;
+import kr.co.bnkfirst.dto.corporate.employee.*;
 import kr.co.bnkfirst.mapper.EmployeeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import kr.co.bnkfirst.dto.corporate.employee.EmployeeUpdateDto;
-
 
 import java.util.List;
 
@@ -63,9 +59,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeMapper.getCurrentBalance(empId);
     }
 
+    // ⭐ 자동완성 – EmployeeAutoDto 리턴
     @Override
-    public List<EmployeeListDto> autocomplete(String keyword) {
+    public List<EmployeeAutoDto> autocomplete(String keyword) {
         return employeeMapper.autocomplete(keyword);
     }
-
 }

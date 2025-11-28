@@ -5,7 +5,6 @@
     <title>퇴직연금 기업뱅킹 - 직원 월별 납입 내역</title>
 
     <style>
-        /* ---------------------- 글로벌 스타일 ---------------------- */
         * { box-sizing: border-box; }
 
         body {
@@ -16,108 +15,145 @@
             font-size: 15px;
         }
 
-        /* ---------------------- 페이지 레이아웃 ---------------------- */
+        /* ================== 메인 레이아웃 ================== */
         .page-wrapper {
-            max-width: 1100px;
-            margin: 40px auto 80px;
-            padding: 24px;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 24px 80px;
         }
 
+        /* ================== 헤더: 좌(검색 + 제목) ================== */
         .page-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             margin-bottom: 24px;
         }
 
-        .page-header h1 {
+        .search-box form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-input {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 260px;
+        }
+
+        .search-btn {
+            padding: 8px 16px;
+            background: #D91A1A;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .search-btn:hover { background: #B81414; }
+
+        .title-wrap {
+            margin-top: 12px;
+        }
+        .title-wrap h1 {
             margin: 0;
             font-size: 24px;
             font-weight: 700;
         }
-
-        .page-header .subtitle {
+        .subtitle {
             margin-top: 6px;
             font-size: 15px;
             color: #777;
         }
 
+        /* ================== 2단 분할 레이아웃 ================== */
+        .content-split {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 24px;
+        }
 
-        /* ---------------------- 직원 요약 박스 ---------------------- */
+        /* ================== 좌측: 직원 목록 ================== */
+        .employee-list {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            height: 700px;
+            overflow-y: auto;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .employee-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .employee-item:hover {
+            color: #D91A1A;
+        }
+
+        .employee-item .emp-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .employee-item .emp-info {
+            font-size: 13px;
+            color: #777;
+            margin-top: 4px;
+        }
+
+        .employee-item .emp-info {
+            font-size: 12px;
+        }
+
+
+        /* ================== 우측: 상세 정보 ================== */
+        .detail-panel {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px 28px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
         .employee-summary {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 20px 28px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
             margin-bottom: 24px;
         }
 
-        .employee-info {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 14px;
-        }
-
         .info-row { display: flex; gap: 10px; }
-
         .label { min-width: 90px; font-weight: 600; color: #555; }
         .value { color: #222; }
 
         .total-box { text-align: right; }
-
-        .total-box .label {
-            font-size: 14px;
-            color: #777;
-        }
-
         .total-box .amount {
-            margin-top: 4px;
             font-size: 22px;
             font-weight: 700;
-            color: #d91a1a;
+            color: #D91A1A;
         }
 
-
-        /* ---------------------- 테이블 박스 ---------------------- */
-        .table-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 20px 28px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        /* ================== 자동완성 목록 ================== */
+        .autocomplete-box {
+            position: absolute;
+            background: #fff;
+            border: 1px solid #ddd;
+            width: 260px;
+            border-radius: 6px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            display: none;
+            z-index: 2000;
         }
 
-        .table-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
+        .autocomplete-item {
+            padding: 8px 12px;
+            cursor: pointer;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        table thead {
-            background: #f4f4f6;
-        }
-
-        th, td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .text-right { text-align: right; }
-
-        .ym-col { width: 130px; }
-        .amount-col { width: 160px; }
-        .total-col { width: 180px; }
-
-        .table-footer {
-            padding-top: 12px;
-            font-size: 14px;
-            color: #777;
+        .autocomplete-item:hover {
+            background: #f4f4f4;
         }
 
 
@@ -189,39 +225,26 @@
             transition: color 0.2s;
         }
 
-        .sidebar a:hover { color: #d91a1a; }
-
-        /* 검색 박스 */
-        .search-box {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .search-box form {
-            display: flex;
-            gap: 8px;
-        }
-
-        .search-input {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+        .detail-panel table th,
+        .detail-panel table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
             font-size: 14px;
-            width: 220px;
         }
 
-        .search-btn {
-            padding: 8px 16px;
-            background: #d91a1a;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+
+        .info-row {
+            padding: 6px 0;      /* 행 상하 여백 */
         }
-        .search-btn:hover {
-            background: #b81414;
+
+        .info-row .label {
+            padding-right: 10px; /* 라벨-값 사이 여백 */
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-row .value {
+            padding-left: 4px;
         }
 
     </style>
@@ -239,8 +262,9 @@
 <!-- ⭐ 사이드바 -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-title">
-        <img src="/BNK/images/BNK_english.png" alt="">
-        <p>부산은행 기업뱅킹</p>
+        <a th:href="@{/corporate/main}">
+            <img th:src="@{/images/BNK_english.png}" alt="부산은행 로고" width="100px">
+        </a>
     </div>
 
     <ul style="list-style:none; padding:0;">
@@ -254,107 +278,244 @@
 <!-- ⭐ 페이지 본문 -->
 <div class="page-wrapper">
 
+    <!-- ================== 페이지 헤더 ================== -->
     <header class="page-header">
-        <h1>직원 월별 납입 내역</h1>
-        <p class="subtitle">CONTRIBUTION 테이블 기반 납입액/누적 적립금 조회</p>
+        <div class="title-wrap">
+            <h1>직원 월별 납입 내역</h1>
+            <p class="subtitle">월별 납입액 ∙ 누적 적립금 상세 조회</p>
+        </div>
+        <div class="search-box">
+            <form>
+                <div style="position:relative;">
+                    <input type="text" id="searchInput" class="search-input" placeholder="직원명 또는 계좌번호 검색">
+                    <div id="autocompleteList" class="autocomplete-box"></div>
+                </div>
+                <button class="search-btn">검색</button>
+            </form>
+        </div>
+
+
     </header>
 
-    <!-- ⭐ 직원 검색 박스 (오른쪽 상단) -->
-    <div class="search-box">
-        <form action="/BNK/corporate/employee/list" method="get">
-            <input type="text" name="keyword" class="search-input" placeholder="직원명 또는 계좌번호 검색">
-            <button type="submit" class="search-btn">검색</button>
-        </form>
-    </div>
+    <!-- ================== 2단 분할 ================== -->
+    <section class="content-split">
 
-    <section class="employee-summary">
-        <div class="employee-info">
-            <div class="info-row">
-                <span class="label">직원명</span>
-                <span class="value" id="empName"></span>
-            </div>
-            <div class="info-row">
-                <span class="label">직원 ID</span>
-                <span class="value" id="empId"></span>
-            </div>
-            <div class="info-row">
-                <span class="label">계좌번호</span>
-                <span class="value" id="accountNo"></span>
-            </div>
+        <!-- ========== LEFT: 직원 목록 ========= -->
+        <div class="employee-list" id="employeeList"></div>
+
+        <!-- ========== RIGHT: 상세 ========= -->
+        <div class="detail-panel">
+
+            <section class="employee-summary">
+                <div>
+                    <div class="info-row"><span class="label">직원 ID</span><span class="value" id="empId"></span></div>
+                    <div class="info-row"><span class="label">직원명</span><span class="value" id="empName"></span></div>
+                    <div class="info-row"><span class="label">계좌번호</span><span class="value" id="accountNo"></span></div>
+                </div>
+
+                <div class="total-box">
+                    <div class="label">현재 적립금</div>
+                    <div class="amount" id="currentBalance">0원</div>
+                </div>
+            </section>
+
+            <h3 style="margin-bottom:12px;">월별 납입 내역</h3>
+
+            <table style="width:100%; border-collapse:collapse;">
+                <thead style="background:#f4f4f6;">
+                <tr>
+                    <th>년월</th>
+                    <th style="text-align:right;">월별 납입액</th>
+                    <th style="text-align:right;">누적 적립금</th>
+                </tr>
+                </thead>
+                <tbody id="contribBody"></tbody>
+            </table>
         </div>
 
-        <div class="total-box">
-            <span class="label">현재 적립금</span>
-            <span class="amount" id="currentBalance">0원</span>
-        </div>
-    </section>
-
-    <section class="table-card">
-        <div class="table-title">월별 납입 내역</div>
-
-        <table id="contribTable">
-            <thead>
-            <tr>
-                <th class="ym-col">납입 년월</th>
-                <th class="amount-col text-right">월별 납입액</th>
-                <th class="total-col text-right">누적 적립금</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-
-        <div class="table-footer">
-            ※ 누적 적립금은 월별 납입액을 순서대로 더한 값입니다.
-        </div>
     </section>
 
 </div>
-<!-- ⭐ DB 데이터 주입 (Thymeleaf → JS) -->
+
+
 <script th:inline="javascript">
-    const employee = /*[[${employee}]]*/ {};
+    /* ==============================
+       데이터 (Thymeleaf 바인딩)
+    ============================== */
+    const employeeList = /*[[${employees}]]*/ [];
+    const detailEmployee = /*[[${employee}]]*/ {};
     const contributions = /*[[${contributions}]]*/ [];
     const currentBalance = /*[[${currentBalance}]]*/ 0;
-</script>
 
-<script>
-    function formatYM(ym) {
-        return ym.substring(0, 4) + '-' + ym.substring(4, 6);
+    /* ==============================
+       좌측 목록 렌더링
+    ============================== */
+    function renderEmployeeList() {
+        const listDom = document.getElementById("employeeList");
+        listDom.innerHTML = "";
+
+        employeeList.forEach(emp => {
+            listDom.innerHTML += `
+            <div class="employee-item" onclick="location.href='/BNK/corporate/employee/detail/${emp.empId}'">
+                <div class="emp-name">${emp.name}</div>
+                <div class="emp-info">직원 ID : ${emp.empId}</div>
+                <div class="emp-info">계좌번호 : ${emp.accountNo}</div>
+            </div>
+        `;
+        });
     }
 
-    function formatMoney(n) {
-        if (n === undefined || n === null) return '-';
-        return n.toLocaleString('ko-KR') + '원';
-    }
 
-    function renderContributionTable() {
+    /* ==============================
+       상세 정보 렌더링
+    ============================== */
+    function renderDetail() {
+        document.getElementById('empName').textContent = detailEmployee.name;
+        document.getElementById('empId').textContent = detailEmployee.empId;
+        document.getElementById('accountNo').textContent = detailEmployee.accountNo;
+        document.getElementById('currentBalance').textContent = currentBalance.toLocaleString("ko-KR") + "원";
 
-        document.getElementById('empName').textContent = employee.name;
-        document.getElementById('empId').textContent = employee.empId;
-        document.getElementById('accountNo').textContent = employee.accountNo;
-
-        const tbody = document.querySelector('#contribTable tbody');
-        tbody.innerHTML = '';
+        const body = document.getElementById("contribBody");
+        body.innerHTML = "";
 
         let total = 0;
-
         contributions
-            .sort((a, b) => a.yearMonth.localeCompare(b.yearMonth))
+            .sort((a,b)=>a.yearMonth.localeCompare(b.yearMonth))
             .forEach(row => {
                 total += row.amount;
-
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${formatYM(row.yearMonth)}</td>
-                        <td class="text-right">${formatMoney(row.amount)}</td>
-                        <td class="text-right">${formatMoney(total)}</td>
-                    </tr>
-                `;
+                body.innerHTML += `
+                <tr>
+                    <td>${row.yearMonth.slice(0,4)}-${row.yearMonth.slice(4,6)}</td>
+                    <td style="text-align:right;">${row.amount.toLocaleString("ko-KR")}원</td>
+                    <td style="text-align:right;">${total.toLocaleString("ko-KR")}원</td>
+                </tr>
+            `;
             });
+    }
+    /* ===========================
+       자동완성 기능 (완성 버전)
+    =========================== */
 
-        document.getElementById('currentBalance').textContent = formatMoney(currentBalance);
+    let autoIndex = -1;
+    let autoItems = [];
+
+    /* Debounce 함수 */
+    let debounceTimer = null;
+    function debounce(callback, delay = 300) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(callback, delay);
     }
 
-    document.addEventListener("DOMContentLoaded", renderContributionTable);
+    /* highlight 함수 */
+    function highlight(text, keyword) {
+        if (!keyword) return text;
+        const reg = new RegExp(keyword, "gi");
+        return text.replace(reg, m => `<b style="color:#D91A1A;">${m}</b>`);
+    }
+
+    /* 자동완성 요청 */
+    async function loadAutocomplete(keyword) {
+        const box = document.getElementById("autocompleteList");
+
+        if (!keyword || keyword.length < 1) {
+            box.style.display = "none";
+            return;
+        }
+
+        const res = await fetch(`/BNK/corporate/employee/autocomplete?keyword=${keyword}`);
+        const list = await res.json();
+
+        autoItems = list;
+        autoIndex = -1;
+
+        box.innerHTML = list
+            .map((emp, i) => `
+            <div class="autocomplete-item" data-index="${i}">
+                ${highlight(emp.name, keyword)} (${highlight(emp.accountNo, keyword)})
+            </div>
+        `)
+            .join("");
+
+        box.style.display = list.length > 0 ? "block" : "none";
+
+        // 마우스 클릭 이벤트
+        document.querySelectorAll(".autocomplete-item").forEach(el => {
+            el.addEventListener("click", () => {
+                const idx = el.dataset.index;
+                selectAutocomplete(idx);
+            });
+        });
+    }
+
+    /* 자동완성 선택 */
+    function selectAutocomplete(index) {
+        const item = autoItems[index];
+        if (!item) return;
+
+        searchInput.value = item.name;
+        document.getElementById("autocompleteList").style.display = "none";
+
+        // 상세 페이지 이동
+        location.href = `/BNK/corporate/employee/detail/${item.empId}`;
+    }
+
+    /* 자동완성 active 스타일 업데이트 */
+    function updateActiveItem() {
+        const items = document.querySelectorAll(".autocomplete-item");
+        items.forEach((el, i) => {
+            el.classList.toggle("active", i === autoIndex);
+            if (i === autoIndex) el.scrollIntoView({ block: "nearest" });
+        });
+    }
+
+    /* === 이벤트: input 입력 시 debounce 적용 === */
+    document.getElementById("searchInput").addEventListener("input", function () {
+        const keyword = this.value.trim();
+        debounce(() => loadAutocomplete(keyword), 250);
+    });
+
+    /* === 이벤트: 방향키 처리 === */
+    document.getElementById("searchInput").addEventListener("keydown", function (e) {
+        const box = document.getElementById("autocompleteList");
+        if (box.style.display === "none") return;
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            autoIndex = (autoIndex + 1) % autoItems.length;
+            updateActiveItem();
+        }
+
+        if (e.key === "ArrowUp") {
+            e.preventDefault();
+            autoIndex = autoIndex <= 0 ? autoItems.length - 1 : autoIndex - 1;
+            updateActiveItem();
+        }
+
+        if (e.key === "Enter") {
+            e.preventDefault();
+            if (autoIndex >= 0) selectAutocomplete(autoIndex);
+        }
+
+        if (e.key === "Escape") {
+            box.style.display = "none";
+        }
+    });
+
+    /* === focus out 시 auto box 닫기 === */
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".autocomplete-box") && e.target.id !== "searchInput") {
+            document.getElementById("autocompleteList").style.display = "none";
+        }
+    });
+
+
+    /* ==============================
+       초기 렌더링
+    ============================== */
+    document.addEventListener("DOMContentLoaded", () => {
+        renderEmployeeList();
+        renderDetail();
+    });
 </script>
 <script>
     /* 햄버거 & 사이드바 */
