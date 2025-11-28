@@ -8,6 +8,7 @@ import kr.co.bnkfirst.mapper.MypageMapper;
 import kr.co.bnkfirst.mapper.StockMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,10 +33,11 @@ public class StockService {
                          @RequestParam("pprice") Integer pprice,
                          @RequestParam("psum") Integer psum,
                          @RequestParam("pname") String pname,
-                         @RequestParam("pacc") String pacc){
+                         @RequestParam("pacc") String pacc,
+                         @RequestParam("code") String code){
 
         try {
-            stockMapper.buyStock(pcuid, pstock, pprice, psum, pname, pacc);
+            stockMapper.buyStock(pcuid, pstock, pprice, psum, pname, pacc, code);
         } catch (DataAccessException e) {
             log.error("주식 매수 DB 처리 중 오류 발생. pcuid={}, pacc={}, pname={}",
                     pcuid, pacc, pname, e);
@@ -65,13 +67,14 @@ public class StockService {
                            @RequestParam("pprice") Integer pprice,
                            @RequestParam("psum") Integer psum,
                            @RequestParam("pname") String pname,
-                           @RequestParam("pacc") String pacc){
+                           @RequestParam("pacc") String pacc,
+                           @RequestParam("code") String code){
 
         if (psum == null) {
             psum = pstock * pprice;
         }
 
-        buyStock(pcuid,pstock,pprice,psum,pname,pacc);
+        buyStock(pcuid,pstock,pprice,psum,pname,pacc, code);
         downBalance(psum,pacc);
     }
 
@@ -110,5 +113,9 @@ public class StockService {
 
         upBalance(psum,pacc);
         sellStock(pname,pcuid);
+    }
+
+    public PcontractDTO findByIRP(@Param("pcuid") String pcuid){
+        return mypageMapper.findByIRP(pcuid);
     }
 }

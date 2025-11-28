@@ -16,7 +16,8 @@ public interface StockMapper {
                          @RequestParam("pprice") Integer pprice,
                          @RequestParam("psum") Integer psum,
                          @RequestParam("pname") String pname,
-                         @RequestParam("pacc") String pacc);
+                         @RequestParam("pacc") String pacc,
+                         @RequestParam("code") String code);
 
     public void downBalance(@RequestParam("psum") Integer psum,
                             @RequestParam("pacc") String pacc);
