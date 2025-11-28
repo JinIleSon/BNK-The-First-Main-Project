@@ -196,4 +196,9 @@ public class MypageController {
             public final boolean success = true;
         });
     }
+
+    @GetMapping("mypage/prod/edit")
+    public String prodEditPage() {
+        return "mypage/mypage_prodEdit";
+    }
  }
