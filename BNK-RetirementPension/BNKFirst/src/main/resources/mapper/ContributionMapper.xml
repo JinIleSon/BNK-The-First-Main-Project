@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.co.bnkfirst.mapper.ContributionMapper">
 
-    <!-- 직원별 납입 내역 조회 -->
-    <select id="findByEmpId" parameterType="long" resultType="kr.co.bnkfirst.domain.Contribution">
+    <!-- 직원별 납입 내역 -->
+    <select id="findByEmpId" parameterType="long"
+            resultType="kr.co.bnkfirst.domain.Contribution">
         SELECT
             CONTRIID,
             EMPID,
@@ -19,8 +20,7 @@
 
     <!-- 직원별 현재 적립금 -->
     <select id="findCurrentBalance" parameterType="long" resultType="long">
-        SELECT
-            NVL(SUM(AMOUNT), 0)
+        SELECT NVL(SUM(AMOUNT), 0)
         FROM CONTRIBUTION
         WHERE EMPID = #{empId}
     </select>

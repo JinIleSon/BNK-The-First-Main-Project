@@ -14,7 +14,7 @@ public class CorporateController {
     private final EmployeeService employeeService;          // 주입됨
     private final ContributionService contributionService;  // ← 반드시 추가
 
-    // 메인 페이지
+    /** 기업 메인 (대시보드) */
     @GetMapping("/corporate/main")
     public String main(Model model) {
 
@@ -35,7 +35,7 @@ public class CorporateController {
         return "corporate/main/corporate_main";
     }
 
-    // 고객센터
+    /** 고객센터 */
     @GetMapping("/corporate/cs")
     public String cs() {
         return "corporate/cs/cs_main";
