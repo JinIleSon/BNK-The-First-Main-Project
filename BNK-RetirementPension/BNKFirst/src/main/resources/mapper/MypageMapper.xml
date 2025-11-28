@@ -108,6 +108,7 @@
             psum,
             pname,
             pacc,
+            code,
             'ETF' AS ptype          -- DTO의 ptype 필드에 ETF 고정 주입
             from etf where pcuid = #{pcuid}
     </select>

@@ -502,17 +502,49 @@
                                           <div style="color: #6B7280; font-size: 14px;"><span th:text="${contractList[i].pacc}"></span></div>
                                       </div>
                                       <div style="display: flex; align-items: center; margin-left: auto;">
-                                        <a href="#" style="text-decoration: none;">
-                                          <div style="display: flex;">
-                                            <div style="color: #3B82F6; font-size: 14px; margin-right: 7px;"
-                                            th:text="${contractList[i].ptype == 'ETF' ? '매도하러 가기' : '자세히 보기'}">자세히 보기</div>
-                                            <div>
-                                              <svg width="9" height="20" viewBox="0 0 9 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.49307 10.1321C8.83486 10.4739 8.83486 11.029 8.49307 11.3708L3.24307 16.6208C2.90127 16.9626 2.34619 16.9626 2.00439 16.6208C1.6626 16.279 1.6626 15.7239 2.00439 15.3821L6.63643 10.7501L2.00713 6.11807C1.66533 5.77627 1.66533 5.22119 2.00713 4.87939C2.34893 4.5376 2.904 4.5376 3.2458 4.87939L8.4958 10.1294L8.49307 10.1321Z" fill="#3B82F6"/>
-                                              </svg>
-                                            </div>
+                                          <!-- ① ETF인 경우: ETF 주문 화면 -->
+                                          <a th:if="${#strings.equalsIgnoreCase(contractList[i].ptype, 'ETF')}"
+                                             th:href="@{/stock/orderEtf(code=${contractList[i].code}, name=${contractList[i].pname})}"
+                                             style="text-decoration: none; display:flex; align-items:center;">
+                                              <div style="color: #3B82F6; font-size: 14px; margin-right: 7px;"
+                                                   th:text="'매도하러 가기'">매도하러 가기</div>
+                                              <div>
+                                                  <svg width="9" height="20" viewBox="0 0 9 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                      <path d="M8.49307 10.1321C8.83486 10.4739 8.83486 11.029 8.49307 11.3708L3.24307 16.6208C2.90127 16.9626 2.34619 16.9626 2.00439 16.6208C1.6626 16.279 1.6626 15.7239 2.00439 15.3821L6.63643 10.7501L2.00713 6.11807C1.66533 5.77627 1.66533 5.22119 2.00713 4.87939C2.34893 4.5376 2.904 4.5376 3.2458 4.87939L8.4958 10.1294L8.49307 10.1321Z" fill="#3B82F6"/>
+                                                  </svg>
+                                              </div>
+                                          </a>
+
+                                          <!-- ② 펀드인 경우: 펀드 상세(또는 주문) 화면 -->
+                                          <a th:if="${#strings.equalsIgnoreCase(contractList[i].ptype, 'FUND')
+                                                        or (contractList[i].fid != null and #strings.contains(contractList[i].fid, 'FD'))}"
+                                             th:href="@{/product/fund/list}"
+                                          style="text-decoration: none; display:flex; align-items:center;">
+                                          <div style="color: #3B82F6; font-size: 14px; margin-right: 7px;">
+                                              자세히 보기
                                           </div>
-                                        </a>
+                                          <div>
+                                              <svg width="9" height="20" viewBox="0 0 9 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <path d="M8.49307 10.1321C8.83486 10.4739 8.83486 11.029 8.49307 11.3708L3.24307 16.6208C2.90127 16.9626 2.34619 16.9626 2.00439 16.6208C1.6626 16.279 1.6626 15.7239 2.00439 15.3821L6.63643 10.7501L2.00713 6.11807C1.66533 5.77627 1.66533 5.22119 2.00713 4.87939C2.34893 4.5376 2.904 4.5376 3.2458 4.87939L8.4958 10.1294L8.49307 10.1321Z" fill="#3B82F6"/>
+                                              </svg>
+                                          </div>
+                                          </a>
+
+                                          <!-- ③ 나머지 상품(예금, 적금 등): 링크만 비활성 -->
+                                          <a th:if="${!(#strings.equalsIgnoreCase(contractList[i].ptype, 'ETF')
+                                                       or #strings.equalsIgnoreCase(contractList[i].ptype, 'FUND')
+                                                       or (contractList[i].fid != null and #strings.contains(contractList[i].fid, 'FD')))}"
+                                             th:href="@{/product/list}"
+                                             style="text-decoration: none; display:flex; align-items:center;">
+                                              <div style="color: #3B82F6; font-size: 14px; margin-right: 7px;">
+                                                  자세히 보기
+                                              </div>
+                                              <div>
+                                                  <svg width="9" height="20" viewBox="0 0 9 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                      <path d="M8.49307 10.1321C8.83486 10.4739 8.83486 11.029 8.49307 11.3708L3.24307 16.6208C2.90127 16.9626 2.34619 16.9626 2.00439 16.6208C1.6626 16.279 1.6626 15.7239 2.00439 15.3821L6.63643 10.7501L2.00713 6.11807C1.66533 5.77627 1.66533 5.22119 2.00713 4.87939C2.34893 4.5376 2.904 4.5376 3.2458 4.87939L8.4958 10.1294L8.49307 10.1321Z" fill="#3B82F6"/>
+                                                  </svg>
+                                              </div>
+                                          </a>
                                       </div>
                                     </div>
                                       <div th:if="${#strings.equalsIgnoreCase(contractList[i].ptype,'ETF')}"
@@ -632,17 +664,49 @@
                                       </div>
 
                                       <div style="display: flex; align-items: center; margin-left: auto;">
-                                        <a href="#" style="text-decoration: none;">
-                                          <div style="display: flex;">
-                                            <div style="color: #3B82F6; font-size: 14px; margin-right: 7px;"
-                                                 th:text="${contractList[i+1].ptype == 'ETF' ? '매도하러 가기' : '자세히 보기'}">자세히 보기</div>
-                                            <div>
-                                              <svg width="9" height="20" viewBox="0 0 9 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.49307 10.1321C8.83486 10.4739 8.83486 11.029 8.49307 11.3708L3.24307 16.6208C2.90127 16.9626 2.34619 16.9626 2.00439 16.6208C1.6626 16.279 1.6626 15.7239 2.00439 15.3821L6.63643 10.7501L2.00713 6.11807C1.66533 5.77627 1.66533 5.22119 2.00713 4.87939C2.34893 4.5376 2.904 4.5376 3.2458 4.87939L8.4958 10.1294L8.49307 10.1321Z" fill="#3B82F6"/>
-                                              </svg>
-                                            </div>
-                                          </div>
-                                        </a>
+                                          <!-- ① ETF인 경우: ETF 주문 화면 -->
+                                          <a th:if="${#strings.equalsIgnoreCase(contractList[i+1].ptype, 'ETF')}"
+                                             th:href="@{/stock/orderEtf(code=${contractList[i+1].code}, name=${contractList[i+1].pname})}"
+                                             style="text-decoration: none; display:flex; align-items:center;">
+                                              <div style="color: #3B82F6; font-size: 14px; margin-right: 7px;"
+                                                   th:text="'매도하러 가기'">매도하러 가기</div>
+                                              <div>
+                                                  <svg width="9" height="20" viewBox="0 0 9 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                      <path d="M8.49307 10.1321C8.83486 10.4739 8.83486 11.029 8.49307 11.3708L3.24307 16.6208C2.90127 16.9626 2.34619 16.9626 2.00439 16.6208C1.6626 16.279 1.6626 15.7239 2.00439 15.3821L6.63643 10.7501L2.00713 6.11807C1.66533 5.77627 1.66533 5.22119 2.00713 4.87939C2.34893 4.5376 2.904 4.5376 3.2458 4.87939L8.4958 10.1294L8.49307 10.1321Z" fill="#3B82F6"/>
+                                                  </svg>
+                                              </div>
+                                          </a>
+
+                                          <!-- ② 펀드인 경우: 펀드 상세(또는 주문) 화면 -->
+                                          <a th:if="${#strings.equalsIgnoreCase(contractList[i+1].ptype, 'FUND')
+                                                        or (contractList[i+1].fid != null and #strings.contains(contractList[i+1].fid, 'FD'))}"
+                                             th:href="@{/product/fund/list}"
+                                             style="text-decoration: none; display:flex; align-items:center;">
+                                              <div style="color: #3B82F6; font-size: 14px; margin-right: 7px;">
+                                                  자세히 보기
+                                              </div>
+                                              <div>
+                                                  <svg width="9" height="20" viewBox="0 0 9 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                      <path d="M8.49307 10.1321C8.83486 10.4739 8.83486 11.029 8.49307 11.3708L3.24307 16.6208C2.90127 16.9626 2.34619 16.9626 2.00439 16.6208C1.6626 16.279 1.6626 15.7239 2.00439 15.3821L6.63643 10.7501L2.00713 6.11807C1.66533 5.77627 1.66533 5.22119 2.00713 4.87939C2.34893 4.5376 2.904 4.5376 3.2458 4.87939L8.4958 10.1294L8.49307 10.1321Z" fill="#3B82F6"/>
+                                                  </svg>
+                                              </div>
+                                          </a>
+
+                                          <!-- ③ 나머지 상품(예금, 적금 등): 링크만 비활성 -->
+                                          <a th:if="${!(#strings.equalsIgnoreCase(contractList[i+1].ptype, 'ETF')
+                                                       or #strings.equalsIgnoreCase(contractList[i+1].ptype, 'FUND')
+                                                       or (contractList[i+1].fid != null and #strings.contains(contractList[i+1].fid, 'FD')))}"
+                                             th:href="@{/product/list}"
+                                             style="text-decoration: none; display:flex; align-items:center;">
+                                              <div style="color: #3B82F6; font-size: 14px; margin-right: 7px;">
+                                                  자세히 보기
+                                              </div>
+                                              <div>
+                                                  <svg width="9" height="20" viewBox="0 0 9 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                      <path d="M8.49307 10.1321C8.83486 10.4739 8.83486 11.029 8.49307 11.3708L3.24307 16.6208C2.90127 16.9626 2.34619 16.9626 2.00439 16.6208C1.6626 16.279 1.6626 15.7239 2.00439 15.3821L6.63643 10.7501L2.00713 6.11807C1.66533 5.77627 1.66533 5.22119 2.00713 4.87939C2.34893 4.5376 2.904 4.5376 3.2458 4.87939L8.4958 10.1294L8.49307 10.1321Z" fill="#3B82F6"/>
+                                                  </svg>
+                                              </div>
+                                          </a>
                                       </div>
                                     </div>
                                       <div th:if="${#strings.equalsIgnoreCase(contractList[i + 1].ptype,'ETF')}"

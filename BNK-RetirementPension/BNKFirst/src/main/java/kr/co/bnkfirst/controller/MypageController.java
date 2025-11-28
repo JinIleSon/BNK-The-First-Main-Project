@@ -40,6 +40,7 @@ public class MypageController {
         model.addAttribute("balance", mypageService.findByBalance(principal.getName()) + mypageService.findByFundBalance(principal.getName()));
         model.addAttribute("contractList", mypageService.findByContract(principal.getName()));
         model.addAttribute("documentList", mypageService.findByDocumentList(principal.getName()));
+        model.addAttribute("ETFList", mypageService.selectEtf(principal.getName()));
         return "mypage/mypage_main";
     }
     @GetMapping("/mypage/prod")

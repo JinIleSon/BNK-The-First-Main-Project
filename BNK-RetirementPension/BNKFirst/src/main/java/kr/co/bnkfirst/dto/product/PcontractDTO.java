@@ -66,4 +66,5 @@ public class PcontractDTO {
     private Integer pstock; // 보유 수량
     private Integer pprice; // 매수 단가
     private Integer psum; // 평가 금액(또는 매수 금액)
+    private String code; // 해당 종목 code
 }
