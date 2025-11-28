@@ -286,7 +286,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         const wizard = document.getElementById('wizard');
         const cusid = wizard?.dataset.mid || '';
 
-        // 2) 출금계좌번호: 4단계에서 선택한 select의 value (pacc)
+        // 2) 상품ID: url 변수
+        const url = new URL(window.location.href);
+        const parts = url.pathname.split('/');
+        const pid = decodeURIComponent(parts[parts.length - 1]);
+
+        // 3) 출금계좌번호: 4단계에서 선택한 select의 value (pacc)
         const accSelect = document.querySelector('#page4 select[aria-label="출금계좌번호"]');
         let pacc = '';
         if (accSelect && accSelect.value) {
@@ -294,7 +299,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             pacc = accSelect.value;
         }
 
-        // 3) 매수금액: firstAmt input의 숫자만 추출
+        // 4) 매수금액: firstAmt input의 숫자만 추출
         const firstAmtInput = document.getElementById('firstAmt');
         let firstAmt = 0;
         if (firstAmtInput && firstAmtInput.value) {
@@ -302,7 +307,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (raw) firstAmt = Number(raw);
         }
 
-        // 4) 제도구분 / 금리: 상품 상세 응답에서 가져온다고 가정
+        // 5) 제도구분 / 금리: 상품 상세 응답에서 가져온다고 가정
         const productInfo = state.productInfo || {};
 
         // 제도구분(예: DC, DB, IRP…)  ← 필드명은 실제 DTO에 맞게 변경 필요
@@ -316,7 +321,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             productInfo.pbirate ??
             null;
 
-        // 5) 계약일/만기일
+        // 6) 계약일/만기일
         // 화면에 날짜 입력 필드가 없으므로 "신청 시각 = 계약일"로 잡는다고 가정
         // → 추측입니다. 계약일/만기일을 서버에서 계산한다면 여기서 굳이 보낼 필요는 없음.
         const today = new Date();
@@ -335,6 +340,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         return {
             // 고객ID
             "pcuid": cusid,
+
+            // 상품ID
+            "pcpid": pid,
 
             // 계좌번호
             "pacc": pacc,
@@ -395,7 +403,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 }
 
                 // 정상 처리 후 완료 페이지로 이동
-                window.location.href = "/BNK/product/subCmpl/list";
+                window.location.href = `/BNK/product/subCmpl/list?pid=${payload.pcpid}`;
             } catch (e) {
                 console.error(e);
                 alert('신청 처리 중 통신 오류가 발생했습니다.');

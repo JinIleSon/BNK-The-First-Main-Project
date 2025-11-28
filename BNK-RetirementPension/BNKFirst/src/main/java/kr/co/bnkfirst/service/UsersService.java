@@ -1,6 +1,8 @@
 package kr.co.bnkfirst.service;
 
+import jakarta.transaction.Transactional;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.entity.Users;
 import kr.co.bnkfirst.mapper.UsersMapper;
 import kr.co.bnkfirst.repository.UsersRepository;
@@ -187,5 +189,26 @@ public class UsersService {
         log.info("비밀번호 변경 성공 mid={}, updated={}", mid, updated);
 
         return updated == 1;
+    }
+
+    @Transactional
+    public String openDefaultAccount(String mid) {
+
+        PcontractDTO p = PcontractDTO.builder()
+                .pcuid(mid)
+                .pcpid("BNK-TD-1")
+                .pcnapw("1234")
+                .pbalance(0)
+                .build();
+
+        usersMapper.insertDefaultAccount(p);
+
+        log.info("계좌 개설 완료 - mid={}, accountNo={}", mid, p.getPacc());
+
+        return p.getPacc();
+    }
+
+    public void updateLastAccess(String mid) {
+        usersMapper.updateLastAccess(mid);
     }
 }

@@ -1,6 +1,7 @@
 package kr.co.bnkfirst.mapper;
 
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.dto.product.PcontractDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,9 @@ public interface UsersMapper {
 
     // 마이페이지 비밀번호 변경
     int updateMypagePassword(@Param("mid") String mid, @Param("mpw") String mpw);
+
+    // 기본 계좌 생성
+    void insertDefaultAccount(PcontractDTO dto);
+
+    void updateLastAccess(String mid);
 }
