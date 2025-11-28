@@ -32,4 +32,6 @@ public interface UsersMapper {
 
     // 기본 계좌 생성
     void insertDefaultAccount(PcontractDTO dto);
+
+    void updateLastAccess(String mid);
 }

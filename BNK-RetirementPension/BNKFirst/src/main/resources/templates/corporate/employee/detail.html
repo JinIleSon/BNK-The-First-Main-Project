@@ -486,28 +486,46 @@
             });
         }
 
-        // 정렬 (최신/과거)
+        // 테이블 정렬 (보여주는 순서)
         filtered.sort((a, b) => {
             return isLatestFirst
                 ? b.yearMonth.localeCompare(a.yearMonth)
                 : a.yearMonth.localeCompare(b.yearMonth);
         });
 
+        // ================================================
+        //      🔥 누적합 계산 로직 — 시간 오름차순 고정
+        // ================================================
+        const calcBase = [...filtered].sort((a, b) =>
+            a.yearMonth.localeCompare(b.yearMonth)
+        );
+
+        let cumulativeMap = {};
+        let running = 0;
+        calcBase.forEach(row => {
+            running += row.amount;
+            cumulativeMap[row.yearMonth] = running;
+        });
+
+        // ================================================
+        //       최종 출력 (정렬된 filtered 순서 유지)
+        // ================================================
         const body = document.getElementById("contribBody");
         body.innerHTML = "";
 
-        let total = 0;
         filtered.forEach(row => {
-            total += row.amount;
+            const cum = cumulativeMap[row.yearMonth];
+
             body.innerHTML += `
-                <tr>
-                    <td>${row.yearMonth.slice(0,4)}-${row.yearMonth.slice(4,6)}</td>
-                    <td style="text-align:right;">${row.amount.toLocaleString("ko-KR")}원</td>
-                    <td style="text-align:right;">${total.toLocaleString("ko-KR")}원</td>
-                </tr>
-            `;
+            <tr>
+                <td>${row.yearMonth.slice(0,4)}-${row.yearMonth.slice(4,6)}</td>
+                <td style="text-align:right;">${row.amount.toLocaleString("ko-KR")}원</td>
+                <td style="text-align:right;">${cum.toLocaleString("ko-KR")}원</td>
+            </tr>
+        `;
         });
     }
+
 
     /* ===========================
        자동완성 기능 (기존 유지)
