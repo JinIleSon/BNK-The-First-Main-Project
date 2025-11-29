@@ -192,6 +192,17 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/create")
+    public String createForm(Model model) {
+        model.addAttribute("employeeCreateDto", new EmployeeCreateDto());
+        return "corporate/employee/create";   // ✔ 수정
+    }
+
+    @PostMapping("/create")
+    public String create(@ModelAttribute @Valid EmployeeCreateDto dto) {
+        employeeService.createEmployee(dto);
+        return "redirect:/corporate/employee/list";   // ✔ 수정
+    }
 
 
 }
