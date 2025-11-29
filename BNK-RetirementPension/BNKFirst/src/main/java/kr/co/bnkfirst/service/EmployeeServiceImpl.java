@@ -81,5 +81,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void retire(Long empId, String status, String retireDate) {
         employeeMapper.updateRetire(empId, status, retireDate);
     }
+    /*******************************************
+     * ⭐ 페이지네이션 (검색 + 50명 단위 조회)
+     *******************************************/
+    @Override
+    public List<EmployeeListDto> getEmployeePage(String keyword, String planType, int offset, int size) {
+        return employeeMapper.selectEmployeePage(keyword, planType, offset, size);
+    }
+
+    @Override
+    public int getEmployeeTotalCount(String keyword, String planType) {
+        return employeeMapper.countEmployeeList(keyword, planType);
+    }
+
 
 }

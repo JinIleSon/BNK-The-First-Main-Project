@@ -29,4 +29,11 @@ public interface EmployeeService {
 
     // ⭐ 퇴사 처리 (퇴사일 포함)
     void retire(Long empId, String status, String retireDate);
+
+    // ⭐ 페이지네이션: 직원 목록 (검색 + 페이징)
+    List<EmployeeListDto> getEmployeePage(String keyword, String planType, int offset, int size);
+
+    // ⭐ 페이지네이션: 총 직원 수 조회 (검색 조건 포함)
+    int getEmployeeTotalCount(String keyword, String planType);
+
 }
