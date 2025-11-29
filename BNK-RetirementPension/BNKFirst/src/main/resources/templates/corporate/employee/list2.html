@@ -224,6 +224,39 @@
         .btn-cancel { background: #ddd; }
         .btn-save { background: #d91a1a; color: #fff; }
 
+        .pagination-wrapper {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .pagination {
+            list-style: none;
+            display: inline-flex;
+            gap: 6px;
+            padding: 0;
+        }
+
+        .pagination li a {
+            display: block;
+            padding: 8px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .pagination li.active a {
+            background: #d91a1a;
+            color: #fff;
+            border-color: #d91a1a;
+        }
+
+        .pagination li.disabled a {
+            pointer-events: none;
+            opacity: .4;
+        }
+
     </style>
 </head>
 
@@ -320,6 +353,35 @@
             </tr>
             </tbody>
         </table>
+
+        <!-- ⭐⭐⭐ 페이지네이션 영역 추가 ⭐⭐⭐ -->
+        <div class="pagination-wrapper">
+            <ul class="pagination">
+
+                <!-- 이전 버튼 -->
+                <li th:class="${page == 1} ? 'disabled'">
+                    <a th:href="@{/corporate/employee/list(keyword=${keyword}, planType=${planType}, page=${page - 1})}">
+                        이전
+                    </a>
+                </li>
+
+                <!-- 페이지 번호 -->
+                <li th:each="p : ${#numbers.sequence(1, totalPages)}"
+                    th:class="${p == page} ? 'active'">
+                    <a th:href="@{/corporate/employee/list(keyword=${keyword}, planType=${planType}, page=${p})}">
+                        [[${p}]]
+                    </a>
+                </li>
+
+                <!-- 다음 버튼 -->
+                <li th:class="${page == totalPages} ? 'disabled'">
+                    <a th:href="@{/corporate/employee/list(keyword=${keyword}, planType=${planType}, page=${page + 1})}">
+                        다음
+                    </a>
+                </li>
+
+            </ul>
+        </div>
     </div>
 </div>
 
