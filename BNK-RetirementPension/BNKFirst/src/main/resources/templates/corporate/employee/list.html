@@ -353,7 +353,7 @@
         const list = await res.json();
 
         autoBox.innerHTML = list.map(emp =>
-            `<div class="auto-item" onclick="location.href='/corporate/employee/detail/${emp.empId}'">
+            `<div class="auto-item" onclick="location.href='/BNK/corporate/employee/detail/${emp.empId}'">
             ${emp.name} (${emp.accountNo})
         </div>`
         ).join("");
