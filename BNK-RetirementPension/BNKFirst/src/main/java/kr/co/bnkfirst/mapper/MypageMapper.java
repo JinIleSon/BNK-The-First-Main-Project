@@ -37,4 +37,7 @@ public interface MypageMapper {
 
     // IRP 계좌만 불러오기
     PcontractDTO findByIRP(@Param("pcuid") String pcuid);
+
+    // 2025.11.28. 강민철 - 변경 상품 목록 가져오기
+    List<PcontractDTO> findByUidAndType(String pcuid);
 }
