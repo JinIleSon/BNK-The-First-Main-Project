@@ -17,8 +17,8 @@
         <p>보유 상품의 비중을 조정하거나 새로운 상품을 매수해 퇴직연금 포트폴리오를 관리하세요.</p>
 
         <div class="page-tabs">
-            <button type="button" class="tab-btn is-active" data-tab-target="#tab-sell">상품 변경(매도)</button>
-            <button type="button" class="tab-btn" data-tab-target="#tab-buy">상품 매수</button>
+            <button type="button" class="tab-btn is-active" data-tab-target="tab-sell">상품 매도</button>
+            <button type="button" class="tab-btn" data-tab-target="tab-buy">상품 매수</button>
         </div>
     </section>
 
@@ -104,7 +104,6 @@
                     </div>
                     <div class="card-actions">
                         <button type="button" class="btn btn-outline btn-partial-cancel">취소</button>
-                        <button type="button" class="btn btn-main">일부매도 주문</button>
                     </div>
                 </div>
             </article>
@@ -161,7 +160,6 @@
                     </div>
                     <div class="card-actions">
                         <button type="button" class="btn btn-outline btn-partial-cancel">취소</button>
-                        <button type="button" class="btn btn-main">일부매도 주문</button>
                     </div>
                 </div>
             </article>
@@ -218,10 +216,53 @@
                     </div>
                     <div class="card-actions">
                         <button type="button" class="btn btn-outline btn-partial-cancel">취소</button>
-                        <button type="button" class="btn btn-main">일부매도 주문</button>
                     </div>
                 </div>
             </article>
+        </div>
+        <!-- 선택한 매도상품 합계 -->
+        <section class="sell-summary">
+            <h3 class="sell-summary-title">선택한 매도상품 합계</h3>
+            <table class="sell-summary-table">
+                <thead>
+                <tr>
+                    <th>구분(건수)</th>
+                    <th>매도좌수</th>
+                    <th>매도금액</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>투자상품(<span id="sumFundCount">0</span>건)</td>
+                    <td><span id="sumFundQty">0</span></td>
+                    <td><span id="sumFundAmount">0원</span></td>
+                </tr>
+                <tr>
+                    <td>원리금보장상품(<span id="sumTdCount">0</span>건)</td>
+                    <td><span id="sumTdQty">0</span></td>
+                    <td><span id="sumTdAmount">0원</span></td>
+                </tr>
+                <tr class="row-total">
+                    <td>합계(<span id="sumTotalCount">0</span>건)</td>
+                    <td><span id="sumTotalQty">0</span></td>
+                    <td><span id="sumTotalAmount">0원</span></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="sell-summary-notes">
+                <p class="note-danger">
+                    펀드의 실제 매도금액은 기준가 적용일 기준가 변동에 따라 현재 환산 매도금액 대비 차이가 발생할 수 있습니다.
+                </p>
+                <p class="note-normal">
+                    매도금액 환산 기준 : 고객입력 매도좌수 × 현재 기준가 / 1,000
+                </p>
+            </div>
+        </section>
+        <!-- 매도 합계 액션 버튼 영역 -->
+        <div class="sell-summary-actions">
+            <button type="button" class="btn btn-outline btn-cancel-sell">취소하기</button>
+            <button type="button" class="btn btn-main btn-open-sell-modal">매도하기</button>
         </div>
     </section>
 
@@ -426,6 +467,47 @@
 
     </section>
 </main>
+
+<!-- 상품 매도 확인 / PIN 입력 모달 -->
+<div class="modal-backdrop" id="sellModalBackdrop">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>상품 매도 확인</h3>
+        </div>
+
+        <div class="modal-body">
+            <p class="modal-text">아래 내용으로 상품 변경(매도)을 진행합니다.</p>
+
+            <div class="modal-summary">
+                <div class="modal-row">
+                    <span class="label">선택한 매도상품 수</span>
+                    <span class="value" id="modalSellCount">0건</span>
+                </div>
+                <div class="modal-row">
+                    <span class="label">총 매도 금액</span>
+                    <span class="value" id="modalSellAmount">0원</span>
+                </div>
+            </div>
+
+            <div class="modal-field">
+                <label for="sellPinInput">계좌 비밀번호 (4자리)</label>
+                <div class="pin-input-wrap">
+                    <input type="password"
+                           id="sellPinInput"
+                           maxlength="4"
+                           inputmode="numeric"
+                           autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline" id="sellModalCancelBtn">취소</button>
+            <button type="button" class="btn btn-main" id="sellModalConfirmBtn">확인</button>
+        </div>
+    </div>
+</div>
+
 <footer>
     <div id="footer" th:replace="~{layouts/footer.html}"></div>
 </footer>

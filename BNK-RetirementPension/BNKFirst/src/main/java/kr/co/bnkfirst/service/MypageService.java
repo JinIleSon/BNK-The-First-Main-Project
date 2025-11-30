@@ -117,6 +117,6 @@ public class MypageService{
         내용 : 변경 상품 목록 불러오기
      */
     public List<PcontractDTO> getProdEditList(@Param("pcuid") String pcuid) {
-
+        return mypageMapper.findByUidAndType(pcuid);
     }
 }

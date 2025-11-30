@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.MydataAccountDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
 import kr.co.bnkfirst.dto.mypage.DealDTO;
+import kr.co.bnkfirst.dto.mypage.EditSellRequestDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.service.MydataAccountService;
@@ -215,7 +216,34 @@ public class MypageController {
         내용 : 변경 상품 목록 가져오기
      */
     @GetMapping("api/mypage/editList")
-    public ResponseEntity<PcontractDTO> editList() {
-        return null;
+    public ResponseEntity<List<PcontractDTO>> editList(Principal principal) {
+        if (principal == null) {
+            throw new NullPointerException("principal is null");
+        }
+        String mid = principal.getName();
+        log.info(mypageService.getProdEditList(mid).toString());
+        return ResponseEntity.ok(mypageService.getProdEditList(mid));
+    }
+
+    /*
+        날짜 : 2025.11. 30.
+        이름 : 강민철
+        내용 : 변경 상품 매도
+     */
+    @PostMapping("api/mypage/editSell")
+    public ResponseEntity<?> editSell(@RequestBody EditSellRequestDTO request, Principal principal) {
+        if (principal == null) {
+            throw new NullPointerException("principal is null");
+        }
+        String mid = principal.getName();
+        String acc = request.getPacc();
+        List<String> sellTypes = request.getSellTypes();
+        List<PcontractDTO> dtoList = request.getProducts();
+        log.info("editsell dtolist {}", dtoList);
+        log.info("editsell selltypes {}", sellTypes);
+        log.info("editsell totalAmount {}", request.getTotalAmount());
+        Boolean checkSuccess = productService.editSellProduct(mid, acc, request);
+
+        return ResponseEntity.ok(checkSuccess);
     }
  }
