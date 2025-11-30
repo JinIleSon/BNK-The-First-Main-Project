@@ -229,5 +229,33 @@
         </where>
     </select>
 
+    <!-- ========================================================= -->
+    <!-- ⭐ 직원 등록 (INSERT) ⭐ -->
+    <!-- ========================================================= -->
+    <insert id="insertEmployee"
+            parameterType="kr.co.bnkfirst.dto.corporate.employee.EmployeeCreateDto">
+
+        INSERT INTO EMPLOYEE (
+            EMPID,
+            NAME,
+            PLANTYPE,
+            ACCOUNTNO,
+            STATUS,
+            DEPARTMENT,
+            POSITION,
+            HIREDATE
+        ) VALUES (
+                     EMP_SEQ.NEXTVAL,
+                     #{name},
+                     #{planType},
+                     #{accountNo},
+                     #{status},
+                     #{department},
+                     #{position},
+                     TO_DATE(#{hireDate}, 'YYYY-MM-DD')
+                 )
+    </insert>
+
+
 
 </mapper>

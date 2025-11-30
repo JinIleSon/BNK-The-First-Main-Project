@@ -257,6 +257,16 @@
             opacity: .4;
         }
 
+        .btn-create {
+            background:#d91a1a;
+            color:#fff;
+            padding:8px 14px;
+            border-radius:6px;
+            text-decoration:none;
+            font-size:14px;
+        }
+        .btn-create:hover { opacity:.9; }
+
     </style>
 </head>
 
@@ -269,6 +279,27 @@
 
     <h1>퇴직연금 직원 조회</h1>
     <div class="subtitle">EMPLOYEE 테이블 기반 직원별 제도, 계좌, 재직 상태를 조회·관리합니다.</div>
+
+    <!-- 관리 / CRUD 상단 메뉴 -->
+    <div class="admin-toolbar" style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#fff;
+    padding:14px 18px;
+    border-radius:8px;
+    border:1px solid #ddd;
+    margin-bottom:20px;
+">
+        <div style="font-size:16px; font-weight:600;">직원 관리</div>
+
+        <div>
+            <a href="/corporate/employee/create"
+               style="background:#d91a1a; color:#fff; padding:8px 14px; border-radius:6px; text-decoration:none;">
+                직원 등록
+            </a>
+        </div>
+    </div>
 
     <!-- 검색 -->
     <form method="get" th:action="@{/corporate/employee/list}">
