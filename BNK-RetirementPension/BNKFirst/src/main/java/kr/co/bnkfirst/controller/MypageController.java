@@ -3,10 +3,8 @@ package kr.co.bnkfirst.controller;
 import jakarta.servlet.http.HttpSession;
 import kr.co.bnkfirst.dto.MydataAccountDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
-import kr.co.bnkfirst.dto.mypage.DealDTO;
-import kr.co.bnkfirst.dto.mypage.EditSellRequestDTO;
+import kr.co.bnkfirst.dto.mypage.EditRequestDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
-import kr.co.bnkfirst.dto.product.ProductDTO;
 import kr.co.bnkfirst.service.MydataAccountService;
 import kr.co.bnkfirst.service.MypageService;
 import kr.co.bnkfirst.service.ProductService;
@@ -231,7 +229,7 @@ public class MypageController {
         내용 : 변경 상품 매도
      */
     @PostMapping("api/mypage/editSell")
-    public ResponseEntity<?> editSell(@RequestBody EditSellRequestDTO request, Principal principal) {
+    public ResponseEntity<?> editSell(@RequestBody EditRequestDTO request, Principal principal) {
         if (principal == null) {
             throw new NullPointerException("principal is null");
         }
@@ -243,6 +241,26 @@ public class MypageController {
         log.info("editsell selltypes {}", sellTypes);
         log.info("editsell totalAmount {}", request.getTotalAmount());
         Boolean checkSuccess = productService.editSellProduct(mid, acc, request);
+
+        return ResponseEntity.ok(checkSuccess);
+    }
+
+    /*
+        날짜 : 2025.11. 30.
+        이름 : 강민철
+        내용 : 변경 상품 매수
+     */
+    @PostMapping("api/mypage/editBuy")
+    public ResponseEntity<?> editBuy(@RequestBody EditRequestDTO request, Principal principal) {
+        if (principal == null) {
+            throw new NullPointerException("principal is null");
+        }
+        String mid = principal.getName();
+        String acc = request.getPacc();
+        List<PcontractDTO> dtoList = request.getProducts();
+        log.info("editbuy dtolist {}", dtoList);
+        log.info("editbuy totalAmount {}", request.getTotalAmount());
+        Boolean checkSuccess = productService.editBuyProduct(mid, acc, request);
 
         return ResponseEntity.ok(checkSuccess);
     }

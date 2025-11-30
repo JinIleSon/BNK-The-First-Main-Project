@@ -1,6 +1,6 @@
 package kr.co.bnkfirst.service;
 
-import kr.co.bnkfirst.dto.mypage.EditSellRequestDTO;
+import kr.co.bnkfirst.dto.mypage.EditRequestDTO;
 import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
 import kr.co.bnkfirst.dto.product.ProductDTO;
@@ -308,18 +308,18 @@ public class ProductService {
         내용 : 변경 상품 매도
      */
     @Transactional
-    public boolean editSellProduct(String pcuid, String pacc, EditSellRequestDTO editSellRequestDTO) {
-        List<String> sellTypes =  editSellRequestDTO.getSellTypes();
-        List<PcontractDTO> pcList = editSellRequestDTO.getProducts();
-        PcontractDTO drawDTO = PcontractDTO.builder()
+    public boolean editSellProduct(String pcuid, String pacc, EditRequestDTO editRequestDTO) {
+        List<String> sellTypes =  editRequestDTO.getSellTypes();
+        List<PcontractDTO> pcList = editRequestDTO.getProducts();
+        PcontractDTO depositDTO = PcontractDTO.builder()
                 .pcuid(pcuid)
                 .pacc(pacc)
-                .pbalance(editSellRequestDTO.getTotalAmount().intValue())
+                .pbalance(editRequestDTO.getTotalAmount().intValue())
                 .type("IRP")
                 .build();
         int checkError = 0;
 
-        checkError = productMapper.depositPcontract(drawDTO);
+        checkError = productMapper.depositPcontract(depositDTO);
         if(checkError == 0) return false;
 
         for (int i = 0; i < sellTypes.size(); i++) {
@@ -331,6 +331,34 @@ public class ProductService {
             } else {
                 checkError = 0;
             }
+            if (checkError < 1) break;
+        }
+
+        return checkError == 1;
+    }
+
+    /*
+        날짜 : 2025.11.30.
+        이름 : 강민철
+        내용 : 변경 상품 매수
+     */
+    @Transactional
+    public boolean editBuyProduct(String pcuid, String pacc, EditRequestDTO editRequestDTO) {
+        List<PcontractDTO> pcList = editRequestDTO.getProducts();
+        PcontractDTO drawDTO = PcontractDTO.builder()
+                .pcuid(pcuid)
+                .pacc(pacc)
+                .pbalance(editRequestDTO.getTotalAmount().intValue())
+                .type("IRP")
+                .build();
+        int checkError = 0;
+
+        checkError = productMapper.drawPcontract(drawDTO);
+        if(checkError == 0) return false;
+
+        for (int i = 0; i < pcList.size(); i++) {
+            pcList.get(i).setPcuid(pcuid);
+            checkError = productMapper.extraBuyPcontract(pcList.get(i));
             if (checkError < 1) break;
         }
 

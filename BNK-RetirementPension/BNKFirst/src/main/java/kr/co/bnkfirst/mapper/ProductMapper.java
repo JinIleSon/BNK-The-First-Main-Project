@@ -28,4 +28,6 @@ public interface ProductMapper {
     public int partSellPcontract(PcontractDTO pcontract);
     // 2025.11.30. 강민철 : 상품 전부 매도(판매)하기
     public int fullSellPcontract(PcontractDTO pcontract);
+    // 2025.11.30. 강민철 : 보유 상품 추가 매수(구매)하기
+    public int extraBuyPcontract(PcontractDTO pcontract);
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class EditSellRequestDTO {
+public class EditRequestDTO {
     private String pacc;
     private List<String> sellTypes;
     private List<PcontractDTO> products;

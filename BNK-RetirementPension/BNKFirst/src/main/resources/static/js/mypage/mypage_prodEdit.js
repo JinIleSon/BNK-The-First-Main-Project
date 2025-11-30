@@ -14,20 +14,34 @@ let currentIrpAccount = null;
 
 // ✅ 보유 상품 / IRP 잔액 요약용 전역 변수 추가
 let currentHoldingTotal = 0;   // 보유 상품 평가금액 합계
-let currentIrpBalance   = 0;   // IRP 계좌의 매수 가능 금액(pbalance)
+let currentIrpBalance = 0;   // IRP 계좌의 매수 가능 금액(pbalance)
+
+// ✅ 매수상품 합계 전역
+let currentBuySummary = {
+    fundCount: 0,
+    fundQty: 0,
+    fundAmount: 0,
+    tdCount: 0,
+    tdQty: 0,
+    tdAmount: 0,
+    totalCount: 0,
+    totalQty: 0,
+    totalAmount: 0
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     setupTabs();
     loadEditList();
     loadIrpAccount();
     setupSellSummaryActions();   // 매도합계 버튼/모달 이벤트
+    setupBuySummaryActions();    // ✅ 매수합계 버튼/모달 이벤트
 });
 
 /* ================== 탭 전환 ================== */
 
 function setupTabs() {
     const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabPanels  = document.querySelectorAll('.tab-panel');
+    const tabPanels = document.querySelectorAll('.tab-panel');
 
     if (!tabButtons.length || !tabPanels.length) {
         return;
@@ -121,6 +135,10 @@ function recalcSummaryAndRatios() {
         irpBalance = Number.isNaN(tmp) ? 0 : tmp;
     }
 
+    // ✅ 전역에도 반영
+    currentHoldingTotal = holdingsTotal;
+    currentIrpBalance = irpBalance;
+
     // 3) 총자산 = 보유 상품 평가금액 합 + IRP 잔액
     const totalAsset = holdingsTotal + irpBalance;
 
@@ -145,7 +163,7 @@ function recalcSummaryAndRatios() {
 
     // 5) 보유 상품 요약(매도 탭)
     const summarySellAmount = document.querySelector('#tab-sell .summary-item.highlight .summary-value');
-    const summarySellRatio  = document.querySelector('#tab-sell .summary-item:nth-child(2) .summary-value');
+    const summarySellRatio = document.querySelector('#tab-sell .summary-item:nth-child(2) .summary-value');
     const summaryTotalAsset = document.querySelector('#tab-sell .summary-item:nth-child(3) .summary-value');
 
     const holdingsRatio = (totalAsset > 0)
@@ -164,7 +182,7 @@ function recalcSummaryAndRatios() {
 
     // 6) 매수 가능 금액 요약(매수 탭)
     const buyAvailEl = document.querySelector('#tab-buy .summary-item.highlight .summary-value');
-    const buyEvalEl  = document.querySelector('#tab-buy .summary-item:nth-child(2) .summary-value');
+    const buyEvalEl = document.querySelector('#tab-buy .summary-item:nth-child(2) .summary-value');
     const buyRatioEl = document.querySelector('#tab-buy .summary-item:nth-child(3) .summary-value');
 
     if (buyAvailEl) {
@@ -191,7 +209,7 @@ function parseInputNumber(input) {
 
 function updateSummaryPanels() {
     const holding = currentHoldingTotal || 0;   // 보유 상품 평가금액 합계
-    const cash    = currentIrpBalance   || 0;   // IRP 매수 가능 금액
+    const cash = currentIrpBalance || 0;   // IRP 매수 가능 금액
     const totalAsset = holding + cash;
 
     const investRatio = totalAsset > 0 ? (holding / totalAsset) * 100 : 0;
@@ -199,11 +217,11 @@ function updateSummaryPanels() {
     // ----- 매도 탭: 보유 상품 요약 -----
     const sellTab = document.getElementById('tab-sell');
     if (sellTab) {
-        const evalEl  = sellTab.querySelector('.summary-item.highlight .summary-value');          // 평가금액 합계
+        const evalEl = sellTab.querySelector('.summary-item.highlight .summary-value');          // 평가금액 합계
         const ratioEl = sellTab.querySelector('.summary-item:nth-child(2) .summary-value');      // 비중 합계
         const assetEl = sellTab.querySelector('.summary-item:nth-child(3) .summary-value');      // 총자산
 
-        if (evalEl)  evalEl.textContent  = `${formatCurrency(holding)}원`;
+        if (evalEl) evalEl.textContent = `${formatCurrency(holding)}원`;
         if (ratioEl) ratioEl.textContent = `${formatPercent(investRatio)}%`;
         if (assetEl) assetEl.textContent = `${formatCurrency(totalAsset)}원`;
     }
@@ -211,12 +229,12 @@ function updateSummaryPanels() {
     // ----- 매수 탭: 매수 가능 금액 요약 -----
     const buyTab = document.getElementById('tab-buy');
     if (buyTab) {
-        const buyCashEl  = buyTab.querySelector('.summary-item.highlight .summary-value');       // 매수 가능 금액
-        const buyEvalEl  = buyTab.querySelector('.summary-item:nth-child(2) .summary-value');    // 현재 평가금액 합계
+        const buyCashEl = buyTab.querySelector('.summary-item.highlight .summary-value');       // 매수 가능 금액
+        const buyEvalEl = buyTab.querySelector('.summary-item:nth-child(2) .summary-value');    // 현재 평가금액 합계
         const buyRatioEl = buyTab.querySelector('.summary-item:nth-child(3) .summary-value');    // 현재 비중 합계
 
-        if (buyCashEl)  buyCashEl.textContent  = `${formatCurrency(cash)}원`;
-        if (buyEvalEl)  buyEvalEl.textContent  = `${formatCurrency(holding)}원`;
+        if (buyCashEl) buyCashEl.textContent = `${formatCurrency(cash)}원`;
+        if (buyEvalEl) buyEvalEl.textContent = `${formatCurrency(holding)}원`;
         if (buyRatioEl) buyRatioEl.textContent = `${formatPercent(investRatio)}%`;
     }
 }
@@ -225,9 +243,9 @@ function computeSellAmount(card) {
     const balance = Number(card.dataset.balance || 0); // 해당 상품 평가금액(원)
     if (!balance || balance <= 0) return 0;
 
-    const amountInput  = card.querySelector('.sell-input-area .amount-input');
+    const amountInput = card.querySelector('.sell-input-area .amount-input');
     const percentInput = card.querySelector('.sell-input-area .percent-input');
-    const mode         = card.dataset.sellMode || '';
+    const mode = card.dataset.sellMode || '';
 
     // 1) 전부매도 모드일 때만 전액 매도
     if (mode === 'FULL') {
@@ -240,7 +258,7 @@ function computeSellAmount(card) {
     }
 
     // 3) PART 모드일 때
-    const amount  = parseInputNumber(amountInput);   // 원 단위 입력
+    const amount = parseInputNumber(amountInput);   // 원 단위 입력
     const percent = parseInputNumber(percentInput);  // 운용비율 감소량 (퍼센트 포인트)
 
     let sellAmount = 0;
@@ -274,16 +292,56 @@ function computeSellAmount(card) {
     return sellAmount;
 }
 
+function computeBuyAmount(card) {
+    if (!card) return 0;
+
+    const amountInput  = card.querySelector('.buy-input-area .amount-input');
+    const percentInput = card.querySelector('.buy-input-area .percent-input');
+
+    const amount  = parseInputNumber(amountInput);   // 원 단위 매수 금액
+    const percent = parseInputNumber(percentInput);  // 매수 비중 (%)
+
+    let buyAmount = 0;
+
+    // 총자산 = 보유 상품 평가금액 + IRP 매수 가능 금액
+    const totalAsset = (currentHoldingTotal || 0) + (currentIrpBalance || 0);
+    if (totalAsset <= 0) {
+        // 총자산이 0이면 비중 기준 계산은 불가능 -> 금액 입력만 사용
+        if (amount > 0) return amount;
+        return 0;
+    }
+
+    // 1) 비중 입력이 있으면: "총자산의 X%" 만큼을 이 상품에 매수
+    if (percent > 0) {
+        let pct = percent;
+        if (pct > 100) pct = 100;
+        if (pct < 0)   pct = 0;
+
+        buyAmount = Math.floor(totalAsset * (pct / 100));
+    }
+    // 2) 비중이 없고 금액만 입력되면, 금액 기준 매수
+    else if (amount > 0) {
+        buyAmount = amount;
+    }
+
+    if (buyAmount <= 0) return 0;
+
+    // ⛔ 여기서는 per-card 상한은 두지 않음
+    // 총합이 IRP 잔액을 넘는지는 openBuyModal / submitBuyOrder 쪽에서 체크
+
+    return buyAmount;
+}
+
 function updateSellSummary() {
     const cards = document.querySelectorAll('.sell-card');
 
     let fundCount = 0;   // 투자상품 선택 건수
-    let fundQty   = 0;   // 투자상품 매도좌수 (실제 매도금액 > 0 인 상품 수)
+    let fundQty = 0;   // 투자상품 매도좌수 (실제 매도금액 > 0 인 상품 수)
     let fundAmount = 0;  // 투자상품 매도금액 합계
 
-    let tdCount   = 0;   // 원리금보장상품 선택 건수
-    let tdQty     = 0;   // 원리금보장상품 매도좌수
-    let tdAmount  = 0;   // 원리금보장상품 매도금액 합계
+    let tdCount = 0;   // 원리금보장상품 선택 건수
+    let tdQty = 0;   // 원리금보장상품 매도좌수
+    let tdAmount = 0;   // 원리금보장상품 매도금액 합계
 
     cards.forEach(card => {
         const checkbox = card.querySelector('.prod-check');
@@ -296,7 +354,7 @@ function updateSellSummary() {
         const type = typeRaw.toUpperCase();
 
         const sellAmt = computeSellAmount(card);
-        const hasQty  = sellAmt > 0; // 실제 매도금액이 있을 때만 매도좌수 카운트
+        const hasQty = sellAmt > 0; // 실제 매도금액이 있을 때만 매도좌수 카운트
 
         if (type === 'FUND') {
             fundCount += 1;
@@ -314,8 +372,8 @@ function updateSellSummary() {
         }
     });
 
-    const totalCount  = fundCount + tdCount;
-    const totalQty    = fundQty + tdQty;
+    const totalCount = fundCount + tdCount;
+    const totalQty = fundQty + tdQty;
     const totalAmount = fundAmount + tdAmount;
 
     // 전역 합계 상태 저장 (모달에서도 사용)
@@ -331,24 +389,98 @@ function updateSellSummary() {
         totalAmount
     };
 
-    const elFundCount   = document.getElementById('sumFundCount');
-    const elFundQty     = document.getElementById('sumFundQty');
-    const elFundAmount  = document.getElementById('sumFundAmount');
-    const elTdCount     = document.getElementById('sumTdCount');
-    const elTdQty       = document.getElementById('sumTdQty');
-    const elTdAmount    = document.getElementById('sumTdAmount');
-    const elTotalCount  = document.getElementById('sumTotalCount');
-    const elTotalQty    = document.getElementById('sumTotalQty');
+    const elFundCount = document.getElementById('sumFundCount');
+    const elFundQty = document.getElementById('sumFundQty');
+    const elFundAmount = document.getElementById('sumFundAmount');
+    const elTdCount = document.getElementById('sumTdCount');
+    const elTdQty = document.getElementById('sumTdQty');
+    const elTdAmount = document.getElementById('sumTdAmount');
+    const elTotalCount = document.getElementById('sumTotalCount');
+    const elTotalQty = document.getElementById('sumTotalQty');
     const elTotalAmount = document.getElementById('sumTotalAmount');
 
-    if (elFundCount)   elFundCount.textContent   = `${fundCount}`;
-    if (elFundQty)     elFundQty.textContent     = `${fundQty}`;
-    if (elFundAmount)  elFundAmount.textContent  = `${formatCurrency(fundAmount)}원`;
-    if (elTdCount)     elTdCount.textContent     = `${tdCount}`;
-    if (elTdQty)       elTdQty.textContent       = `${tdQty}`;
-    if (elTdAmount)    elTdAmount.textContent    = `${formatCurrency(tdAmount)}원`;
-    if (elTotalCount)  elTotalCount.textContent  = `${totalCount}`;
-    if (elTotalQty)    elTotalQty.textContent    = `${totalQty}`;
+    if (elFundCount) elFundCount.textContent = `${fundCount}`;
+    if (elFundQty) elFundQty.textContent = `${fundQty}`;
+    if (elFundAmount) elFundAmount.textContent = `${formatCurrency(fundAmount)}원`;
+    if (elTdCount) elTdCount.textContent = `${tdCount}`;
+    if (elTdQty) elTdQty.textContent = `${tdQty}`;
+    if (elTdAmount) elTdAmount.textContent = `${formatCurrency(tdAmount)}원`;
+    if (elTotalCount) elTotalCount.textContent = `${totalCount}`;
+    if (elTotalQty) elTotalQty.textContent = `${totalQty}`;
+    if (elTotalAmount) elTotalAmount.textContent = `${formatCurrency(totalAmount)}원`;
+}
+
+function updateBuySummary() {
+    const cards = document.querySelectorAll('.buy-card');
+
+    let fundCount = 0;
+    let fundQty = 0;
+    let fundAmount = 0;
+
+    let tdCount = 0;
+    let tdQty = 0;
+    let tdAmount = 0;
+
+    cards.forEach(card => {
+        const checkbox = card.querySelector('.prod-check');
+        if (!checkbox || !checkbox.checked) return;
+
+        const typeRaw = card.dataset.type || '';
+        const type = typeRaw.toUpperCase();
+
+        const buyAmt = computeBuyAmount(card);
+        const hasQty = buyAmt > 0;
+
+        if (type === 'FUND') {
+            fundCount += 1;
+            fundAmount += buyAmt;
+            if (hasQty) fundQty += 1;
+        } else if (type.endsWith('TD')) {
+            tdCount += 1;
+            tdAmount += buyAmt;
+            if (hasQty) tdQty += 1;
+        } else {
+            // 기타 타입은 투자상품으로
+            fundCount += 1;
+            fundAmount += buyAmt;
+            if (hasQty) fundQty += 1;
+        }
+    });
+
+    const totalCount = fundCount + tdCount;
+    const totalQty = fundQty + tdQty;
+    const totalAmount = fundAmount + tdAmount;
+
+    currentBuySummary = {
+        fundCount,
+        fundQty,
+        fundAmount,
+        tdCount,
+        tdQty,
+        tdAmount,
+        totalCount,
+        totalQty,
+        totalAmount
+    };
+
+    const elFundCount = document.getElementById('sumBuyFundCount');
+    const elFundQty = document.getElementById('sumBuyFundQty');
+    const elFundAmount = document.getElementById('sumBuyFundAmount');
+    const elTdCount = document.getElementById('sumBuyTdCount');
+    const elTdQty = document.getElementById('sumBuyTdQty');
+    const elTdAmount = document.getElementById('sumBuyTdAmount');
+    const elTotalCount = document.getElementById('sumBuyTotalCount');
+    const elTotalQty = document.getElementById('sumBuyTotalQty');
+    const elTotalAmount = document.getElementById('sumBuyTotalAmount');
+
+    if (elFundCount) elFundCount.textContent = `${fundCount}`;
+    if (elFundQty) elFundQty.textContent = `${fundQty}`;
+    if (elFundAmount) elFundAmount.textContent = `${formatCurrency(fundAmount)}원`;
+    if (elTdCount) elTdCount.textContent = `${tdCount}`;
+    if (elTdQty) elTdQty.textContent = `${tdQty}`;
+    if (elTdAmount) elTdAmount.textContent = `${formatCurrency(tdAmount)}원`;
+    if (elTotalCount) elTotalCount.textContent = `${totalCount}`;
+    if (elTotalQty) elTotalQty.textContent = `${totalQty}`;
     if (elTotalAmount) elTotalAmount.textContent = `${formatCurrency(totalAmount)}원`;
 }
 
@@ -382,8 +514,8 @@ function buildSellOrderPayload() {
     const cards = document.querySelectorAll('.sell-card');
 
     const productList = []; // [{pcpid, type, pbalance}, ...]
-    const sellTypes   = []; // ['FULL', 'PART', ...]
-    let totalAmount   = 0;
+    const sellTypes = []; // ['FULL', 'PART', ...]
+    let totalAmount = 0;
 
     cards.forEach(card => {
         const checkbox = card.querySelector('.prod-check');
@@ -396,7 +528,7 @@ function buildSellOrderPayload() {
         if (balance <= 0) return;
 
         // 전부매도 / 일부매도 모드
-        const modeRaw  = card.dataset.sellMode || '';
+        const modeRaw = card.dataset.sellMode || '';
         const sellType = modeRaw.toUpperCase() === 'PART' ? 'PART' : 'FULL';
 
         // 공통 계산 함수로 실제 매도 금액 계산
@@ -406,12 +538,12 @@ function buildSellOrderPayload() {
             return;
         }
 
-        const type  = (card.dataset.type || '').toUpperCase();
+        const type = (card.dataset.type || '').toUpperCase();
         const pcpid = card.dataset.productId || '';
 
         productList.push({
-            pcpid:    pcpid,
-            type:     type,
+            pcpid: pcpid,
+            type: type,
             pbalance: sellAmount   // ← 서버 DTO에서 pbalance로 받을 예정
         });
 
@@ -421,7 +553,7 @@ function buildSellOrderPayload() {
 
     return {
         productList: productList,
-        sellTypes:   sellTypes,
+        sellTypes: sellTypes,
         totalAmount: totalAmount
     };
 }
@@ -434,8 +566,8 @@ function openSellModal() {
     }
 
     const backdrop = document.getElementById('sellModalBackdrop');
-    const countEl  = document.getElementById('modalSellCount');
-    const amtEl    = document.getElementById('modalSellAmount');
+    const countEl = document.getElementById('modalSellCount');
+    const amtEl = document.getElementById('modalSellAmount');
     const pinInput = document.getElementById('sellPinInput');
 
     // 모달에서 고객이 다시 확인할 수 있도록
@@ -511,12 +643,18 @@ async function submitSellOrder() {
             },
             body: JSON.stringify({
                 pacc: pacc,
-                pin:  pin,
+                pin: pin,
                 type: "IRP"
             })
         });
 
         if (!verifyRes.ok) {
+            alert('계좌 비밀번호 인증 중 문제가 발생했습니다.\n', verifyRes.status, ' ', verifyRes.statusText);
+            return;
+        }
+        const verifyBool = await verifyRes.json();
+        console.log('verifyBool', verifyBool);
+        if (!verifyBool) {
             alert('계좌 비밀번호가 일치하지 않습니다. 다시 확인해 주세요.');
             if (pinInput) {
                 pinInput.focus();
@@ -527,10 +665,10 @@ async function submitSellOrder() {
 
         // 2) 실제 매도 주문 요청
         const orderRequest = {
-            pacc:        pacc,
+            pacc: pacc,
             totalAmount: payload.totalAmount,
-            products:    payload.productList, // [{pcpid, type, pbalance(=sellAmount)}, ...]
-            sellTypes:   payload.sellTypes    // ['FULL', 'PART', ...]
+            products: payload.productList, // [{pcpid, type, pbalance(=sellAmount)}, ...]
+            sellTypes: payload.sellTypes    // ['FULL', 'PART', ...]
         };
 
         const orderRes = await fetch('/BNK/api/mypage/editSell', {
@@ -560,14 +698,14 @@ async function submitSellOrder() {
 
         // ✅ 매도상품 합계 상태 및 화면 리셋
         currentSellSummary = {
-            fundCount:   0,
-            fundQty:     0,
-            fundAmount:  0,
-            tdCount:     0,
-            tdQty:       0,
-            tdAmount:    0,
-            totalCount:  0,
-            totalQty:    0,
+            fundCount: 0,
+            fundQty: 0,
+            fundAmount: 0,
+            tdCount: 0,
+            tdQty: 0,
+            tdAmount: 0,
+            totalCount: 0,
+            totalQty: 0,
             totalAmount: 0
         };
         updateSellSummary();
@@ -579,11 +717,11 @@ async function submitSellOrder() {
 }
 
 function setupSellSummaryActions() {
-    const openBtn        = document.querySelector('.btn-open-sell-modal');
-    const cancelBtn      = document.querySelector('.btn-cancel-sell');
+    const openBtn = document.querySelector('.btn-open-sell-modal');
+    const cancelBtn = document.querySelector('.btn-cancel-sell');
     const modalCancelBtn = document.getElementById('sellModalCancelBtn');
-    const modalOkBtn     = document.getElementById('sellModalConfirmBtn');
-    const pinInput       = document.getElementById('sellPinInput');
+    const modalOkBtn = document.getElementById('sellModalConfirmBtn');
+    const pinInput = document.getElementById('sellPinInput');
 
     if (openBtn) {
         openBtn.addEventListener('click', openSellModal);
@@ -625,6 +763,235 @@ function setupSellSummaryActions() {
     }
 }
 
+/*========================================== 매수 유틸 함수 ======================================================*/
+function buildBuyOrderPayload() {
+    const cards = document.querySelectorAll('.buy-card');
+
+    const productList = []; // [{pcpid, type, pbalance}, ...]
+    let totalAmount = 0;
+
+    cards.forEach(card => {
+        const checkbox = card.querySelector('.prod-check');
+        if (!checkbox || !checkbox.checked) return;
+
+        let buyAmount = computeBuyAmount(card);
+        if (!buyAmount || buyAmount <= 0) return;
+
+        const type = (card.dataset.type || '').toUpperCase();
+        const pcpid = card.dataset.productId || '';
+
+        productList.push({
+            pcpid: pcpid,
+            type: type,
+            pbalance: buyAmount   // ← 서버 DTO에서 pbalance로 받을 예정 (매수금액)
+        });
+
+        totalAmount += buyAmount;
+    });
+
+    return {
+        productList,
+        totalAmount
+    };
+}
+
+function openBuyModal() {
+    if (!currentBuySummary || currentBuySummary.totalAmount <= 0 || currentBuySummary.totalQty <= 0) {
+        alert('매수할 상품을 선택하고 금액을 입력해 주세요.');
+        return;
+    }
+
+    // 🔒 IRP 매수 가능 금액 초과 여부 체크
+    if (currentIrpBalance > 0 && currentBuySummary.totalAmount > currentIrpBalance) {
+        alert('매수 가능 금액을 초과했습니다.\n매수 금액을 조정해 주세요.');
+        return;
+    }
+
+    const backdrop = document.getElementById('buyModalBackdrop');
+    const countEl = document.getElementById('modalBuyCount');
+    const amtEl = document.getElementById('modalBuyAmount');
+    const pinInput = document.getElementById('buyPinInput');
+
+    if (countEl) {
+        countEl.textContent = `${currentBuySummary.totalQty}건`;
+    }
+    if (amtEl) {
+        amtEl.textContent = `${formatCurrency(currentBuySummary.totalAmount)}원`;
+    }
+
+    if (pinInput) {
+        pinInput.value = '';
+    }
+
+    if (backdrop) {
+        backdrop.classList.add('is-open');
+    }
+
+    if (pinInput) {
+        setTimeout(() => pinInput.focus(), 50);
+    }
+}
+
+function closeBuyModal() {
+    const backdrop = document.getElementById('buyModalBackdrop');
+    if (backdrop) {
+        backdrop.classList.remove('is-open');
+    }
+}
+
+// 실제 매수 요청
+async function submitBuyOrder() {
+    const pinInput = document.getElementById('buyPinInput');
+    const pin = pinInput ? pinInput.value.trim() : '';
+
+    if (!/^\d{4}$/.test(pin)) {
+        alert('계좌 비밀번호 4자리를 입력해 주세요.');
+        if (pinInput) pinInput.focus();
+        return;
+    }
+
+    const payload = buildBuyOrderPayload();
+    if (!payload ||
+        !Array.isArray(payload.productList) ||
+        payload.productList.length === 0 ||
+        payload.totalAmount <= 0) {
+        alert('매수할 상품을 선택하고 금액을 입력해 주세요.');
+        return;
+    }
+
+    if (!currentIrpAccount || !currentIrpAccount.pacc) {
+        alert('연금계좌 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.');
+        return;
+    }
+
+    // 한 번 더 IRP 한도 체크
+    if (currentIrpBalance > 0 && payload.totalAmount > currentIrpBalance) {
+        alert('매수 가능 금액을 초과했습니다.\n매수 금액을 조정해 주세요.');
+        return;
+    }
+
+    const pacc = currentIrpAccount.pacc;
+
+    try {
+        // 1) PIN 검증
+        const verifyRes = await fetch('/BNK/api/account/verify-pin', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                pacc: pacc,
+                pin: pin,
+                type: "IRP"
+            })
+        });
+
+        if (!verifyRes.ok) {
+            alert('계좌 비밀번호 인증 중 문제가 발생했습니다.\n', verifyRes.status, ' ', verifyRes.statusText);
+            return;
+        }
+        const verifyBool = await verifyRes.json();
+        console.log('verifyBool', verifyBool);
+        if (!verifyBool) {
+            alert('계좌 비밀번호가 일치하지 않습니다. 다시 확인해 주세요.');
+            if (pinInput) {
+                pinInput.focus();
+                pinInput.select && pinInput.select();
+            }
+            return;
+        }
+
+        // 2) 실제 매수 주문 요청 (URL은 상황에 맞게 조정)
+        const orderRequest = {
+            pacc: pacc,
+            totalAmount: payload.totalAmount,
+            products: payload.productList
+        };
+
+        const orderRes = await fetch('/BNK/api/mypage/editBuy', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(orderRequest)
+        });
+
+        if (!orderRes.ok) {
+            console.error('매수 주문 실패', orderRes.status);
+            alert('매수 과정 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요');
+            return;
+        }
+
+        alert('상품 매수가 완료되었습니다.');
+
+        closeBuyModal();
+
+        // 리스트 & 요약 최신화
+        editListLoaded = false;
+        await loadEditList();     // 보유 상품 리스트 갱신
+        await loadIrpAccount();   // IRP 잔액 갱신
+
+        // ✅ 매수상품 합계 리셋
+        currentBuySummary = {
+            fundCount: 0,
+            fundQty: 0,
+            fundAmount: 0,
+            tdCount: 0,
+            tdQty: 0,
+            tdAmount: 0,
+            totalCount: 0,
+            totalQty: 0,
+            totalAmount: 0
+        };
+        updateBuySummary();
+
+    } catch (e) {
+        console.error('매수 처리 중 예외', e);
+        alert('매수 과정 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요');
+    }
+}
+
+function setupBuySummaryActions() {
+    const openBtn = document.querySelector('.btn-open-buy-modal');
+    const cancelBtn = document.querySelector('.btn-cancel-buy-summary');
+    const modalCancelBtn = document.getElementById('buyModalCancelBtn');
+    const modalOkBtn = document.getElementById('buyModalConfirmBtn');
+    const pinInput = document.getElementById('buyPinInput');
+
+    if (openBtn) {
+        openBtn.addEventListener('click', openBuyModal);
+    }
+
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            history.back();
+        });
+    }
+
+    if (modalCancelBtn) {
+        modalCancelBtn.addEventListener('click', () => {
+            closeBuyModal();
+        });
+    }
+
+    if (modalOkBtn) {
+        modalOkBtn.addEventListener('click', () => {
+            if (!pinInput) return;
+            const pin = (pinInput.value || '').trim();
+
+            if (!/^\d{4}$/.test(pin)) {
+                alert('계좌 비밀번호 4자리를 정확히 입력해 주세요.');
+                pinInput.focus();
+                return;
+            }
+
+            submitBuyOrder();
+        });
+    }
+
+    if (pinInput) {
+        pinInput.addEventListener('input', () => {
+            pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 4);
+        });
+    }
+}
+
 /* ================== 메인: 상품 리스트 로딩 ================== */
 
 async function loadEditList() {
@@ -635,7 +1002,7 @@ async function loadEditList() {
     editListLoaded = true;
 
     const sellGrid = document.querySelector('#tab-sell .product-grid');
-    const buyGrid  = document.querySelector('#tab-buy .product-grid');
+    const buyGrid = document.querySelector('#tab-buy .product-grid');
 
     if (!sellGrid || !buyGrid) {
         console.warn('product-grid 컨테이너를 찾지 못했습니다.');
@@ -659,7 +1026,7 @@ async function loadEditList() {
 
         if (!Array.isArray(data) || data.length === 0) {
             sellGrid.innerHTML = '<p>보유 중인 상품이 없습니다.</p>';
-            buyGrid.innerHTML  = '<p>매수 가능한 상품이 없습니다.</p>';
+            buyGrid.innerHTML = '<p>매수 가능한 상품이 없습니다.</p>';
 
             // 데이터가 없을 때도 요약은 0으로 세팅
             recalcSummaryAndRatios();
@@ -668,7 +1035,7 @@ async function loadEditList() {
 
         // DTO → 화면에서 쓰기 편한 형태로 변환
         const items = data.map(it => {
-            const type   = it.TYPE ?? it.type;
+            const type = it.TYPE ?? it.type;
             const isFund = String(type || '').toUpperCase() === 'FUND';
 
             const name = isFund
@@ -683,7 +1050,7 @@ async function loadEditList() {
                 name,
                 productId: String(productId || ''),
                 balance: Number(it.pbalance ?? it.balance ?? 0),
-                rate:    Number(it.pcwtpi ?? it.rate ?? 0)
+                rate: Number(it.pcwtpi ?? it.rate ?? 0)
             };
         });
 
@@ -694,7 +1061,7 @@ async function loadEditList() {
 
         // 기존 더미 카드들 제거
         sellGrid.innerHTML = '';
-        buyGrid.innerHTML  = '';
+        buyGrid.innerHTML = '';
 
         // ===== 카드 생성 =====
         items.forEach(item => {
@@ -703,26 +1070,26 @@ async function loadEditList() {
             const ratio = totalBalance > 0 ? (item.balance / totalBalance) * 100 : 0;
 
             const typeLabel = getTypeLabel(item.type);
-            const isFund    = String(item.type ?? '').toUpperCase() === 'FUND';
+            const isFund = String(item.type ?? '').toUpperCase() === 'FUND';
 
             // 펀드: 수익률 0%, TD: pcwtpi를 수익률로 사용
             const yieldValue = isFund ? 0 : item.rate;
-            const yieldText  = isFund ? '0.00%' : `${formatPercent(yieldValue)}%`;
+            const yieldText = isFund ? '0.00%' : `${formatPercent(yieldValue)}%`;
             const yieldClass =
                 yieldValue > 0 ? 'plus' :
                     yieldValue < 0 ? 'minus' : '';
 
             const safeName = item.name || '상품명 미지정';
-            const subText  = typeLabel ? `${typeLabel} 상품` : '';
+            const subText = typeLabel ? `${typeLabel} 상품` : '';
 
             /* ---------- 매도(상품 변경) 카드 ---------- */
             const sellCard = document.createElement('article');
             sellCard.className = 'product-card sell-card';
 
             // payload 생성을 위해 필요한 데이터 심기
-            sellCard.dataset.type      = item.type || '';
+            sellCard.dataset.type = item.type || '';
             sellCard.dataset.productId = item.productId || '';
-            sellCard.dataset.balance   = String(item.balance ?? 0);
+            sellCard.dataset.balance = String(item.balance ?? 0);
 
             sellCard.innerHTML = `
                 <div class="card-top">
@@ -784,9 +1151,9 @@ async function loadEditList() {
             const buyCard = document.createElement('article');
             buyCard.className = 'product-card buy-card';
 
-            buyCard.dataset.type      = item.type || '';
+            buyCard.dataset.type = item.type || '';
             buyCard.dataset.productId = item.productId || '';
-            buyCard.dataset.balance   = String(item.balance ?? 0);
+            buyCard.dataset.balance = String(item.balance ?? 0);
 
             buyCard.innerHTML = `
                 <div class="card-top">
@@ -838,7 +1205,6 @@ async function loadEditList() {
                     </div>
                     <div class="card-actions">
                         <button type="button" class="btn btn-outline btn-cancel-buy">취소</button>
-                        <button type="button" class="btn btn-main">매수 주문</button>
                     </div>
                 </div>
             `;
@@ -863,11 +1229,11 @@ function attachSellCardHandlers() {
     const sellCards = document.querySelectorAll('.sell-card');
 
     sellCards.forEach(card => {
-        const fullBtn      = card.querySelector('.btn-full-sell');
-        const partialBtn   = card.querySelector('.btn-partial-toggle');
-        const cancelBtn    = card.querySelector('.btn-partial-cancel');
-        const checkbox     = card.querySelector('.prod-check');
-        const amountInput  = card.querySelector('.sell-input-area .amount-input');
+        const fullBtn = card.querySelector('.btn-full-sell');
+        const partialBtn = card.querySelector('.btn-partial-toggle');
+        const cancelBtn = card.querySelector('.btn-partial-cancel');
+        const checkbox = card.querySelector('.prod-check');
+        const amountInput = card.querySelector('.sell-input-area .amount-input');
         const percentInput = card.querySelector('.sell-input-area .percent-input');
 
         /* ---- 전부매도 버튼: 토글 (전부매도 ↔ 전부매도 취소) ---- */
@@ -987,7 +1353,7 @@ function attachSellCardHandlers() {
                 const firstDot = raw.indexOf('.');
                 if (firstDot !== -1) {
                     const before = raw.slice(0, firstDot + 1);               // 점 포함 앞부분
-                    const after  = raw.slice(firstDot + 1).replace(/\./g, ''); // 나머지 점 제거
+                    const after = raw.slice(firstDot + 1).replace(/\./g, ''); // 나머지 점 제거
                     raw = before + after;
                 }
 
@@ -1048,17 +1414,149 @@ function attachBuyCardHandlers() {
     buyCards.forEach(card => {
         const toggleBtn = card.querySelector('.btn-toggle-buy');
         const cancelBtn = card.querySelector('.btn-cancel-buy');
+        const checkbox = card.querySelector('.prod-check');
+        const amountInput = card.querySelector('.buy-input-area .amount-input');
+        const percentInput = card.querySelector('.buy-input-area .percent-input');
 
+        // 공통: 카드 상태 리셋
+        function resetCard() {
+            card.classList.remove('is-buy-open');
+            if (amountInput) amountInput.value = '';
+            if (percentInput) percentInput.value = '';
+            if (checkbox) checkbox.checked = false;
+            if (toggleBtn) toggleBtn.textContent = '매수하기';
+            updateBuySummary();
+        }
+
+        /* ---- 상단 매수하기 버튼: 토글 (매수하기 ↔ 매수 취소) ---- */
         if (toggleBtn) {
             toggleBtn.addEventListener('click', () => {
-                card.classList.add('is-buy-open');
+                const isOpen = card.classList.toggle('is-buy-open');
+
+                if (isOpen) {
+                    if (checkbox) checkbox.checked = true;
+                    toggleBtn.textContent = '매수 취소';
+                } else {
+                    resetCard();
+                }
             });
         }
 
+        /* ---- 하단 입력영역의 취소 버튼 ---- */
         if (cancelBtn) {
             cancelBtn.addEventListener('click', () => {
-                card.classList.remove('is-buy-open');
+                resetCard();
+            });
+        }
+
+        /* ---- 금액 입력: 숫자 + 천단위 포맷 + 비중 초기화 ---- */
+        if (amountInput) {
+            amountInput.addEventListener('input', () => {
+                // 비중 입력값이 있으면 지우기
+                if (percentInput && percentInput.value !== '') {
+                    percentInput.value = '';
+                }
+
+                let raw = amountInput.value.replace(/[^\d]/g, '');
+
+                if (raw === '') {
+                    amountInput.value = '';
+                    updateBuySummary();
+                    return;
+                }
+
+                let n = Number(raw);
+                if (Number.isNaN(n)) n = 0;
+
+                // 단일 상품이 매수가능금액을 넘지 않도록
+                if (currentIrpBalance > 0 && n > currentIrpBalance) {
+                    n = currentIrpBalance;
+                }
+
+                amountInput.value = n.toLocaleString('ko-KR');
+
+                if (n > 0) {
+                    card.classList.add('is-buy-open');
+                    if (checkbox) checkbox.checked = true;
+                    if (toggleBtn) toggleBtn.textContent = '매수 취소';
+                }
+
+                updateBuySummary();
+            });
+        }
+
+        /* ---- 비중 입력: 0~100, 소수 둘째 자리까지 + 금액 초기화 ---- */
+        if (percentInput) {
+            percentInput.addEventListener('input', () => {
+                // 비중 입력하면 금액은 초기화
+                if (amountInput && amountInput.value !== '') {
+                    amountInput.value = '';
+                }
+
+                let raw = percentInput.value;
+
+                // 1) 숫자와 '.'만 허용
+                raw = raw.replace(/[^0-9.]/g, '');
+
+                // 2) 점 여러 개 입력 시 첫 번째 점만 남기기
+                const firstDot = raw.indexOf('.');
+                if (firstDot !== -1) {
+                    const before = raw.slice(0, firstDot + 1);                // 점 포함 앞부분
+                    const after  = raw.slice(firstDot + 1).replace(/\./g, ''); // 나머지 점 제거
+                    raw = before + after;
+                }
+
+                // 3) 소수 둘째 자리까지만 허용
+                let decPart = '';
+                const dotIdx = raw.indexOf('.');
+                if (dotIdx !== -1) {
+                    const intPart   = raw.slice(0, dotIdx);
+                    const decPartRaw = raw.slice(dotIdx + 1);
+                    decPart = decPartRaw.slice(0, 2);                         // 소수부 최대 2자리
+                    raw = intPart + '.' + decPart;
+                }
+
+                // 4) 숫자로 해석 가능한 경우에만 0~100 범위로 제한
+                const pNum = parseFloat(raw);
+                if (!Number.isNaN(pNum)) {
+                    let clamped = pNum;
+                    if (clamped > 100) clamped = 100;
+                    if (clamped < 0)   clamped = 0;
+
+                    // ✅ 범위를 벗어난 경우에만 덮어쓰기
+                    //    (예: 120 → 100, -1 → 0)
+                    if (clamped !== pNum) {
+                        raw = String(clamped);
+                    }
+                    // 범위 안(0~100)인 값들: 0, 0.0, 0.01, 10.25 등은 건드리지 않음
+                }
+
+                // 최종 값 반영
+                percentInput.value = raw;
+
+                // 값이 있으면 "매수 열림 + 체크" 상태로
+                if (percentInput.value.trim() !== '') {
+                    card.classList.add('is-buy-open');
+                    if (checkbox) checkbox.checked = true;
+                    if (toggleBtn) toggleBtn.textContent = '매수 취소';
+                }
+
+                updateBuySummary();
+            });
+        }
+
+        /* ---- 체크박스 직접 조작 시 ---- */
+        if (checkbox) {
+            checkbox.addEventListener('change', () => {
+                if (!checkbox.checked) {
+                    resetCard();
+                } else {
+                    card.classList.add('is-buy-open');
+                    if (toggleBtn) toggleBtn.textContent = '매수 취소';
+                    updateBuySummary();
+                }
             });
         }
     });
 }
+
