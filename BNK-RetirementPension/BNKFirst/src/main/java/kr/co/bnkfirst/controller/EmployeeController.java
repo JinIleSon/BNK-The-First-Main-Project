@@ -121,8 +121,9 @@ public class EmployeeController {
     public String deleteConfirm(@PathVariable Long empId, Model model) {
         model.addAttribute("employee", employeeService.getEmployeeDetail(empId));
         model.addAttribute("employeeDeleteDto", new EmployeeDeleteDto());
-        return "corporate/employee/delete";
+        return "corporate/employee/delete";   // 🔥 템플릿 제대로 반환
     }
+
 
 
     /** =====================================
