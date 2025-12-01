@@ -1121,7 +1121,7 @@ async function loadEditList() {
                 </dl>
 
                 <div class="card-actions">
-                    <button type="button" class="btn btn-outline btn-full-sell">전부매도</button>
+                    <button type="button" class="btn btn-sheen btn-pressable btn-full-sell">전부매도</button>
                     <button type="button" class="btn btn-main btn-partial-toggle">일부매도</button>
                 </div>
 
@@ -1141,7 +1141,7 @@ async function loadEditList() {
                         </dd>
                     </div>
                     <div class="card-actions">
-                        <button type="button" class="btn btn-outline btn-partial-cancel">취소</button>
+                        <button type="button" class="btn btn-sheen btn-pressable btn-partial-cancel">취소</button>
                     </div>
                 </div>
             `;
@@ -1204,7 +1204,7 @@ async function loadEditList() {
                         </dd>
                     </div>
                     <div class="card-actions">
-                        <button type="button" class="btn btn-outline btn-cancel-buy">취소</button>
+                        <button type="button" class="btn btn-sheen btn-pressable btn-cancel-buy">취소</button>
                     </div>
                 </div>
             `;
