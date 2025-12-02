@@ -256,64 +256,6 @@
       color: #777;
     }
 
-    /*------ 카테고리 --------*/
-    .category {
-      display: flex;
-      justify-content: space-between;
-      align-items: stretch;
-      gap: 30px;
-      width: 80%;
-      margin: 100px auto;
-      border-top: 1px solid #E5E7EB;
-      padding-top: 100px;
-    }
-
-    .category-item {
-        flex: 1;
-        text-align: center;
-        border-radius: 18px;
-        padding: 32px 20px;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04); /* 살짝만 */
-        border: 1px solid rgba(15, 23, 42, 0.08);     /* 연한 그레이 보더 */
-        background: #ffffff;
-        transition: transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
-    }
-
-    .category-item:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-        border-color: rgba(217, 26, 26, 0.35); /* BNK 레드톤 살짝 */
-    }
-
-
-    .icon-wrap {
-      pointer-events: auto; /* 혹시 none이면 제거! */
-      overflow: visible;    /* hover 인식 막는 hidden 방지 */
-    }
-
-    .icon-wrap img{
-      width: 50px;
-      height: 50px;
-    }
-
-    .category-item:hover .icon-wrap img{
-      filter: brightness(0) saturate(80%) invert(10%) sepia(80%) saturate(7345%) hue-rotate(348deg) brightness(80%) contrast(116%);
-    }
-
-    .category-item h3{
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #222;
-    }
-
-    .category-item p{
-      font-size: 14px;
-      color: #666;
-    }
-
     /*------------ 공지 / 이벤트 -------------*/
     .notice-event {
         border-top: 1px solid #E5E7EB;
@@ -454,6 +396,40 @@
     .join-btn:hover {
       background: #b91515;
     }
+
+    /* ===== iM은행 APP 카드 ===== */
+
+    .app-grid {
+        display: grid;
+        grid-template-columns: 150px 150px; /* 이미지 크기에 딱 맞게 */
+        gap: 100px;
+        justify-content: center; /* 가운데 정렬 */
+    }
+
+
+
+    .app-item {
+        text-align: center;
+        flex: 1;
+    }
+
+    .app-item img {
+        width: 150px;
+        height: 150px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        background: #fff;
+    }
+
+    .app-item span {
+        display: block;
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #333;
+    }
+
+
 
     /*---------------- 상단 바로가기 ----------------*/
     .bottom-icons {
@@ -702,7 +678,7 @@
       </a>
 
       <a th:href="@{/irp/account/main}" style="text-decoration: none;">
-          <div class="icon-item blue">
+          <div class="icon-item red">
               <div class="circle">
                   <img th:src="@{/images/main_investment.png}" alt="계좌개설">
                   <h3>계좌개설</h3>
@@ -711,7 +687,7 @@
       </a>
 
       <a th:href="@{/mypage/calc}" style="text-decoration: none;">
-          <div class="icon-item green">
+          <div class="icon-item red">
               <div class="circle">
                   <img th:src="@{/images/main_calculator.png}" alt="금리계산">
                   <h3>금리계산</h3>
@@ -720,7 +696,7 @@
       </a>
 
       <a th:href="@{/qna/main}" style="text-decoration: none;">
-          <div class="icon-item purple">
+          <div class="icon-item red">
               <div class="circle">
                   <div style="">
                       <div style="display: flex; justify-content: center;">
@@ -735,55 +711,6 @@
                   </div>
               </div>
           </div>
-      </a>
-  </section>
-
-  <!-- 카테고리 -->
-  <section class="category">
-      <a th:href="@{/product/main}" class="category-item"  style="text-decoration: none;">
-        <div>
-          <div class="icon-wrap">
-            <img th:src="@{/images/main_best_seller.png}" alt="">
-          </div>
-          <h3>베스트 상품</h3>
-          <p>인기 높은 추천상품</p>
-        </div>
-      </a>
-      <a th:href="@{/product/main}" class="category-item" style="text-decoration: none;">
-        <div>
-          <div class="icon-wrap">
-            <img th:src="@{/images/main_target.png}" alt="">
-          </div>
-          <h3>목적별 상품</h3>
-          <p>목적에 맞는 상품</p>
-        </div>
-      </a>
-      <a th:href="@{/product/main}" class="category-item" style="text-decoration: none;">
-        <div>
-          <div class="icon-wrap">
-            <img th:src="@{/images/main_customer_age.png}" alt="">
-          </div>
-          <h3>생애주기별 상품</h3>
-          <p>연령대별 맞춤상품</p>
-        </div>
-      </a>
-      <a th:href="@{/product/main}" class="category-item" style="text-decoration: none;">
-        <div>
-          <div class="icon-wrap">
-            <img th:src="@{/images/main_each_customer.png}" alt="">
-          </div>
-          <h3>고객별 상품</h3>
-          <p>고객 유형별 상품</p>
-        </div>
-      </a>
-      <a th:href="@{/product/main}" class="category-item" style="text-decoration: none;">
-        <div>
-          <div class="icon-wrap">
-            <img th:src="@{/images/main_new.png}" alt="">
-          </div>
-          <h3>신규상품</h3>
-          <p>새로 출시된 상품</p>
-        </div>
       </a>
   </section>
 
@@ -815,21 +742,25 @@
       </ul>
     </div>
 
-    <!-- 이벤트 -->
-    <div class="event">
-      <div class="event-header">
-        <h3>이벤트 / 혜택</h3>
-        <a href="https://m.busanbank.co.kr/ib20/mnu/WBMBST042001001#none">전체보기</a>
+      <!-- 이벤트 -->
+      <div class="event">
+          <div class="event-header">
+              <h3>부기은행 APP</h3>
+          </div>
+
+          <div class="app-grid">
+              <div class="app-item">
+                  <img th:src="@{/images/bnk_app_logo.png}" alt="iM은행">
+                  <span>부기은행</span>
+              </div>
+
+              <div class="app-item">
+                  <img th:src="@{/images/bnk_app_cor_logo.png}" alt="iM은행 기업">
+                  <span>부기은행 기업</span>
+              </div>
+          </div>
       </div>
 
-      <div th:each="ev : ${events}" class="event-item">
-        <div class="event-info">
-          <h4 th:text="${ev.EVTITLE}">이벤트 제목</h4>
-          <p th:text="${ev.EVCONTENT}">이벤트 내용</p>
-        </div>
-        <button class="join-btn">신청하기</button>
-      </div>
-    </div>
   </section>
 
   <!--푸터-->
