@@ -350,13 +350,12 @@
 
             <!-- 메뉴 탭 -->
             <div class="tab-menu">
-                <button class="active" data-type="영업점">영업점</button>
-                <button data-type="365">365코너</button>
-                <button data-type="24/365">24/365코너</button>
-                <button data-type="대여금고">대여금고</button>
-                <button data-type="외화ATM">외화ATM</button>
+                <button class="active">영업점</button>
+                <button>365코너</button>
+                <button>24/365코너</button>
+                <button>대여금고</button>
+                <button>외화ATM</button>
             </div>
-
 
             <!-- 검색 조건 -->
             <div class="branch-search-wrapper">
@@ -465,14 +464,10 @@
             btn.addEventListener("click", () => {
                 tabButtons.forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
-
-                // 🔥 이 부분 변경
-                currentType = btn.dataset.type;
-
+                currentType = btn.textContent;
                 filter();
             });
         });
-
 
         function renderList(data) {
             totalBox.textContent = data.length;
@@ -512,9 +507,8 @@
         function filter() {
             let fd = [...branchData];
 
-            // 🔥 TYPE 필터링 핵심 (공백, null, 유니코드 차이까지 모두 방지)
             if (currentType !== "영업점") {
-                fd = fd.filter(b => (b.type || "").trim() === currentType.trim());
+                fd = fd.filter(b => b.type === currentType);
             }
 
             const c = city.value;
@@ -531,7 +525,6 @@
 
             renderList(fd);
         }
-
 
         city.addEventListener("change", filter);
         district.addEventListener("change", filter);
