@@ -192,7 +192,7 @@
 
             <!-- 세션 타이머 (로그인 시만 표시) -->
             <div id="session-box" th:if="${session.loginUser != null}">
-                <span id="logout-btn">로그아웃</span>
+                <span id="logout-btn" style="cursor: pointer;">로그아웃</span>
                 <span id="session-timer">--:--</span>
                 <button id="session-extend-btn">연장</button>
             </div>

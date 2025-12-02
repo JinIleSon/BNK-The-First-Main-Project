@@ -26,8 +26,8 @@
         .banner-slider {
             position: relative;
             width: 100%;
+            height: 100%;
             aspect-ratio: 16/9;
-            max-height: 650px;
         }
 
         .banner-slide {
@@ -37,6 +37,11 @@
             transition: opacity 1.1s ease-in-out,
             transform 1.1s ease-in-out;
             pointer-events: none;
+        }
+        .banner-slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .banner-slide.active {
@@ -49,7 +54,6 @@
         /* 이미지: 가로 100%, 세로는 비율 유지 (잘리지 않음) */
         .banner-slide img {
             width: 100%;
-            height: 100%;
             object-fit: cover;
             display: block;
         }
