@@ -16,12 +16,10 @@
 
         /*-------- 배너 --------*/
         .banner {
-            width: 80%;
-            max-height: 650px;
-            height: 650px;
+            width: 1280px;
             overflow: hidden;
             background: #ffffff;
-            margin: 60px auto 0; /* 위 40px, 좌우 중앙, 아래 0 */
+            margin: 60px auto 0;  /* 위 40px, 좌우 중앙, 아래 0 */
             border-radius: 12px;
         }
 
@@ -65,13 +63,13 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: transparent; /* 동그란 배경 제거 */
-            border: none; /* 테두리 제거 */
+            background: transparent;      /* 동그란 배경 제거 */
+            border: none;                 /* 테두리 제거 */
             width: auto;
             height: auto;
-            padding: 0; /* 필요하면 4~8px 정도 줘도 됨 */
-            color: rgba(0, 0, 0, 0.55); /* 화살표 색 */
-            font-size: 28px; /* 부등호 크기 */
+            padding: 0;                   /* 필요하면 4~8px 정도 줘도 됨 */
+            color: rgba(0, 0, 0, 0.55);   /* 화살표 색 */
+            font-size: 28px;              /* 부등호 크기 */
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -96,6 +94,34 @@
         }
 
 
+        /* 하단 도트 */
+        .banner-dots {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 5;
+        }
+
+        .banner-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            border: none;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .banner-dot.active {
+            width: 24px;
+            background: #D91A1A;
+        }
+
+
+
         /*--------- 검색 --------*/
         .search-box {
             text-align: center;
@@ -103,7 +129,7 @@
             border-radius: 20px;
             width: 100%;
             margin: 0 auto;
-            padding: 60px 0; /* 세로 패딩 살짝 ↑ (100 → 120) */
+            padding: 60px 0;          /* 세로 패딩 살짝 ↑ (100 → 120) */
         }
 
         /* 검색 컨테이너 */
@@ -112,7 +138,7 @@
             justify-content: center;
             align-items: center;
             gap: 12px;
-            width: 50%; /* 가로폭 ↑ (60% → 75%) */
+            width: 50%;                /* 가로폭 ↑ (60% → 75%) */
             margin: 0 auto;
             overflow: hidden;
             transition: 0.3s ease;
@@ -121,10 +147,10 @@
         /* 왼쪽 셀렉트박스 */
         .category-select {
             border: 1.5px solid #ddd;
-            border-radius: 14px; /* 살짝 더 둥글게 */
+            border-radius: 14px;       /* 살짝 더 둥글게 */
             background: #fff;
-            padding: 16px 44px 16px 20px; /* 높이/여백 조금 ↑ */
-            font-size: 17px; /* 글자 크기 ↑ (16 → 17) */
+            padding: 16px 44px 16px 20px;   /* 높이/여백 조금 ↑ */
+            font-size: 17px;           /* 글자 크기 ↑ (16 → 17) */
             color: #333;
             appearance: none;
             cursor: pointer;
@@ -141,7 +167,7 @@
             display: flex;
             align-items: center;
             border: 1.5px solid #ddd;
-            border-radius: 14px; /* 둥글기 통일 */
+            border-radius: 14px;        /* 둥글기 통일 */
             background: #fff;
             overflow: hidden;
             transition: 0.3s ease;
@@ -152,8 +178,8 @@
             flex: 1;
             border: none;
             outline: none;
-            font-size: 17px; /* 글자 크기 ↑ */
-            padding: 16px 20px; /* 높이/여백 ↑ */
+            font-size: 17px;            /* 글자 크기 ↑ */
+            padding: 16px 20px;         /* 높이/여백 ↑ */
             color: #333;
         }
 
@@ -162,9 +188,9 @@
             background: transparent;
             border: none;
             color: #D91A1A;
-            padding: 16px 20px; /* 버튼 높이도 맞춰주기 */
+            padding: 16px 20px;         /* 버튼 높이도 맞춰주기 */
             cursor: pointer;
-            font-size: 20px; /* 아이콘/텍스트 조금 키우기 */
+            font-size: 20px;            /* 아이콘/텍스트 조금 키우기 */
         }
 
         /* 추천 검색어 */
@@ -234,53 +260,59 @@
             color: #777;
         }
 
-        /*------ 카테고리 --------*/
-        .category {
+        /*------------ 공지 / 이벤트 -------------*/
+        .notice-event {
+            border-top: 1px solid #E5E7EB;
+            padding-top: 90px;
             display: flex;
             justify-content: space-between;
-            align-items: stretch;
-            gap: 30px;
             width: 80%;
-            margin: 100px auto;
-            border-top: 1px solid #E5E7EB;
-            padding-top: 100px;
+            margin: 60px auto;
+            gap: 30px;
         }
 
-        .category-item {
+        /* 공지 / 이벤트 카드: 카테고리와 톤 맞추기 */
+        .notice,
+        .event {
             flex: 1;
-            text-align: center;
-            border-radius: 18px;
-            padding: 32px 20px;
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04); /* 살짝만 */
-            border: 1px solid rgba(15, 23, 42, 0.08); /* 연한 그레이 보더 */
             background: #ffffff;
+            border-radius: 18px;
+            padding: 24px 28px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            border: 1px solid rgba(15, 23, 42, 0.08);
             transition: transform 0.25s ease,
             box-shadow 0.25s ease,
             border-color 0.25s ease;
         }
 
-        .category-item:hover {
+        .notice:hover,
+        .event:hover {
             transform: translateY(-4px);
             box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
             border-color: rgba(217, 26, 26, 0.35); /* BNK 레드톤 살짝 */
         }
 
-
-        .icon-wrap {
-            pointer-events: auto; /* 혹시 none이면 제거! */
-            overflow: visible; /* hover 인식 막는 hidden 방지 */
+        .notice-header,
+        .event-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-    /*------------ 공지 / 이벤트 -------------*/
-    .notice-event {
-        border-top: 1px solid #E5E7EB;
-        padding-top: 90px;
-        display: flex;
-        justify-content: space-between;
-        width: 80%;
-        margin: 60px auto;
-        gap: 30px;
-    }
+        .notice-header h3,
+        .event-header h3{
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .notice-header a,
+        .event-header a{
+            color: #555;
+            font-size: 14px;
+            text-decoration: none;
+        }
 
         .notice ul {
             list-style: none;
@@ -293,7 +325,7 @@
             border-bottom: 1px solid #eee;
         }
 
-        .notice li:last-child {
+        .notice li:last-child{
             border-bottom: none;
         }
 
@@ -369,6 +401,40 @@
             background: #b91515;
         }
 
+        /* ===== iM은행 APP 카드 ===== */
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: 150px 150px; /* 이미지 크기에 딱 맞게 */
+            gap: 100px;
+            justify-content: center; /* 가운데 정렬 */
+        }
+
+
+
+        .app-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .app-item img {
+            width: 150px;
+            height: 150px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+
+        .app-item span {
+            display: block;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+
+
         /*---------------- 상단 바로가기 ----------------*/
         .bottom-icons {
             display: flex;
@@ -390,15 +456,15 @@
         .circle {
             width: 180px;
             height: 180px;
-            border-radius: 50%; /* 원형 유지 */
+            border-radius: 50%;  /* 원형 유지 */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             margin: 0 auto 12px;
             background-color: #ffffff;
-            border: 1px solid rgba(15, 23, 42, 0.08); /* 연한 그레이 보더 */
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05); /* 살짝 그림자 */
+            border: 1px solid rgba(15, 23, 42, 0.08);       /* 연한 그레이 보더 */
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);   /* 살짝 그림자 */
             transition: transform 0.25s ease,
             box-shadow 0.25s ease,
             border-color 0.25s ease,
@@ -417,115 +483,79 @@
             margin: 0;
         }
 
-    /* ===== iM은행 APP 카드 ===== */
-
-    .app-grid {
-        display: grid;
-        grid-template-columns: 150px 150px; /* 이미지 크기에 딱 맞게 */
-        gap: 100px;
-        justify-content: center; /* 가운데 정렬 */
-    }
-
-
-
-    .app-item {
-        text-align: center;
-        flex: 1;
-    }
-
-    .app-item img {
-        width: 150px;
-        height: 150px;
-        border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        background: #fff;
-    }
-
-    .app-item span {
-        display: block;
-        margin-top: 8px;
-        font-size: 14px;
-        font-weight: 600;
-        color: #333;
-    }
-
-
-
-    /*---------------- 상단 바로가기 ----------------*/
-    .bottom-icons {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 100px;
-        margin: 60px auto;
-        width: 80%;
-        padding-top: 80px;
-        border-top: 1px solid #E5E7EB;
-    }
+        /* 호버 효과: 카테고리랑 톤 맞추기 */
+        /* 1. 로그인 - 레드 계열 */
+        .icon-item.red:hover .circle{
+            background-color: #FFE5E8;                 /* 파스텔 핑크 */
+            border-color: rgba(217, 26, 26, 0.35);     /* BNK 레드톤 */
+        }
 
         /* 2. 투자 - 블루 계열 */
-        .icon-item.blue:hover .circle {
-            background-color: #E5F0FF; /* 파스텔 스카이 블루 */
-            border-color: rgba(37, 99, 235, 0.35); /* 파란 라인 */
+        .icon-item.blue:hover .circle{
+            background-color: #E5F0FF;                 /* 파스텔 스카이 블루 */
+            border-color: rgba(37, 99, 235, 0.35);     /* 파란 라인 */
         }
 
         /* 3. 금리계산 - 그린 계열 */
-        .icon-item.green:hover .circle {
-            background-color: #E5F8EF; /* 파스텔 민트 */
-            border-color: rgba(16, 185, 129, 0.35); /* 그린 라인 */
+        .icon-item.green:hover .circle{
+            background-color: #E5F8EF;                 /* 파스텔 민트 */
+            border-color: rgba(16, 185, 129, 0.35);    /* 그린 라인 */
         }
 
         /* 4. 퀴즈 - 퍼플 계열 */
-        .icon-item.purple:hover .circle {
-            background-color: #F3E8FF; /* 파스텔 퍼플 */
-            border-color: rgba(139, 92, 246, 0.35); /* 퍼플 라인 */
+        .icon-item.purple:hover .circle{
+            background-color: #F3E8FF;                 /* 파스텔 퍼플 */
+            border-color: rgba(139, 92, 246, 0.35);    /* 퍼플 라인 */
         }
 
         /* 아이콘(이미지/SVG) 색 반전 + 부드러운 전환 */
         /* 1. 로그인 - 레드 계열 아이콘 색 변환 */
         .icon-item.red:hover .circle img,
         .icon-item.red:hover .circle svg {
-            filter: brightness(0) saturate(80%) invert(10%) sepia(80%) saturate(7345%) hue-rotate(348deg) brightness(80%) contrast(116%);
+            filter: brightness(0) saturate(80%) invert(10%) sepia(80%)
+            saturate(7345%) hue-rotate(348deg) brightness(80%) contrast(116%);
         }
 
         /* 2. 투자 - 블루 계열 아이콘 색 변환 */
         .icon-item.blue:hover .circle img,
         .icon-item.blue:hover .circle svg {
-            filter: brightness(0) saturate(90%) invert(21%) sepia(90%) saturate(2500%) hue-rotate(205deg) brightness(90%) contrast(105%);
+            filter: brightness(0) saturate(90%) invert(21%) sepia(90%)
+            saturate(2500%) hue-rotate(205deg) brightness(90%) contrast(105%);
         }
 
         /* 3. 금리계산 - 그린 계열 아이콘 색 변환 */
         .icon-item.green:hover .circle img,
         .icon-item.green:hover .circle svg {
-            filter: brightness(0) saturate(90%) invert(24%) sepia(90%) saturate(2200%) hue-rotate(145deg) brightness(92%) contrast(105%);
+            filter: brightness(0) saturate(90%) invert(24%) sepia(90%)
+            saturate(2200%) hue-rotate(145deg) brightness(92%) contrast(105%);
         }
 
         /* 4. 퀴즈 - 퍼플 계열 아이콘 색 변환 */
         .icon-item.purple:hover .circle img,
         .icon-item.purple:hover .circle svg {
-            filter: brightness(0) saturate(90%) invert(18%) sepia(90%) saturate(2400%) hue-rotate(265deg) brightness(90%) contrast(110%);
+            filter: brightness(0) saturate(90%) invert(18%) sepia(90%)
+            saturate(2400%) hue-rotate(265deg) brightness(90%) contrast(110%);
         }
 
         /* 1. 로그인 - 레드 계열 */
         .icon-item.red:hover .circle h3 {
-            color: #D91A1A; /* BNK 레드 */
+            color: #D91A1A;   /* BNK 레드 */
         }
 
         /* 2. 투자 - 블루 계열 */
         .icon-item.blue:hover .circle h3 {
-            color: #2563EB; /* 파란 포인트 */
+            color: #2563EB;   /* 파란 포인트 */
         }
 
         /* 3. 금리계산 - 그린 계열 */
         .icon-item.green:hover .circle h3 {
-            color: #10B981; /* 민트/그린 포인트 */
+            color: #10B981;   /* 민트/그린 포인트 */
         }
 
         /* 4. 퀴즈 - 퍼플 계열 */
         .icon-item.purple:hover .circle h3 {
-            color: #8B5CF6; /* 퍼플 포인트 */
+            color: #8B5CF6;   /* 퍼플 포인트 */
         }
-
         /* 로그인시 5초 유지되는 토스트 추가 (이준우 2025.11.28) */
         .toast {
             position: fixed;
@@ -543,14 +573,12 @@
             pointer-events: none;
             transition: opacity 0.2s ease, transform 0.2s ease;
             z-index: 10000;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
-
         .toast.show {
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-
         .toast-icon {
             display: inline-flex;
             align-items: center;
@@ -561,13 +589,6 @@
             background: #22c55e;
             margin-right: 8px;
         }
-
-        .banner-slide {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
     </style>
 </head>
 <body>
@@ -593,6 +614,16 @@
             <video th:src="@{/images/002.mp4}" autoplay loop muted playsinline></video>
         </div>
 
+        <!-- 3번 배너 -->
+        <div class="banner-slide">
+            <video th:src="@{/images/003.mp4}" autoplay loop muted playsinline></video>
+        </div>
+
+        <!-- 4번 배너 -->
+        <div class="banner-slide">
+            <video th:src="@{/images/004.mp4}" autoplay loop muted playsinline></video>
+        </div>
+
         <!-- 좌우 버튼 -->
         <button class="banner-arrow prev" type="button">
             <i class="fas fa-chevron-left"></i>
@@ -600,6 +631,14 @@
         <button class="banner-arrow next" type="button">
             <i class="fas fa-chevron-right"></i>
         </button>
+
+        <!-- 하단 도트 -->
+        <div class="banner-dots">
+            <button class="banner-dot active" type="button"></button>
+            <button class="banner-dot" type="button"></button>
+            <button class="banner-dot" type="button"></button>
+            <button class="banner-dot" type="button"></button>
+        </div>
     </div>
 </section>
 
@@ -632,58 +671,58 @@
     </div>
 
     <div id="search-result-area"></div>
-  </section>
+</section>
 
-  <!-- 상단 바로가기 -->
-  <section class="bottom-icons">
-      <a th:href="@{/cs/consultation/findStore}" style="text-decoration: none;">
-          <div class="icon-item red">
-              <div class="circle">
-                  <img th:src="@{/images/main_each_customer.png}" alt="영업점 찾기">
-                  <h3>영업점 찾기</h3>
-              </div>
-          </div>
-      </a>
+<!-- 상단 바로가기 -->
+<section class="bottom-icons">
+    <a th:href="@{/cs/consultation/findStore}" style="text-decoration: none;">
+        <div class="icon-item red">
+            <div class="circle">
+                <img th:src="@{/images/main_each_customer.png}" alt="영업점 찾기">
+                <h3>영업점 찾기</h3>
+            </div>
+        </div>
+    </a>
 
-      <a th:href="@{/irp/account/main}" style="text-decoration: none;">
-          <div class="icon-item red">
-              <div class="circle">
-                  <img th:src="@{/images/main_new.png}" alt="계좌개설">
-                  <h3>계좌개설</h3>
-              </div>
-          </div>
-      </a>
+    <a th:href="@{/irp/account/main}" style="text-decoration: none;">
+        <div class="icon-item red">
+            <div class="circle">
+                <img th:src="@{/images/main_new.png}" alt="계좌개설">
+                <h3>계좌개설</h3>
+            </div>
+        </div>
+    </a>
 
-      <a th:href="@{/mypage/calc}" style="text-decoration: none;">
-          <div class="icon-item red">
-              <div class="circle">
-                  <img th:src="@{/images/main_calculator.png}" alt="금리계산">
-                  <h3>금리계산</h3>
-              </div>
-          </div>
-      </a>
+    <a th:href="@{/mypage/calc}" style="text-decoration: none;">
+        <div class="icon-item red">
+            <div class="circle">
+                <img th:src="@{/images/main_calculator.png}" alt="금리계산">
+                <h3>금리계산</h3>
+            </div>
+        </div>
+    </a>
 
-      <a th:href="@{/qna/main}" style="text-decoration: none;">
-          <div class="icon-item red">
-              <div class="circle">
-                  <div style="">
-                      <div style="display: flex; justify-content: center;">
-                          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M8.5 7.5C8.5 6.487 9.395 5.5 10.5 5.5C11.605 5.5 12.5 6.32 12.5 7.333C12.5 7.698 12.384 8.038 12.183 8.324C11.585 9.176 10.5 9.987 10.5 11" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round"/>
-                              <path d="M10.5 13.5H10.509" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M8 19.5C9.05 20.37 10.315 20.924 11.764 21.019C12.905 21.094 14.097 21.094 15.237 21.019C15.6444 20.9908 16.045 20.9004 16.425 20.751C16.835 20.584 17.039 20.501 17.144 20.514C17.248 20.526 17.399 20.636 17.701 20.856C18.234 21.244 18.905 21.522 19.901 21.499C20.404 21.487 20.656 21.48 20.768 21.291C20.881 21.101 20.741 20.839 20.46 20.314C20.07 19.586 19.824 18.753 20.198 18.085C20.841 17.131 21.388 16.002 21.468 14.782C21.511 14.127 21.511 13.448 21.468 12.792C21.4159 12.0004 21.2235 11.2243 20.9 10.5" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                              <path d="M12.237 17.0189C13.8553 16.9119 15.3796 16.2203 16.5257 15.0728C17.6719 13.9253 18.3618 12.4003 18.467 10.7819C18.511 10.1269 18.511 9.4479 18.467 8.7919C18.3616 7.17364 17.6716 5.64887 16.5254 4.50161C15.3793 3.35436 13.8552 2.66285 12.237 2.5559C11.0805 2.48137 9.92047 2.48137 8.764 2.5559C7.1454 2.66262 5.6208 3.35413 4.47425 4.50159C3.32771 5.64906 2.63742 7.17422 2.532 8.7929C2.48795 9.4555 2.48795 10.1203 2.532 10.7829C2.612 12.0029 3.159 13.1319 3.802 14.0849C4.176 14.7529 3.929 15.5859 3.54 16.3149C3.26 16.8389 3.12 17.1009 3.232 17.2909C3.345 17.4809 3.596 17.4859 4.1 17.4989C5.095 17.5229 5.766 17.2439 6.299 16.8559C6.601 16.6359 6.752 16.5259 6.856 16.5139C6.96 16.5019 7.166 16.5839 7.576 16.7509C7.944 16.9009 8.371 16.9929 8.764 17.0189C9.903 17.0939 11.094 17.0939 12.237 17.0189Z" stroke="#4B5563" stroke-width="1.5" stroke-linejoin="round"/>
-                          </svg>
-                      </div>
-                      <h3 style="margin-top: -4px;">퀴즈</h3>
-                  </div>
-              </div>
-          </div>
-      </a>
-  </section>
+    <a th:href="@{/qna/main}" style="text-decoration: none;">
+        <div class="icon-item red">
+            <div class="circle">
+                <div style="">
+                    <div style="display: flex; justify-content: center;">
+                        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.5 7.5C8.5 6.487 9.395 5.5 10.5 5.5C11.605 5.5 12.5 6.32 12.5 7.333C12.5 7.698 12.384 8.038 12.183 8.324C11.585 9.176 10.5 9.987 10.5 11" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M10.5 13.5H10.509" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 19.5C9.05 20.37 10.315 20.924 11.764 21.019C12.905 21.094 14.097 21.094 15.237 21.019C15.6444 20.9908 16.045 20.9004 16.425 20.751C16.835 20.584 17.039 20.501 17.144 20.514C17.248 20.526 17.399 20.636 17.701 20.856C18.234 21.244 18.905 21.522 19.901 21.499C20.404 21.487 20.656 21.48 20.768 21.291C20.881 21.101 20.741 20.839 20.46 20.314C20.07 19.586 19.824 18.753 20.198 18.085C20.841 17.131 21.388 16.002 21.468 14.782C21.511 14.127 21.511 13.448 21.468 12.792C21.4159 12.0004 21.2235 11.2243 20.9 10.5" stroke="#4B5563" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12.237 17.0189C13.8553 16.9119 15.3796 16.2203 16.5257 15.0728C17.6719 13.9253 18.3618 12.4003 18.467 10.7819C18.511 10.1269 18.511 9.4479 18.467 8.7919C18.3616 7.17364 17.6716 5.64887 16.5254 4.50161C15.3793 3.35436 13.8552 2.66285 12.237 2.5559C11.0805 2.48137 9.92047 2.48137 8.764 2.5559C7.1454 2.66262 5.6208 3.35413 4.47425 4.50159C3.32771 5.64906 2.63742 7.17422 2.532 8.7929C2.48795 9.4555 2.48795 10.1203 2.532 10.7829C2.612 12.0029 3.159 13.1319 3.802 14.0849C4.176 14.7529 3.929 15.5859 3.54 16.3149C3.26 16.8389 3.12 17.1009 3.232 17.2909C3.345 17.4809 3.596 17.4859 4.1 17.4989C5.095 17.5229 5.766 17.2439 6.299 16.8559C6.601 16.6359 6.752 16.5259 6.856 16.5139C6.96 16.5019 7.166 16.5839 7.576 16.7509C7.944 16.9009 8.371 16.9929 8.764 17.0189C9.903 17.0939 11.094 17.0939 12.237 17.0189Z" stroke="#4B5563" stroke-width="1.5" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 style="margin-top: -4px;">퀴즈</h3>
+                </div>
+            </div>
+        </div>
+    </a>
+</section>
 
-  <!-- 공지사항 -->
-  <section class="notice-event">
+<!-- 공지사항 -->
+<section class="notice-event">
     <div class="notice">
         <div class="notice-header">
             <h3>공지 / 새 소식</h3>
@@ -710,26 +749,26 @@
         </ul>
     </div>
 
-      <!-- 이벤트 -->
-      <div class="event">
-          <div class="event-header">
-              <h3>부기은행 APP</h3>
-          </div>
+    <!-- 이벤트 -->
+    <div class="event">
+        <div class="event-header">
+            <h3>부기은행 APP</h3>
+        </div>
 
-          <div class="app-grid">
-              <div class="app-item">
-                  <img th:src="@{/images/bnk_app_logo.png}" alt="iM은행">
-                  <span>부기은행</span>
-              </div>
+        <div class="app-grid">
+            <div class="app-item">
+                <img th:src="@{/images/bnk_app_logo.png}" alt="iM은행">
+                <span>부기은행</span>
+            </div>
 
-              <div class="app-item">
-                  <img th:src="@{/images/bnk_app_cor_logo.png}" alt="iM은행 기업">
-                  <span>부기은행 기업</span>
-              </div>
-          </div>
-      </div>
+            <div class="app-item">
+                <img th:src="@{/images/bnk_app_cor_logo.png}" alt="iM은행 기업">
+                <span>부기은행 기업</span>
+            </div>
+        </div>
+    </div>
 
-  </section>
+</section>
 
 <!--푸터-->
 <div th:replace="~{layouts/footer}"></div>
@@ -747,7 +786,7 @@
     // chatbot import 기능
     async function importHtmlWithAssets(url, mountSelector) {
         try {
-            const res = await fetch(url, {credentials: 'same-origin'});
+            const res = await fetch(url, { credentials: 'same-origin' });
             if (!res.ok) throw new Error(`Failed to load ${url}`);
             const html = await res.text();
 
@@ -779,18 +818,13 @@
             for (const oldScript of scripts) {
                 const newScript = document.createElement('script');
                 [...oldScript.attributes].forEach(attr => newScript.setAttribute(attr.name, attr.value));
-                if (oldScript.th:
-                src
-            )
-                {
+                if (oldScript.th:src) {
                     await new Promise(resolve => {
                         newScript.onload = resolve;
                         newScript.onerror = resolve;
                         document.body.appendChild(newScript);
                     });
-                }
-            else
-                {
+                } else {
                     newScript.textContent = oldScript.textContent || '';
                     document.body.appendChild(newScript);
                 }
@@ -814,10 +848,10 @@
 </script>
 
 <script>
-    async function searchProducts() {
+    async function searchProducts(){
         const input = document.querySelector('.search-inner input');
         const keyword = input.value.trim();
-        if (!keyword) {
+        if(!keyword) {
             alert('검색어를 입력하세요');
             input.focus();
             return;
@@ -825,15 +859,15 @@
 
         let res;
 
-        try {
+        try{
             res = await fetch(`/BNK/main/search?keyword=${encodeURIComponent(keyword)}`);
-        } catch (e) {
+        } catch (e){
             console.error(e);
             alert('검색 중 오류가 발생했습니다.');
             return;
         }
 
-        if (!res.ok) {
+        if(!res.ok){
             alert('검색 요청에 실패했습니다');
             return;
         }
@@ -841,9 +875,9 @@
         const data = await res.json();
 
         const resultArea = document.querySelector('#search-result-area');
-        resultArea.innerHTML = '';
+        resultArea.innerHTML='';
 
-        if (!data || data.length === 0) {
+        if(!data || data.length === 0){
             resultArea.innerHTML = `<p class="no-result">검색 결과가 없습니다.</p>`;
             return;
         }
@@ -886,9 +920,10 @@
 
 <script>
     const slides = document.querySelectorAll('.banner-slide');
+    const dots   = document.querySelectorAll('.banner-dot');
     const prevBtn = document.querySelector('.banner-arrow.prev');
     const nextBtn = document.querySelector('.banner-arrow.next');
-    const banner = document.querySelector('.banner');
+    const banner  = document.querySelector('.banner');
 
     let currentIndex = 0;
     let timer = null;
