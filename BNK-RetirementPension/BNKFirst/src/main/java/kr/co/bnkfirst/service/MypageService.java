@@ -4,7 +4,9 @@ import jakarta.transaction.Transactional;
 import kr.co.bnkfirst.dto.DocumentDTO;
 import kr.co.bnkfirst.dto.mypage.DealDTO;
 import kr.co.bnkfirst.dto.UsersDTO;
+import kr.co.bnkfirst.dto.product.FundDTO;
 import kr.co.bnkfirst.dto.product.PcontractDTO;
+import kr.co.bnkfirst.kiwoomETF.EtfDTO;
 import kr.co.bnkfirst.mapper.MypageMapper;
 import kr.co.bnkfirst.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +32,24 @@ public class MypageService{
         return mypageMapper.findByDeal(mid);
     }
 
+    public List<FundDTO> findByFund(String mid) { return mypageMapper.findByFund(mid); }
+
     public List<PcontractDTO> findByContract(String mid) {
         return mypageMapper.findByContract(mid);
     }
 
+    public List<PcontractDTO> findByFundContract(String mid) {
+        return mypageMapper.findByFundContract(mid);
+    }
+
     public int findByBalance(String mid) {
-        return mypageMapper.findByBalance(mid);
+        Integer sum = mypageMapper.findByBalance(mid);
+        return (sum != null) ? sum : 0;
+    }
+
+    public int findByFundBalance(String mid) {
+        Integer sum = mypageMapper.findByFundBalance(mid);
+        return (sum != null) ? sum : 0;
     }
 
     public List<DocumentDTO> findByDocumentList(String mid) {
@@ -67,11 +81,14 @@ public class MypageService{
     }
 
     public int findBySumPlusDbalance(String mid){
-        return mypageMapper.findBySumPlusDbalance(mid);
+        Integer sum = mypageMapper.findBySumPlusDbalance(mid);
+        return (sum != null) ? sum : 0;
     }
 
-    public int findBySumMinusDbalance(String mid){
-        return mypageMapper.findBySumMinusDbalance(mid);
+    public Integer findBySumMinusDbalance(String mid){
+        Integer sum = mypageMapper.findBySumMinusDbalance(mid);
+        int result = (sum != null) ? sum : 0;
+        return result;
     }
 
 //    상품 해지 과정
@@ -79,13 +96,27 @@ public class MypageService{
         mypageMapper.updateRecvContract(pbalance, pacc);
     }
 
-    public void deleteContract(String pacc) {
-        mypageMapper.deleteContract(pacc);
+    public void deleteContract(String pcuid, String pcpid) {
+        mypageMapper.deleteContract(pcuid, pcpid);
     }
 
     @Transactional
-    public void deleteContractProcess(int pbalance, String pacc, String recvAcc) {
+    public void deleteContractProcess(int pbalance, String recvAcc, String pcuid, String pcpid) {
         updateRecvContract(pbalance, recvAcc);
-        deleteContract(pacc);
+        deleteContract(pcuid, pcpid);
+    }
+
+    // ETF 주식 불러오기
+    public List<PcontractDTO> selectEtf(@Param("pcuid") String pcuid){
+        return mypageMapper.selectEtf(pcuid);
+    }
+
+    /*
+        날짜 : 2025.11.28.
+        이름 : 강민철
+        내용 : 변경 상품 목록 불러오기
+     */
+    public List<PcontractDTO> getProdEditList(@Param("pcuid") String pcuid) {
+        return mypageMapper.findByUidAndType(pcuid);
     }
 }

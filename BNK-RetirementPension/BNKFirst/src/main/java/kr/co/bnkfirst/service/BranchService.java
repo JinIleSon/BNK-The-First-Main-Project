@@ -11,47 +11,76 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BranchService {
+
     private final BranchMapper branchMapper;
 
+    /** ===== 공통 전처리 ===== */
+    private void normalize(BranchDTO dto) {
+        if (dto.getBrname() != null) dto.setBrname(dto.getBrname().trim());
+        if (dto.getBraddr() != null) dto.setBraddr(dto.getBraddr().trim());
+        if (dto.getBrtel() != null) dto.setBrtel(dto.getBrtel().trim());
+        if (dto.getBrfax() != null) dto.setBrfax(dto.getBrfax().trim());
+        if (dto.getType() != null) dto.setType(dto.getType().trim());
+    }
+
+    private void validateRequired(BranchDTO dto) {
+        if (dto.getBrname() == null || dto.getBrname().isBlank())
+            throw new IllegalArgumentException("지점명(BRNAME)은 필수입니다.");
+        if (dto.getBraddr() == null || dto.getBraddr().isBlank())
+            throw new IllegalArgumentException("주소(BRADDR)는 필수입니다.");
+        if (dto.getBrtel() == null || dto.getBrtel().isBlank())
+            throw new IllegalArgumentException("전화번호(BRTEL)는 필수입니다.");
+        if (dto.getType() == null || dto.getType().isBlank())
+            throw new IllegalArgumentException("지점 분류(TYPE)는 필수입니다.");
+    }
+
+    /** 전체 조회 */
     public List<BranchDTO> getAllBranches() {
         return branchMapper.findAllBranches();
     }
 
-    // ✅ 페이징 버전
+    /** 페이징 */
     public List<BranchDTO> getBranchPage(PageRequestDTO pageRequestDTO) {
-        int offset = pageRequestDTO.getOffset(); // (page-1)*size 이런식일 거야
-        int size   = pageRequestDTO.getSize();   // 기본 5로 설정해놨겠지?
-        return branchMapper.findBranchPage(offset, size);
+        return branchMapper.findBranchPage(pageRequestDTO.getOffset(), pageRequestDTO.getSize());
     }
 
+    /** 총 개수 */
     public int getBranchTotal() {
         return branchMapper.countBranches();
     }
 
+    /** 검색 */
     public List<BranchDTO> searchBranches(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return branchMapper.findAllBranches();
-        }
-        return branchMapper.searchBranches(keyword);
+        String word = (keyword == null ? "" : keyword.trim());
+        if (word.isEmpty()) return branchMapper.findAllBranches();
+        return branchMapper.searchBranches(word);
     }
 
-    // ✅ 영업점 등록
+    /** 등록 */
     public void insertBranch(BranchDTO dto) {
+        validateRequired(dto);
+        normalize(dto);
         branchMapper.insertBranch(dto);
     }
 
-    // 🔎 단일 영업점 조회
+    /** 단일 조회 */
     public BranchDTO getBranchById(int brid) {
         return branchMapper.findBranchById(brid);
     }
 
-    // ✏️ 영업점 수정
+    /** 수정 */
     public void updateBranch(BranchDTO dto) {
+        validateRequired(dto);
+        normalize(dto);
         branchMapper.updateBranch(dto);
     }
 
-    // 🔥 영업점 삭제
+    /** 삭제 */
     public void deleteBranch(int brid) {
+        BranchDTO exist = branchMapper.findBranchById(brid);
+        if (exist == null) {
+            throw new IllegalArgumentException("존재하지 않는 지점입니다. BRID=" + brid);
+        }
         branchMapper.deleteBranch(brid);
     }
 }

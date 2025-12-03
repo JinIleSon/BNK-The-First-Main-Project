@@ -5,6 +5,12 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+/*
+    날짜 : 2025.11.20.
+    이름 : 강민철
+    내용 : 본인확인서 DTO (SLFCERT 테이블)
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

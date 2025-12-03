@@ -1,5 +1,9 @@
 package kr.co.bnkfirst;
 
+import kr.co.bnkfirst.fx.KoreaEximFxClient;
+import kr.co.bnkfirst.mapper.AdminMapper;
+import kr.co.bnkfirst.mapper.BranchMapper;
+import kr.co.bnkfirst.mapper.DocumentMapper;
 import kr.co.bnkfirst.service.EmailService;
 import kr.co.bnkfirst.service.SmsService;
 import org.junit.jupiter.api.Test;
@@ -19,4 +23,6 @@ class BnkFirstApplicationTests {
     EmailService emailService;
     @MockitoBean
     SmsService smsService;
+    @MockitoBean
+    KoreaEximFxClient koreaEximFxClient;
 }

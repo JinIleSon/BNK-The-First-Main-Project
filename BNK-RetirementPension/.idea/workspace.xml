@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32ac5f2e-1e91-4634-8a7b-a19f92f93036" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/BNK-RetirementPension.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pages/member/member_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/../pages/member/member_main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BNKFirst/src/main/java/kr/co/bnkfirst/controller/CorporateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BNKFirst/src/main/java/kr/co/bnkfirst/controller/CorporateController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BNKFirst/src/main/resources/static/css/corporate/corporate_main.css" beforeDir="false" afterPath="$PROJECT_DIR$/BNKFirst/src/main/resources/static/css/corporate/corporate_main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BNKFirst/src/main/resources/templates/corporate/corporate_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/BNKFirst/src/main/resources/templates/corporate/corporate_main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BNKFirst/src/main/resources/templates/corporate/employee/contribution_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/BNKFirst/src/main/resources/templates/corporate/employee/contribution_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,28 +15,30 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="35HPXqphlKfikUrk8wtD0UUaJfv" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/junwoo",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/GGG/Desktop/BNK-The-First-Main-Project/BNK-RetirementPension",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/yingbbang&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/iceki/OneDrive/바탕 화면/git/BNK-RetirementPension&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
-        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-IU-252.25557.131" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
       </set>
     </attachedChunks>
   </component>
@@ -51,6 +50,8 @@
       <option name="presentableId" value="Default" />
       <updated>1762764066829</updated>
       <workItem from="1762764068091" duration="223000" />
+      <workItem from="1763686974542" duration="52000" />
+      <workItem from="1764148103508" duration="25000" />
     </task>
     <servers />
   </component>

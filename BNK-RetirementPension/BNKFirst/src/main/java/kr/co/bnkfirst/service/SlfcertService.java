@@ -25,7 +25,9 @@ public class SlfcertService {
     }
 
     public boolean countSlfcertByMid(String mid){
-        int count = slfcertRepository.countSlfcertByCusid(mid);
+        log.info("count slfcert by mid : {}", mid);
+        long count = slfcertRepository.countByCusidAndSts(mid,"VALID");
+        log.info("slfcert count : {}", count);
         return count > 0;
     }
 }

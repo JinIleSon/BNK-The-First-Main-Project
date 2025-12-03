@@ -30,7 +30,7 @@ public class Product {
     @Column(name = "PBIRATE", columnDefinition = "NUMBER")
     private float pbirate;
     @Column(name = "PHIRATE", columnDefinition = "NUMBER")
-    private float phirate;
+    private Float phirate;
     @Nationalized
     @Column(length = 100)
     private String pcprd;
@@ -62,6 +62,9 @@ public class Product {
     @Lob
     private String pinfo;
 
+    // 없어서 추가함 - 손진일 2025/11/23
+    private String pwtpi;
+
     public ProductDTO toDTO(){
         return ProductDTO.builder()
                 .id(id)
@@ -69,7 +72,7 @@ public class Product {
                 .ptype(ptype)
                 .pname(pname)
                 .pbirate(pbirate)
-                .phirate(phirate)
+                .phirate(phirate == null ? 0 : phirate)
                 .pcprd(pcprd)
                 .pelgbl(pelgbl)
                 .prmthd(prmthd)
@@ -82,6 +85,7 @@ public class Product {
                 .pdirate(pdirate)
                 .psubtitle(psubtitle)
                 .pinfo(pinfo)
+                .pwtpi(pwtpi)
                 .build();
     }
 }
