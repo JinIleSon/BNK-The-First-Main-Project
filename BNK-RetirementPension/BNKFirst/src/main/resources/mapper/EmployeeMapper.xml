@@ -236,7 +236,6 @@
             parameterType="kr.co.bnkfirst.dto.corporate.employee.EmployeeCreateDto">
 
         INSERT INTO EMPLOYEE (
-            EMPID,
             NAME,
             PLANTYPE,
             ACCOUNTNO,
@@ -245,7 +244,6 @@
             POSITION,
             HIREDATE
         ) VALUES (
-                     EMP_SEQ.NEXTVAL,
                      #{name},
                      #{planType},
                      #{accountNo},
