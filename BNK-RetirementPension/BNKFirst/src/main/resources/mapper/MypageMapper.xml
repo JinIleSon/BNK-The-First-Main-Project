@@ -61,11 +61,11 @@
     </insert>
 <!--  거래 한 번에 두 번 사용  -->
     <update id="updateContract">
-        update pcontract set pbalance=#{pbalance} where pacc=#{pacc}
+        update pcontract set pbalance=#{pbalance} where pacc=#{pacc} AND "TYPE" IN ('IRP', 'COMMON')
     </update>
 <!--계좌이체용 계좌 찾기-->
     <select id="findByOneContract" resultType="kr.co.bnkfirst.dto.product.PcontractDTO">
-        SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pacc=#{pacc}
+        SELECT * FROM PCONTRACT c JOIN PRODUCT p ON c.pcpid = p.pid WHERE pacc=#{pacc} AND "TYPE" IN ('IRP', 'COMMON')
     </select>
 
 <!--    최근 거래-->
