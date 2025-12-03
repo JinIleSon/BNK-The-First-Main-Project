@@ -12,6 +12,8 @@
         SELECT
             EMPID       AS empId,
             NAME        AS name,
+            DEPARTMENT  AS department,
+            POSITION    AS position,
             PLANTYPE    AS planType,
             ACCOUNTNO   AS accountNo,
             STATUS      AS status
@@ -188,6 +190,8 @@
         SELECT
         EMPID       AS empId,
         NAME        AS name,
+        DEPARTMENT  AS department,
+        POSITION    AS position,
         PLANTYPE    AS planType,
         ACCOUNTNO   AS accountNo,
         STATUS      AS status
