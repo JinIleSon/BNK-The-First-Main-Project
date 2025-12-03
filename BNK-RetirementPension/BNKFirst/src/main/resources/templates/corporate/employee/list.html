@@ -134,6 +134,14 @@
 
         .modal-buttons { display: flex; gap: 10px; margin-top: 14px; }
 
+        .btn-test{
+           padding: 8px 14px;
+            border-radius: 10px;
+            background: #d91a1a;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -153,7 +161,7 @@
         <div style="font-size:16px; font-weight:600;">직원 관리</div>
 
         <div>
-            <a th:href="@{/corporate/employee/create}"
+            <a th:href="@{/BNK/corporate/employee/create}"
                style="background:#d91a1a; color:#fff; padding:8px 14px; border-radius:6px; text-decoration:none;">
                 직원 등록
             </a>
@@ -176,7 +184,7 @@
             </select>
 
             <button type="submit">검색</button>
-            <button type="button" onclick="location.href='/corporate/employee/list'">초기화</button>
+            <button onclick="location.href='/BNK/corporate/employee/list'">초기화</button>
         </div>
     </form>
 
@@ -282,8 +290,8 @@
         <h3>퇴사일 입력</h3>
         <input type="date" id="retireDate" style="padding:8px; width:100%; margin-top:10px;">
         <div class="modal-buttons">
-            <button class="btn-cancel" onclick="closeRetireModal()">취소</button>
-            <button class="btn-save" onclick="saveRetireDate()">저장</button>
+            <button class="btn-test" onclick="closeRetireModal()">취소</button>
+            <button class="btn-test"  onclick="saveRetireDate()">저장</button>
         </div>
     </div>
 </div>
@@ -302,7 +310,7 @@
             return;
         }
 
-        const res = await fetch(`/corporate/employee/autocomplete?keyword=${keyword}`);
+        const res = await fetch(`/BNK/corporate/employee/autocomplete?keyword=${keyword}`);
         const list = await res.json();
 
         autoBox.innerHTML = list.map(emp =>
@@ -352,7 +360,7 @@
     });
 
     async function updateStatus(empId, status, selectObj) {
-        const res = await fetch(`/corporate/employee/status/${empId}`, {
+        const res = await fetch(`/BNK/corporate/employee/status/${empId}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ status })
@@ -384,7 +392,7 @@
             return;
         }
 
-        const url = `/corporate/employee/retire/${window.retireEmpId}`;
+        const url = `/BNK/corporate/employee/retire/${window.retireEmpId}`;
 
         const res = await fetch(url, {
             method: "POST",

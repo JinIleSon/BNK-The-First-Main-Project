@@ -175,7 +175,7 @@
         UPDATE EMPLOYEE
         SET
             STATUS = #{status},
-            RETIREDATE = #{retireDate}
+            RETIREDATE = TO_DATE(#{retireDate}, 'YYYY-MM-DD')
         WHERE EMPID = #{empId}
     </update>
 
