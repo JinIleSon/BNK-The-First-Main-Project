@@ -20,7 +20,7 @@
 ---
 
 ## YouTube
-https://www.youtube.com/watch?v=Uhn97QhZyEI
+유튜브 링크: https://www.youtube.com/watch?v=Uhn97QhZyEI
 
 ## 👥 2. 팀 구성
 
