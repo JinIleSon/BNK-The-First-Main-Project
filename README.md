@@ -33,6 +33,10 @@
 
 ---
 
+메인
+<img width="1279" height="657" alt="image" src="https://github.com/user-attachments/assets/e614a073-7bad-410b-b8f9-2998d84672a5" />
+
+
 ## 🧩 3. 요구사항 정의 · WBS · 테스트 시나리오
 
 ---
